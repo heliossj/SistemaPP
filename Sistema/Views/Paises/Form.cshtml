@@ -1,0 +1,36 @@
+﻿@model Sistema.Models.PaisesVM
+
+@{
+    bool readOnly = Convert.ToBoolean(ViewBag.ReadOnly);
+    string readOnlyIf = readOnly ? "disabled" : "";
+}
+
+@Html.HiddenFor(model => readOnly)
+<form>
+    <div class="form-row">
+        <div class="form-group col-md-2">
+            @Html.LabelFor(model => model.idPais)
+            @Html.TextBoxFor(model => model.idPais, new { @class = "form-control", disabled = false })
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group required col-md-12">
+            @Html.LabelFor(model => model.nmPais, new { @class = "form-group" })
+            @Html.TextBoxFor(model => model.nmPais, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group required col-md-2">
+            @Html.LabelFor(model => model.DDI)
+            @Html.TextBoxFor(model => model.DDI, new { @class = "form-control", readOnlyIf, required = "required" })
+        </div>
+
+        <div class="form-group required col-md-2">
+            @Html.LabelFor(model => model.sigla)
+            @Html.TextBoxFor(model => model.sigla, new { @class = "form-control", readOnlyIf, required = "required" })
+        </div>
+    </div>
+
+</form>

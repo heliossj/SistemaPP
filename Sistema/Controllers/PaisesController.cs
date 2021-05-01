@@ -13,18 +13,40 @@ namespace Sistema.Controllers
             return View();
         }
 
-        public ActionResult About()
+        public ActionResult Create()
         {
-            ViewBag.Message = "Your application description page.";
-
             return View();
         }
 
-        public ActionResult Contact()
+        [HttpPost]
+        public ActionResult Create(Sistema.Models.PaisesVM model)
         {
-            ViewBag.Message = "Your contact page.";
-
+            if (string.IsNullOrEmpty(model.nmPais))
+            {
+                ModelState.AddModelError("nmPais", "Informe o País");
+            }
+            if (ModelState.IsValid)
+            {
+                return View(model);
+            }
             return View();
         }
+
+        public ActionResult Edit()
+        {
+            return View();
+        }
+
+        public ActionResult Delete()
+        {
+            return View();
+        }
+
+        public ActionResult Details()
+        {
+            return View();
+        }
+
+
     }
 }

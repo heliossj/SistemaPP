@@ -1,96 +1,58 @@
 ﻿<!DOCTYPE html>
 <html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
-</head>
-<body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                    <img id="divImgNav" src="~/img/Logo.png" width="30" height="30" />
-                    @Html.ActionLink("Foz Rodapés", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse" id="navbarNavDropdown">
-                <ul class="nav navbar-nav">
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Cadastro <span class=""></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">Usuário</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="#">País</a></li>
-                            <li><a href="#">Estado</a></li>
-                            <li><a href="#">Cidade</a></li>
-                            <li><a href="#">Fornecedor</a></li>
-                            <li><a href="#">Cliente</a></li>
-                            <li><a href="#">Rodapés</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Registro <span class=""></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">Compras</a></li>
-                            <li><a href="#">Vendas</a></li>
-                            <li><a href="#">Contas a pagar</a></li>
-                            <li><a href="#">Contas a receber</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Relatório <span class=""></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">Compra</a></li>
-                            <li><a href="#">Compra</a></li>
-                            <li><a href="#">Compra</a></li>
-                            <li><a href="#">Compra</a></li>
-                            <li><a href="#">Compra</a></li>
-                            <li><a href="#">Compra</a></li>
-                            <li><a href="#">Compra</a></li>
-                        </ul>
-                    </li>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>@ViewBag.Title</title>
+        @Styles.Render("~/Content/css")
+        @Scripts.Render("~/bundles/modernizr")
+    </head>
+    <body>
 
-                    @*<li>@Html.ActionLink("Início", "Index", "Home")</li>
-                        <li>@Html.ActionLink("Sobre", "About", "Home")</li>
-                        <li>@Html.ActionLink("Contato", "Contact", "Home")</li>*@
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
+            <img id="divImgNav" src="~/img/Logo.png" width="30" height="30" />
+            @Html.ActionLink("Foz Rodapés", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
 
-                </ul>
-            </div>
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                        Cadastro
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#">Usuário</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="@Url.Action("Index", "Cidade")">Cidade</a>
+                        <a class="dropdown-item" href="@Url.Action("Index", "Estado")">Estado</a>
+                        <a class="dropdown-item" href="@Url.Action("Index", "Paises")">País</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+        <div class="container body-content">
+            @RenderBody()
         </div>
-    </div>
-    <div class="container body-content">
-        @RenderBody()
-        <footer id="divFooter">
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @Scripts.Render("~/Scripts/_Layout/Layout.css")
+
+        @RenderSection("scripts", required: false)
+
+        @*<footer id="divFooter" style="width:100%">
             <hr />
-            <p>&copy; @DateTime.Now.Year - HJ Sistemas</p>
-        </footer>
-    </div>
+            <p style="font-size:12px">&copy; @DateTime.Now.Year - HJ Sistemas</p>
+        </footer>*@
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/Scripts/_Layout/Layout.css")
-    @RenderSection("scripts", required: false)
-</body>
+    </body>
+
 </html>
-<style>
-    #divImgNav {
-        margin-top: 10px;
-    }
 
+@*<style>
     #divFooter {
         text-align: center;
         bottom: 0;
         position: fixed;
-        width: 90%;
-    }  
-
-</style>
+        width: 100%;
+        background-color:black;
+    }
+</style>*@
