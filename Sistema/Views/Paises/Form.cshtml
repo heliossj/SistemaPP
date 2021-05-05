@@ -1,36 +1,39 @@
 ﻿@model Sistema.Models.PaisesVM
-
+@using Sistema.Util
 @{
     bool readOnly = Convert.ToBoolean(ViewBag.ReadOnly);
-    string readOnlyIf = readOnly ? "disabled" : "";
+    string action = Convert.ToString(ViewBag.Action);
+
 }
 
+@Html.HiddenFor(model => action)
 @Html.HiddenFor(model => readOnly)
-<form>
-    <div class="form-row">
-        <div class="form-group col-md-2">
-            @Html.LabelFor(model => model.idPais)
-            @Html.TextBoxFor(model => model.idPais, new { @class = "form-control", disabled = false })
-        </div>
+
+
+
+<div class="form-row">
+    <div class="@Util.Input2">
+        @Html.LabelFor(model => model.idPais)
+        @Html.TextBoxFor(model => model.idPais, new { @class = "form-control", disabled = false })
+    </div>
+</div>
+
+<div class="form-row">
+    <div class="@Util.Input6">
+        @Html.LabelFor(model => model.nmPais, new { @class = "required" })
+        @Html.TextBoxFor(model => model.nmPais, new { @class = "form-control", maxlength = "50", style = "text-transform:uppercase", minlength = "3" })
+        @Html.ValidationMessageFor(model => model.nmPais, null, new { @class = "text-danger" })
     </div>
 
-    <div class="form-row">
-        <div class="form-group required col-md-12">
-            @Html.LabelFor(model => model.nmPais, new { @class = "form-group" })
-            @Html.TextBoxFor(model => model.nmPais, new { @class = "form-control" })
-        </div>
+    <div class="@Util.Input3">
+        @Html.LabelFor(model => model.DDI)
+        @Html.TextBoxFor(model => model.DDI, new { @class = "form-control", @maxlength = "5", style = "text-transform:uppercase" })
+        @Html.ValidationMessageFor(model => model.DDI, null, new { @class = "text-danger" })
     </div>
 
-    <div class="form-row">
-        <div class="form-group required col-md-2">
-            @Html.LabelFor(model => model.DDI)
-            @Html.TextBoxFor(model => model.DDI, new { @class = "form-control", readOnlyIf, required = "required" })
-        </div>
-
-        <div class="form-group required col-md-2">
-            @Html.LabelFor(model => model.sigla)
-            @Html.TextBoxFor(model => model.sigla, new { @class = "form-control", readOnlyIf, required = "required" })
-        </div>
+    <div class="@Util.Input3">
+        @Html.LabelFor(model => model.sigla)
+        @Html.TextBoxFor(model => model.sigla, new { @class = "form-control", @maxlength = "2", style = "text-transform:uppercase" })
+        @Html.ValidationMessageFor(model => model.sigla, null, new { @class = "text-danger" })
     </div>
-
-</form>
+</div>

@@ -30,8 +30,11 @@ namespace Sistema
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/bootstrap.min.css",
+                      "~/Content/font-awesome.css",
+                      "~/Content/font-awesome.min.css",
+                      "~/Content/dataTables.bootstrap4.min.css",
                       "~/Content/site.css",
-                      "~/Content/dataTables.bootstrap4.min.css"
+                      "~/Content/Sistema.css"
                       ));
         }
     }

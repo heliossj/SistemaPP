@@ -170,6 +170,7 @@ C:\Users\RPGODOY03\Desktop\Helio\Sistema\Sistema\obj\Debug\Sistema.csproj.CoreCo
 C:\Users\RPGODOY03\Desktop\Helio\Sistema\Sistema\obj\Debug\Sistema.csproj.CopyComplete
 C:\Users\RPGODOY03\Desktop\Helio\Sistema\Sistema\obj\Debug\Sistema.dll
 C:\Users\RPGODOY03\Desktop\Helio\Sistema\Sistema\obj\Debug\Sistema.pdb
+C:\Users\Helio\Desktop\Sistema\heliossj\Sistema\Sistema\obj\Debug\Sistema.csproj.CoreCompileInputs.cache
 C:\Users\Helio\Desktop\Sistema\heliossj\Sistema\Sistema\bin\Sistema.dll.config
 C:\Users\Helio\Desktop\Sistema\heliossj\Sistema\Sistema\bin\Sistema.dll
 C:\Users\Helio\Desktop\Sistema\heliossj\Sistema\Sistema\bin\Sistema.pdb
@@ -251,8 +252,7 @@ C:\Users\Helio\Desktop\Sistema\heliossj\Sistema\Sistema\bin\pt-br\System.Web.Raz
 C:\Users\Helio\Desktop\Sistema\heliossj\Sistema\Sistema\bin\pt-br\System.Web.WebPages.resources.dll
 C:\Users\Helio\Desktop\Sistema\heliossj\Sistema\Sistema\bin\pt-br\System.Web.WebPages.Deployment.resources.dll
 C:\Users\Helio\Desktop\Sistema\heliossj\Sistema\Sistema\bin\pt-br\System.Web.WebPages.Razor.resources.dll
-C:\Users\Helio\Desktop\Sistema\heliossj\Sistema\Sistema\obj\Debug\Sistema.csprojAssemblyReference.cache
-C:\Users\Helio\Desktop\Sistema\heliossj\Sistema\Sistema\obj\Debug\Sistema.csproj.CoreCompileInputs.cache
 C:\Users\Helio\Desktop\Sistema\heliossj\Sistema\Sistema\obj\Debug\Sistema.csproj.CopyComplete
 C:\Users\Helio\Desktop\Sistema\heliossj\Sistema\Sistema\obj\Debug\Sistema.dll
 C:\Users\Helio\Desktop\Sistema\heliossj\Sistema\Sistema\obj\Debug\Sistema.pdb
+C:\Users\Helio\Desktop\Sistema\heliossj\Sistema\Sistema\obj\Debug\Sistema.csprojAssemblyReference.cache

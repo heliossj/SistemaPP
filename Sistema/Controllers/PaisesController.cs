@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Sistema.DAO;
+using Sistema.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,9 +10,13 @@ namespace Sistema.Controllers
 {
     public class PaisesController : Controller
     {
+        PaisesDAO daoPaises = new PaisesDAO();
+
         public ActionResult Index()
         {
-            return View();
+            var daoPaises = new PaisesDAO();
+            List<Models.PaisesVM> list = daoPaises.GetPaises();
+            return View(list);
         }
 
         public ActionResult Create()
@@ -21,19 +27,50 @@ namespace Sistema.Controllers
         [HttpPost]
         public ActionResult Create(Sistema.Models.PaisesVM model)
         {
-            if (string.IsNullOrEmpty(model.nmPais))
+            if (string.IsNullOrWhiteSpace(model.nmPais))
             {
-                ModelState.AddModelError("nmPais", "Informe o País");
+                ModelState.AddModelError("nmPais", "Informe um nome de país válido");
+            }
+            if (string.IsNullOrWhiteSpace(model.DDI))
+            {
+                ModelState.AddModelError("DDI", "Informe o DDI");
+            }
+            if (string.IsNullOrWhiteSpace(model.sigla))
+            {
+                ModelState.AddModelError("sigla", "Informe a sigla");
             }
             if (ModelState.IsValid)
             {
-                return View(model);
+                
+                return RedirectToAction("Index");
             }
             return View();
         }
 
         public ActionResult Edit()
         {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Edit(Sistema.Models.PaisesVM model)
+        {
+            if (string.IsNullOrWhiteSpace(model.nmPais))
+            {
+                ModelState.AddModelError("nmPais", "Informe um nome de país válido");
+            }
+            if (string.IsNullOrWhiteSpace(model.DDI))
+            {
+                ModelState.AddModelError("DDI", "Informe o DDI");
+            }
+            if (string.IsNullOrWhiteSpace(model.sigla))
+            {
+                ModelState.AddModelError("sigla", "Informe a sigla");
+            }
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("Index");
+            }
             return View();
         }
 
