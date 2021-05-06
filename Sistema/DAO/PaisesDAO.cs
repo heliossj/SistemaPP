@@ -25,8 +25,8 @@ namespace Sistema.DAO
                 {
                     var pais = new PaisesVM
                     {
-                        idPais = Convert.ToInt32(reader["idpais"]),
-                        nmPais = Convert.ToString(reader["nmPais"]),
+                        idPais = Convert.ToInt32(reader["codpais"]),
+                        nmPais = Convert.ToString(reader["nomepais"]),
                         sigla = Convert.ToString(reader["sigla"]),
                         DDI = Convert.ToString(reader["ddi"]),
                         //dtCadastro = Convert.ToDateTime(reader["dtCadastro"]),
