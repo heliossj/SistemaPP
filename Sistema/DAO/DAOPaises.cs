@@ -54,9 +54,9 @@ namespace Sistema.DAO
             try
             {
                 var sql = string.Format("INSERT INTO tbpaises ( nomepais, ddi, sigla) VALUES ('{0}', '{1}', '{2}')",
-                    pais.nomePais.ToUpper(),
-                    pais.DDI.ToUpper(),
-                    pais.sigla.ToUpper());
+                    pais.nomePais.ToUpper().Trim(),
+                    pais.DDI.ToUpper().Trim(),
+                    pais.sigla.ToUpper()).Trim();
 
                 //string sql = "INSERT INTO tbpaises ( nomepais, ddi, sigla ) VALUES ('" + pais.nomePais + "', '" + pais.DDI + "', '" + pais.sigla + "')";
 
@@ -89,7 +89,7 @@ namespace Sistema.DAO
         {
             try
             {
-                string sql = "UPDATE tbpaises SET nomepais = '" + pais.nomePais.ToUpper() + "', ddi = '" + pais.DDI.ToUpper() + "', sigla = '" + pais.sigla.ToUpper() + "' WHERE codpais = " + pais.codPais;
+                string sql = "UPDATE tbpaises SET nomepais = '" + pais.nomePais.ToUpper().Trim() + "', ddi = '" + pais.DDI.ToUpper().Trim() + "', sigla = '" + pais.sigla.ToUpper().Trim() + "' WHERE codpais = " + pais.codPais;
                 OpenConnection();
                 SqlQuery = new SqlCommand(sql, con);
 
