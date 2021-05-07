@@ -42,10 +42,7 @@ namespace Sistema.Controllers
             if (ModelState.IsValid)
             {
                 daoPaises = new DAOPaises();
-                if (daoPaises.Insert(model))
-                {
-                    ViewBag.Message = "Registro inserido com sucesso";
-                }
+                daoPaises.Insert(model);
                 return RedirectToAction("Index");
             }
             else
@@ -78,10 +75,7 @@ namespace Sistema.Controllers
             {
 
                 daoPaises = new DAOPaises();
-                if (daoPaises.Update(model))
-                {
-                    ViewBag.Message = "Registro alterado com sucesso";
-                }
+                daoPaises.Update(model);
                 return RedirectToAction("Index");
             }
             return View();
@@ -93,14 +87,11 @@ namespace Sistema.Controllers
         }
 
         [HttpPost]
-
-        public ActionResult Delete(int? id, Sistema.Models.Paises model)
+        [ActionName("Delete")]
+        public ActionResult DeleteConfirmed(int? id)
         {
             daoPaises = new DAOPaises();
-            if (daoPaises.Delete(id))
-            {
-                ViewBag.Message = "Registro removido com sucesso";
-            }
+            daoPaises.Delete(id);
             return RedirectToAction("Index");
         }
 
@@ -114,7 +105,6 @@ namespace Sistema.Controllers
             var daoPaises = new DAOPaises();
             var model = daoPaises.GetPais(codPais);
             return View(model);
-            //var model = new Models.Paises(aux)
         }
 
     }

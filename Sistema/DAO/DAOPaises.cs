@@ -15,8 +15,9 @@ namespace Sistema.DAO
         {
             try
             {
-                OpenConnection();
+                
                 var sql = "SELECT* FROM tbpaises";
+                OpenConnection();
                 SqlQuery = new SqlCommand(sql, con);
                 reader = SqlQuery.ExecuteReader();
                 var list = new List<Paises>();
