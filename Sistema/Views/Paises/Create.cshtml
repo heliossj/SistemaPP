@@ -1,10 +1,9 @@
-﻿@model Sistema.Models.PaisesVM
+﻿@model Sistema.Models.Paises
 @{
     ViewBag.Title = "Adicionar registro";
     ViewBag.Layout = "~/_Styles/Style.css";
     ViewBag.readOnly = false;
-    //ViewBag.Action 
-
+    ViewBag.action = ViewContext.Controller.ValueProvider.GetValue("action").RawValue.ToString().ToLower();
 }
 
 @using (Html.BeginForm())

@@ -1,9 +1,10 @@
-﻿@model Sistema.Models.PaisesVM
+﻿@model Sistema.Models.Paises
 @{
     ViewBag.Title = "Visualizar registro";
     ViewBag.Layout = "~/_Styles/Style.css";
     bool readOnly = Convert.ToBoolean(ViewBag.ReadOnly);
     ViewBag.readOnly = true;
+    ViewBag.action = ViewContext.Controller.ValueProvider.GetValue("action").RawValue.ToString().ToLower();
 }
 
 @using (Html.BeginForm())

@@ -6,13 +6,13 @@ using System.Web;
 
 namespace Sistema.Models
 {
-    public class PaisesVM
+    public class Paises
     {
         [Display(Name = "Código")]
-        public int? idPais { get; set; }
+        public int? codPais { get; set; }
 
         [Display(Name = "País")]
-        public string nmPais { get; set; }
+        public string nomePais { get; set; }
 
         [Display(Name = "DDI")]
         public string DDI { get; set; }

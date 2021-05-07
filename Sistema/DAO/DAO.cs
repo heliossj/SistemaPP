@@ -7,7 +7,7 @@ using System.Web.Configuration;
 
 namespace Sistema.DAO
 {
-    public class Conexao
+    public class DAO
     {
         // variáveis de conexão, execução e resultSet
         protected SqlConnection con;
@@ -18,7 +18,7 @@ namespace Sistema.DAO
         {
             try
             {
-                con = new SqlConnection(WebConfigurationManager.ConnectionStrings["MSSQLSERVER"].ConnectionString);
+                con = new SqlConnection(WebConfigurationManager.ConnectionStrings["HELIO"].ConnectionString);
                 con.Open();
             }
             catch (Exception error)

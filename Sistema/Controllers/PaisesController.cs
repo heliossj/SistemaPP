@@ -10,12 +10,12 @@ namespace Sistema.Controllers
 {
     public class PaisesController : Controller
     {
-        PaisesDAO daoPaises = new PaisesDAO();
+        DAOPaises daoPaises = new DAOPaises();
 
         public ActionResult Index()
         {
-            var daoPaises = new PaisesDAO();
-            List<Models.PaisesVM> list = daoPaises.GetPaises();
+            var daoPaises = new DAOPaises();
+            List<Models.Paises> list = daoPaises.GetPaises();
             return View(list);
         }
 
@@ -25,11 +25,11 @@ namespace Sistema.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(Sistema.Models.PaisesVM model)
+        public ActionResult Create(Sistema.Models.Paises model)
         {
-            if (string.IsNullOrWhiteSpace(model.nmPais))
+            if (string.IsNullOrWhiteSpace(model.nomePais))
             {
-                ModelState.AddModelError("nmPais", "Informe um nome de país válido");
+                ModelState.AddModelError("nomePais", "Informe um nome de país válido");
             }
             if (string.IsNullOrWhiteSpace(model.DDI))
             {
@@ -41,23 +41,30 @@ namespace Sistema.Controllers
             }
             if (ModelState.IsValid)
             {
-                
+                daoPaises = new DAOPaises();
+                if (daoPaises.Insert(model))
+                {
+                    ViewBag.Message = "Registro inserido com sucesso";
+                }
                 return RedirectToAction("Index");
             }
-            return View();
+            else
+            {
+                return View(model);
+            }
         }
 
-        public ActionResult Edit()
+        public ActionResult Edit(int? id)
         {
-            return View();
+            return this.GetView(id);
         }
 
         [HttpPost]
-        public ActionResult Edit(Sistema.Models.PaisesVM model)
+        public ActionResult Edit(Sistema.Models.Paises model)
         {
-            if (string.IsNullOrWhiteSpace(model.nmPais))
+            if (string.IsNullOrWhiteSpace(model.nomePais))
             {
-                ModelState.AddModelError("nmPais", "Informe um nome de país válido");
+                ModelState.AddModelError("nomePais", "Informe um nome de país válido");
             }
             if (string.IsNullOrWhiteSpace(model.DDI))
             {
@@ -69,21 +76,46 @@ namespace Sistema.Controllers
             }
             if (ModelState.IsValid)
             {
+
+                daoPaises = new DAOPaises();
+                if (daoPaises.Update(model))
+                {
+                    ViewBag.Message = "Registro alterado com sucesso";
+                }
                 return RedirectToAction("Index");
             }
             return View();
         }
 
-        public ActionResult Delete()
+        public ActionResult Delete(int? id)
         {
-            return View();
+            return this.GetView(id);
         }
 
-        public ActionResult Details()
+        [HttpPost]
+
+        public ActionResult Delete(int? id, Sistema.Models.Paises model)
         {
-            return View();
+            daoPaises = new DAOPaises();
+            if (daoPaises.Delete(id))
+            {
+                ViewBag.Message = "Registro removido com sucesso";
+            }
+            return RedirectToAction("Index");
         }
 
+        public ActionResult Details(int? id)
+        {
+            return this.GetView(id);
+        }
+
+        private ActionResult GetView(int? codPais)
+        {
+            var daoPaises = new DAOPaises();
+            var model = daoPaises.GetPais(codPais);
+            return View(model);
+            //var model = new Models.Paises(aux)
+        }
 
     }
 }

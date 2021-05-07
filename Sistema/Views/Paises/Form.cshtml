@@ -1,28 +1,23 @@
-﻿@model Sistema.Models.PaisesVM
+﻿@model Sistema.Models.Paises
 @using Sistema.Util
 @{
     bool readOnly = Convert.ToBoolean(ViewBag.ReadOnly);
     string action = Convert.ToString(ViewBag.Action);
-
 }
 
-@Html.HiddenFor(model => action)
-@Html.HiddenFor(model => readOnly)
-
-
-
-<div class="form-row">
-    <div class="@Util.Input2">
-        @Html.LabelFor(model => model.idPais)
-        @Html.TextBoxFor(model => model.idPais, new { @class = "form-control", disabled = false })
+@Html.HiddenFor(model => model.codPais)
+    <div class="form-row">
+        <div class="@Util.Input2">
+            @Html.LabelFor(model => model.codPais)
+            @Html.TextBoxFor(model => model.codPais, new { @class = "form-control", disabled = false })
+        </div>
     </div>
-</div>
 
 <div class="form-row">
     <div class="@Util.Input6">
-        @Html.LabelFor(model => model.nmPais, new { @class = "required" })
-        @Html.TextBoxFor(model => model.nmPais, new { @class = "form-control", maxlength = "50", style = "text-transform:uppercase", minlength = "3" })
-        @Html.ValidationMessageFor(model => model.nmPais, null, new { @class = "text-danger" })
+        @Html.LabelFor(model => model.nomePais, new { @class = "required" })
+        @Html.TextBoxFor(model => model.nomePais, new { @class = "form-control", maxlength = "50", style = "text-transform:uppercase", minlength = "3" })
+        @Html.ValidationMessageFor(model => model.nomePais, null, new { @class = "text-danger" })
     </div>
 
     <div class="@Util.Input3">

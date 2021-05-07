@@ -255,3 +255,4 @@ C:\Users\Helio\Desktop\Sistema\heliossj\Sistema\Sistema\bin\pt-br\System.Web.Web
 C:\Users\Helio\Desktop\Sistema\heliossj\Sistema\Sistema\obj\Debug\Sistema.csproj.CopyComplete
 C:\Users\Helio\Desktop\Sistema\heliossj\Sistema\Sistema\obj\Debug\Sistema.dll
 C:\Users\Helio\Desktop\Sistema\heliossj\Sistema\Sistema\obj\Debug\Sistema.pdb
+C:\Users\Helio\Desktop\Sistema\heliossj\Sistema\Sistema\obj\Debug\Sistema.csprojAssemblyReference.cache

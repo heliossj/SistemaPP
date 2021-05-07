@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Sistema.Models.PaisesVM>
+﻿@model IEnumerable<Sistema.Models.Paises>
 @{
     ViewBag.Title = "Paises";
     ViewBag.Layout = "~/_Styles/Style.css";
@@ -22,39 +22,29 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>1</td>
-                <td>BRASIL</td>
-                <td>+55</td>
-                <td>BR</td>
-                <td>
-                    @Html.ActionLink(" ", "Details", new { }, new { @class = "btn btn-success btn-sm fa fa-eye", @title = "Visualizar registro" })
-                    @Html.ActionLink(" ", "Edit", new { }, new { @class = "btn btn-warning btn-sm fa fa-edit", @title = "Editar registro" })
-                    @Html.ActionLink(" ", "Delete", new { }, new { @class = "btn btn-danger btn-sm fa fa-trash-o", @title = "Excluir registro" })
-                </td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>PARAGUAY</td>
-                <td>+595</td>
-                <td>PY</td>
-                <td>
-                    @Html.ActionLink(" ", "Details", new { }, new { @class = "btn btn-success btn-sm fa fa-eye", @title = "Visualizar registro" })
-                    @Html.ActionLink(" ", "Edit", new { }, new { @class = "btn btn-warning btn-sm fa fa-edit", @title = "Editar registro" })
-                    @Html.ActionLink(" ", "Delete", new { }, new { @class = "btn btn-danger btn-sm fa fa-trash-o", @title = "Excluir registro" })
-                </td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>ARGENTINA</td>
-                <td>+54</td>
-                <td>AR</td>
-                <td>
-                    @Html.ActionLink(" ", "Details", new { }, new { @class = "btn btn-success btn-sm fa fa-eye", @title = "Visualizar registro" })
-                    @Html.ActionLink(" ", "Edit", new { }, new { @class = "btn btn-warning btn-sm fa fa-edit", @title = "Editar registro" })
-                    @Html.ActionLink(" ", "Delete", new { }, new { @class = "btn btn-danger btn-sm fa fa-trash-o", @title = "Excluir registro" })
-                </td>
-            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.codPais)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.nomePais)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DDI)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.sigla)
+                    </td>
+                    <td>
+                        @Html.ActionLink(" ", "Details", new { id = item.codPais }, new { @class = "btn btn-success btn-sm fa fa-eye", @title = "Visualizar registro" })
+                        @Html.ActionLink(" ", "Edit", new { id = item.codPais }, new { @class = "btn btn-warning btn-sm fa fa-edit", @title = "Editar registro" })
+                        @Html.ActionLink(" ", "Delete", new { id = item.codPais }, new { @class = "btn btn-danger btn-sm fa fa-trash-o", @title = "Excluir registro" })
+                    </td>
+                </tr>
+            }
         </tbody>
     </table>
 </div>
