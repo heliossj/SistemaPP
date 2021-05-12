@@ -176,6 +176,7 @@
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\Sistema.js" />
     <Content Include="Scripts\Produtos\Index.js" />
     <Content Include="Scripts\OrdemServico\Index.js" />
     <Content Include="Scripts\Grupos\Index.js" />
