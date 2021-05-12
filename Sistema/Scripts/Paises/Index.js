@@ -1,6 +1,6 @@
 ﻿$(function () {
     $(document).ready(function () {
-        $('#example').DataTable();
+        $('#paises').DataTable();
     });
 
 });

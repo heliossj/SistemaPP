@@ -1,0 +1,27 @@
+﻿@model Sistema.Models.Estados
+@{
+    ViewBag.Title = "Editar registro";
+    ViewBag.Layout = "~/_Styles/Style.css";
+    bool readOnly = Convert.ToBoolean(ViewBag.ReadOnly);
+    ViewBag.readOnly = false;
+    ViewBag.action = ViewContext.Controller.ValueProvider.GetValue("action").RawValue.ToString().ToLower();
+}
+
+@using (Html.BeginForm())
+{
+    <div class="form-control-static" style="margin-top:15px; margin-block: 15px">
+        <h4 style="color: black"> @ViewBag.Title </h4>
+    </div>
+
+    <div class="container-fluid">
+        <div class="pull-left collg-12 col-md-12 col-sm-10 col-xs-10">
+            <p style="text-align: right; color: red; font-size:16px; font-weight: bold;">* Campos obrigatórios</p>
+            @Html.Partial("Form", Model)
+        </div>
+        <div style="text-align:center">
+            <button type="submit" class="btn btn-success"> <i class="fa fa-save"></i> Salvar</button>
+            <a href="@Url.Action(@Html.ViewBag.Action)" class="btn btn-primary" role="button" aria-pressed="true"> <i class="fa fa-times"></i> Limpar</a>
+            <a href="@Url.Action("Index")" class="btn btn-secondary" role="button" aria-pressed="true"> <i class="fa fa-arrow-left"></i> Voltar</a>
+        </div>
+    </div>
+}

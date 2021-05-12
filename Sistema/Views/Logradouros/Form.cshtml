@@ -1,0 +1,22 @@
+﻿@model Sistema.Models.Logradouros
+@using Sistema.Util
+@{
+    bool readOnly = Convert.ToBoolean(ViewBag.ReadOnly);
+    string action = Convert.ToString(ViewBag.Action);
+}
+
+@Html.HiddenFor(model => model.codLogradouro)
+<div class="form-row">
+    <div class="@Util.Input2">
+        @Html.LabelFor(model => model.codLogradouro)
+        @Html.TextBoxFor(model => model.codLogradouro, new { @class = "form-control", disabled = false })
+    </div>
+</div>
+
+<div class="form-row">
+    <div class="@Util.Input12">
+        @Html.LabelFor(model => model.nomeLogradouro, new { @class = "required" })
+        @Html.TextBoxFor(model => model.nomeLogradouro, new { @class = "form-control", maxlength = "100", style = "text-transform:uppercase", minlength = "3" })
+        @Html.ValidationMessageFor(model => model.nomeLogradouro, null, new { @class = "text-danger" })
+    </div>
+</div>

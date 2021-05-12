@@ -1,0 +1,37 @@
+﻿@model Sistema.Models.Servicos
+@using Sistema.Util
+@{
+    bool readOnly = Convert.ToBoolean(ViewBag.ReadOnly);
+    string action = Convert.ToString(ViewBag.Action);
+}
+
+@Html.HiddenFor(model => model.codServico)
+<div class="form-row">
+    <div class="@Util.Input2">
+        @Html.LabelFor(model => model.codServico)
+        @Html.TextBoxFor(model => model.codServico, new { @class = "form-control", disabled = false })
+    </div>
+</div>
+
+<div class="form-row">
+    <div class="@Util.Input3">
+        @Html.LabelFor(model => model.situacao)
+        @Html.DropDownListFor(model => model.situacao, Sistema.Models.Servicos.Situacao, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.situacao, null, new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-row">
+    <div class="@Util.Input12">
+        @Html.LabelFor(model => model.nomeServico, new { @class = "required" })
+        @Html.TextBoxFor(model => model.nomeServico, new { @class = "form-control", maxlength = "100", style = "text-transform:uppercase", minlength = "3" })
+        @Html.ValidationMessageFor(model => model.nomeServico, null, new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-row">
+    <div class="@Util.Input12">
+        @Html.LabelFor(model => model.descricao)
+        @Html.TextAreaFor(model => model.descricao, new { @class = "form-control" })
+    </div>
+</div>

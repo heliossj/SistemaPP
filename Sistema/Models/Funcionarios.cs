@@ -58,6 +58,9 @@ namespace Sistema.Models
         [Display(Name = "CNH")]
         public string cnh { get; set; }
 
+        [Display(Name = "Data de validade CNH")]
+        public DateTime? dtValidadeCNH { get; set; }
+
         [Display(Name = "Data de admissão")]
         public DateTime? dtAdmissao { get; set; }
 

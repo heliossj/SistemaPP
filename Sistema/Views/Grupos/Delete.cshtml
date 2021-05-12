@@ -1,0 +1,30 @@
+﻿@model Sistema.Models.Grupos
+@{
+    ViewBag.Title = "Remover registro";
+    ViewBag.Layout = "~/_Styles/Style.css";
+    bool readOnly = Convert.ToBoolean(ViewBag.ReadOnly);
+    ViewBag.readOnly = true;
+    ViewBag.action = ViewContext.Controller.ValueProvider.GetValue("action").RawValue.ToString().ToLower();
+}
+
+@using (Html.BeginForm())
+{
+    <div class="form-control-static" style="margin-top:15px; margin-block: 15px">
+        <h4 style="color: black"> @ViewBag.Title </h4>
+    </div>
+
+    <div class="container-fluid">
+        <div class="pull-left collg-12 col-md-12 col-sm-10 col-xs-10">
+
+            <fieldset disabled>
+                @Html.Partial("Form", Model)
+            </fieldset>
+
+        </div>
+        <div style="text-align:center">
+            <button type="submit" class="btn btn-danger"> <i class="fa fa-trash-o"></i> Excluir</button>
+            <a href="@Url.Action("Index")" class="btn btn-secondary" role="button" aria-pressed="true"> <i class="fa fa-arrow-left"></i> Voltar</a>
+        </div>
+    </div>
+}
+

@@ -1,0 +1,28 @@
+﻿@model Sistema.Models.Estados
+@using Sistema.Util
+@{
+    bool readOnly = Convert.ToBoolean(ViewBag.ReadOnly);
+    string action = Convert.ToString(ViewBag.Action);
+}
+
+@Html.HiddenFor(model => model.codEstado)
+<div class="form-row">
+    <div class="@Util.Input2">
+        @Html.LabelFor(model => model.codEstado)
+        @Html.TextBoxFor(model => model.codEstado, new { @class = "form-control", disabled = false })
+    </div>
+</div>
+
+<div class="form-row">
+    <div class="@Util.Input9">
+        @Html.LabelFor(model => model.nomeEstado, new { @class = "required" })
+        @Html.TextBoxFor(model => model.nomeEstado, new { @class = "form-control", maxlength = "50", style = "text-transform:uppercase", minlength = "3" })
+        @Html.ValidationMessageFor(model => model.nomeEstado, null, new { @class = "text-danger" })
+    </div>
+
+    <div class="@Util.Input3">
+        @Html.LabelFor(model => model.uf)
+        @Html.TextBoxFor(model => model.uf, new { @class = "form-control", @maxlength = "2", style = "text-transform:uppercase" })
+        @Html.ValidationMessageFor(model => model.uf, null, new { @class = "text-danger" })
+    </div>
+</div>

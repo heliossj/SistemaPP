@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace Sistema.Models
 {
-    public class Produto
+    public class Produtos
     {
         [Display(Name = "Código")]
         public int? codProduto { get; set; }
