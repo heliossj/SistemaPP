@@ -127,7 +127,6 @@
     <Compile Include="Controllers\OrdemServicoController.cs" />
     <Compile Include="Controllers\ServicosController.cs" />
     <Compile Include="Controllers\ProdutosController.cs" />
-    <Compile Include="Controllers\LogradourosController.cs" />
     <Compile Include="Controllers\GruposController.cs" />
     <Compile Include="Controllers\FuncionariosController.cs" />
     <Compile Include="Controllers\FornecedoresController.cs" />
@@ -146,7 +145,6 @@
     <Compile Include="Models\Grupos.cs" />
     <Compile Include="Models\CondicaoPagamento.cs" />
     <Compile Include="Models\Cidades.cs" />
-    <Compile Include="Models\Logradouros.cs" />
     <Compile Include="Models\Clientes.cs" />
     <Compile Include="Models\Servicos.cs" />
     <Compile Include="Models\Estados.cs" />
@@ -337,12 +335,6 @@
     <Content Include="Views\Servicos\Edit.cshtml" />
     <Content Include="Views\Servicos\Form.cshtml" />
     <Content Include="Views\Servicos\Index.cshtml" />
-    <Content Include="Views\Logradouros\Create.cshtml" />
-    <Content Include="Views\Logradouros\Delete.cshtml" />
-    <Content Include="Views\Logradouros\Details.cshtml" />
-    <Content Include="Views\Logradouros\Edit.cshtml" />
-    <Content Include="Views\Logradouros\Form.cshtml" />
-    <Content Include="Views\Logradouros\Index.cshtml" />
     <Content Include="Views\Estados\Create.cshtml" />
     <Content Include="Views\Estados\Delete.cshtml" />
     <Content Include="Views\Estados\Details.cshtml" />

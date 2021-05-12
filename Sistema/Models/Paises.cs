@@ -19,5 +19,11 @@ namespace Sistema.Models
 
         [Display(Name = "Sigla")]
         public string sigla { get; set; }
+
+        [Display(Name = "Data de cadastro")]
+        public DateTime? dtCadastro { get; set; }
+
+        [Display(Name = "Data de ult. alteração")]
+        public DateTime? dtUltAlteracao { get; set; }
     }
 }

@@ -67,6 +67,12 @@ namespace Sistema.Models
         [Display(Name = "Data de demissão")]
         public DateTime? dtDemissao { get; set; }
 
+        [Display(Name = "Data de cadastro")]
+        public DateTime? dtCadastro { get; set; }
+
+        [Display(Name = "Data de ult. alteração")]
+        public DateTime? dtUltAlteracao { get; set; }
+
         //Condicao de pagamento
         public static SelectListItem[] Situacao
         {

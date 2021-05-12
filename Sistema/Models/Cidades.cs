@@ -22,5 +22,11 @@ namespace Sistema.Models
 
         //estado
 
+        [Display(Name = "Data de cadastro")]
+        public DateTime? dtCadastro { get; set; }
+
+        [Display(Name = "Data de ult. alteração")]
+        public DateTime? dtUltAlteracao { get; set; }
+
     }
 }

@@ -32,3 +32,15 @@
         @Html.ValidationMessageFor(model => model.sigla, null, new { @class = "text-danger" })
     </div>
 </div>
+
+<div class="form-row">
+    <div class="@Util.Input3">
+        @Html.LabelFor(model => model.dtCadastro)
+        @Html.TextBoxFor(model => model.dtCadastro, new { @class = "form-control" })
+    </div>
+
+    <div class="@Util.Input3">
+        @Html.LabelFor(model => model.dtUltAlteracao)
+        @Html.TextBoxFor(model => model.dtUltAlteracao, new { @class = "form-control" })
+    </div>
+</div>

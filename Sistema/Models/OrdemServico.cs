@@ -28,6 +28,12 @@ namespace Sistema.Models
         [Display(Name = "Observação")]
         public string observacao { get; set; }
 
+        [Display(Name = "Data de cadastro")]
+        public DateTime? dtCadastro { get; set; }
+
+        [Display(Name = "Data de ult. alteração")]
+        public DateTime? dtUltAlteracao { get; set; }
+
         public class Servicos
         {
             public int? codServico { get; set; }

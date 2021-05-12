@@ -18,5 +18,11 @@ namespace Sistema.Models
         public string uf { get; set; }
 
         //pais
+
+        [Display(Name = "Data de cadastro")]
+        public DateTime? dtCadastro { get; set; }
+
+        [Display(Name = "Data de ult. alteração")]
+        public DateTime? dtUltAlteracao { get; set; }
     }
 }
