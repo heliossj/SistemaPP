@@ -30,8 +30,6 @@ namespace Sistema.DAO
                         nomePais = Convert.ToString(reader["nomepais"]),
                         sigla = Convert.ToString(reader["sigla"]),
                         DDI = Convert.ToString(reader["ddi"]),
-                        //dtCadastro = Convert.ToDateTime(reader["dtCadastro"]),
-                        //dtAtualizacao = Convert.ToDateTime(reader["dtAtualizacao"])
                     };
 
                     list.Add(pais);
@@ -53,10 +51,12 @@ namespace Sistema.DAO
         {
             try
             {
-                var sql = string.Format("INSERT INTO tbpaises ( nomepais, ddi, sigla) VALUES ('{0}', '{1}', '{2}')",
+                var sql = string.Format("INSERT INTO tbpaises ( nomepais, ddi, sigla, dtcadastro) VALUES ('{0}', '{1}', '{2}', '{3}')",
                     pais.nomePais.ToUpper().Trim(),
                     pais.DDI.ToUpper().Trim(),
-                    pais.sigla.ToUpper()).Trim();
+                    pais.sigla.ToUpper().Trim(),
+                    DateTime.Now
+                    );
 
                 //string sql = "INSERT INTO tbpaises ( nomepais, ddi, sigla ) VALUES ('" + pais.nomePais + "', '" + pais.DDI + "', '" + pais.sigla + "')";
 
@@ -89,7 +89,12 @@ namespace Sistema.DAO
         {
             try
             {
-                string sql = "UPDATE tbpaises SET nomepais = '" + pais.nomePais.ToUpper().Trim() + "', ddi = '" + pais.DDI.ToUpper().Trim() + "', sigla = '" + pais.sigla.ToUpper().Trim() + "' WHERE codpais = " + pais.codPais;
+                string sql = "UPDATE tbpaises SET nomepais = '"
+                    + pais.nomePais.ToUpper().Trim() + "'," +
+                    "ddi = '"+ pais.DDI.ToUpper().Trim() + "'," +
+                    " sigla = '" + pais.sigla.ToUpper().Trim() + "," +
+                    "dtultalt = " + DateTime.Now 
+                    + "' WHERE codpais = " + pais.codPais;
                 OpenConnection();
                 SqlQuery = new SqlCommand(sql, con);
 
@@ -132,6 +137,16 @@ namespace Sistema.DAO
                         model.nomePais = reader.GetString(1);
                         model.DDI = reader.GetString(2);
                         model.sigla = reader.GetString(3);
+                        model.dtCadastro = reader.GetDateTime(4);
+                        model.dtUltAlteracao = reader.IsDBNull(5) ? model.dtUltAlteracao = null : reader.GetDateTime(5);
+                        //if (reader.IsDBNull(5))
+                        //{
+                        //    model.dtUltAlteracao = null;
+                        //} else
+                        //{
+                        //    model.dtUltAlteracao = reader.GetDateTime(4);
+                        //}
+                        
                     }
                 }
                 return model;
