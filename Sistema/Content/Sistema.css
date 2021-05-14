@@ -53,6 +53,7 @@
 
     .bs-callout-danger h4 {
         color: #d9534f;
+
     }
 
 .bs-callout-warning {
@@ -93,3 +94,19 @@
 }
 
 
+/* Separador*/
+.separador{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    height: 1px;
+    width: 100%;
+    border-top: 1px solid gray;
+}
+
+.form-row .form-group label.required :after{
+    content: "kkkkkkkkkkkkkkkkkkk";
+    /*margin-left: 5px;
+    text-align: center;*/
+    color: red;
+/*    font-size: 18px;*/
+}

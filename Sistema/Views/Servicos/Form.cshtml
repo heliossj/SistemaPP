@@ -19,7 +19,14 @@
         @Html.DropDownListFor(model => model.situacao, Sistema.Models.Servicos.Situacao, new { @class = "form-control" })
         @Html.ValidationMessageFor(model => model.situacao, null, new { @class = "text-danger" })
     </div>
+
+    <div class="@Util.Input3">
+        @Html.LabelFor(model => model.vlServico)
+        @Html.TextBoxFor(model => model.vlServico, new { @class = "form-control", type = "number", min = "0.01", step = ".01", placeholder = "0,00", oninput = "this.value = Math.abs(this.value)" })
+        @Html.ValidationMessageFor(model => model.vlServico, null, new { @class = "text-danger" })
+    </div>
 </div>
+
 
 <div class="form-row">
     <div class="@Util.Input12">

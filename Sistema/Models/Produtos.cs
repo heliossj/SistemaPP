@@ -12,8 +12,8 @@ namespace Sistema.Models
         [Display(Name = "Código")]
         public int? codProduto { get; set; }
 
-        [Display(Name = "Descricao")]
-        public string descricaoProduto { get; set; }
+        [Display(Name = "Produto")]
+        public string nomeProduto { get; set; }
 
         [Display(Name = "Situação")]
         public string situacao { get; set; }
@@ -46,7 +46,7 @@ namespace Sistema.Models
         [Display(Name = "Data de cadastro")]
         public DateTime? dtCadastro { get; set; }
 
-        [Display(Name = "Data de ult. alteração")]
+        [Display(Name = "Data da últ. alteração")]
         public DateTime? dtUltAlteracao { get; set; }
 
         public static SelectListItem[] Situacao
@@ -57,6 +57,17 @@ namespace Sistema.Models
                 {
                     new SelectListItem { Value = "A", Text = "ATIVA" },
                     new SelectListItem { Value = "I", Text = "INATIVA" }
+                };
+            }
+        }
+
+        public static SelectListItem[] Unidade
+        {
+            get
+            {
+                return new[]
+                {
+                    new SelectListItem { Value = "M", Text = "METRO" },
                 };
             }
         }

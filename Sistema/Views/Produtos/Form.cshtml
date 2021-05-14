@@ -1,0 +1,80 @@
+﻿@model Sistema.Models.Produtos
+@using Sistema.Util
+@{
+    bool readOnly = Convert.ToBoolean(ViewBag.ReadOnly);
+    string action = Convert.ToString(ViewBag.Action);
+}
+
+@Html.HiddenFor(model => model.codProduto)
+<div class="form-row">
+    <div class="@Util.Input2">
+        @Html.LabelFor(model => model.codProduto)
+        @Html.TextBoxFor(model => model.codProduto, new { @class = "form-control", disabled = false })
+    </div>
+</div>
+
+<div class="form-row">
+    <div class="@Util.Input3">
+        @Html.LabelFor(model => model.situacao)
+        @Html.DropDownListFor(model => model.situacao, Sistema.Models.Produtos.Situacao, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.situacao, null, new { @class = "text-danger" })
+    </div>
+</div>
+
+
+<div class="form-row">
+    <div class="@Util.Input9">
+        @Html.LabelFor(model => model.nomeProduto, new { @class = "required" })
+        @Html.TextBoxFor(model => model.nomeProduto, new { @class = "form-control", maxlength = "100", style = "text-transform:uppercase", minlength = "3" })
+        @Html.ValidationMessageFor(model => model.nomeProduto, null, new { @class = "text-danger" })
+    </div>
+
+    <div class="@Util.Input3">
+        @Html.LabelFor(model => model.unidade)
+        @Html.DropDownListFor(model => model.situacao, Sistema.Models.Produtos.Unidade, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.unidade, null, new { @class = "text-danger" })
+    </div>
+</div>
+
+<p> Unidade / Fornecedor</p>
+
+<div class="form-row">
+    <div class="@Util.Input3">
+        @Html.LabelFor(model => model.vlCusto)
+        @Html.TextBoxFor(model => model.vlCusto, new { @class = "form-control", maxlength = "10", style = "text-transform:uppercase", minlength = "3" })
+        @Html.ValidationMessageFor(model => model.vlCusto, null, new { @class = "text-danger" })
+    </div>
+
+    <div class="@Util.Input3">
+        @Html.LabelFor(model => model.qtEstoque)
+        @Html.TextBoxFor(model => model.qtEstoque, new { @class = "form-control", maxlength = "10", style = "text-transform:uppercase", minlength = "3", disabled = true })
+        @Html.ValidationMessageFor(model => model.qtEstoque, null, new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-row">
+    <div class="@Util.Input3">
+        @Html.LabelFor(model => model.vlCusto)
+        @Html.TextBoxFor(model => model.vlCusto, new { @class = "form-control", type = "number", min = "0.01", step = ".01", placeholder = "0,00", oninput = "this.value = Math.abs(this.value)" })
+        @Html.ValidationMessageFor(model => model.vlCusto, null, new { @class = "text-danger" })
+    </div>
+
+    <div class="@Util.Input3">
+        @Html.LabelFor(model => model.vlUltCompra)
+        @Html.TextBoxFor(model => model.vlUltCompra, new { @class = "form-control", type = "number", min = "0.01", step = ".01", placeholder = "0,00", oninput = "this.value = Math.abs(this.value)", disabled = true })
+        @Html.ValidationMessageFor(model => model.vlUltCompra, null, new { @class = "text-danger" })
+    </div>
+
+    <div class="@Util.Input3">
+        @Html.LabelFor(model => model.vlVenda)
+        @Html.TextBoxFor(model => model.vlVenda, new { @class = "form-control", type = "number", min = "0.01", step = ".01", placeholder = "0,00", oninput = "this.value = Math.abs(this.value)" })
+        @Html.ValidationMessageFor(model => model.vlVenda, null, new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-row">
+    <div class="@Util.Input12">
+        @Html.LabelFor(model => model.observacao)
+        @Html.TextAreaFor(model => model.observacao, new { @class = "form-control" })
+    </div>
+</div>

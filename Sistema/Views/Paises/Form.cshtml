@@ -37,7 +37,7 @@
     <div class="@Util.Input3">
         @Html.LabelFor(model => model.dtCadastro)
         <div class="input-group-append">
-            @Html.TextBoxFor(model => model.dtCadastro, new { @class = "form-control datepicker", disabled = true, @format = "dd/MM/yyyy" })
+            @Html.TextBoxFor(model => model.dtCadastro, new { @class = "form-control datepicker", disabled = true @*, @Value = Model.dtCadastro.Value.ToString("dd/MM/yyyy")*@ })
             <span class="fa fa-calendar input-group-text" style="font-size:23px"></span>
         </div>
     </div>
@@ -45,7 +45,7 @@
     <div class="@Util.Input3 ">
         @Html.LabelFor(model => model.dtUltAlteracao)
         <div class="input-group-append">
-            @Html.TextBoxFor(model => model.dtUltAlteracao, new { @class = "form-control datepicker", disabled = true })
+            @Html.TextBoxFor(model => model.dtUltAlteracao, new { @class = "form-control datepicker", disabled = true @*@Value = Model.dtUltAlteracao != null ? Model.dtUltAlteracao.Value.ToString("dd/MM/yyyy") : Model.dtUltAlteracao.Value.ToString("")*@ })
             <span class="fa fa-calendar input-group-text" style="font-size:23px"></span>
         </div>
     </div>
@@ -61,7 +61,7 @@
             monthsShort: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
             today: "Hoje",
             clear: "Limpar",
-            titleFormat: "MM yyyy", /* Leverages same syntax as 'format' */
+            titleFormat: "MM yyyy",
             weekStart: 0
         };
 

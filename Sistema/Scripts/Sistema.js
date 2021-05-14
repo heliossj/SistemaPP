@@ -1,4 +1,4 @@
-////$(function () {
+$(function () {
 ////    $.fn.datepicker.dates['en'] = {
 ////        days: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"],
 ////        daysShort: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"],
@@ -16,4 +16,28 @@
 ////        lacale: 'en',
 ////        clearBtn: true,
 ////    });
-////});
+
+
+
+
+    //$('.datepicker').datepicker({
+    //    format: 'dd/mm/yyyy',
+    //    lacale: 'en',
+    //    clearBtn: true,
+    //});
+
+    $(document).ready(function () {
+        $('input[type="numeric"]').each(function () {
+            var val = $(this).val().replace('.', ',');
+            $(this).val(val);
+        });
+
+        $("input").on("change", function () {
+            $(this).val(parseFloat($(this).val()).toFixed(2));
+        });
+
+
+    });
+
+    $(".phone").inputmask({ "mask": "(999) 999-9999" });
+});

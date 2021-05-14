@@ -1,0 +1,147 @@
+﻿@model Sistema.Models.OrdemServico
+@using Sistema.Util
+@{
+    bool readOnly = Convert.ToBoolean(ViewBag.ReadOnly);
+    string action = Convert.ToString(ViewBag.Action);
+}
+
+@Html.HiddenFor(model => model.codOS)
+<div class="form-row">
+    <div class="@Util.Input2">
+        @Html.LabelFor(model => model.codOS)
+        @Html.TextBoxFor(model => model.codOS, new { @class = "form-control", disabled = false })
+    </div>
+
+    <div class="@Util.Input3">
+        @Html.LabelFor(model => model.dtAbertura)
+        <div class="input-group-append">
+            @Html.TextBoxFor(model => model.dtAbertura, new { @class = "form-control datepicker", disabled = true })
+            <span class="fa fa-calendar input-group-text" style="font-size:23px"></span>
+        </div>
+    </div>
+</div>
+
+<div class="form-row">
+    <div class="@Util.Input3">
+        @Html.LabelFor(model => model.situacao)
+        @Html.DropDownListFor(model => model.situacao, Sistema.Models.OrdemServico.Situacao, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.situacao, null, new { @class = "text-danger" })
+    </div>
+
+    <div class="@Util.Input3">
+        @Html.LabelFor(model => model.dtValidade)
+        <div class="input-group-append">
+            @Html.TextBoxFor(model => model.dtValidade, new { @class = "form-control datepicker" })
+            <span class="fa fa-calendar input-group-text" style="font-size:23px"></span>
+        </div>
+    </div>
+</div>
+
+<p class="@Util.Input3">
+    Cliente
+</p>
+
+<p class="@Util.Input3">
+    Condição de pagamento
+</p>
+
+
+<div class="bs-callout bs-callout-primary">
+    <h4> Serviços</h4>
+    <div class="separador"></div>
+
+    <div class="form-row">
+        <div class="@Util.Input10"> Serviços</div>
+        <div>
+            <button id="addProduto" type="button" class="btn btn-dark btn-sm"><i class="fa fa-plus"></i> Adicionar</button>
+        </div>
+    </div>
+
+    <table id="tbservico" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th width="5%">Cod</th>
+                <th width="45%">Servico</th>
+                <th width="15%">Valor Unit.</th>
+                <th width="10%">Quant.</th>
+                <th width="10%">Total</th>
+                <th width="5%"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>INSTALAÇÃO DE RODAPÉS</td>
+                <td>15,00</td>
+                <td>12</td>
+                <td>180</td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="bs-callout bs-callout-primary">
+    <h4> Produtos</h4>
+    <div class="separador"></div>
+
+    <div class="form-row">
+        <div class="@Util.Input10"> Produtos</div>
+        <div>
+            <button id="addProduto" type="button" class="btn btn-dark btn-sm"><i class="fa fa-plus"></i> Adicionar</button>
+        </div>
+    </div>
+
+    <table id="tbservico" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th width="5%">Cod</th>
+                <th width="55%">Produto</th>
+                <th width="15%">Valor Unit.</th>
+                <th width="10%">Quant.</th>
+                <th width="10%">Total</th>
+                <th width="5%"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>INSTALAÇÃO DE RODAPÉS</td>
+                <td>15,00</td>
+                <td>12</td>
+                <td>180</td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="form-row">
+    <div class="@Util.Input12">
+        @Html.LabelFor(model => model.observacao)
+        @Html.TextAreaFor(model => model.observacao, new { @class = "form-control" })
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.fn.datepicker.dates['en'] = {
+            days: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"],
+            daysShort: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"],
+            daysMin: ["Do", "Se", "Te", "Qu", "Qu", "Se", "Sa", "Do"],
+            months: ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"],
+            monthsShort: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
+            today: "Hoje",
+            clear: "Limpar",
+            titleFormat: "MM yyyy",
+            weekStart: 0
+        };
+
+        $('.datepicker').datepicker({
+            format: 'dd/mm/yyyy',
+            lacale: 'en',
+            clearBtn: true,
+        });
+    });
+
+</script>

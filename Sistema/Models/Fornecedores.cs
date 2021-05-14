@@ -24,7 +24,8 @@ namespace Sistema.Models
         [Display(Name = "Nome fantasia")]
         public string nomeFantasia { get; set; }
 
-        //Logradouro
+        [Display(Name = "Logradouro")]
+        public string dsLogradouro { get; set; }
 
         [Display(Name = "Nº")]
         public string numero { get; set; }
@@ -66,7 +67,7 @@ namespace Sistema.Models
         [Display(Name = "Data de cadastro")]
         public DateTime? dtCadastro { get; set; }
 
-        [Display(Name = "Data de ult. alteração")]
+        [Display(Name = "Data da últ. alteração")]
         public DateTime? dtUltAlteracao { get; set; }
 
         public static SelectListItem[] Situacao

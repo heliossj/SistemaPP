@@ -18,10 +18,17 @@ namespace Sistema.Models
         [Display(Name = "Situação")]
         public string situacao { get; set; }
 
+        [Display(Name = "Nome / Razão Social")]
+        public string nomeCliente { get; set; }
+
+        [Display(Name = "Razão Social")]
+        public string razaoSocial { get; set; }
+
         [Display(Name = "Sexo")]
         public string sexo { get; set; }
 
-        //logradouro
+        [Display(Name = "Logradouro")]
+        public string dsLogradouro { get; set; }
 
         [Display(Name = "Nº")]
         public string numero { get; set; }
@@ -60,7 +67,7 @@ namespace Sistema.Models
         [Display(Name = "Data de cadastro")]
         public DateTime? dtCadastro { get; set; }
 
-        [Display(Name = "Data de ult. alteração")]
+        [Display(Name = "Data da últ. alteração")]
         public DateTime? dtUltAlteracao { get; set; }
 
         public static SelectListItem[] Situacao
@@ -83,6 +90,18 @@ namespace Sistema.Models
                 {
                     new SelectListItem { Value = "F", Text = "FÍSICA" },
                     new SelectListItem { Value = "J", Text = "JURÍDICA" }
+                };
+            }
+        }
+
+        public static SelectListItem[] Sexo
+        {
+            get
+            {
+                return new[]
+                {
+                    new SelectListItem { Value = "M", Text = "MASCULINO" },
+                    new SelectListItem { Value = "F", Text = "FEMININO" }
                 };
             }
         }

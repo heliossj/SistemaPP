@@ -380,6 +380,30 @@
     <Content Include="Views\FormaPagamento\Edit.cshtml" />
     <Content Include="Views\FormaPagamento\Form.cshtml" />
     <Content Include="Views\FormaPagamento\Index.cshtml" />
+    <Content Include="Views\Produtos\Create.cshtml" />
+    <Content Include="Views\Produtos\Delete.cshtml" />
+    <Content Include="Views\Produtos\Details.cshtml" />
+    <Content Include="Views\Produtos\Edit.cshtml" />
+    <Content Include="Views\Produtos\Form.cshtml" />
+    <Content Include="Views\Produtos\Index.cshtml" />
+    <Content Include="Views\Fornecedores\Create.cshtml" />
+    <Content Include="Views\Fornecedores\Delete.cshtml" />
+    <Content Include="Views\Fornecedores\Details.cshtml" />
+    <Content Include="Views\Fornecedores\Edit.cshtml" />
+    <Content Include="Views\Fornecedores\Form.cshtml" />
+    <Content Include="Views\Fornecedores\Index.cshtml" />
+    <Content Include="Views\OrdemServico\Create.cshtml" />
+    <Content Include="Views\OrdemServico\Delete.cshtml" />
+    <Content Include="Views\OrdemServico\Details.cshtml" />
+    <Content Include="Views\OrdemServico\Edit.cshtml" />
+    <Content Include="Views\OrdemServico\Form.cshtml" />
+    <Content Include="Views\OrdemServico\Index.cshtml" />
+    <Content Include="Views\Clientes\Create.cshtml" />
+    <Content Include="Views\Clientes\Delete.cshtml" />
+    <Content Include="Views\Clientes\Details.cshtml" />
+    <Content Include="Views\Clientes\Edit.cshtml" />
+    <Content Include="Views\Clientes\Form.cshtml" />
+    <Content Include="Views\Clientes\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

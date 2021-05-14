@@ -1,0 +1,125 @@
+﻿@model Sistema.Models.Fornecedores
+@using Sistema.Util
+@{
+    bool readOnly = Convert.ToBoolean(ViewBag.ReadOnly);
+    string action = Convert.ToString(ViewBag.Action);
+}
+
+@Html.HiddenFor(model => model.codFornecedor)
+<div class="form-row">
+    <div class="@Util.Input2">
+        @Html.LabelFor(model => model.codFornecedor)
+        @Html.TextBoxFor(model => model.codFornecedor, new { @class = "form-control", disabled = false })
+    </div>
+</div>
+
+<div class="form-row">
+    <div class="@Util.Input3">
+        @Html.LabelFor(model => model.tipo)
+        @Html.DropDownListFor(model => model.tipo, Sistema.Models.Fornecedores.Tipo, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.tipo, null, new { @class = "text-danger" })
+    </div>
+
+    <div class="@Util.Input3">
+        @Html.LabelFor(model => model.situacao)
+        @Html.DropDownListFor(model => model.situacao, Sistema.Models.Fornecedores.Situacao, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.situacao, null, new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-row">
+    <div class="@Util.Input6">
+        @Html.LabelFor(model => model.razaoSocial, new { @class = "required" })
+        @Html.TextBoxFor(model => model.razaoSocial, new { @class = "form-control", maxlength = "100", style = "text-transform:uppercase", minlength = "3" })
+        @Html.ValidationMessageFor(model => model.razaoSocial, null, new { @class = "text-danger" })
+    </div>
+
+    <div class="@Util.Input6">
+        @Html.LabelFor(model => model.nomeFantasia, new { @class = "required" })
+        @Html.TextBoxFor(model => model.nomeFantasia, new { @class = "form-control", maxlength = "100", style = "text-transform:uppercase", minlength = "3" })
+        @Html.ValidationMessageFor(model => model.nomeFantasia, null, new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-row">
+    <div class="@Util.Input4">
+        @Html.LabelFor(model => model.dsLogradouro, new { @class = "required" })
+        @Html.TextBoxFor(model => model.dsLogradouro, new { @class = "form-control", maxlength = "100", style = "text-transform:uppercase", minlength = "3" })
+        @Html.ValidationMessageFor(model => model.dsLogradouro, null, new { @class = "text-danger" })
+    </div>
+    <div class="@Util.Input1">
+        @Html.LabelFor(model => model.numero, new { @class = "required" })
+        @Html.TextBoxFor(model => model.numero, new { @class = "form-control", maxlength = "8", style = "text-transform:uppercase", minlength = "3" })
+        @Html.ValidationMessageFor(model => model.numero, null, new { @class = "text-danger" })
+    </div>
+    <div class="@Util.Input3">
+        @Html.LabelFor(model => model.complemento, new { @class = "required" })
+        @Html.TextBoxFor(model => model.complemento, new { @class = "form-control", maxlength = "100", style = "text-transform:uppercase", minlength = "3" })
+        @Html.ValidationMessageFor(model => model.complemento, null, new { @class = "text-danger" })
+    </div>
+    <div class="@Util.Input4">
+        @Html.LabelFor(model => model.bairro, new { @class = "required" })
+        @Html.TextBoxFor(model => model.bairro, new { @class = "form-control", maxlength = "100", style = "text-transform:uppercase", minlength = "3" })
+        @Html.ValidationMessageFor(model => model.bairro, null, new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-row">
+    <p class="@Util.Input4"> Cidade </p>
+
+    <div class="@Util.Input4">
+        @Html.LabelFor(model => model.cep, new { @class = "required" })
+        @Html.TextBoxFor(model => model.cep, new { @class = "form-control", maxlength = "8", style = "text-transform:uppercase", minlength = "3" })
+        @Html.ValidationMessageFor(model => model.cep, null, new { @class = "text-danger" })
+    </div>
+
+    <div class="@Util.Input4">
+        @Html.LabelFor(model => model.site, new { @class = "required" })
+        @Html.TextBoxFor(model => model.site, new { @class = "form-control", maxlength = "100", style = "text-transform:uppercase", minlength = "3" })
+        @Html.ValidationMessageFor(model => model.site, null, new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-row">
+    <div class="@Util.Input4">
+        @Html.LabelFor(model => model.telefoneFixo, new { @class = "required" })
+        @Html.TextBoxFor(model => model.telefoneFixo, new { @class = "form-control", maxlength = "10", style = "text-transform:uppercase", minlength = "3" })
+        @Html.ValidationMessageFor(model => model.telefoneFixo, null, new { @class = "text-danger" })
+    </div>
+
+    <div class="@Util.Input4">
+        @Html.LabelFor(model => model.telefoneCelular, new { @class = "required" })
+        @Html.TextBoxFor(model => model.telefoneCelular, new { @class = "form-control", maxlength = "11", style = "text-transform:uppercase", minlength = "3" })
+        @Html.ValidationMessageFor(model => model.telefoneCelular, null, new { @class = "text-danger" })
+    </div>
+
+    <div class="@Util.Input4">
+        @Html.LabelFor(model => model.email, new { @class = "required" })
+        @Html.TextBoxFor(model => model.email, new { @class = "form-control", maxlength = "100", style = "text-transform:uppercase", minlength = "3" })
+        @Html.ValidationMessageFor(model => model.email, null, new { @class = "text-danger" })
+    </div>
+</div>
+
+
+<div class="form-row">
+    <div class="@Util.Input4">
+        @Html.LabelFor(model => model.cnpj, new { @class = "required" })
+        @Html.TextBoxFor(model => model.cnpj, new { @class = "form-control", maxlength = "15", style = "text-transform:uppercase", minlength = "3" })
+        @Html.ValidationMessageFor(model => model.cnpj, null, new { @class = "text-danger" })
+    </div>
+
+    <div class="@Util.Input4">
+        @Html.LabelFor(model => model.IE, new { @class = "required" })
+        @Html.TextBoxFor(model => model.IE, new { @class = "form-control", maxlength = "15", style = "text-transform:uppercase", minlength = "3" })
+        @Html.ValidationMessageFor(model => model.IE, null, new { @class = "text-danger" })
+    </div>
+</div>
+
+<p> condicao de pagamento</p>
+
+<div class="form-row">
+    <div class="@Util.Input12">
+        @Html.LabelFor(model => model.observacao)
+        @Html.TextAreaFor(model => model.observacao, new { @class = "form-control" })
+    </div>
+</div>

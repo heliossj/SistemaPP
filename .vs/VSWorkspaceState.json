@@ -1,12 +1,6 @@
 {
   "ExpandedNodes": [
-    "",
-    "\\Sistema",
-    "\\Sistema\\Views",
-    "\\Sistema\\Views\\Home",
-    "\\Sistema\\Views\\Paises",
-    "\\Sistema\\Views\\Shared"
+    ""
   ],
-  "SelectedNode": "\\Sistema\\Views\\Paises\\Form.cshtml",
   "PreviewInSolutionExplorer": false
 }

@@ -31,7 +31,7 @@ namespace Sistema.Models
         [Display(Name = "Data de cadastro")]
         public DateTime? dtCadastro { get; set; }
 
-        [Display(Name = "Data de ult. alteração")]
+        [Display(Name = "Data da últ. alteração")]
         public DateTime? dtUltAlteracao { get; set; }
 
         public class Servicos
@@ -62,8 +62,10 @@ namespace Sistema.Models
             {
                 return new[]
                 {
-                    new SelectListItem { Value = "A", Text = "ATIVA" },
-                    new SelectListItem { Value = "I", Text = "INATIVA" }
+                    new SelectListItem { Value = "A", Text = "ABERTA" },
+                    new SelectListItem { Value = "E", Text = "EM ANDAMENTO" },
+                    new SelectListItem { Value = "F", Text = "FINALIZADA" },
+                    new SelectListItem { Value = "C", Text = "CANCELADA" }
                 };
             }
         }
