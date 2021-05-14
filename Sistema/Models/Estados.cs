@@ -17,7 +17,8 @@ namespace Sistema.Models
         [Display(Name = "UF")]
         public string uf { get; set; }
 
-        //pais
+        public Select.Paises.Select Pais { get; set; }
+        public Select.Paises.Select Paisf { get; set; }
 
         [Display(Name = "Data de cadastro")]
         public DateTime? dtCadastro { get; set; }
