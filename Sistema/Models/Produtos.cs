@@ -31,7 +31,7 @@ namespace Sistema.Models
         [Display(Name = "Quant. estoque")]
         public decimal qtEstoque { get; set; }
 
-        [Display(Name = "Valor do cursto")]
+        [Display(Name = "Valor do custo")]
         public decimal vlCusto { get; set; }
 
         [Display(Name = "Valor últ. compra")]

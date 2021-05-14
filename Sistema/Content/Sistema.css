@@ -73,7 +73,7 @@
     }
 
 /*Adicionar asterisco campo obrigatório form*/
-.form-group.required :after {
+.required:after {
     content: "*";
     margin-left: 5px;
     text-align: center;
@@ -103,10 +103,20 @@
     border-top: 1px solid gray;
 }
 
-.form-row .form-group label.required :after{
-    content: "kkkkkkkkkkkkkkkkkkk";
+/*.form-row .form-group label.required :after{
+    content: "*";*/
     /*margin-left: 5px;
     text-align: center;*/
-    color: red;
+    /*color: red;*/
 /*    font-size: 18px;*/
+/*}*/
+
+.select2-header {
+    padding: 6px 13px 6px 9px;
+    background-color: #eee;
+    font-weight: bold;
+}
+.col-select2 {
+    padding-right: 2px !important;
+    padding-left: 2px !important;
 }

@@ -25,5 +25,7 @@ namespace Sistema.Models
 
         [Display(Name = "Data da últ. alteração")]
         public DateTime? dtUltAlteracao { get; set; }
+
+        public Select.Paises.Select Pais { get; set; }
     }
 }

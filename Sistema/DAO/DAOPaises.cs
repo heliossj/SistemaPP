@@ -190,6 +190,40 @@ namespace Sistema.DAO
             }
         }
 
+        public List<Select.Paises.Select> GetPaisesSelect()
+        {
+            try
+            {
+
+                var sql = "SELECT* FROM tbpaises";
+                OpenConnection();
+                SqlQuery = new SqlCommand(sql, con);
+                reader = SqlQuery.ExecuteReader();
+                var list = new List<Select.Paises.Select>();
+
+                while (reader.Read())
+                {
+                    var pais = new Select.Paises.Select
+                    {
+                        id = Convert.ToInt32(reader["codpais"]),
+                        text = Convert.ToString(reader["nomepais"]),
+                    };
+
+                    list.Add(pais);
+                }
+
+                return list;
+            }
+            catch (Exception error)
+            {
+                throw new Exception(error.Message);
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
+
 
     }
 }

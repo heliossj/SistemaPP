@@ -5,27 +5,25 @@
     bool Required = Convert.ToBoolean(ViewData["Required"] ?? true);
     bool OnlySelect = Convert.ToBoolean(ViewData["onlySelect"] ?? true);
     bool LabelVertical = Convert.ToBoolean(ViewData["LabelVertical"]);
-    string Label = Convert.ToString(ViewData["Label"] ?? "Pais");
-    string classLabel = Convert.ToString(ViewData["classLabel"] ?? Sistema.Util.Util.Input12);
-    string classForm = Convert.ToString(ViewData["classForm"] ?? Sistema.Util.Util.Input12);
-    var Prefix = @Html.ClientPrefixName().ToString();
-
+    string Label = Convert.ToString(ViewData["Label"] ?? "País");
+    string classLabel = Convert.ToString(ViewData["classLabel"] ?? Util.Input12);
+    string classForm = Convert.ToString(ViewData["classForm"] ?? Util.Input12);
+    var Prefix = Html.ClientPrefixName().ToString();
 }
 
 @if (Disabled)
 {
     //using (Html.BeginFormContainer(Prefix + ".id"))
-    //{
     using (Html.BeginForm())
     {
         if (!LabelVertical)
         {
-            @Html.LabelFor(e => e.text, Label, new { @class = classLabel, @id = @Sistema.Util.SelectFuncions.getInputId("lbl", Prefix.ToString()) })
+            @Html.LabelFor(e => e.text, Label, new { @class = classLabel, @id = @Sistema.Util.SelectFunctions.getInputId("lbl", Prefix.ToString()) })
         }
         <div class="@classForm">
             @if (LabelVertical)
             {
-                @Html.LabelFor(e => e.text, Label, new { @class = "control-label ", @id = @Sistema.Util.SelectFuncions.getInputId("lbl", Prefix.ToString()) })
+                @Html.LabelFor(e => e.text, Label, new { @class = "control-label ", @id = @Sistema.Util.SelectFunctions.getInputId("lbl", Prefix.ToString()) })
             }
 
             <h3 class="label label-default label-td" style="text-align: left;padding: 10px; margin:0px">
@@ -38,12 +36,12 @@
 }
 else
 {
-    @*using (Html.BeginFormContainer(Prefix + ".id"))*@
+    //using (Html.BeginFormContainer(Prefix + ".id"))
     using (Html.BeginForm())
     {
         if (!LabelVertical)
         {
-            @Html.LabelFor(e => e.text, Label, new { @class = classLabel })
+            @Html.LabelFor(e => e.text, Label, new { @class = classLabel + " required" })
         }
         <div class="@classForm">
             @if (LabelVertical)
@@ -55,7 +53,7 @@ else
                 <div class="input-group">
                     @Html.DropDownList("select", new List<SelectListItem>(), new { @class = "form-control" })
                     <div class="input-group-btn">
-                        <button type="button" data-target="#@Sistema.Util.SelectFuncions.getInputId("Modal", Prefix)" id="@Sistema.Util.SelectFuncions.getInputId("btn-localizar", Prefix)" title="Abrir a busca de @Label" class="btn btn-default" data-toggle="modal"><i class="glyphicon glyphicon-search"></i></button>
+                        <button type="button" data-target="#@Sistema.Util.SelectFunctions.getInputId("Modal", Prefix)" id="@Sistema.Util.SelectFunctions.getInputId("btn-localizar", Prefix)" title="Abrir a busca de @Label" class="btn btn-primary" data-toggle="modal"><i class="fa fa-search"></i></button>
                     </div>
                 </div>
                 @Html.HiddenFor(model => model.id)
@@ -68,7 +66,7 @@ else
                         @Html.TextBoxFor(model => model.id, new { @style = "border-radius: 4px 0px 0px 4px;", @class = "form-control", @autocomplete = "off", @filter = "numeric" })
                     </div>
                     <div class="input-group-btn">
-                        <a style="border-radius:0" data-target="#@Sistema.Util.SelectFuncions.getInputId("Modal", Prefix)" href="#@Sistema.Util.SelectFuncions.getInputId("Modal", Prefix)" id="@Sistema.Util.SelectFuncions.getInputId("btn-localizar", Prefix)" title="Abrir a busca de @Label" class="btn btn-default" data-toggle="modal"><i class="glyphicon glyphicon-search"></i></a>
+                        <a style="border-radius:0" data-target="#@Sistema.Util.SelectFunctions.getInputId("Modal", Prefix)" href="#@Sistema.Util.SelectFunctions.getInputId("Modal", Prefix)" id="@Sistema.Util.SelectFunctions.getInputId("btn-localizar", Prefix)" title="Abrir a busca de @Label" class="btn btn-primary" data-toggle="modal"><i class="fa fa-search"></i></a>
                     </div>
                     @Html.HiddenFor(model => model.text)
                     @Html.DropDownList("select", new List<SelectListItem>(), new { @class = "form-control" })
@@ -78,9 +76,8 @@ else
         </div>
     }
     @Html.AddScriptBlock(
-            @<script type="text/javascript">
-        $(function () {
-
+    @<script type="text/javascript">
+        $(function () {           
             shared_function["@Prefix"] = new sSelect({
                 prefix: "@Prefix",
                 query: {
@@ -90,7 +87,6 @@ else
                         { data: "id", sortable: true, width: "20%", label: "ID" },
                         { data: "text", sortable: true, width: "80%", label: "Nome" },
                     ],
-
                 },
                 select: {
                     url: '@Url.Action("JsSelect", "Paises")',
@@ -104,8 +100,9 @@ else
                     $id: $('#@Html.ClientIdFor(e => e.id)'),
                     $text: $('#@Html.ClientIdFor(e => e.text)'),
                 },
-                templateResult: function (data) {
-                    if (data.loading) return data.text;
+                templateResult: function (data) {                   
+                    if (data.loading) return data.text;       
+
                     return '<div class="row no-margin">' +
                         '<div class="col-lg-2  col-md-2  col-sm-3 col-xs-3">' + data.id + '</div>' +
                         '<div class="col-lg-10 col-md-10 col-sm-9 col-xs-9">' + data.text + '</div>' +
@@ -118,7 +115,6 @@ else
             });
            shared_function["@Prefix"].init();
         });
-
-            </script>
+  </script>
 )
 }

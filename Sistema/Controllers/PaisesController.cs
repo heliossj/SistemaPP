@@ -1,4 +1,5 @@
 ﻿using Sistema.DAO;
+using Sistema.DataTables;
 using Sistema.Models;
 using System;
 using System.Collections.Generic;
@@ -106,6 +107,73 @@ namespace Sistema.Controllers
             var model = daoPaises.GetPais(codPais);
             return View(model);
         }
+
+        public JsonResult JsQuery([ModelBinder(typeof(DataTablesBinder))] IDataTablesRequest requestModel)
+        {
+
+            try
+            {
+                var select = this.Find();              
+
+                var totalResult = select.Count();
+
+                var result = select.OrderBy(requestModel.Columns, requestModel.Start, requestModel.Length).ToList();
+
+                return Json(new DataTablesResponse(requestModel.Draw, result, totalResult, result.Count), JsonRequestBehavior.AllowGet);
+                         
+
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = 500;
+                throw new Exception(ex.Message);
+            }
+        }
+
+
+        public JsonResult JsSelect(string q, int? page, int? pageSize)
+        {
+            try
+            {
+                var select = this.Find();
+                return Json(new JsonSelect<object>(select, page, pageSize), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = 500;
+                throw new Exception(ex.Message);
+            }
+        }
+
+
+        public JsonResult JsDetails()
+        {
+            try
+            {
+                var result = this.Find();
+                if (result != null)
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = 500;
+                throw new Exception(ex.Message);
+            }
+        }
+
+        private IQueryable<dynamic> Find()
+        {
+            var daoPaises = new DAOPaises();
+            var list = daoPaises.GetPaisesSelect();
+            var select = list.Select(u => new
+            {
+                id = u.id,
+                text = u.text,
+            }).OrderBy(u => u.text).ToList();
+            return select.AsQueryable();
+        }
+
 
     }
 }

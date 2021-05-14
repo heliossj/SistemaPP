@@ -51,6 +51,9 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Linq.Dynamic, Version=1.0.6132.35681, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Linq.Dynamic.1.0.8\lib\net40\System.Linq.Dynamic.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
@@ -137,6 +140,16 @@
     <Compile Include="Controllers\EstadosController.cs" />
     <Compile Include="DAO\DAOPaises.cs" />
     <Compile Include="DAO\DAO.cs" />
+    <Compile Include="DataTables\Column.cs" />
+    <Compile Include="DataTables\ColumnCollection.cs" />
+    <Compile Include="DataTables\DataTablesBinder.cs" />
+    <Compile Include="DataTables\DataTablesHelper.cs" />
+    <Compile Include="DataTables\DataTablesJsonBinder.cs" />
+    <Compile Include="DataTables\DataTablesResponse.cs" />
+    <Compile Include="DataTables\DefaultDataTablesRequest.cs" />
+    <Compile Include="DataTables\IDataTablesRequest.cs" />
+    <Compile Include="DataTables\NameValueCollectionExtensions.cs" />
+    <Compile Include="DataTables\Search.cs" />
     <Compile Include="Models\FormaPagamento.cs" />
     <Compile Include="Models\Funcionarios.cs" />
     <Compile Include="Models\Fornecedores.cs" />
@@ -148,6 +161,7 @@
     <Compile Include="Models\Clientes.cs" />
     <Compile Include="Models\Servicos.cs" />
     <Compile Include="Models\Estados.cs" />
+    <Compile Include="Select\Paises\Select.cs" />
     <Compile Include="Util.cs" />
     <Compile Include="Controllers\PaisesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -172,9 +186,15 @@
     <Content Include="Content\bootstrap-reboot.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\css\select2-bootstrap.css" />
     <Content Include="Content\dataTables.bootstrap4.min.css" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\css\select2-spinner.gif" />
+    <Content Include="Content\css\select2.css" />
+    <Content Include="Content\css\select2.custom.css" />
+    <Content Include="Content\css\select2.png" />
+    <Content Include="Content\css\select2x2.png" />
     <Content Include="Content\Sistema.css" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="Global.asax" />
@@ -186,6 +206,11 @@
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\Functions.js" />
+    <Content Include="Scripts\functionsb3.js" />
+    <Content Include="Scripts\select2.js" />
+    <Content Include="Scripts\select2.min.js" />
+    <Content Include="Scripts\select2_locale_pt-BR.js" />
     <Content Include="Scripts\Sistema.js" />
     <Content Include="Scripts\Produtos\Index.js" />
     <Content Include="Scripts\OrdemServico\Index.js" />
@@ -309,6 +334,7 @@
     <Content Include="Scripts\src\utils\setAttributes.js" />
     <Content Include="Scripts\src\utils\setStyles.js" />
     <Content Include="Scripts\src\utils\setupEventListeners.js" />
+    <Content Include="Scripts\sSelect.js" />
     <Content Include="Scripts\umd\popper-utils.js" />
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
@@ -404,6 +430,7 @@
     <Content Include="Views\Clientes\Edit.cshtml" />
     <Content Include="Views\Clientes\Form.cshtml" />
     <Content Include="Views\Clientes\Index.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Paises\Select.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
