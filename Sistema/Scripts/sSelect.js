@@ -296,7 +296,7 @@
                 data: null,
                 sClass: 'center',
                 mRender: function (data) {
-                    return '<a class="btn btn-success btn-sm" href="#" title="Selecionar registro"><i class="glyphicon glyphicon-ok"></i> </a>';
+                    return '<a class="btn btn-info btn-sm" href="#" title="Selecionar registro"><i class="fa fa-check"></i> </a>';
                 }
             });
             for (var i = 0; i < options.query.columns.length; i++) {
@@ -382,9 +382,9 @@
             '<div class="modal-body no-padding">' +
             '<div class="panel panel-primary" style="margin-bottom: -1px;">' +
             '<div class="panel-heading" style="height: 41px; padding-left:2px;font-weight: bold;">' +
-            '<h3 class="panel-title pull-right"><button type="button" style="opacity: inherit;color: #fff;" class="close" data-dismiss="modal">&times;</button></h3>' +
+            '<h3 class="panel-title pull-right"><button type="button" style="opacity: inherit;color: dark;" class="close" data-dismiss="modal">&times;</button></h3>' +
             '<ul class="nav panel-tabs" style="width:400px">' +
-            '<li class="active"><a data-event="true" style="margin-top:1px;color: #ffffff;background-color: #428bca;" data-toggle="tab"><b><i class="fa fa-list-alt" aria-hidden="true"></i> ' + options.placeholder + '</b></a></li>' +
+            '<li class="active"><a data-event="true" style="margin-top:1px;color: dark"; data-toggle="tab"><b><i class="fa fa-list-alt" aria-hidden="true"></i> ' + options.placeholder + '</b></a></li>' +
             '</ul>' +
             '</div>' +
             '<div class="panel-body">' +

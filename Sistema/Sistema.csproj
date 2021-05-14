@@ -138,6 +138,7 @@
     <Compile Include="Controllers\ClientesController.cs" />
     <Compile Include="Controllers\CidadesController.cs" />
     <Compile Include="Controllers\EstadosController.cs" />
+    <Compile Include="DAO\DAOEstados.cs" />
     <Compile Include="DAO\DAOPaises.cs" />
     <Compile Include="DAO\DAO.cs" />
     <Compile Include="DataTables\Column.cs" />
@@ -161,6 +162,7 @@
     <Compile Include="Models\Clientes.cs" />
     <Compile Include="Models\Servicos.cs" />
     <Compile Include="Models\Estados.cs" />
+    <Compile Include="Select\Estados\Select.cs" />
     <Compile Include="Select\Paises\Select.cs" />
     <Compile Include="Util.cs" />
     <Compile Include="Controllers\PaisesController.cs" />
