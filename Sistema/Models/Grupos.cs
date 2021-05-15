@@ -18,8 +18,8 @@ namespace Sistema.Models
         [Display(Name = "Situação")]
         public string situacao { get; set; }
 
-        [Display(Name = "Descrição")]
-        public string descricao { get; set; }
+        [Display(Name = "Observação")]
+        public string observacao { get; set; }
 
         [Display(Name = "Data de cadastro")]
         public DateTime? dtCadastro { get; set; }

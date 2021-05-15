@@ -5,13 +5,16 @@
     string action = Convert.ToString(ViewBag.Action);
 }
 
-@Html.HiddenFor(model => model.codCondicao)
-<div class="form-row">
-    <div class="@Util.Input2">
-        @Html.LabelFor(model => model.codCondicao)
-        @Html.TextBoxFor(model => model.codCondicao, new { @class = "form-control", disabled = false })
+@if (action != "create")
+{
+    @Html.HiddenFor(model => model.codForma)
+    <div class="form-row">
+        <div class="@Util.Input2">
+            @Html.LabelFor(model => model.codForma)
+            @Html.TextBoxFor(model => model.codForma, new { @class = "form-control", disabled = false })
+        </div>
     </div>
-</div>
+}
 
 <div class="form-row">
     <div class="@Util.Input3">
@@ -21,10 +24,10 @@
     </div>
 </div>
 
-<div class="form-row">
-    <div class="@Util.Input12">
-        @Html.LabelFor(model => model.nomeCondicao, new { @class = "required" })
-        @Html.TextBoxFor(model => model.nomeCondicao, new { @class = "form-control", maxlength = "100", style = "text-transform:uppercase", minlength = "3" })
-        @Html.ValidationMessageFor(model => model.nomeCondicao, null, new { @class = "text-danger" })
-    </div>
-</div>
+@*<div class="form-row">
+        <div class="@Util.Input12">
+            @Html.LabelFor(model => model.nomeCondicao, new { @class = "required" })
+            @Html.TextBoxFor(model => model.nomeCondicao, new { @class = "form-control", maxlength = "100", style = "text-transform:uppercase", minlength = "3" })
+            @Html.ValidationMessageFor(model => model.nomeCondicao, null, new { @class = "text-danger" })
+        </div>
+    </div>*@

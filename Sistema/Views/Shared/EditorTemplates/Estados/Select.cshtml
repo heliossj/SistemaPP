@@ -1,0 +1,151 @@
+﻿@model Sistema.Select.Paises.Select
+@using Sistema.Util;
+@{
+    bool Disabled = Convert.ToBoolean(ViewData["Disabled"]);
+    bool Required = Convert.ToBoolean(ViewData["Required"] ?? true);
+    bool OnlySelect = Convert.ToBoolean(ViewData["onlySelect"] ?? false);
+    bool LabelVertical = Convert.ToBoolean(ViewData["LabelVertical"]);
+    bool CriarEstado = Convert.ToBoolean(ViewData["CriarEstado"] ?? false);
+    string Label = Convert.ToString(ViewData["Label"] ?? "Estado");
+    string classLabel = Convert.ToString(ViewData["classLabel"] ?? Util.Input12);
+    string classForm = Convert.ToString(ViewData["classForm"] ?? Util.Input12);
+    string Prefix = Html.ClientPrefixName().ToString();
+}
+@if (Disabled)
+{
+    //using (Html.BeginFormContainer(Prefix + ".idMarca"))
+    using (Html.BeginForm())
+    {
+        if (!LabelVertical)
+        {
+            @Html.LabelFor(e => e.text, Label, new { @class = classLabel })
+        }
+        <div class="@classForm">
+            @if (LabelVertical)
+            {
+                @Html.LabelFor(e => e.text, Label, new { @class = "control-label" })
+            }
+            <div class="input-group">
+                <div class="input-group-btn" style="width:15%">
+                    @Html.TextBoxFor(model => model.id, new { @style = "border-radius: 4px 0px 0px 4px;", @class = "form-control", @readonly = "readonly" })
+                </div>
+                <div class="input-group-btn">
+                    <a disabled style="border-radius:0" title="Localizar marca" class="btn btn-default" data-toggle="modal"><i class="fa fa-search"></i></a>
+                </div>
+                @Html.TextBoxFor(model => model.text, new { @class = "form-control", @readonly = "readonly" })
+            </div>
+        </div>
+    }
+}
+else
+{
+    //using (Html.BeginFormContainer(Prefix + ".idMarca"))
+    using (Html.BeginForm())
+    {
+        if (!LabelVertical)
+        {
+            @Html.LabelFor(e => e.text, Label, new { @class = classLabel + " required"})
+        }
+        <div class="@classForm">
+            @if (LabelVertical)
+            {
+                @Html.LabelFor(e => e.text, Label, new { @class = "control-label" })
+            }
+            @if (OnlySelect)
+            {
+                @Html.HiddenFor(model => model.id)
+                @Html.HiddenFor(model => model.text)
+                if (CriarEstado)
+                {
+                    <div class="input-group col-lg-12">
+                        @Html.DropDownList("select", new List<SelectListItem>(), new { @class = "form-control" })
+                        <div class="input-group-btn">
+                            <a style="border-radius:0px 3px 3px 0px" data-target="#@Sistema.Util.SelectFunctions.getInputId("Form_Modal", Prefix)" href="#@Sistema.Util.SelectFunctions.getInputId("Form_Modal", Prefix)" title="Adicionar novo registro" class="btn btn-success" data-toggle="modal"><i class="glyphicon glyphicon-plus-sign"></i></a>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    @Html.DropDownList("select", new List<SelectListItem>(), new { @class = "form-control" })
+                }
+            }
+            else
+            {
+   
+                <div class="input-group">
+                    @Html.HiddenFor(model => model.text)
+                    <div style="width:15%">
+                        @Html.TextBoxFor(model => model.id, new { @style = "border-radius: 4px 0px 0px 4px;", @class = "form-control", @autocomplete = "off" })
+                    </div>
+                    <div class="input-group-append">
+                        <a style="border-radius:0" data-target="#@Sistema.Util.SelectFunctions.getInputId("Modal", Prefix)" href="#@Sistema.Util.SelectFunctions.getInputId("Modal", Prefix)" id="@Sistema.Util.SelectFunctions.getInputId("btn-localizar", Prefix)" title="Localizar marca" class="btn btn-primary" data-toggle="modal"><i class="fa fa-search"></i></a>
+                    </div>
+                    <div >
+                        @Html.DropDownList("select", new List<SelectListItem>(), new { @class = "form-control", style = "height:38px;"})
+                    </div>
+                    @if (CriarEstado)
+                    {
+                        <a style="border-radius:0px 3px 3px 0px" data-target="#@Sistema.Util.SelectFunctions.getInputId("Form_Modal", Prefix)" href="#@Sistema.Util.SelectFunctions.getInputId("Form_Modal", Prefix)" title="Adicionar novo registro" class="btn btn-success" data-toggle="modal"><i class="fa fa-plus"></i></a>
+                    }
+                </div>
+            }
+            @Html.ValidationMessageFor(model => model.id, null, new { @class = "help-block" })
+        </div>
+    }
+    <div id="@Sistema.Util.SelectFunctions.getInputId("Modal", Prefix)" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Consultar @Prefix</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                </div>
+                <div class="modal-body">
+                    @Html.Editor("Modal", "Estados/Query")
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @Html.Editor("Form", "Estados/Form")
+    @Html.AddScriptBlock(
+       @<script type="text/javascript">
+        $(function () {
+
+            $(document).on('@Sistema.Util.SelectFunctions.getInputId("Form_Insert", Html.ClientPrefixName().ToString())', function (e, data) {
+                shared_function["@Prefix"].data = { id: data.idMarca, text: data.nmMarca};
+            });
+
+            shared_function["@Prefix"] = new sSelect({
+                prefix: "@Prefix",
+                select: {
+                    url: '@Url.Action("JsSelect", "Estados")',
+                },
+                details:{
+                    url: '@Url.Action("JsDetails", "Estados")',
+                },
+                placeholder: "Buscar @Label".toLowerCase(),
+                elements: {
+                    $id: $('#@Html.ClientIdFor(e => e.id)'),
+                    $text: $('#@Html.ClientIdFor(e => e.text)'),
+                },
+                templateResult: function (data) {
+                    if (data.loading) return data.text;
+                    return '<div class="row no-margin">' +
+                        '<div class="col-lg-2  col-md-2  col-sm-3 col-xs-3">' + data.id + '</div>' +
+                        '<div class="col-lg-10 col-md-10 col-sm-9 col-xs-9">' + data.text + '</div>' +
+                        '</div>';
+                },
+                templateHeader: '<div class="row no-margin select2-header">' +
+                '<div class="col-lg-2  col-md-2  col-sm-3 col-xs-3">Id</div>' +
+                '<div class="col-lg-10 col-md-10 col-sm-9 col-xs-9">Nome</div>' +
+                '</div>'
+            });
+           shared_function["@Prefix"].init();
+        });
+
+     </script>
+)
+}

@@ -31,7 +31,7 @@ $(function () {
             requestData: {}
           })
         };
-        RPClientLogger.sendToServer(messageInfo);
+        //RPClientLogger.sendToServer(messageInfo);
       }
     }
   });
@@ -2303,9 +2303,9 @@ var ThreadLoop = function (array) {
 
     loadingMessage: function (show, message, time) {
       if (show === 'show') {
-        RPNotification.pageOverlay(true);
+        //RPNotification.pageOverlay(true);
       } else {
-        RPNotification.pageOverlay(false);
+        //RPNotification.pageOverlay(false);
       }
     },
 

@@ -5,31 +5,34 @@
     string action = Convert.ToString(ViewBag.Action);
 }
 
-@Html.HiddenFor(model => model.codOS)
-<div class="form-row">
-    <div class="@Util.Input2">
-        @Html.LabelFor(model => model.codOS)
-        @Html.TextBoxFor(model => model.codOS, new { @class = "form-control", disabled = false })
-    </div>
+@if (action != "create")
+{
+    @Html.HiddenFor(model => model.codOS)
+    <div class="form-row">
+        <div class="@Util.Input2">
+            @Html.LabelFor(model => model.codOS)
+            @Html.TextBoxFor(model => model.codOS, new { @class = "form-control", disabled = false })
+        </div>
 
-    <div class="@Util.Input3">
-        @Html.LabelFor(model => model.dtAbertura)
-        <div class="input-group-append">
-            @Html.TextBoxFor(model => model.dtAbertura, new { @class = "form-control datepicker", disabled = true })
-            <span class="fa fa-calendar input-group-text" style="font-size:23px"></span>
+        <div class="@Util.Input3">
+            @Html.LabelFor(model => model.dtAbertura)
+            <div class="input-group-append">
+                @Html.TextBoxFor(model => model.dtAbertura, new { @class = "form-control datepicker", disabled = true })
+                <span class="fa fa-calendar input-group-text" style="font-size:23px"></span>
+            </div>
         </div>
     </div>
-</div>
+}
 
 <div class="form-row">
     <div class="@Util.Input3">
-        @Html.LabelFor(model => model.situacao)
+        @Html.LabelFor(model => model.situacao, new { @class = "required" })
         @Html.DropDownListFor(model => model.situacao, Sistema.Models.OrdemServico.Situacao, new { @class = "form-control" })
         @Html.ValidationMessageFor(model => model.situacao, null, new { @class = "text-danger" })
     </div>
 
     <div class="@Util.Input3">
-        @Html.LabelFor(model => model.dtValidade)
+        @Html.LabelFor(model => model.dtValidade, new { @class = "required" })
         <div class="input-group-append">
             @Html.TextBoxFor(model => model.dtValidade, new { @class = "form-control datepicker" })
             <span class="fa fa-calendar input-group-text" style="font-size:23px"></span>

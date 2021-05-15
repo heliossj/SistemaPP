@@ -433,6 +433,9 @@
     <Content Include="Views\Clientes\Form.cshtml" />
     <Content Include="Views\Clientes\Index.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Paises\Select.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Estados\Select.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Estados\Form.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Estados\Query.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

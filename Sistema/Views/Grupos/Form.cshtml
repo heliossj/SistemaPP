@@ -5,17 +5,20 @@
     string action = Convert.ToString(ViewBag.Action);
 }
 
-@Html.HiddenFor(model => model.codGrupo)
-<div class="form-row">
-    <div class="@Util.Input2">
-        @Html.LabelFor(model => model.codGrupo)
-        @Html.TextBoxFor(model => model.codGrupo, new { @class = "form-control", disabled = false })
+@if (action != "create")
+{
+    @Html.HiddenFor(model => model.codGrupo)
+    <div class="form-row">
+        <div class="@Util.Input2">
+            @Html.LabelFor(model => model.codGrupo)
+            @Html.TextBoxFor(model => model.codGrupo, new { @class = "form-control", disabled = false })
+        </div>
     </div>
-</div>
+}
 
 <div class="form-row">
     <div class="@Util.Input3">
-        @Html.LabelFor(model => model.situacao)
+        @Html.LabelFor(model => model.situacao, new { @class = "required" })
         @Html.DropDownListFor(model => model.situacao, Sistema.Models.Grupos.Situacao, new { @class = "form-control" })
         @Html.ValidationMessageFor(model => model.situacao, null, new { @class = "text-danger" })
     </div>
@@ -31,9 +34,8 @@
 
 <div class="form-row">
     <div class="@Util.Input12">
-        @Html.LabelFor(model => model.descricao, new { @class = "required" })
-        @Html.TextAreaFor(model => model.descricao, new { @class = "form-control", maxlength = "500", style = "text-transform:uppercase" })
-        @Html.ValidationMessageFor(model => model.descricao, null, new { @class = "text-danger" })
+        @Html.LabelFor(model => model.observacao)
+        @Html.TextAreaFor(model => model.observacao, new { @class = "form-control", maxlength = "500", style = "text-transform:uppercase" })
+        @Html.ValidationMessageFor(model => model.observacao, null, new { @class = "text-danger" })
     </div>
 </div>
- 

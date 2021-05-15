@@ -423,12 +423,12 @@
                             url: options.details.url,
                             data: result,
                             beforeSend: function () {
-                                RPNotification.pageOverlay(true, "overlay-transparent");
+                                //RPNotification.pageOverlay(true, "overlay-transparent");
                             },
                             success: function (data) {
                                 self.lastData = self.data;
                                 $select.val(null).trigger('change');
-                                RPNotification.pageOverlay(false, "overlay-transparent");
+                                //RPNotification.pageOverlay(false, "overlay-transparent");
                                 if (data) {
                                     $select.empty().select2("trigger", "select", { data: data });
                                 }
@@ -440,7 +440,7 @@
                             },
                             error: function (request) {
                                 Functions.checkRequest(request);
-                                RPNotification.pageOverlay(false, "overlay-transparent");
+                                //RPNotification.pageOverlay(false, "overlay-transparent");
                             }
                         });
                     }
@@ -478,12 +478,12 @@
                                     url: $(this).attr("url"),
                                     data: result,
                                     beforeSend: function () {
-                                        RPNotification.pageOverlay(true, "overlay-transparent");
+                                        //RPNotification.pageOverlay(true, "overlay-transparent");
                                     },
                                     success: function (data) {
 
                                         self.lastData = self.data;
-                                        RPNotification.pageOverlay(false, "overlay-transparent");
+                                        //RPNotification.pageOverlay(false, "overlay-transparent");
                                         if (data) {
                                             $select.empty().select2("trigger", "select", { data: data });
                                         }
@@ -495,7 +495,7 @@
                                     },
                                     error: function (request) {
                                         Functions.checkRequest(request);
-                                        RPNotification.pageOverlay(false, "overlay-transparent");
+                                        //RPNotification.pageOverlay(false, "overlay-transparent");
                                     }
                                 });
                             }

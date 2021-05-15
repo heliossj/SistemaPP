@@ -21,14 +21,18 @@
     </div>
 
     <div class="@Util.Input3">
-        @Html.LabelFor(model => model.ddd)
+        @Html.LabelFor(model => model.ddd, new { @class = "required" })
         @Html.TextBoxFor(model => model.ddd, new { @class = "form-control", @maxlength = "5", style = "text-transform:uppercase" })
         @Html.ValidationMessageFor(model => model.ddd, null, new { @class = "text-danger" })
     </div>
 
     <div class="@Util.Input3">
-        @Html.LabelFor(model => model.sigla)
+        @Html.LabelFor(model => model.sigla, new { @class = "required" })
         @Html.TextBoxFor(model => model.sigla, new { @class = "form-control", @maxlength = "3", style = "text-transform:uppercase" })
         @Html.ValidationMessageFor(model => model.sigla, null, new { @class = "text-danger" })
     </div>
+</div>
+
+<div class="form-row">
+    @Html.EditorFor(model => model.Estado, "Estados/Select", new { disabled = readOnly, CriarEstado = true })
 </div>

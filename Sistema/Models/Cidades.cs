@@ -20,7 +20,7 @@ namespace Sistema.Models
         [Display(Name = "Sigla")]
         public string sigla { get; set; }
 
-        //estado
+        public Select.Estados.Select Estado { get; set; }
 
         [Display(Name = "Data de cadastro")]
         public DateTime? dtCadastro { get; set; }

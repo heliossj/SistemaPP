@@ -5,17 +5,20 @@
     string action = Convert.ToString(ViewBag.Action);
 }
 
-@Html.HiddenFor(model => model.codProduto)
-<div class="form-row">
-    <div class="@Util.Input2">
-        @Html.LabelFor(model => model.codProduto)
-        @Html.TextBoxFor(model => model.codProduto, new { @class = "form-control", disabled = false })
+@if (action != "create")
+{
+    @Html.HiddenFor(model => model.codProduto)
+    <div class="form-row">
+        <div class="@Util.Input2">
+            @Html.LabelFor(model => model.codProduto)
+            @Html.TextBoxFor(model => model.codProduto, new { @class = "form-control", disabled = false })
+        </div>
     </div>
-</div>
+}
 
 <div class="form-row">
     <div class="@Util.Input3">
-        @Html.LabelFor(model => model.situacao)
+        @Html.LabelFor(model => model.situacao, new { @class = "required" })
         @Html.DropDownListFor(model => model.situacao, Sistema.Models.Produtos.Situacao, new { @class = "form-control" })
         @Html.ValidationMessageFor(model => model.situacao, null, new { @class = "text-danger" })
     </div>
@@ -30,19 +33,19 @@
     </div>
 
     <div class="@Util.Input3">
-        @Html.LabelFor(model => model.unidade)
+        @Html.LabelFor(model => model.unidade, new { @class = "required" })
         @Html.DropDownListFor(model => model.situacao, Sistema.Models.Produtos.Unidade, new { @class = "form-control" })
         @Html.ValidationMessageFor(model => model.unidade, null, new { @class = "text-danger" })
     </div>
 </div>
 
 <p> Unidade / Fornecedor</p>
-
+ 
 <div class="form-row">
     <div class="@Util.Input3">
-        @Html.LabelFor(model => model.vlCusto)
-        @Html.TextBoxFor(model => model.vlCusto, new { @class = "form-control", maxlength = "10", style = "text-transform:uppercase", minlength = "3" })
-        @Html.ValidationMessageFor(model => model.vlCusto, null, new { @class = "text-danger" })
+        @Html.LabelFor(model => model.ncm, new { @class = "required" })
+        @Html.TextBoxFor(model => model.ncm, new { @class = "form-control", maxlength = "10", style = "text-transform:uppercase", minlength = "3" })
+        @Html.ValidationMessageFor(model => model.ncm, null, new { @class = "text-danger" })
     </div>
 
     <div class="@Util.Input3">
@@ -54,7 +57,7 @@
 
 <div class="form-row">
     <div class="@Util.Input3">
-        @Html.LabelFor(model => model.vlCusto)
+        @Html.LabelFor(model => model.vlCusto, new { @class = "required" })
         @Html.TextBoxFor(model => model.vlCusto, new { @class = "form-control", type = "number", min = "0.01", step = ".01", placeholder = "0,00", oninput = "this.value = Math.abs(this.value)" })
         @Html.ValidationMessageFor(model => model.vlCusto, null, new { @class = "text-danger" })
     </div>
@@ -66,7 +69,7 @@
     </div>
 
     <div class="@Util.Input3">
-        @Html.LabelFor(model => model.vlVenda)
+        @Html.LabelFor(model => model.vlVenda, new { @class = "required" })
         @Html.TextBoxFor(model => model.vlVenda, new { @class = "form-control", type = "number", min = "0.01", step = ".01", placeholder = "0,00", oninput = "this.value = Math.abs(this.value)" })
         @Html.ValidationMessageFor(model => model.vlVenda, null, new { @class = "text-danger" })
     </div>

@@ -5,23 +5,26 @@
     string action = Convert.ToString(ViewBag.Action);
 }
 
-@Html.HiddenFor(model => model.codCliente)
-<div class="form-row">
-    <div class="@Util.Input2">
-        @Html.LabelFor(model => model.codCliente)
-        @Html.TextBoxFor(model => model.codCliente, new { @class = "form-control", disabled = false })
+@if (action != "create")
+{
+    @Html.HiddenFor(model => model.codCliente)
+    <div class="form-row">
+        <div class="@Util.Input2">
+            @Html.LabelFor(model => model.codCliente)
+            @Html.TextBoxFor(model => model.codCliente, new { @class = "form-control", disabled = false })
+        </div>
     </div>
-</div>
+}
 
 <div class="form-row">
     <div class="@Util.Input3">
-        @Html.LabelFor(model => model.tipo)
+        @Html.LabelFor(model => model.tipo, new { @class = "required" })
         @Html.DropDownListFor(model => model.tipo, Sistema.Models.Clientes.Tipo, new { @class = "form-control" })
         @Html.ValidationMessageFor(model => model.tipo, null, new { @class = "text-danger" })
     </div>
 
     <div class="@Util.Input3">
-        @Html.LabelFor(model => model.situacao)
+        @Html.LabelFor(model => model.situacao, new { @class = "required" })
         @Html.DropDownListFor(model => model.situacao, Sistema.Models.Clientes.Situacao, new { @class = "form-control" })
         @Html.ValidationMessageFor(model => model.situacao, null, new { @class = "text-danger" })
     </div>
@@ -36,7 +39,7 @@
     </div>
 
     <div class="@Util.Input3">
-        @Html.LabelFor(model => model.sexo)
+        @Html.LabelFor(model => model.sexo, new { @class = "required" })
         @Html.DropDownListFor(model => model.sexo, Sistema.Models.Clientes.Sexo, new { @class = "form-control" })
         @Html.ValidationMessageFor(model => model.sexo, null, new { @class = "text-danger" })
     </div>

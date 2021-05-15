@@ -5,13 +5,16 @@
     string action = Convert.ToString(ViewBag.Action);
 }
 
-@Html.HiddenFor(model => model.codFornecedor)
-<div class="form-row">
-    <div class="@Util.Input2">
-        @Html.LabelFor(model => model.codFornecedor)
-        @Html.TextBoxFor(model => model.codFornecedor, new { @class = "form-control", disabled = false })
+@if (action != "create")
+{
+    @Html.HiddenFor(model => model.codFornecedor)
+    <div class="form-row">
+        <div class="@Util.Input2">
+            @Html.LabelFor(model => model.codFornecedor)
+            @Html.TextBoxFor(model => model.codFornecedor, new { @class = "form-control", disabled = false })
+        </div>
     </div>
-</div>
+}
 
 <div class="form-row">
     <div class="@Util.Input3">
@@ -65,9 +68,9 @@
 </div>
 
 <div class="form-row">
-    <p class="@Util.Input4"> Cidade </p>
+    <p class="@Util.Input6"> Cidade </p>
 
-    <div class="@Util.Input4">
+    <div class="@Util.Input2">
         @Html.LabelFor(model => model.cep, new { @class = "required" })
         @Html.TextBoxFor(model => model.cep, new { @class = "form-control", maxlength = "8", style = "text-transform:uppercase", minlength = "3" })
         @Html.ValidationMessageFor(model => model.cep, null, new { @class = "text-danger" })
