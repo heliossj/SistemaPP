@@ -5,13 +5,16 @@
     string action = Convert.ToString(ViewBag.Action);
 }
 
-@Html.HiddenFor(model => model.codCidade)
-<div class="form-row">
-    <div class="@Util.Input2">
-        @Html.LabelFor(model => model.codCidade)
-        @Html.TextBoxFor(model => model.codCidade, new { @class = "form-control", disabled = false })
+@if (action != "create")
+{
+    @Html.HiddenFor(model => model.codCidade)
+    <div class="form-row">
+        <div class="@Util.Input2">
+            @Html.LabelFor(model => model.codCidade)
+            @Html.TextBoxFor(model => model.codCidade, new { @class = "form-control", disabled = false })
+        </div>
     </div>
-</div>
+}
 
 <div class="form-row">
     <div class="@Util.Input6">

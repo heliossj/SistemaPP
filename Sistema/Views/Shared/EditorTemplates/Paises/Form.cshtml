@@ -1,32 +1,45 @@
 ﻿@using Sistema.Util;
 @{
     var Prefix = Html.ClientPrefixName().ToString();
-    var Pais = new Sistema.Select.Paises.Select();
 }
 
 <div id="@Sistema.Util.SelectFunctions.getInputId("Modal",Prefix)" class="modal fade" role="dialog" data-backdrop="static">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Cadastrar Estado</h4>
+                <h4 class="modal-title">Cadastrar Pais</h4>
             </div>
             <div class="modal-body">
 
                 <div class="form-row">
-                    @Html.Label("nmMarca", "Nome")
                     <div class="@Util.Input12">
-                        @Html.TextBox("nmMarca", null, new { @class = "form-control", maxlength = "100" })
-                        @Html.ValidationMessage("nmMarca", null, new { @class = "help-block" })
+                        @Html.Label("nomePais", "País", new { @class = "required" })
+                        <div class="@Util.Input12">
+                            @Html.TextBox("nomePais", null, new { @class = "form-control", maxlength = "50", style = "text-transform:uppercase" })
+                        </div>
+                        @Html.ValidationMessage("nomePais", null, new { @class = "text-danger" })
                     </div>
                 </div>
 
                 <div class="form-row">
-                    @Html.EditorFor(model => Pais, "Paises/Select", new { Disabled = false, @class = "width: 554px;", CriarPais = true })
+                    <div class="@Util.Input3">
+                        @Html.Label("ddi", "DDI", new { @class = "required" })
+                        <div class="@Util.Input12">
+                            @Html.TextBox("ddi", null, new { @class = "form-control", maxlength = "5", style = "text-transform:uppercase" })
+                        </div>
+                    </div>
+                    <div class="@Util.Input3">
+                        @Html.Label("sigla", "Sigla", new { @class = "required" })
+                        <div class="@Util.Input12">
+                            @Html.TextBox("sigla", null, new { @class = "form-control", maxlength = "2", style = "text-transform:uppercase" })
+
+                        </div>
+                    </div>
                 </div>
 
             </div>
             <div class="modal-footer">
-                <button type="button" id="@Sistema.Util.SelectFunctions.getInputId("btnBack",Prefix)" class="btn btn-default" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Voltar</button>
+                <button type="button" id="@Sistema.Util.SelectFunctions.getInputId("btnBack",Prefix)" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-ban"></i> Cancelar</button>
                 <button type="button" id="@Sistema.Util.SelectFunctions.getInputId("btnSave",Prefix)" class="btn btn-success"><i class="fa fa-save"></i> Salvar</button>
             </div>
         </div>
@@ -46,15 +59,19 @@
         shared_function["@Prefix"] = {
             getForm: function () {
                 var form = {
-                    nmMarca: $('#@Sistema.Util.SelectFunctions.getInputId("nmMarca", Prefix)')
+                    nomePais: $('#@Sistema.Util.SelectFunctions.getInputId("nomePais", Prefix)'),
+                    ddi: $('#@Sistema.Util.SelectFunctions.getInputId("ddi", Prefix)'),
+                    sigla: $('#@Sistema.Util.SelectFunctions.getInputId("sigla", Prefix)'),
                 }
                 return form;
             },
             clear: function () {
                 var form = shared_function["@Prefix"].getForm();
                 shared_function["@Prefix"].button('reset');
-                form.nmMarca.val("");
-                form.nmMarca.focus();
+                form.nomePais.val("");
+                form.ddi.val("");
+                form.sigla.val("");
+                form.nomePais.focus();
             },
             init: function () {
                 shared_function["@Prefix"].clear();
@@ -64,9 +81,21 @@
                 var valid = true;
                 var msg = "<h4>Verifique os campos abaixo</h4>";
 
-                if (IsNullOrEmpty(form.nmMarca.val())) {
-                    msg += "Por favor, informe o nome! <br/>";
-                    form.nmMarca.blink();
+                if (IsNullOrEmpty(form.nomePais.val())) {
+                    alert("Campo país é obrigatório")
+                    form.nomePais.focus();
+                    valid = false;
+                }
+
+                else if (IsNullOrEmpty(form.ddi.val())) {
+                    alert("Campo ddi é obrigatório")
+                    form.ddi.focus();
+                    valid = false;
+                }
+
+                else if (IsNullOrEmpty(form.sigla.val())) {
+                    alert("Campo sigla é obrigatório")
+                    form.sigla.focus();
                     valid = false;
                 }
 
@@ -78,7 +107,9 @@
             },
             getModel: function (form) {
                 var model = {
-                    nmMarca: form.nmMarca.val()
+                    nomePais: form.nomePais.val(),
+                    ddi: form.ddi.val(),
+                    sigla: form.sigla.val(),
                 }
                 return model;
             },
@@ -97,7 +128,7 @@
                     $.ajax({
                         dataType: 'json',
                         type: 'POST',
-                        url: '@Url.Action("jsCreate", "Marca")',
+                        url: '@Url.Action("jsCreate", "Paises")',
                         data: model,
                         success: function (data) {
                             shared_function["@Prefix"].button('reset');
@@ -118,6 +149,10 @@
                             Functions.checkRequest(request);
                         }
                     });
+                    //$.ajax({ url: "Url.Action("JsQuery", "Paises")" });
+                    @*var table = $('#@Sistema.Util.SelectFunctions.getInputId("grid", Html.ClientPrefixName().ToString())').dataTable({
+                        ajax: { url: "@Url.Action("JsQuery", "Paises")" },
+                    });*@
                 }
             }
         }

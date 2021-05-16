@@ -433,7 +433,7 @@
                                     $select.empty().select2("trigger", "select", { data: data });
                                 }
                                 else {
-                                    new PNotify({ title: "Atenção!", text: "Nenhum registro encontrado!", type: "error" });
+                                    //new PNotify({ title: "Atenção!", text: "Nenhum registro encontrado!", type: "error" });
                                     self.elements.$id.blink();
                                     $select.empty().trigger('change').trigger('select2:unselect');
                                 }
@@ -488,7 +488,7 @@
                                             $select.empty().select2("trigger", "select", { data: data });
                                         }
                                         else {
-                                            new PNotify({ title: "Atenção!", text: "Nenhum registro encontrado!", type: "error" });
+                                            //new PNotify({ title: "Atenção!", text: "Nenhum registro encontrado!", type: "error" });
                                             el.blink();
                                             $select.empty().trigger('change').trigger('select2:unselect');
                                         }

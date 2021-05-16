@@ -311,6 +311,7 @@ C:\Sistema\Sistema\Sistema\bin\Antlr3.Runtime.dll
 C:\Sistema\Sistema\Sistema\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
 C:\Sistema\Sistema\Sistema\bin\Microsoft.Web.Infrastructure.dll
 C:\Sistema\Sistema\Sistema\bin\Newtonsoft.Json.dll
+C:\Sistema\Sistema\Sistema\bin\System.Linq.Dynamic.dll
 C:\Sistema\Sistema\Sistema\bin\System.Web.Helpers.dll
 C:\Sistema\Sistema\Sistema\bin\System.Web.Mvc.dll
 C:\Sistema\Sistema\Sistema\bin\System.Web.Optimization.dll
@@ -341,4 +342,3 @@ C:\Sistema\Sistema\Sistema\obj\Debug\Sistema.csproj.CopyComplete
 C:\Sistema\Sistema\Sistema\obj\Debug\Sistema.dll
 C:\Sistema\Sistema\Sistema\obj\Debug\Sistema.pdb
 C:\Sistema\Sistema\Sistema\obj\Debug\Sistema.csprojAssemblyReference.cache
-C:\Sistema\Sistema\Sistema\bin\System.Linq.Dynamic.dll

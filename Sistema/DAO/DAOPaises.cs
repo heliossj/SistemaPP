@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Configuration;
+using Sistema.Select;
 
 namespace Sistema.DAO
 {
@@ -15,13 +16,13 @@ namespace Sistema.DAO
         {
             try
             {
-                
+
                 var sql = "SELECT* FROM tbpaises";
                 OpenConnection();
                 SqlQuery = new SqlCommand(sql, con);
                 reader = SqlQuery.ExecuteReader();
                 var list = new List<Paises>();
-                
+
                 while (reader.Read())
                 {
                     var pais = new Paises
@@ -47,7 +48,7 @@ namespace Sistema.DAO
             }
         }
 
-        public bool Insert(Models.Paises pais)
+        public Select.Paises.Select Insert(Models.Paises pais)
         {
             try
             {
@@ -55,25 +56,22 @@ namespace Sistema.DAO
                     pais.nomePais.ToUpper().Trim(),
                     pais.DDI.ToUpper().Trim(),
                     pais.sigla.ToUpper().Trim(),
-                    DateTime.Now
+                    DateTime.Now.ToString("yyyy-MM-dd")
                     );
-
-                //string sql = "INSERT INTO tbpaises ( nomepais, ddi, sigla ) VALUES ('" + pais.nomePais + "', '" + pais.DDI + "', '" + pais.sigla + "')";
-
+                var ultReg = "SELECT * FROM tbpaises where codpais=(SELECT MAX(codpais) FROM tbpaises)";
                 OpenConnection();
                 SqlQuery = new SqlCommand(sql, con);
-
-                //verifica se houve alteração
-                int i = SqlQuery.ExecuteNonQuery();
-
-                if (i > 1)
+                SqlQuery.ExecuteNonQuery();
+                var reg = new SqlCommand(ultReg, con);
+                reader = reg.ExecuteReader();
+                var model = new Sistema.Select.Paises.Select();
+                while (reader.Read())
                 {
-                    return true;
+                    model.id = Convert.ToInt32(reader["codpais"]);
+                    model.text = Convert.ToString(reader["nomepais"]);
                 }
-                else
-                {
-                    return false;
-                }
+
+                return model;
             }
             catch (Exception error)
             {
@@ -91,9 +89,9 @@ namespace Sistema.DAO
             {
                 string sql = "UPDATE tbpaises SET nomepais = '"
                     + pais.nomePais.ToUpper().Trim() + "'," +
-                    "ddi = '"+ pais.DDI.ToUpper().Trim() + "'," +
+                    "ddi = '" + pais.DDI.ToUpper().Trim() + "'," +
                     " sigla = '" + pais.sigla.ToUpper().Trim() + "," +
-                    "dtultalt = " + DateTime.Now 
+                    "dtultalteracao = " + DateTime.Now.ToString("yyyy-MM-dd")
                     + "' WHERE codpais = " + pais.codPais;
                 OpenConnection();
                 SqlQuery = new SqlCommand(sql, con);
@@ -146,7 +144,7 @@ namespace Sistema.DAO
                         //{
                         //    model.dtUltAlteracao = reader.GetDateTime(4);
                         //}
-                        
+
                     }
                 }
                 return model;
@@ -190,12 +188,27 @@ namespace Sistema.DAO
             }
         }
 
-        public List<Select.Paises.Select> GetPaisesSelect()
+        public List<Select.Paises.Select> GetPaisesSelect(int? id, string q)
         {
             try
             {
-
-                var sql = "SELECT* FROM tbpaises";
+                var swhere = string.Empty;
+                if (id != null)
+                {
+                    swhere = " WHERE codpais = " + id ;
+                }
+                if (!string.IsNullOrEmpty(q))
+                {
+                    //where += " OR ";
+                    var filter = q.Split(' ');
+                    foreach (var word in filter)
+                    {
+                        swhere += " OR nomepais LIKE'%" + word + "%'"; 
+                    }
+                    swhere = swhere.Remove(0, 3);
+                    swhere = " WHERE" + swhere;
+                }
+                var sql = "SELECT * FROM tbpaises" + swhere;
                 OpenConnection();
                 SqlQuery = new SqlCommand(sql, con);
                 reader = SqlQuery.ExecuteReader();

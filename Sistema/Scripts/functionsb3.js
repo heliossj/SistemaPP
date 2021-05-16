@@ -1722,7 +1722,7 @@ var Functions = new function () {
           data: JSON.stringify(result),
           success: function (data) {
             $.loadingMessage("hide");
-            new PNotify({ title: "Aviso!", text: data, type: "success", icon: "fa fa-print" });
+            //new PNotify({ title: "Aviso!", text: data, type: "success", icon: "fa fa-print" });
 
           },
           error: function (request) {
@@ -1730,9 +1730,9 @@ var Functions = new function () {
             $.loadingMessage("hide");
 
             if (request.status == 0 || request.status == 404 || request.status == 500 || !request.responseText) {
-              new PNotify({ title: "Aviso!", text: "Não foi possível enviar, entre em contato com o administrador", type: "error", icon: "fa fa-exclamation-triangle" });
+              //new PNotify({ title: "Aviso!", text: "Não foi possível enviar, entre em contato com o administrador", type: "error", icon: "fa fa-exclamation-triangle" });
             } else {
-              new PNotify({ title: "Aviso!", text: request.responseText, type: request.status === 200 ? "success" : "error", icon: request.status === 200 ? "fa fa-print" : "fa fa-exclamation-triangle" });
+              //new PNotify({ title: "Aviso!", text: request.responseText, type: request.status === 200 ? "success" : "error", icon: request.status === 200 ? "fa fa-print" : "fa fa-exclamation-triangle" });
             }
           },
         })
@@ -1741,9 +1741,9 @@ var Functions = new function () {
         //Functions.checkRequest(request)
 
         if (request.status == 0 || request.status == 404 || request.status == 500 || !request.responseText) {
-          new PNotify({ title: "Aviso!", text: "Não foi possível enviar, entre em contato com o administrador", type: "error", icon: "fa fa-exclamation-triangle" });
+          //new PNotify({ title: "Aviso!", text: "Não foi possível enviar, entre em contato com o administrador", type: "error", icon: "fa fa-exclamation-triangle" });
         } else {
-          new PNotify({ title: "Aviso!", text: request.responseText, type: "error", icon: "fa fa-exclamation-triangle" });
+          //new PNotify({ title: "Aviso!", text: request.responseText, type: "error", icon: "fa fa-exclamation-triangle" });
         }
       }
     });
@@ -2298,7 +2298,7 @@ var ThreadLoop = function (array) {
     },
 
     notify: function (message, options) {
-      new PNotify($.extend({ title: false, icon: false, text: message, type: "info", delay: 4000, buttons: { sticker: false } }, options));
+      //new PNotify($.extend({ title: false, icon: false, text: message, type: "info", delay: 4000, buttons: { sticker: false } }, options));
     },
 
     loadingMessage: function (show, message, time) {

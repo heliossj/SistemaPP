@@ -113,14 +113,14 @@ namespace Sistema.Controllers
 
             try
             {
-                var select = this.Find();              
+                var select = this.Find(null, requestModel.Search.Value);
 
                 var totalResult = select.Count();
 
                 var result = select.OrderBy(requestModel.Columns, requestModel.Start, requestModel.Length).ToList();
 
                 return Json(new DataTablesResponse(requestModel.Draw, result, totalResult, result.Count), JsonRequestBehavior.AllowGet);
-                         
+
 
             }
             catch (Exception ex)
@@ -135,7 +135,7 @@ namespace Sistema.Controllers
         {
             try
             {
-                var select = this.Find();
+                var select = this.Find(null, q);
                 return Json(new JsonSelect<object>(select, page, pageSize), JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -146,11 +146,11 @@ namespace Sistema.Controllers
         }
 
 
-        public JsonResult JsDetails()
+        public JsonResult JsDetails(int? id, string q)
         {
             try
             {
-                var result = this.Find();
+                var result = this.Find(id, q);
                 if (result != null)
                     return Json(result, JsonRequestBehavior.AllowGet);
                 return Json(result, JsonRequestBehavior.AllowGet);
@@ -162,18 +162,45 @@ namespace Sistema.Controllers
             }
         }
 
-        private IQueryable<dynamic> Find()
+        private IQueryable<dynamic> Find(int? id, string q)
         {
             var daoPaises = new DAOPaises();
-            var list = daoPaises.GetPaisesSelect();
+            var list = daoPaises.GetPaisesSelect(id, q);
             var select = list.Select(u => new
             {
                 id = u.id,
                 text = u.text,
             }).OrderBy(u => u.text).ToList();
+
+            //if (!string.IsNullOrEmpty(q))
+            //{
+            //    var filter = q.Split(' ');
+            //    foreach (var word in filter)
+            //    {
+            //        select.Where(u => u.text.Contains(word));
+            //    }
+            //}
+
+
+
             return select.AsQueryable();
         }
 
+        public JsonResult JsCreate(Paises model)
+        {
+            var daoPaises = new DAOPaises();
+            var create = daoPaises.Insert(model);
+            model.codPais = create.id;
+            //model.idMarca = bean.idMarca;
+            var result = new
+            {
+                type = "success",
+                field = "",
+                message = "Pais adicionado com sucesso!",
+                model = model
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
 
     }
 }

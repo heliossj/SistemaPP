@@ -77,7 +77,7 @@
 
     <div class="@Util.Input4">
         @Html.LabelFor(model => model.telefoneCelular, new { @class = "required" })
-        @Html.TextBoxFor(model => model.telefoneCelular, new { @class = "form-control", maxlength = "11", style = "text-transform:uppercase", minlength = "3" })
+        @Html.TextBoxFor(model => model.telefoneCelular, new { @class = "form-control phone-mask", maxlength = "11", style = "text-transform:uppercase", minlength = "3" })
         @Html.ValidationMessageFor(model => model.telefoneCelular, null, new { @class = "text-danger" })
     </div>
 
@@ -89,7 +89,19 @@
 </div>
 
 <div class="form-row">
-    <p class="@Util.Input9"> Cidade </p>
+    @*<p class="@Util.Input9"> Cidade </p>*@
+
+    <div class="@Util.Input2">
+        @Html.Label("codCidade", "Cod.", new { @class = "required" })
+        @Html.TextBox("codCidade", "", new { @class = "form-control", maxlength = "8", style = "text-transform:uppercase", minlength = "3" })
+    </div>
+
+    <div class="@Util.Input7">
+        @Html.Label("nomeCidade", "Cidade.", new { @class = "required" })
+        @Html.TextBox("nomeCidade", "", new { @class = "form-control", maxlength = "8", style = "text-transform:uppercase", minlength = "3" })
+    </div>
+
+    @*<p class="@Util.Input9"> Cidade </p>*@
 
     <div class="@Util.Input3">
         @Html.LabelFor(model => model.cep, new { @class = "required" })
@@ -114,13 +126,29 @@
     <div class="@Util.Input3">
         @Html.LabelFor(model => model.dtNascimento)
         <div class="input-group-append">
-            @Html.TextBoxFor(model => model.dtNascimento, new { @class = "form-control datepicker", disabled = true })
+            @Html.TextBoxFor(model => model.dtNascimento, new { @class = "form-control datepicker" })
             <span class="fa fa-calendar input-group-text" style="font-size:23px"></span>
         </div>
     </div>
 </div>
 
-<p> condicao de pagamento</p>
+<div class="form-row">
+    @*<p class="@Util.Input9"> CondicaoPagamento </p>*@
+
+    <div class="@Util.Input2">
+        @Html.Label("codCond", "Cod..", new { @class = "required" })
+        @Html.TextBox("codCond", "", new { @class = "form-control", maxlength = "8", style = "text-transform:uppercase", minlength = "3" })
+    </div>
+
+    <div class="@Util.Input10">
+        @Html.Label("nomeCondicao", "Cond. pagamento.", new { @class = "required" })
+        @Html.TextBox("nomeCondicao", "", new { @class = "form-control", maxlength = "8", style = "text-transform:uppercase", minlength = "3" })
+    </div>
+
+    @*<p class="@Util.Input9"> CondicaoPagamento </p>*@
+
+</div>
+
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -141,6 +169,7 @@
             lacale: 'en',
             clearBtn: true,
         });
+
     });
 
 </script>

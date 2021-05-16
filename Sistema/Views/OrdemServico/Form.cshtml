@@ -40,13 +40,39 @@
     </div>
 </div>
 
-<p class="@Util.Input3">
-    Cliente
-</p>
+<div class="form-row">
+    @*<p class="@Util.Input9"> Cliente </p>*@
 
-<p class="@Util.Input3">
-    Condição de pagamento
-</p>
+    <div class="@Util.Input2">
+        @Html.Label("codCond", "Cod.", new { @class = "required" })
+        @Html.TextBox("codCond", "", new { @class = "form-control", maxlength = "8", style = "text-transform:uppercase", minlength = "3" })
+    </div>
+
+    <div class="@Util.Input10">
+        @Html.Label("nomeCondicao", "Cliente.", new { @class = "required" })
+        @Html.TextBox("nomeCondicao", "", new { @class = "form-control", maxlength = "8", style = "text-transform:uppercase", minlength = "3" })
+    </div>
+
+    @*<p class="@Util.Input9"> Cliente </p>*@
+
+</div>
+
+<div class="form-row">
+    @*<p class="@Util.Input9"> Cliente </p>*@
+
+    <div class="@Util.Input2">
+        @Html.Label("codCond", "Cod.", new { @class = "required" })
+        @Html.TextBox("codCond", "", new { @class = "form-control", maxlength = "8", style = "text-transform:uppercase", minlength = "3" })
+    </div>
+
+    <div class="@Util.Input10">
+        @Html.Label("nomeCondicao", "Cond. pagamento", new { @class = "required" })
+        @Html.TextBox("nomeCondicao", "", new { @class = "form-control", maxlength = "8", style = "text-transform:uppercase", minlength = "3" })
+    </div>
+
+    @*<p class="@Util.Input9"> Cliente </p>*@
+
+</div>
 
 
 <div class="bs-callout bs-callout-primary">
@@ -54,10 +80,27 @@
     <div class="separador"></div>
 
     <div class="form-row">
-        <div class="@Util.Input10"> Serviços</div>
-        <div>
-            <button id="addProduto" type="button" class="btn btn-dark btn-sm"><i class="fa fa-plus"></i> Adicionar</button>
+        @*<p class="@Util.Input9"> Cliente </p>*@
+        <div class="@Util.Input1">
+            @Html.Label("codCond", "Cod.", new { @class = "required" })
+            @Html.TextBox("codCond", "", new { @class = "form-control", maxlength = "8", style = "text-transform:uppercase", minlength = "3" })
         </div>
+
+        <div class="@Util.Input9">
+            @Html.Label("nomeCondicao", "Serviço.", new { @class = "required" })
+            @Html.TextBox("nomeCondicao", "", new { @class = "form-control", maxlength = "8", style = "text-transform:uppercase", minlength = "3" })
+        </div>
+
+
+        <div class="@Util.Input1">
+            @Html.Label("nomeCondicao", "Quantidade.", new { @class = "required" })
+            @Html.TextBox("nomeCondicao", "", new { @class = "form-control", maxlength = "8", style = "text-transform:uppercase", minlength = "3" })
+        </div>
+
+        <div>
+            <button id="addProduto" type="button" class="btn btn-success btn-lg" style="margin-top:35px; font-size:14px" title="Adicionar"><i class="fa fa-plus"></i></button>
+        </div>
+        @*<p class="@Util.Input9"> Cliente </p>*@
     </div>
 
     <table id="tbservico" class="table table-striped table-bordered" style="width:100%">
@@ -89,10 +132,27 @@
     <div class="separador"></div>
 
     <div class="form-row">
-        <div class="@Util.Input10"> Produtos</div>
-        <div>
-            <button id="addProduto" type="button" class="btn btn-dark btn-sm"><i class="fa fa-plus"></i> Adicionar</button>
+        @*<p class="@Util.Input9"> Cliente </p>*@
+        <div class="@Util.Input1">
+            @Html.Label("codCond", "Cod.", new { @class = "required" })
+            @Html.TextBox("codCond", "", new { @class = "form-control", maxlength = "8", style = "text-transform:uppercase", minlength = "3" })
         </div>
+
+        <div class="@Util.Input9">
+            @Html.Label("nomeCondicao", "Produto.", new { @class = "required" })
+            @Html.TextBox("nomeCondicao", "", new { @class = "form-control", maxlength = "8", style = "text-transform:uppercase", minlength = "3" })
+        </div>
+
+
+        <div class="@Util.Input1">
+            @Html.Label("nomeCondicao", "Quantidade.", new { @class = "required" })
+            @Html.TextBox("nomeCondicao", "", new { @class = "form-control", maxlength = "8", style = "text-transform:uppercase", minlength = "3" })
+        </div>
+
+        <div>
+            <button id="addProduto" type="button" class="btn btn-success btn-lg" style="margin-top:35px; font-size:14px" title="Adicionar"><i class="fa fa-plus"></i></button>
+        </div>
+        @*<p class="@Util.Input9"> Cliente </p>*@
     </div>
 
     <table id="tbservico" class="table table-striped table-bordered" style="width:100%">

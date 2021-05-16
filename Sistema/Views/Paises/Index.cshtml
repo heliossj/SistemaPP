@@ -1,16 +1,28 @@
 ﻿@model IEnumerable<Sistema.Models.Paises>
 @{
-    ViewBag.Title = "Paises";
+    ViewBag.Title = "Países";
     ViewBag.Layout = "~/_Styles/Style.css";
 }
 <div class="container-fluid">
-    <div class="form-control-static" style="margin-top:15px; margin-block: 15px; text-align:center">
-        <h4 style="color: black; text-align:center"> @ViewBag.Title</h4>
+
+    @*<div class="container">
+            <div class="horizontal">
+                <div class="verticals ten offset-by-one">
+                    <h4 class="header-index"> @ViewBag.Title</h4>
+                    <ol class="breadcrumb breadcrumb-fill2">
+                        <li><a href="@Url.Action("Index")"></a><i class="fa fa-home"></i></li>
+                        <li class="active">Início</li>
+                    </ol>
+                </div>
+            </div>
+        </div>*@
+    <h4 class="header-index"> @ViewBag.Title</h4>
+    <div style="margin-block: 15px; text-align:center">
         @Html.ActionLink("Adicionar", "Create", new { }, new { @class = "btn btn-success" })
         @Html.ActionLink("Limpar", "Index", new { }, new { @class = "btn btn-primary" })
     </div>
 
-    <table id="paises" class="table table-striped table-bordered" style="width:100%">
+    <table id="Paises" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
                 <th width="5%">Código</th>

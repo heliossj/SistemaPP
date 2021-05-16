@@ -12,7 +12,7 @@ namespace Sistema.Models
         [Display(Name = "Código")]
         public int? codCondicao { get; set; }
 
-        [Display(Name = "Nome")]
+        [Display(Name = "Condição de pagamento")]
         public string nomeCondicao { get; set; }
 
         [Display(Name = "Situação")]
@@ -24,6 +24,18 @@ namespace Sistema.Models
         [Display(Name = "Data da últ. alteração")]
         public DateTime? dtUltAlteracao { get; set; }
 
+        [Display(Name = "Possuí juros?")]
+        public string juros { get; set; }
+
+        [Display(Name = "Taxa de juros (%)")]
+        public decimal? txJuros { get; set; }
+
+        [Display(Name = "Possuí parcela?")]
+        public string parcela { get; set; }
+
+        [Display(Name = "Quantidade de parcela(s)")]
+        public short? qtParcela { get; set; }
+
         public static SelectListItem[] Situacao
         {
             get
@@ -32,6 +44,31 @@ namespace Sistema.Models
                 {
                     new SelectListItem { Value = "A", Text = "ATIVA" },
                     new SelectListItem { Value = "I", Text = "INATIVA" }
+                };
+            }
+        }
+
+        public static SelectListItem[] Juros
+        {
+            get
+            {
+                return new[]
+                {
+                    new SelectListItem { Value = "N", Text = "NÃO" },
+                    new SelectListItem { Value = "S", Text = "SIM" },
+
+                };
+            }
+        }
+
+        public static SelectListItem[] Parcela
+        {
+            get
+            {
+                return new[]
+                {
+                    new SelectListItem { Value = "N", Text = "NÃO" },
+                    new SelectListItem { Value = "S", Text = "SIM" },
                 };
             }
         }

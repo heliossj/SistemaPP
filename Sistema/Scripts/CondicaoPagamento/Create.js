@@ -1,0 +1,36 @@
+﻿$(function () {
+
+
+    if ($("#juros").val() == "N") {
+        $("#divJuros").slideUp();
+    } else {
+        $("#divJuros").slideDown();
+    }
+
+
+    $("#juros").change(function () {
+        if ($("#juros").val() == "N") {
+            $("#divJuros").slideUp();
+        } else {
+            $("#divJuros").slideDown();
+        }
+    })
+
+    if ($("#parcela").val() == "N") {
+        $("#divParcela").slideUp();
+    } else {
+        $("#divParcela").slideDown();
+    }
+
+
+    $("#parcela").change(function () {
+        if ($("#parcela").val() == "N") {
+            $("#divParcela").slideUp();
+        } else {
+            $("#divParcela").slideDown();
+        }
+    })
+
+
+
+});

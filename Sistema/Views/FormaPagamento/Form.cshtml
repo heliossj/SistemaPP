@@ -18,16 +18,16 @@
 
 <div class="form-row">
     <div class="@Util.Input3">
-        @Html.LabelFor(model => model.situacao)
+        @Html.LabelFor(model => model.situacao, new { @class = "required" })
         @Html.DropDownListFor(model => model.situacao, Sistema.Models.CondicaoPagamento.Situacao, new { @class = "form-control" })
         @Html.ValidationMessageFor(model => model.situacao, null, new { @class = "text-danger" })
     </div>
 </div>
 
-@*<div class="form-row">
+<div class="form-row">
         <div class="@Util.Input12">
-            @Html.LabelFor(model => model.nomeCondicao, new { @class = "required" })
-            @Html.TextBoxFor(model => model.nomeCondicao, new { @class = "form-control", maxlength = "100", style = "text-transform:uppercase", minlength = "3" })
-            @Html.ValidationMessageFor(model => model.nomeCondicao, null, new { @class = "text-danger" })
+            @Html.LabelFor(model => model.nomeForma, new { @class = "required" })
+            @Html.TextBoxFor(model => model.nomeForma, new { @class = "form-control", maxlength = "100", style = "text-transform:uppercase", minlength = "3" })
+            @Html.ValidationMessageFor(model => model.nomeForma, null, new { @class = "text-danger" })
         </div>
-    </div>*@
+    </div>

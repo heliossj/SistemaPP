@@ -12,7 +12,7 @@ namespace Sistema.Models
         [Display(Name = "Código")]
         public int? codForma { get; set; }
 
-        [Display(Name = "Nome")]
+        [Display(Name = "Forma de pagamento")]
         public string nomeForma { get; set; }
 
         [Display(Name = "Situação")]

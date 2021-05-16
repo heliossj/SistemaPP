@@ -26,21 +26,54 @@
 
 
 <div class="form-row">
-    <div class="@Util.Input9">
+    <div class="@Util.Input8">
         @Html.LabelFor(model => model.nomeProduto, new { @class = "required" })
         @Html.TextBoxFor(model => model.nomeProduto, new { @class = "form-control", maxlength = "100", style = "text-transform:uppercase", minlength = "3" })
         @Html.ValidationMessageFor(model => model.nomeProduto, null, new { @class = "text-danger" })
     </div>
 
-    <div class="@Util.Input3">
+    <div class="@Util.Input2">
         @Html.LabelFor(model => model.unidade, new { @class = "required" })
         @Html.DropDownListFor(model => model.situacao, Sistema.Models.Produtos.Unidade, new { @class = "form-control" })
         @Html.ValidationMessageFor(model => model.unidade, null, new { @class = "text-danger" })
     </div>
+
+    <div class="@Util.Input2">
+        @Html.LabelFor(model => model.largura, new { @class = "required" })
+        @Html.DropDownListFor(model => model.largura, Sistema.Models.Produtos.Largura, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.largura, null, new { @class = "text-danger" })
+    </div>
 </div>
 
-<p> Unidade / Fornecedor</p>
- 
+<div class="form-row">
+    @*<p class="@Util.Input9"> Cliente </p>*@
+    <div class="@Util.Input2">
+        @Html.Label("codCond", "Cod.", new { @class = "required" })
+        @Html.TextBox("codCond", "", new { @class = "form-control", maxlength = "8", style = "text-transform:uppercase", minlength = "3" })
+    </div>
+
+    <div class="@Util.Input10">
+        @Html.Label("nomeCondicao", "Grupo.", new { @class = "required" })
+        @Html.TextBox("nomeCondicao", "", new { @class = "form-control", maxlength = "8", style = "text-transform:uppercase", minlength = "3" })
+    </div>
+
+    @*<p class="@Util.Input9"> Cliente </p>*@
+</div>
+
+<div class="form-row">
+    @*<p class="@Util.Input9"> Cliente </p>*@
+    <div class="@Util.Input2">
+        @Html.Label("codCond", "Cod.", new { @class = "required" })
+        @Html.TextBox("codCond", "", new { @class = "form-control", maxlength = "8", style = "text-transform:uppercase", minlength = "3" })
+    </div>
+
+    <div class="@Util.Input10">
+        @Html.Label("nomeCondicao", "Fornecedor.", new { @class = "required" })
+        @Html.TextBox("nomeCondicao", "", new { @class = "form-control", maxlength = "8", style = "text-transform:uppercase", minlength = "3" })
+    </div>
+    @*<p class="@Util.Input9"> Cliente </p>*@
+</div>
+
 <div class="form-row">
     <div class="@Util.Input3">
         @Html.LabelFor(model => model.ncm, new { @class = "required" })

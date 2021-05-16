@@ -31,5 +31,5 @@
 </div>
 
 <div class="form-row">
-    @Html.EditorFor(model => model.Pais, "Paises/Select", new { @disabled = false })
+    @Html.EditorFor(model => model.Pais, "Paises/Select", new { @disabled = readOnly, CriarPais = "true" })
 </div>

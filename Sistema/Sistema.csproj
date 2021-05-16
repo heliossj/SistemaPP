@@ -208,6 +208,7 @@
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\CondicaoPagamento\Create.js" />
     <Content Include="Scripts\Functions.js" />
     <Content Include="Scripts\functionsb3.js" />
     <Content Include="Scripts\select2.js" />
@@ -436,6 +437,8 @@
     <Content Include="Views\Shared\EditorTemplates\Estados\Select.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Estados\Form.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Estados\Query.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Paises\Query.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Paises\Form.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
