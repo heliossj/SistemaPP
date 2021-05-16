@@ -77,7 +77,7 @@
 
     <div class="@Util.Input4">
         @Html.LabelFor(model => model.telefoneCelular, new { @class = "required" })
-        @Html.TextBoxFor(model => model.telefoneCelular, new { @class = "form-control phone-mask", maxlength = "11", style = "text-transform:uppercase", minlength = "3" })
+        @Html.TextBoxFor(model => model.telefoneCelular, new { @class = "form-control phone", maxlength = "11", style = "text-transform:uppercase", minlength = "3" })
         @Html.ValidationMessageFor(model => model.telefoneCelular, null, new { @class = "text-danger" })
     </div>
 
@@ -148,28 +148,3 @@
     @*<p class="@Util.Input9"> CondicaoPagamento </p>*@
 
 </div>
-
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        $.fn.datepicker.dates['en'] = {
-            days: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"],
-            daysShort: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"],
-            daysMin: ["Do", "Se", "Te", "Qu", "Qu", "Se", "Sa", "Do"],
-            months: ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"],
-            monthsShort: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
-            today: "Hoje",
-            clear: "Limpar",
-            titleFormat: "MM yyyy",
-            weekStart: 0
-        };
-
-        $('.datepicker').datepicker({
-            format: 'dd/mm/yyyy',
-            lacale: 'en',
-            clearBtn: true,
-        });
-
-    });
-
-</script>

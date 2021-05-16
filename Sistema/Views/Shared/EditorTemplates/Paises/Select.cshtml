@@ -71,24 +71,25 @@ else
             }
             else
             {
-
-                <div class="input-group">
-                    @Html.HiddenFor(model => model.text)
-                    <div style="width:15%">
-                        @Html.TextBoxFor(model => model.id, new { @style = "border-radius: 4px 0px 0px 4px;", @class = "form-control", @autocomplete = "off" })
-                    </div>
-                    <div class="input-group-append">
-                        <a style="border-radius:0" data-target="#@Sistema.Util.SelectFunctions.getInputId("Modal", Prefix)" href="#@Sistema.Util.SelectFunctions.getInputId("Modal", Prefix)" id="@Sistema.Util.SelectFunctions.getInputId("btn-localizar", Prefix)" title="Localizar @ViewBag.Label" class="btn btn-primary" data-toggle="modal"><i class="fa fa-search"></i></a>
-                        @Html.DropDownList("select", new List<SelectListItem>(), new { @class = "form-control", style = "height:38px;" })
-                    </div>
-                    @*<div>
-                            @Html.DropDownList("select", new List<SelectListItem>(), new { @class = "form-control", style = "height:38px;" })
-                        </div>*@
-                    @if (CriarPais)
-                    {
-                        <a style="border-radius:0px 3px 3px 0px" data-target="#@Sistema.Util.SelectFunctions.getInputId("Form_Modal", Prefix)" href="#@Sistema.Util.SelectFunctions.getInputId("Form_Modal", Prefix)" title="Adicionar novo registro" class="btn btn-success" data-toggle="modal"><i class="fa fa-plus"></i></a>
-                    }
+        <div class="input-group">
+            @Html.HiddenFor(model => model.text)
+            <div class="input-group-btn" style="width:15%">
+                @Html.TextBoxFor(model => model.id, new { @style = "border-radius: 4px 0px 0px 4px;", @class = "form-control", @autocomplete = "off" })
+            </div>
+            <div class="input-group-btn">
+                <a style="border-radius:0" data-target="#@Sistema.Util.SelectFunctions.getInputId("Modal", Prefix)" href="#@Sistema.Util.SelectFunctions.getInputId("Modal", Prefix)" id="@Sistema.Util.SelectFunctions.getInputId("btn-localizar", Prefix)" title="Localizar @ViewBag.Label" class="btn btn-primary" data-toggle="modal"><i class="fa fa-search"></i></a>
+            </div>
+            <div class="input-group-btn">
+                @Html.DropDownList("select", new List<SelectListItem>(), new { @class = "form-control", style = "height:38px" })
+            </div>
+            @*@Html.TextBoxFor(model => model.id, new { @class = "form-control" })*@
+            @if (CriarPais)
+            {
+                <div class="input-group-btn">
+                    <a style="border-radius:0px 3px 3px 0px" data-target="#@Sistema.Util.SelectFunctions.getInputId("Form_Modal", Prefix)" href="#@Sistema.Util.SelectFunctions.getInputId("Form_Modal", Prefix)" title="Adicionar novo registro" class="btn btn-success" data-toggle="modal"><i class="fa fa-plus"></i></a>
                 </div>
+            }
+        </div>
             }
             @Html.ValidationMessageFor(model => model.id, null, new { @class = "text-danger" })
         </div>
@@ -99,7 +100,6 @@ else
                 <div class="modal-header">
                     <h4 class="modal-title">Consultar @Prefix</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-
                 </div>
                 <div class="modal-body">
                     @Html.Editor("Modal", "Paises/Query")
@@ -112,7 +112,7 @@ else
     </div>
     @Html.Editor("Form", "Paises/Form")
     @Html.AddScriptBlock(
-                @<script type="text/javascript">
+    @<script type="text/javascript">
         $(function () {
 
             $(document).on('@Sistema.Util.SelectFunctions.getInputId("Form_Insert", Html.ClientPrefixName().ToString())', function (e, data) {
@@ -148,6 +148,6 @@ else
            shared_function["@Prefix"].init();
         });
 
-                </script>
+      </script>
 )
 }

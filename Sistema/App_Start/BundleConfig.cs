@@ -45,7 +45,8 @@ namespace Sistema
                         "~/Scripts/select2_locale_pt_BR.js",
                         "~/Scripts/sSelect.js",
                         "~/Scripts/Functions.js",
-                        "~/Scripts/functionsb3.js"
+                        "~/Scripts/functionsb3.js",
+                        "~/Scripts/Sistema.js"
                       ));
 
         }
