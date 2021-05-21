@@ -264,6 +264,7 @@
                         //RPNotification.pageOverlay(true, "overlay-transparent");
                     },
                     success: function (data) {
+                        console.log(data);
                         self.lastData = self.data;
                         $select.val(null).trigger('change');
                         // RPNotification.pageOverlay(false, "overlay-transparent");
@@ -426,6 +427,7 @@
                                 //RPNotification.pageOverlay(true, "overlay-transparent");
                             },
                             success: function (data) {
+                                console.log(data);
                                 self.lastData = self.data;
                                 $select.val(null).trigger('change');
                                 //RPNotification.pageOverlay(false, "overlay-transparent");
@@ -434,6 +436,7 @@
                                 }
                                 else {
                                     //new PNotify({ title: "Atenção!", text: "Nenhum registro encontrado!", type: "error" });
+                                    self.elements.$text.blink({ msg: "Registro não encontrado" });
                                     self.elements.$id.blink();
                                     $select.empty().trigger('change').trigger('select2:unselect');
                                 }
@@ -481,7 +484,7 @@
                                         //RPNotification.pageOverlay(true, "overlay-transparent");
                                     },
                                     success: function (data) {
-
+                                       
                                         self.lastData = self.data;
                                         //RPNotification.pageOverlay(false, "overlay-transparent");
                                         if (data) {

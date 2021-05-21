@@ -1,12 +1,10 @@
 ﻿$(function () {
 
-
     if ($("#juros").val() == "N") {
-        $("#divJuros").slideUp();
+        $("#divJuros").hide();
     } else {
-        $("#divJuros").slideDown();
+        $("#divJuros").show();
     }
-
 
     $("#juros").change(function () {
         if ($("#juros").val() == "N") {
@@ -17,11 +15,10 @@
     })
 
     if ($("#parcela").val() == "N") {
-        $("#divParcela").slideUp();
+        $("#divParcela").hide();
     } else {
-        $("#divParcela").slideDown();
+        $("#divParcela").show();
     }
-
 
     $("#parcela").change(function () {
         if ($("#parcela").val() == "N") {

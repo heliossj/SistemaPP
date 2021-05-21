@@ -52,10 +52,11 @@ namespace Sistema.DAO
         {
             try
             {
-                var sql = string.Format("INSERT INTO tbpaises ( nomepais, ddi, sigla, dtcadastro) VALUES ('{0}', '{1}', '{2}', '{3}')",
+                var sql = string.Format("INSERT INTO tbpaises ( nomepais, ddi, sigla, dtcadastro, dtultalteracao) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}')",
                     pais.nomePais.ToUpper().Trim(),
                     pais.DDI.ToUpper().Trim(),
                     pais.sigla.ToUpper().Trim(),
+                    DateTime.Now.ToString("yyyy-MM-dd"),
                     DateTime.Now.ToString("yyyy-MM-dd")
                     );
                 var ultReg = "SELECT * FROM tbpaises where codpais=(SELECT MAX(codpais) FROM tbpaises)";
@@ -137,14 +138,6 @@ namespace Sistema.DAO
                         model.sigla = reader.GetString(3);
                         model.dtCadastro = reader.GetDateTime(4);
                         model.dtUltAlteracao = reader.IsDBNull(5) ? model.dtUltAlteracao = null : reader.GetDateTime(5);
-                        //if (reader.IsDBNull(5))
-                        //{
-                        //    model.dtUltAlteracao = null;
-                        //} else
-                        //{
-                        //    model.dtUltAlteracao = reader.GetDateTime(4);
-                        //}
-
                     }
                 }
                 return model;
@@ -205,8 +198,8 @@ namespace Sistema.DAO
                     {
                         swhere += " OR nomepais LIKE'%" + word + "%'"; 
                     }
-                    swhere = swhere.Remove(0, 3);
-                    swhere = " WHERE" + swhere;
+                    //swhere = swhere.Remove(0, 3);
+                    swhere = " WHERE" + swhere.Remove(0, 3);
                 }
                 var sql = "SELECT * FROM tbpaises" + swhere;
                 OpenConnection();

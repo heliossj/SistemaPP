@@ -18,7 +18,7 @@ namespace Sistema.Models
         [Display(Name = "Situação")]
         public string situacao { get; set; }
 
-        [Display(Name = "Nome / Razão Social")]
+        [Display(Name = "Nome")]
         public string nomeCliente { get; set; }
 
         [Display(Name = "Razão Social")]
@@ -53,14 +53,23 @@ namespace Sistema.Models
         [Display(Name = "CEP")]
         public string cep { get; set; }
 
-        [Display(Name = "CPF / CNPJ")]
-        public string cpfCNPJ { get; set; }
+        [Display(Name = "CPF")]
+        public string cpf { get; set; }
 
-        [Display(Name = "RG / IE")]
-        public string rgIE { get; set; }
+        [Display(Name = "CNPJ")]
+        public string cnpj { get; set; }
+
+        [Display(Name = "RG")]
+        public string rg { get; set; }
+
+        [Display(Name = "IE")]
+        public string ie { get; set; }
 
         [Display(Name = "Data de nascimento")]
         public DateTime? dtNascimento { get; set; }
+
+        [Display(Name = "Data de fundação")]
+        public DateTime? dtFundacao { get; set; }
 
         //Condicao de pagamento
 

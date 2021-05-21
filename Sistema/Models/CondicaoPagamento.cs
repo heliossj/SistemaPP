@@ -24,13 +24,13 @@ namespace Sistema.Models
         [Display(Name = "Data da últ. alteração")]
         public DateTime? dtUltAlteracao { get; set; }
 
-        [Display(Name = "Possuí juros?")]
+        [Display(Name = "Possui juros?")]
         public string juros { get; set; }
 
         [Display(Name = "Taxa de juros (%)")]
         public decimal? txJuros { get; set; }
 
-        [Display(Name = "Possuí parcela?")]
+        [Display(Name = "Possui parcela?")]
         public string parcela { get; set; }
 
         [Display(Name = "Quantidade de parcela(s)")]

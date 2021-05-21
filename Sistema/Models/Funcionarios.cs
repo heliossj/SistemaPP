@@ -12,7 +12,7 @@ namespace Sistema.Models
         [Display(Name = "Código")]
         public int? codFuncionario { get; set; }
 
-        [Display(Name = "Nome / Razão social")]
+        [Display(Name = "Funcionário")]
         public string nomeFuncionario { get; set; }
 
         [Display(Name = "Situação")]
@@ -21,7 +21,8 @@ namespace Sistema.Models
         [Display(Name = "Sexo")]
         public string sexo { get; set; }
 
-        //logradouro
+        [Display(Name = "Logradouro")]
+        public string dsLogradouro { get; set; }        
 
         [Display(Name = "Nº")]
         public string numero { get; set; }
@@ -58,14 +59,14 @@ namespace Sistema.Models
         [Display(Name = "CNH")]
         public string cnh { get; set; }
 
-        [Display(Name = "Data de validade CNH")]
-        public DateTime? dtValidadeCNH { get; set; }
-
         [Display(Name = "Data de admissão")]
         public DateTime? dtAdmissao { get; set; }
 
         [Display(Name = "Data de demissão")]
         public DateTime? dtDemissao { get; set; }
+
+        [Display(Name = "Salário")]
+        public decimal? vlSalario { get; set; }
 
         [Display(Name = "Data de cadastro")]
         public DateTime? dtCadastro { get; set; }
@@ -82,6 +83,18 @@ namespace Sistema.Models
                 {
                     new SelectListItem { Value = "A", Text = "ATIVA" },
                     new SelectListItem { Value = "I", Text = "INATIVA" }
+                };
+            }
+        }
+
+        public static SelectListItem[] Sexo
+        {
+            get
+            {
+                return new[]
+                {
+                    new SelectListItem { Value = "M", Text = "MASCULINO" },
+                    new SelectListItem { Value = "F", Text = "FEMININO" }
                 };
             }
         }

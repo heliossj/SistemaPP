@@ -45,3 +45,24 @@
         @Html.TextAreaFor(model => model.descricao, new { @class = "form-control" })
     </div>
 </div>
+
+@if (action != "create")
+{
+    <div class="form-row">
+        <div class="@Util.Input3">
+            @Html.LabelFor(model => model.dtCadastro)
+            <div class="input-group-append">
+                @Html.TextBoxFor(model => model.dtCadastro, new { @class = "form-control datepicke date", disabled = true })
+                <span class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></span>
+            </div>
+        </div>
+
+        <div class="@Util.Input3 ">
+            @Html.LabelFor(model => model.dtUltAlteracao)
+            <div class="input-group">
+                @Html.TextBoxFor(model => model.dtUltAlteracao, new { @class = "form-control datepicker date", disabled = true })
+                <div class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></div>
+            </div>
+        </div>
+    </div>
+}

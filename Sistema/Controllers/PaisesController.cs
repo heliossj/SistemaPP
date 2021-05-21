@@ -150,10 +150,10 @@ namespace Sistema.Controllers
         {
             try
             {
-                var result = this.Find(id, q);
+                var result = this.Find(id, q).FirstOrDefault();
                 if (result != null)
                     return Json(result, JsonRequestBehavior.AllowGet);
-                return Json(result, JsonRequestBehavior.AllowGet);
+                return Json(string.Empty, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {

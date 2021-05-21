@@ -1,4 +1,7 @@
-﻿.bs-callout {
+﻿
+
+/*Callout colors*/
+.bs-callout {
     padding: 20px;
     margin: 20px 0;
     border: 1px solid #eee;
@@ -81,7 +84,7 @@
     font-size: 18px;
 }
 
-
+/*header index*/
 .header-index{
     text-align: center;
     margin-top:13px;
@@ -107,26 +110,15 @@
     padding-left: 2px !important;
 }
 
-
-
-
-/*
-
-
-body {
-    font-size: 14px;
-    font-family: Roboto;
+/* Input form valid */
+.input-validation-error {
+    border-color: red !important;
+    color: red !important;
 }
 
-h1 {
-    text-align: center;
-    margin-top: 30px;
-    margin-bottom: 50px;
+.field-validation-error {
+    color: red !important;
 }
-
-ol {
-    list-style: none;
-}*/
 
 .breadcrumb {
     width: 100%;
@@ -284,9 +276,14 @@ ol {
     }*/
 
 .breadcrumb .fa:hover {
-    transform: scale(1.15)
+    transform: scale(1.15);
 }
 
 .breadcrumb .fa:before{
     margin-left: -13px;
+}
+
+/*  Input valid select */
+#errmsg {
+    color: red;
 }
