@@ -145,7 +145,6 @@ namespace Sistema.Controllers
             }
         }
 
-
         public JsonResult JsDetails(int? id, string q)
         {
             try
@@ -170,19 +169,12 @@ namespace Sistema.Controllers
             {
                 id = u.id,
                 text = u.text,
+                ddi = u.ddi,
+                sigla = u.sigla,
+                dtcadastro = u.dtCadastro,
+                dtultalteracao = u.dtUltAlteracao
+               
             }).OrderBy(u => u.text).ToList();
-
-            //if (!string.IsNullOrEmpty(q))
-            //{
-            //    var filter = q.Split(' ');
-            //    foreach (var word in filter)
-            //    {
-            //        select.Where(u => u.text.Contains(word));
-            //    }
-            //}
-
-
-
             return select.AsQueryable();
         }
 
@@ -190,13 +182,27 @@ namespace Sistema.Controllers
         {
             var daoPaises = new DAOPaises();
             var create = daoPaises.Insert(model);
-            model.codPais = create.id;
             //model.idMarca = bean.idMarca;
             var result = new
             {
                 type = "success",
                 field = "",
                 message = "Pais adicionado com sucesso!",
+                model = model
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult JsUpdate(Paises model)
+        {
+            var daoPaises = new DAOPaises();
+            var create = daoPaises.Update(model);
+            //model.idMarca = bean.idMarca;
+            var result = new
+            {
+                type = "success",
+                field = "",
+                message = "Pais alterado com sucesso!",
                 model = model
             };
             return Json(result, JsonRequestBehavior.AllowGet);

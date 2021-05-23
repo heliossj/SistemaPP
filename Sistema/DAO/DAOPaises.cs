@@ -48,7 +48,7 @@ namespace Sistema.DAO
             }
         }
 
-        public Select.Paises.Select Insert(Models.Paises pais)
+        public bool Insert(Models.Paises pais)
         {
             try
             {
@@ -59,20 +59,29 @@ namespace Sistema.DAO
                     DateTime.Now.ToString("yyyy-MM-dd"),
                     DateTime.Now.ToString("yyyy-MM-dd")
                     );
-                var ultReg = "SELECT * FROM tbpaises where codpais=(SELECT MAX(codpais) FROM tbpaises)";
+                //var ultReg = "SELECT * FROM tbpaises where codpais=(SELECT MAX(codpais) FROM tbpaises)";
                 OpenConnection();
                 SqlQuery = new SqlCommand(sql, con);
-                SqlQuery.ExecuteNonQuery();
-                var reg = new SqlCommand(ultReg, con);
-                reader = reg.ExecuteReader();
-                var model = new Sistema.Select.Paises.Select();
-                while (reader.Read())
-                {
-                    model.id = Convert.ToInt32(reader["codpais"]);
-                    model.text = Convert.ToString(reader["nomepais"]);
-                }
+                //SqlQuery.ExecuteNonQuery();
+                //var reg = new SqlCommand(ultReg, con);
+                //reader = reg.ExecuteReader();
+                //var model = new Sistema.Select.Paises.Select();
+                //while (reader.Read())
+                //{
+                //    model.id = Convert.ToInt32(reader["codpais"]);
+                //    model.text = Convert.ToString(reader["nomepais"]);
+                //}
 
-                return model;
+                int i = SqlQuery.ExecuteNonQuery();
+
+                if (i > 1)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             catch (Exception error)
             {
@@ -91,8 +100,8 @@ namespace Sistema.DAO
                 string sql = "UPDATE tbpaises SET nomepais = '"
                     + pais.nomePais.ToUpper().Trim() + "'," +
                     "ddi = '" + pais.DDI.ToUpper().Trim() + "'," +
-                    " sigla = '" + pais.sigla.ToUpper().Trim() + "," +
-                    "dtultalteracao = " + DateTime.Now.ToString("yyyy-MM-dd")
+                    " sigla = '" + pais.sigla.ToUpper().Trim() + "'," +
+                    "dtultalteracao = '" + DateTime.Now.ToString("yyyy-MM-dd")
                     + "' WHERE codpais = " + pais.codPais;
                 OpenConnection();
                 SqlQuery = new SqlCommand(sql, con);
@@ -137,7 +146,7 @@ namespace Sistema.DAO
                         model.DDI = reader.GetString(2);
                         model.sigla = reader.GetString(3);
                         model.dtCadastro = reader.GetDateTime(4);
-                        model.dtUltAlteracao = reader.IsDBNull(5) ? model.dtUltAlteracao = null : reader.GetDateTime(5);
+                        model.dtUltAlteracao = reader.GetDateTime(5);
                     }
                 }
                 return model;
@@ -213,6 +222,10 @@ namespace Sistema.DAO
                     {
                         id = Convert.ToInt32(reader["codpais"]),
                         text = Convert.ToString(reader["nomepais"]),
+                        ddi = Convert.ToString(reader["ddi"]),
+                        sigla = Convert.ToString(reader["sigla"]),
+                        dtCadastro = Convert.ToDateTime(reader["dtcadastro"]),
+                        dtUltAlteracao = Convert.ToDateTime(reader["dtultalteracao"]),
                     };
 
                     list.Add(pais);
