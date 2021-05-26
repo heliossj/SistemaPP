@@ -10,7 +10,11 @@
     string classForm = Convert.ToString(ViewData["classForm"] ?? Util.Input12);
     var Prefix = Html.ClientPrefixName().ToString();
 }
+
+@Html.Hidden("isEdit")
+
 <div class="@classForm">
+
     @Html.Label("", Label)
     <div class="input-group">
         <div class="input-group-btn" style="width:15%">
@@ -42,11 +46,13 @@
                     <div style="text-align:right">
                         <button id="@Sistema.Util.SelectFunctions.getInputId("Create", Prefix)" onclick="OpenModalCreate()" type="button" class="btn btn-success"><i class="fa fa-plus"></i>  Adicionar</button>
                     </div>
+
                     <div id="body" class="modal-body" style="padding: 33px 0px 0px 0px;">
                         <div class="container-fluid">
                             <div id="TablePaises"></div>
                         </div>
                     </div>
+
                     <div class="modal-footer">
                         <div style="text-align:right">
                             <button id="@Sistema.Util.SelectFunctions.getInputId("Fechar", Prefix)" onclick="FecharModal()" type="button" class="btn btn-outline-dark"><i class="fa fa-times"></i> Fechar</button>
@@ -59,7 +65,7 @@
     </div>
 </div>
 <div id="@Sistema.Util.SelectFunctions.getInputId("ModalCreate", Prefix)" class="modal fade" role="dialog">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-body no-padding">
                 <div class="panel panel-primary" style="margin-bottom: -1px;">
@@ -72,7 +78,7 @@
                     <div id="body" class="modal-body" style="padding: 33px 0px 0px 0px;">
                         <div class="container-fluid">
 
-                            <div class="form-row">
+                            <div class="form-row isEdit">
                                 <div class="@Util.Input2">
                                     @Html.Label("codPais", "Código")
                                     @Html.TextBox("codPais", null, new { @class = "form-control", disabled = true })
@@ -80,57 +86,48 @@
                             </div>
 
                             <div class="form-row">
-                                <div class="@Util.Input12">
+                                <div class="@Util.Input6">
                                     @Html.Label("nomePais", "País", new { @class = "required" })
-                                    <div class="@Util.Input12">
-                                        @Html.TextBox("nomePais", null, new { @class = "form-control", maxlength = "50", style = "text-transform:uppercase" })
-                                    </div>
+                                    @Html.TextBox("nomePais", null, new { @class = "form-control", maxlength = "50", style = "text-transform:uppercase" })
                                     @Html.ValidationMessage("nomePais", null, new { @class = "text-danger" })
                                 </div>
-                            </div>
 
-                            <div class="form-row">
                                 <div class="@Util.Input3">
                                     @Html.Label("ddi", "DDI", new { @class = "required" })
-                                    <div class="@Util.Input12">
-                                        @Html.TextBox("ddi", null, new { @class = "form-control", maxlength = "5", style = "text-transform:uppercase" })
-                                    </div>
+                                    @Html.TextBox("ddi", null, new { @class = "form-control", maxlength = "5", style = "text-transform:uppercase" })
                                 </div>
 
                                 <div class="@Util.Input3">
                                     @Html.Label("sigla", "Sigla", new { @class = "required" })
-                                    <div class="@Util.Input12">
-                                        @Html.TextBox("sigla", null, new { @class = "form-control", maxlength = "2", style = "text-transform:uppercase" })
-                                    </div>
+                                    @Html.TextBox("sigla", null, new { @class = "form-control", maxlength = "2", style = "text-transform:uppercase" })
                                 </div>
                             </div>
 
-                            <div class="form-row">
+                            <div class="form-row isEdit">
                                 <div class="@Util.Input3">
-                                    @Html.Label("dtcadastro", "Data de cadastro", new { @class = "required" })
+                                    @Html.Label("dtCadastro", "Data de cadastro", new { @class = "required" })
                                     <div class="input-group-append">
-                                        @Html.TextBox("dtcadastro", null, new { @class = "form-control", disabled = true })
+                                        @Html.TextBox("dtCadastro", null, new { @class = "form-control", disabled = true })
                                         <span class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></span>
                                     </div>
                                 </div>
 
                                 <div class="@Util.Input3 ">
-                                    @Html.Label("dtultalteracao", "Data de cadastro", new { @class = "required" })
+                                    @Html.Label("dtUltAlteracao", "Data de cadastro", new { @class = "required" })
                                     <div class="input-group">
-                                        @Html.TextBox("dtultalteracao", null, new { @class = "form-control", disabled = true })
+                                        @Html.TextBox("dtUltAlteracao", null, new { @class = "form-control", disabled = true })
                                         <div class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></div>
                                     </div>
                                 </div>
                             </div>
 
+
                         </div>
-
-
                     </div>
+
                     <div class="modal-footer">
                         <div style="text-align:right">
-                            <button id="@Sistema.Util.SelectFunctions.getInputId("btnSave", Prefix)" onclick="OpenModalCreate()" type="button" class="btn btn-success"><i class="fa fa-save"></i>  Salvar</button>
-                            <button id="@Sistema.Util.SelectFunctions.getInputId("btnUpdate", Prefix)" onclick="OpenModalCreate()" type="button" class="btn btn-success"><i class="fa fa-save"></i>  Salvar</button>
+                            <button id="@Sistema.Util.SelectFunctions.getInputId("btnSave", Prefix)" type="button" class="btn btn-success"><i class="fa fa-save"></i>  Salvar</button>
                             <button id="@Sistema.Util.SelectFunctions.getInputId("FecharCreate", Prefix)" onclick="FecharModalCreate()" type="button" class="btn btn-danger"><i class="fa fa-ban"></i>  Cancelar</button>
                         </div>
                     </div>
@@ -149,12 +146,35 @@
          });
 
          $('#@Sistema.Util.SelectFunctions.getInputId("btnSave", Prefix)').on('click', function () {
-                self.insert();
+                self.save();
          });
 
-         $('#@Sistema.Util.SelectFunctions.getInputId("btnUpdate", Prefix)').on('click', function () {
-                self.update();
+         $('#@Sistema.Util.SelectFunctions.getInputId("id", Prefix)').change(function (data, e) {
+             var id = $('#@Sistema.Util.SelectFunctions.getInputId("id", Prefix)').val();
+             if (id == "") {
+                 $("#@Sistema.Util.SelectFunctions.getInputId("id", Prefix)").val("");
+                 $("#@Sistema.Util.SelectFunctions.getInputId("text", Prefix)").val("");
+             } else {
+                 $.ajax({
+                     dataType: 'json',
+                     type: 'GET',
+                     url: '@Url.Action("JsDetails", "Paises")',
+                     data: { 'id': id },
+                     success: function (data) {
+                         if (!data) {
+                             alert("Nenhum registro encontrado para o código informado!")
+                         }
+                         $("#@Sistema.Util.SelectFunctions.getInputId("id", Prefix)").val(data.id);
+                         $("#@Sistema.Util.SelectFunctions.getInputId("text", Prefix)").val(data.text);
+                     },
+                     error: function (err) {
+                         alert(err);
+                         alert("Erro ao buscar registro");
+                     }
+                 });
+             }
          });
+
      });
 
     this.getForm = function() {
@@ -163,15 +183,20 @@
                 nomePais: $('#@Sistema.Util.SelectFunctions.getInputId("nomePais", Prefix)'),
                 ddi: $('#@Sistema.Util.SelectFunctions.getInputId("ddi", Prefix)'),
                 sigla: $('#@Sistema.Util.SelectFunctions.getInputId("sigla", Prefix)'),
+                dtCadastro: $('#@Sistema.Util.SelectFunctions.getInputId("dtCadastro", Prefix)'),
+                dtUltAlteracao: $('#@Sistema.Util.SelectFunctions.getInputId("dtUltAlteracao", Prefix)'),
         }
         return form;
     };
 
     this.clear = function () {
         var form = self.getForm();
+        form.codPais.val("");
         form.nomePais.val("");
         form.ddi.val("");
         form.sigla.val("");
+        form.dtCadastro.val("");
+        form.dtUltAlteracao.val("");
         form.nomePais.focus();
     };
 
@@ -209,6 +234,14 @@
         return model;
     };
 
+    this.save = function () {
+        if ($('#@Sistema.Util.SelectFunctions.getInputId("isEdit", Prefix)').val() == "S") {
+            this.update();
+        } else {
+            this.insert();
+        }
+    }
+
     this.insert = function () {
         var form = self.getForm();
         var model = getModel(form);
@@ -221,7 +254,6 @@
                 url: '@Url.Action("jsCreate", "Paises")',
                 data: model,
                 success: function (data) {
-                    alert("Registro inserido com sucesso!");
                     self.clear();
                     InitModalPaises();
                     $("#@Sistema.Util.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("hide");
@@ -254,7 +286,6 @@
                 url: '@Url.Action("jsUpdate", "Paises")',
                 data: model,
                 success: function (data) {
-                    alert("Registro Alterado com sucesso!");
                     self.clear();
                     InitModalPaises();
                     $("#@Sistema.Util.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("hide");
@@ -274,8 +305,6 @@
             });
         }
     };
-
-
 
     function InitModalPaises() {
           $("#TablePaises").empty();
@@ -348,6 +377,7 @@
         $("#@Sistema.Util.SelectFunctions.getInputId("ModalCreate", Prefix)").css("overflow", "hidden");
         $("#@Sistema.Util.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("hide");
         $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
+        self.clear();
     };
 
     function OpenModalCreate() {
@@ -355,6 +385,11 @@
         $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "hidden");
         $("#@Sistema.Util.SelectFunctions.getInputId("ModalCreate", Prefix)").css("overflow", "auto");
         $("#@Sistema.Util.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("show");
+        $("#@Sistema.Util.SelectFunctions.getInputId("isEdit", Prefix)").val("N");
+        if ($("#@Sistema.Util.SelectFunctions.getInputId("isEdit", Prefix)").val() == "N") {
+            $(".isEdit").hide();
+        }
+
     };
 
     function SelectPais(data) {
@@ -362,8 +397,8 @@
         $("#@Sistema.Util.SelectFunctions.getInputId("id", Prefix)").val(data.id);
         $("#@Sistema.Util.SelectFunctions.getInputId("text", Prefix)").val(data.text);
         return false;
-    }
-''
+    };
+
     function OpenEdit(id) {
         $.ajax({
             dataType: 'json',
@@ -372,24 +407,18 @@
             data: { 'id': id },
             success: function (data) {
                 self.clear();
-                //console.log(data)
-                InitModalPaises();
-                $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "hidden");
                 $("#@Sistema.Util.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("show");
-
-                //console.log(data);
-                //console.log(data.id);
-                //console.log(data)
+                $("#@Sistema.Util.SelectFunctions.getInputId("isEdit", Prefix)").val("S");
+                if ($("#@Sistema.Util.SelectFunctions.getInputId("isEdit", Prefix)").val() == "S") {
+                    $(".isEdit").show();
+                }
 
                 $("#@Sistema.Util.SelectFunctions.getInputId("codPais", Prefix)").val(data.id);
                 $("#@Sistema.Util.SelectFunctions.getInputId("nomePais", Prefix)").val(data.text);
                 $("#@Sistema.Util.SelectFunctions.getInputId("ddi", Prefix)").val(data.ddi);
                 $("#@Sistema.Util.SelectFunctions.getInputId("sigla", Prefix)").val(data.sigla);
-                $("#@Sistema.Util.SelectFunctions.getInputId("dtcadastro", Prefix)").val(data.dtcadastro);
-                $("#@Sistema.Util.SelectFunctions.getInputId("dtultalteracao", Prefix)").val(data.dtultalteracao);
-
-                $("#@Sistema.Util.SelectFunctions.getInputId("btnSave", Prefix)").hide()
-                $("#@Sistema.Util.SelectFunctions.getInputId("btnUpdate", Prefix)").show()
+                $("#@Sistema.Util.SelectFunctions.getInputId("dtCadastro", Prefix)").val(data.dtCadastro);
+                $("#@Sistema.Util.SelectFunctions.getInputId("dtUltAlteracao", Prefix)").val(data.dtUltAlteracao);
 
                 $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
 /*                    $.notify(data.message, { type: data.type, z_index: 2031 });*/

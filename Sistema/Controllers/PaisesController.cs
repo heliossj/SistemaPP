@@ -171,8 +171,8 @@ namespace Sistema.Controllers
                 text = u.text,
                 ddi = u.ddi,
                 sigla = u.sigla,
-                dtcadastro = u.dtCadastro,
-                dtultalteracao = u.dtUltAlteracao
+                dtCadastro = u.dtCadastro,
+                dtUltAlteracao = u.dtUltAlteracao
                
             }).OrderBy(u => u.text).ToList();
             return select.AsQueryable();
