@@ -136,10 +136,11 @@
         </div>
     </div>
 </div>
-
+@Scripts.Render("~/Scripts/bootstrap-notify.js")
 @Html.AddScriptBlock(
 @<script type="text/javascript">
-     self = this;
+
+    self = this;
     $(function () {
          $("#@Sistema.Util.SelectFunctions.getInputId("btn-localizar", Prefix)").on("click", function () {
              InitModalPaises();
@@ -162,7 +163,7 @@
                      data: { 'id': id },
                      success: function (data) {
                          if (!data) {
-                             alert("Nenhum registro encontrado para o código informado!")
+                             $.notify({ message: 'Nenhum registro encontrado para o código informado', icon: 'fa fa-exclamation' }, { type: 'danger' } );
                          }
                          $("#@Sistema.Util.SelectFunctions.getInputId("id", Prefix)").val(data.id);
                          $("#@Sistema.Util.SelectFunctions.getInputId("text", Prefix)").val(data.text);
@@ -258,6 +259,7 @@
                     InitModalPaises();
                     $("#@Sistema.Util.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("hide");
                     $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
+                    $.notify({ message: 'Registro inserido com sucesso', icon: 'fa fa-exclamation' }, { type: 'success', z_index: 2000, });
                     if (data.type == "success") {
 
                     } else {
@@ -290,8 +292,8 @@
                     InitModalPaises();
                     $("#@Sistema.Util.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("hide");
                     $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
+                    $.notify({ message: 'Registro alterado com sucesso', icon: 'fa fa-exclamation' }, { type: 'success', z_index: 2000, });
                     if (data.type == "success") {
-
                     } else {
                         @*$('#@Prefix' + '_' + data.field).blink();
                         $('#@Prefix' + '_' + data.field).select().focus();*@

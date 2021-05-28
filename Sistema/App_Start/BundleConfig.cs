@@ -23,7 +23,6 @@ namespace Sistema
                       "~/Content/dataTables.bootstrap4.min.css",
                       "~/Content/bootstrap-datepicker.css",
                       "~/Content/bootstrap-datepicker3.css",
-
                       "~/Content/css/select2.css",
                       "~/Content/css/select2.custom.css",
                       "~/Content/css/select2-bootstrap.css",
@@ -42,13 +41,14 @@ namespace Sistema
                         "~/Scripts/jquery.dataTables.min.js",
                         "~/Scripts/dataTables.bootstrap4.min.js",
                         "~/Scripts/bootstrap-datepicker.js",
+
                         "~/Scripts/select2.js",
                         "~/Scripts/select2_locale_pt_BR.js",
                         "~/Scripts/sSelect.js",
                         "~/Scripts/Functions.js",
                         "~/Scripts/functionsb3.js",
                         "~/Scripts/jquery.mask.js",
-                        //"~/Scripts/jquery.mask.min.js",
+                        "~/Scripts/bootstrap-notify.js",
                         "~/Scripts/Sistema.js"
                       ));
 

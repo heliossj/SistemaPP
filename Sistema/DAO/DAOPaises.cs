@@ -12,12 +12,12 @@ namespace Sistema.DAO
     public class DAOPaises : Sistema.DAO.DAO
     {
 
-        public List<Paises> GetPaises(int? idPais = null)
+        public List<Paises> GetPaises()
         {
             try
             {
 
-                var sql = "SELECT* FROM tbpaises";
+                var sql = this.Search(null, null);
                 OpenConnection();
                 SqlQuery = new SqlCommand(sql, con);
                 reader = SqlQuery.ExecuteReader();
@@ -27,10 +27,10 @@ namespace Sistema.DAO
                 {
                     var pais = new Paises
                     {
-                        codPais = Convert.ToInt32(reader["codpais"]),
-                        nomePais = Convert.ToString(reader["nomepais"]),
-                        sigla = Convert.ToString(reader["sigla"]),
-                        DDI = Convert.ToString(reader["ddi"]),
+                        codPais = Convert.ToInt32(reader["Pais_ID"]),
+                        nomePais = Convert.ToString(reader["Pais_Nome"]),
+                        sigla = Convert.ToString(reader["Pais_Sigla"]),
+                        DDI = Convert.ToString(reader["Pais_DDI"]),
                     };
 
                     list.Add(pais);
@@ -59,19 +59,8 @@ namespace Sistema.DAO
                     DateTime.Now.ToString("yyyy-MM-dd"),
                     DateTime.Now.ToString("yyyy-MM-dd")
                     );
-                //var ultReg = "SELECT * FROM tbpaises where codpais=(SELECT MAX(codpais) FROM tbpaises)";
                 OpenConnection();
                 SqlQuery = new SqlCommand(sql, con);
-                //SqlQuery.ExecuteNonQuery();
-                //var reg = new SqlCommand(ultReg, con);
-                //reader = reg.ExecuteReader();
-                //var model = new Sistema.Select.Paises.Select();
-                //while (reader.Read())
-                //{
-                //    model.id = Convert.ToInt32(reader["codpais"]);
-                //    model.text = Convert.ToString(reader["nomepais"]);
-                //}
-
                 int i = SqlQuery.ExecuteNonQuery();
 
                 if (i > 1)
@@ -135,8 +124,7 @@ namespace Sistema.DAO
                 if (codPais != null)
                 {
                     OpenConnection();
-                    //var sql = string.Format("SELECT * FROM tbpaises WHERE codpais = {0}", codPais);
-                    var sql = "SELECT * FROM tbpaises WHERE codpais = " + codPais;
+                    var sql = this.Search(codPais, null);
                     SqlQuery = new SqlCommand(sql, con);
                     reader = SqlQuery.ExecuteReader();
                     while (reader.Read())
@@ -190,27 +178,12 @@ namespace Sistema.DAO
             }
         }
 
-        public List<Select.Paises.Select> GetPaisesSelect(int? id, string q)
+        public List<Select.Paises.Select> GetPaisesSelect(int? id, string filter)
         {
             try
             {
-                var swhere = string.Empty;
-                if (id != null)
-                {
-                    swhere = " WHERE codpais = " + id ;
-                }
-                if (!string.IsNullOrEmpty(q))
-                {
-                    //where += " OR ";
-                    var filter = q.Split(' ');
-                    foreach (var word in filter)
-                    {
-                        swhere += " OR nomepais LIKE'%" + word + "%'"; 
-                    }
-                    //swhere = swhere.Remove(0, 3);
-                    swhere = " WHERE" + swhere.Remove(0, 3);
-                }
-                var sql = "SELECT * FROM tbpaises" + swhere;
+
+                var sql = this.Search(id, filter);
                 OpenConnection();
                 SqlQuery = new SqlCommand(sql, con);
                 reader = SqlQuery.ExecuteReader();
@@ -220,12 +193,12 @@ namespace Sistema.DAO
                 {
                     var pais = new Select.Paises.Select
                     {
-                        id = Convert.ToInt32(reader["codpais"]),
-                        text = Convert.ToString(reader["nomepais"]),
-                        ddi = Convert.ToString(reader["ddi"]),
-                        sigla = Convert.ToString(reader["sigla"]),
-                        dtCadastro = Convert.ToDateTime(reader["dtcadastro"]),
-                        dtUltAlteracao = Convert.ToDateTime(reader["dtultalteracao"]),
+                        id = Convert.ToInt32(reader["Pais_ID"]),
+                        text = Convert.ToString(reader["Pais_Nome"]),
+                        ddi = Convert.ToString(reader["Pais_DDI"]),
+                        sigla = Convert.ToString(reader["Pais_Sigla"]),
+                        dtCadastro = Convert.ToDateTime(reader["Pais_DataCadastro"]),
+                        dtUltAlteracao = Convert.ToDateTime(reader["Pais_DataUltAlteracao"]),
                     };
 
                     list.Add(pais);
@@ -241,6 +214,34 @@ namespace Sistema.DAO
             {
                 CloseConnection();
             }
+        }
+
+        private string Search(int? id, string filter)
+        {
+            var sql = string.Empty;
+            var swhere = string.Empty;
+            if (id != null)
+            {
+                swhere = " WHERE codpais = " + id;
+            }
+            if (!string.IsNullOrEmpty(filter))
+            {
+                var filterQ = filter.Split(' ');
+                foreach (var word in filterQ)
+                {
+                    swhere += " OR tbpaises.nomepais LIKE'%" + word + "%'";
+                }
+                swhere = " WHERE " + swhere.Remove(0, 3);
+            }
+            sql = @"SELECT
+                    codpais AS Pais_ID,
+                    nomepais AS Pais_Nome,
+                    ddi AS Pais_DDI,
+                    sigla AS Pais_Sigla,
+                    dtcadastro AS Pais_DataCadastro,
+                    dtultalteracao AS Pais_DataUltAlteracao
+                FROM tbpaises" + swhere;
+            return sql;
         }
 
 
