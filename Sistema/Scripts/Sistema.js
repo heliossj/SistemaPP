@@ -61,9 +61,20 @@ $(function () {
             return false;
         }
     });
-    
 
-
-
+    //Formata JSONDate
+    window.JSONDate = function (dateStr) {
+        var m, day;
+        jsonDate = dateStr;
+        var d = new Date(parseInt(jsonDate.substr(6)));
+        m = d.getMonth() + 1;
+        if (m < 10)
+            m = '0' + m
+        if (d.getDate() < 10)
+            day = '0' + d.getDate()
+        else
+            day = d.getDate();
+        return (day + '/' + m + '/' + d.getFullYear())
+    }
 
 });

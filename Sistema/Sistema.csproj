@@ -139,6 +139,7 @@
     <Compile Include="Controllers\CidadesController.cs" />
     <Compile Include="Controllers\EstadosController.cs" />
     <Compile Include="DAO\DAOEstados.cs" />
+    <Compile Include="DAO\DAOFormaPagamento.cs" />
     <Compile Include="DAO\DAOPaises.cs" />
     <Compile Include="DAO\DAO.cs" />
     <Compile Include="DataTables\Column.cs" />

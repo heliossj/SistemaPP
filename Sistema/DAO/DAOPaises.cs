@@ -16,7 +16,6 @@ namespace Sistema.DAO
         {
             try
             {
-
                 var sql = this.Search(null, null);
                 OpenConnection();
                 SqlQuery = new SqlCommand(sql, con);
@@ -88,9 +87,9 @@ namespace Sistema.DAO
             {
                 string sql = "UPDATE tbpaises SET nomepais = '"
                     + pais.nomePais.ToUpper().Trim() + "'," +
-                    "ddi = '" + pais.DDI.ToUpper().Trim() + "'," +
+                    " ddi = '" + pais.DDI.ToUpper().Trim() + "'," +
                     " sigla = '" + pais.sigla.ToUpper().Trim() + "'," +
-                    "dtultalteracao = '" + DateTime.Now.ToString("yyyy-MM-dd")
+                    " dtultalteracao = '" + DateTime.Now.ToString("yyyy-MM-dd")
                     + "' WHERE codpais = " + pais.codPais;
                 OpenConnection();
                 SqlQuery = new SqlCommand(sql, con);
@@ -129,12 +128,12 @@ namespace Sistema.DAO
                     reader = SqlQuery.ExecuteReader();
                     while (reader.Read())
                     {
-                        model.codPais = reader.GetInt32(0);
-                        model.nomePais = reader.GetString(1);
-                        model.DDI = reader.GetString(2);
-                        model.sigla = reader.GetString(3);
-                        model.dtCadastro = reader.GetDateTime(4);
-                        model.dtUltAlteracao = reader.GetDateTime(5);
+                        model.codPais = Convert.ToInt32(reader["Pais_ID"]);
+                        model.nomePais = Convert.ToString(reader["Pais_Nome"]);
+                        model.DDI = Convert.ToString(reader["Pais_DDI"]);
+                        model.sigla = Convert.ToString(reader["Pais_Sigla"]);
+                        model.dtCadastro = Convert.ToDateTime(reader["Pais_DataCadastro"]);
+                        model.dtUltAlteracao = Convert.ToDateTime(reader["Pais_DataUltAlteracao"]);
                     }
                 }
                 return model;
@@ -153,7 +152,7 @@ namespace Sistema.DAO
         {
             try
             {
-                string sql = "DELETE FROM tbpaises WHERE codPais = " + codPais;
+                string sql = "DELETE FROM tbpaises WHERE codpais = " + codPais;
                 OpenConnection();
                 SqlQuery = new SqlCommand(sql, con);
 
@@ -233,14 +232,15 @@ namespace Sistema.DAO
                 }
                 swhere = " WHERE " + swhere.Remove(0, 3);
             }
-            sql = @"SELECT
-                    codpais AS Pais_ID,
-                    nomepais AS Pais_Nome,
-                    ddi AS Pais_DDI,
-                    sigla AS Pais_Sigla,
-                    dtcadastro AS Pais_DataCadastro,
-                    dtultalteracao AS Pais_DataUltAlteracao
-                FROM tbpaises" + swhere;
+            sql = @"
+                    SELECT
+                        codpais AS Pais_ID,
+                        nomepais AS Pais_Nome,
+                        ddi AS Pais_DDI,
+                        sigla AS Pais_Sigla,
+                        dtcadastro AS Pais_DataCadastro,
+                        dtultalteracao AS Pais_DataUltAlteracao
+                    FROM tbpaises" + swhere;
             return sql;
         }
 

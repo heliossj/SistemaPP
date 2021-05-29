@@ -20,60 +20,26 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>1</td>
-                <td>DINHEIRO</td>
-                <td>ATIVA</td>
-                <td>
-                    @Html.ActionLink(" ", "Details", new { }, new { @class = "btn btn-success btn-sm fa fa-eye", @title = "Visualizar registro" })
-                    @Html.ActionLink(" ", "Edit", new { }, new { @class = "btn btn-warning btn-sm fa fa-edit", @title = "Editar registro" })
-                    @Html.ActionLink(" ", "Delete", new { }, new { @class = "btn btn-danger btn-sm fa fa-trash-o", @title = "Excluir registro" })
-                </td>
-            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
 
-            <tr>
-                <td>1</td>
-                <td>CARTÃO DE CRÉDITO</td>
-                <td>ATIVA</td>
-                <td>
-                    @Html.ActionLink(" ", "Details", new { }, new { @class = "btn btn-success btn-sm fa fa-eye", @title = "Visualizar registro" })
-                    @Html.ActionLink(" ", "Edit", new { }, new { @class = "btn btn-warning btn-sm fa fa-edit", @title = "Editar registro" })
-                    @Html.ActionLink(" ", "Delete", new { }, new { @class = "btn btn-danger btn-sm fa fa-trash-o", @title = "Excluir registro" })
-                </td>
-            </tr>
-
-            <tr>
-                <td>1</td>
-                <td>CARTÃO DE DÉBITO</td>
-                <td>ATIVA</td>
-                <td>
-                    @Html.ActionLink(" ", "Details", new { }, new { @class = "btn btn-success btn-sm fa fa-eye", @title = "Visualizar registro" })
-                    @Html.ActionLink(" ", "Edit", new { }, new { @class = "btn btn-warning btn-sm fa fa-edit", @title = "Editar registro" })
-                    @Html.ActionLink(" ", "Delete", new { }, new { @class = "btn btn-danger btn-sm fa fa-trash-o", @title = "Excluir registro" })
-                </td>
-            </tr>
-
-            <tr>
-                <td>1</td>
-                <td>CRÉDITO NA LOJA</td>
-                <td>ATIVA</td>
-                <td>
-                    @Html.ActionLink(" ", "Details", new { }, new { @class = "btn btn-success btn-sm fa fa-eye", @title = "Visualizar registro" })
-                    @Html.ActionLink(" ", "Edit", new { }, new { @class = "btn btn-warning btn-sm fa fa-edit", @title = "Editar registro" })
-                    @Html.ActionLink(" ", "Delete", new { }, new { @class = "btn btn-danger btn-sm fa fa-trash-o", @title = "Excluir registro" })
-                </td>
-            </tr>
-
-            <tr>
-                <td>1</td>
-                <td>BOLETO BANCÁRIO</td>
-                <td>ATIVA</td>
-                <td>
-                    @Html.ActionLink(" ", "Details", new { }, new { @class = "btn btn-success btn-sm fa fa-eye", @title = "Visualizar registro" })
-                    @Html.ActionLink(" ", "Edit", new { }, new { @class = "btn btn-warning btn-sm fa fa-edit", @title = "Editar registro" })
-                    @Html.ActionLink(" ", "Delete", new { }, new { @class = "btn btn-danger btn-sm fa fa-trash-o", @title = "Excluir registro" })
-                </td>
-            </tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.codForma)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.nomeForma)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.situacao)
+                    </td>
+                    <td>
+                        @Html.ActionLink(" ", "Details", new { id = item.codForma }, new { @class = "btn btn-success btn-sm fa fa-eye", @title = "Visualizar registro" })
+                        @Html.ActionLink(" ", "Edit", new { id = item.codForma }, new { @class = "btn btn-warning btn-sm fa fa-edit", @title = "Editar registro" })
+                        @Html.ActionLink(" ", "Delete", new { id = item.codForma }, new { @class = "btn btn-danger btn-sm fa fa-trash-o", @title = "Excluir registro" })
+                    </td>
+                </tr>
+            }
         </tbody>
     </table>
 </div>

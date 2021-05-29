@@ -181,13 +181,12 @@ namespace Sistema.Controllers
         public JsonResult JsCreate(Paises model)
         {
             var daoPaises = new DAOPaises();
-            var create = daoPaises.Insert(model);
-            //model.idMarca = bean.idMarca;
+            daoPaises.Insert(model);
             var result = new
             {
                 type = "success",
                 field = "",
-                message = "Pais adicionado com sucesso!",
+                message = "Registro adicionado com sucesso!",
                 model = model
             };
             return Json(result, JsonRequestBehavior.AllowGet);
@@ -196,13 +195,13 @@ namespace Sistema.Controllers
         public JsonResult JsUpdate(Paises model)
         {
             var daoPaises = new DAOPaises();
-            var create = daoPaises.Update(model);
+            daoPaises.Update(model);
             //model.idMarca = bean.idMarca;
             var result = new
             {
                 type = "success",
                 field = "",
-                message = "Pais alterado com sucesso!",
+                message = "Registro alterado com sucesso!",
                 model = model
             };
             return Json(result, JsonRequestBehavior.AllowGet);

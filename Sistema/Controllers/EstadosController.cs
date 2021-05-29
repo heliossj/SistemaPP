@@ -14,7 +14,9 @@ namespace Sistema.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            var daoEstados = new DAOEstados();
+            List<Models.Estados> list = daoEstados.GetEstados();
+            return View(list);
         }
 
         public ActionResult Create()
@@ -40,6 +42,8 @@ namespace Sistema.Controllers
 
             if (ModelState.IsValid)
             {
+                daoEstados = new DAOEstados();
+                daoEstados.Insert(model);
                 return RedirectToAction("Index");
             }
             else
@@ -48,19 +52,63 @@ namespace Sistema.Controllers
             }
         }
 
-        public ActionResult Details()
+        public ActionResult Edit(int? id)
         {
-            return View();
+            return this.GetView(id);
         }
 
-        public ActionResult Edit()
+        [HttpPost]
+        public ActionResult Edit(Sistema.Models.Estados model)
         {
-            return View();
+            if (string.IsNullOrWhiteSpace(model.nomeEstado))
+            {
+                ModelState.AddModelError("nomeEstado", "Informe um nome de estado válido");
+            }
+            if (string.IsNullOrWhiteSpace(model.uf))
+            {
+                ModelState.AddModelError("uf", "Informe uma uf válida");
+            }
+            if (model.Pais.id == null)
+            {
+                ModelState.AddModelError("Pais.id", "Informe um país");
+            }
+
+            if (ModelState.IsValid)
+            {
+                daoEstados = new DAOEstados();
+                daoEstados.Update(model);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return View(model);
+            }
         }
 
-        public ActionResult Delete()
+        public ActionResult Delete(int? id)
         {
-            return View();
+            return this.GetView(id);
+        }
+
+        [HttpPost]
+        [ActionName("Delete")]
+        public ActionResult DeleteConfirmed(int? id)
+        {
+            daoEstados = new DAOEstados();
+            daoEstados.Delete(id);
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult Details(int? id)
+        {
+            return this.GetView(id);
+        }
+
+        private ActionResult GetView(int? codEstado)
+        {
+            var daoEstados = new DAOEstados();
+            var model = daoEstados.GetEstado(codEstado);
+            return View(model);
         }
 
         public JsonResult JsQuery([ModelBinder(typeof(DataTablesBinder))] IDataTablesRequest requestModel)
@@ -68,7 +116,7 @@ namespace Sistema.Controllers
 
             try
             {
-                var select = this.Find();
+                var select = this.Find(null, requestModel.Search.Value);
 
                 var totalResult = select.Count();
 
@@ -90,7 +138,7 @@ namespace Sistema.Controllers
         {
             try
             {
-                var select = this.Find();
+                var select = this.Find(null, q);
                 return Json(new JsonSelect<object>(select, page, pageSize), JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -100,15 +148,14 @@ namespace Sistema.Controllers
             }
         }
 
-
-        public JsonResult JsDetails()
+        public JsonResult JsDetails(int? id, string q)
         {
             try
             {
-                var result = this.Find();
+                var result = this.Find(id, q).FirstOrDefault();
                 if (result != null)
                     return Json(result, JsonRequestBehavior.AllowGet);
-                return Json(result, JsonRequestBehavior.AllowGet);
+                return Json(string.Empty, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
@@ -117,16 +164,44 @@ namespace Sistema.Controllers
             }
         }
 
-        private IQueryable<dynamic> Find()
+        private IQueryable<dynamic> Find(int? id, string q)
         {
-            var daoPaises = new DAOEstados();
-            var list = daoPaises.GetEstadosSelect();
+            var daoEstados = new DAOEstados();
+            var list = daoEstados.GetEstadosSelect(id, q);
             var select = list.Select(u => new
             {
                 id = u.id,
                 text = u.text,
             }).OrderBy(u => u.text).ToList();
             return select.AsQueryable();
+        }
+
+        public JsonResult JsCreate(Models.Estados model)
+        {
+            var daoEstados = new DAOEstados();
+            daoEstados.Insert(model);
+            var result = new
+            {
+                type = "success",
+                field = "",
+                message = "Registro adicionado com sucesso!",
+                model = model
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult JsUpdate(Models.Estados model)
+        {
+            var daoEstados = new DAOEstados();
+            daoEstados.Update(model);
+            var result = new
+            {
+                type = "success",
+                field = "",
+                message = "Registro alterado com sucesso!",
+                model = model
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
     }
 }
