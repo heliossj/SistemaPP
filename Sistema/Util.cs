@@ -19,8 +19,8 @@ namespace Sistema.Util
         public const string Input7 = "form-group col-md-7";
         public const string Input8 = "form-group col-md-8";
         public const string Input9 = "form-group col-md-9";
-        public const string Input10 ="form-group col-md-10";
-        public const string Input11 ="form-group col-md-11";
+        public const string Input10 = "form-group col-md-10";
+        public const string Input11 = "form-group col-md-11";
         public const string Input12 = "form-group col-md-12";
     }
 
@@ -90,7 +90,21 @@ namespace Sistema.Util
         }
 
     }
+
+    public class FormatSituacao
+    {
+        public static string Situacao(string flSituacao)
+        {
+            if (flSituacao == "A")
+                return "ATIVA";
+            if (flSituacao == "I")
+                return "INATIVA";
+            return flSituacao;
+        }
+    }
 }
+
+
 public static class FatHtml
 {
     const string keyForBlockScript = "__key_For_Js_Block";

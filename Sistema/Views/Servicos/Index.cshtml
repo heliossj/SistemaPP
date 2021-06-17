@@ -21,17 +21,28 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>1</td>
-                <td>INSTALAÇÃO</td>
-                <td>15,00</td>
-                <td>ATIVA</td>
-                <td>
-                    @Html.ActionLink(" ", "Details", new {  }, new { @class = "btn btn-success btn-sm fa fa-eye", @title = "Visualizar registro" })
-                    @Html.ActionLink(" ", "Edit", new {   }, new { @class = "btn btn-warning btn-sm fa fa-edit", @title = "Editar registro" })
-                    @Html.ActionLink(" ", "Delete", new {   }, new { @class = "btn btn-danger btn-sm fa fa-trash-o", @title = "Excluir registro" })
-                </td>
-            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.codServico)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.nomeServico)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.vlServico)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.situacao)
+                    </td>
+                    <td>
+                        @Html.ActionLink(" ", "Details", new { id = item.codServico }, new { @class = "btn btn-success btn-sm fa fa-eye", @title = "Visualizar registro" })
+                        @Html.ActionLink(" ", "Edit", new { id = item.codServico }, new { @class = "btn btn-warning btn-sm fa fa-edit", @title = "Editar registro" })
+                        @Html.ActionLink(" ", "Delete", new { id = item.codServico }, new { @class = "btn btn-danger btn-sm fa fa-trash-o", @title = "Excluir registro" })
+                    </td>
+                </tr>
+            }
         </tbody>
     </table>
 </div>

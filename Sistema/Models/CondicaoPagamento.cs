@@ -24,17 +24,20 @@ namespace Sistema.Models
         [Display(Name = "Data da últ. alteração")]
         public DateTime? dtUltAlteracao { get; set; }
 
-        [Display(Name = "Possui juros?")]
-        public string juros { get; set; }
+        [Display(Name = "Taxa de juros")]
+        public decimal txJuros { get; set; }
 
-        [Display(Name = "Taxa de juros (%)")]
-        public decimal? txJuros { get; set; }
+        [Display(Name = "Porcentagem (%)")]
+        public decimal txPercentual { get; set; }
 
-        [Display(Name = "Possui parcela?")]
-        public string parcela { get; set; }
+        [Display(Name = "Dias")]
+        public short qtDias { get; set; }
 
-        [Display(Name = "Quantidade de parcela(s)")]
-        public short? qtParcela { get; set; }
+        [Display(Name = "Multa")]
+        public decimal multa { get; set; }
+
+        [Display(Name = "Desconto")]
+        public decimal desconto { get; set; }
 
         public static SelectListItem[] Situacao
         {
@@ -72,5 +75,17 @@ namespace Sistema.Models
                 };
             }
         }
+
+        public class CondicaoPagamentoVM
+        {
+            public int? codCondicaoPagamento { get; set; }
+            public short? nrParcela { get; set; }
+            public short? qtDias { get; set; }
+            public decimal? txPercentual { get; set; }
+            public int? codFormaPagamento { get; set; }
+            public string nomeFormaPagamento { get; set; }
+        }
+
+        public List<CondicaoPagamentoVM> ListCondicaoPagamento { get; set; }
     }
 }

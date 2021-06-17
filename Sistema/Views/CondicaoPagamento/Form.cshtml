@@ -33,47 +33,70 @@
 </div>
 
 <div class="form-row">
-    @*<p class="@Util.Input9"> CondicaoPagamento </p>*@
-
-    <div class="@Util.Input2">
-        @Html.Label("codCond", "Cod..", new { @class = "required" })
-        @Html.TextBox("codCond", "", new { @class = "form-control", maxlength = "8", style = "text-transform:uppercase", minlength = "3" })
-    </div>
-
-    <div class="@Util.Input10">
-        @Html.Label("nomeCondicao", "Forma de pagamento.", new { @class = "required" })
-        @Html.TextBox("nomeCondicao", "", new { @class = "form-control", maxlength = "8", style = "text-transform:uppercase", minlength = "3" })
-    </div>
-
-    @*<p class="@Util.Input9"> CondicaoPagamento </p>*@
-</div>
-
-<div class="form-row">
     <div class="@Util.Input3">
-        @Html.LabelFor(model => model.juros, new { @class = "required" })
-        @Html.DropDownListFor(model => model.juros, Sistema.Models.CondicaoPagamento.Juros, new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => model.juros, null, new { @class = "text-danger" })
-    </div>
-
-    <div class="@Util.Input3" id="divJuros">
         @Html.LabelFor(model => model.txJuros, new { @class = "required" })
-        @Html.TextBoxFor(model => model.txJuros, new { @class = "form-control percent" })
-        @Html.ValidationMessageFor(model => model.juros, null, new { @class = "text-danger" })
+        @Html.TextBoxFor(model => model.txJuros, new { @class = "form-control", placeholder = "00,00" })
+        @Html.ValidationMessageFor(model => model.txJuros, null, new { @class = "text-danger" })
+    </div>
+
+    <div class="@Util.Input3">
+        @Html.LabelFor(model => model.multa, new { @class = "required" })
+        @Html.TextBoxFor(model => model.multa, new { @class = "form-control", placeholder = "00,00" })
+        @Html.ValidationMessageFor(model => model.multa, null, new { @class = "text-danger" })
+    </div>
+
+    <div class="@Util.Input3">
+        @Html.LabelFor(model => model.desconto, new { @class = "required" })
+        @Html.TextBoxFor(model => model.desconto, new { @class = "form-control", placeholder = "00,00" })
+        @Html.ValidationMessageFor(model => model.desconto, null, new { @class = "text-danger" })
     </div>
 </div>
 
-<div class="form-row">
-    <div class="@Util.Input3">
-        @Html.LabelFor(model => model.parcela, new { @class = "required" })
-        @Html.DropDownListFor(model => model.parcela, Sistema.Models.CondicaoPagamento.Parcela, new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => model.parcela, null, new { @class = "text-danger" })
+
+<div class="bs-callout bs-callout-primary">
+    <div class="form-row">
+        @*<p class="@Util.Input9"> CondicaoPagamento </p>*@
+
+        <div class="@Util.Input2">
+            @Html.Label("codForma", "Cod..", new { @class = "required" })
+            @Html.TextBox("codForma", "", new { @class = "form-control", maxlength = "8", style = "text-transform:uppercase", minlength = "3" })
+        </div>
+
+        <div class="@Util.Input10">
+            @Html.Label("nomeForma", "Forma de pagamento.", new { @class = "required" })
+            @Html.TextBox("nomeForma", "", new { @class = "form-control", maxlength = "8", style = "text-transform:uppercase", minlength = "3" })
+        </div>
     </div>
 
-    <div class="@Util.Input3" id="divParcela">
-        @Html.LabelFor(model => model.qtParcela, new { @class = "required" })
-        @Html.TextBoxFor(model => model.qtParcela, new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => model.qtParcela, null, new { @class = "text-danger" })
+    <div class="form-row">
+        <div class="@Util.Input3">
+            @Html.LabelFor(model => model.qtDias, new { @class = "required" })
+            @Html.TextBoxFor(model => model.qtDias, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.qtDias, null, new { @class = "text-danger" })
+        </div>
+
+        <div class="@Util.Input3">
+            @Html.LabelFor(model => model.txPercentual, new { @class = "required" })
+            @Html.TextBoxFor(model => model.txPercentual, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.txPercentual, null, new { @class = "text-danger" })
+        </div>
+
+        <div>
+            <button id="addCondPagamento" type="button" class="btn btn-success btn-lg" style="margin-top:35px; font-size:14px" title="Adicionar"><i class="fa fa-plus"></i></button>
+        </div>
     </div>
+
+    @Html.HiddenFor(model => model.ListCondicaoPagamento)
+    <table id="tbcondicao" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th width="5%">Nº</th>
+                <th width="5%">Dias</th>
+                <th width="5%">Percentual</th>
+                <th width="85%">Forma de pagamento</th>
+            </tr>
+        </thead>
+    </table>
 </div>
 
 @if (action != "create")

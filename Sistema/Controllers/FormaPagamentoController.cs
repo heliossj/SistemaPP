@@ -16,7 +16,7 @@ namespace Sistema.Controllers
         public ActionResult Index()
         {
             var daoFormaPagamento = new DAOFormaPagamento();
-            List<Models.FormaPagamento> list = daoFormaPagamento.GetFormasPagamento();
+            List<Models.FormaPagamento> list = daoFormaPagamento.GetFormasPagamentos();
             return View(list);
         }
 

@@ -11,7 +11,7 @@ namespace Sistema.DAO
 {
     public class DAOFormaPagamento : Sistema.DAO.DAO
     {
-        public List<FormaPagamento> GetFormasPagamento()
+        public List<FormaPagamento> GetFormasPagamentos()
         {
             try
             {

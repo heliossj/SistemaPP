@@ -25,11 +25,10 @@
 
     <div class="@Util.Input3">
         @Html.LabelFor(model => model.vlServico, new { @class = "required" })
-        @Html.TextBoxFor(model => model.vlServico, new { @class = "form-control", type = "number", min = "0.01", step = ".01", placeholder = "0,00", oninput = "this.value = Math.abs(this.value)" })
+        @Html.TextBoxFor(model => model.vlServico, new { @class = "form-control money", placeholder = "00,00" })
         @Html.ValidationMessageFor(model => model.vlServico, null, new { @class = "text-danger" })
     </div>
 </div>
-
 
 <div class="form-row">
     <div class="@Util.Input12">
