@@ -157,16 +157,12 @@ namespace Sistema.Controllers
 
         private IQueryable<dynamic> Find(int? id, string q)
         {
-            var daoPaises = new DAOPaises();
-            var list = daoPaises.GetPaisesSelect(id, q);
+            var daoFormaPagamento = new DAOFormaPagamento();
+            var list = daoFormaPagamento.GetFormasPagamentosSelect(id, q);
             var select = list.Select(u => new
             {
                 id = u.id,
                 text = u.text,
-                ddi = u.ddi,
-                sigla = u.sigla,
-                dtCadastro = u.dtCadastro,
-                dtUltAlteracao = u.dtUltAlteracao
 
             }).OrderBy(u => u.text).ToList();
             return select.AsQueryable();

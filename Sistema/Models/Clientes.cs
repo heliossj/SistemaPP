@@ -49,6 +49,7 @@ namespace Sistema.Models
         public string email { get; set; }
 
         //cidade
+        public Select.Cidades.Select Cidade { get; set; }
 
         [Display(Name = "CEP")]
         public string cep { get; set; }

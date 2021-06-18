@@ -210,43 +210,38 @@ namespace Sistema.DAO
             }
         }
 
-        //public List<Select.Paises.Select> GetPaisesSelect(int? id, string filter)
-        //{
-        //    try
-        //    {
+        public List<Select.FormaPagamento.Select> GetFormasPagamentosSelect(int? id, string filter)
+        {
+            try
+            {
+                var sql = this.Search(id, filter, null);
+                OpenConnection();
+                SqlQuery = new SqlCommand(sql, con);
+                reader = SqlQuery.ExecuteReader();
+                var list = new List<Select.FormaPagamento.Select>();
 
-        //        var sql = this.Search(id, filter);
-        //        OpenConnection();
-        //        SqlQuery = new SqlCommand(sql, con);
-        //        reader = SqlQuery.ExecuteReader();
-        //        var list = new List<Select.Paises.Select>();
+                while (reader.Read())
+                {
+                    var formaPagamento = new Select.FormaPagamento.Select
+                    {
+                        id = Convert.ToInt32(reader["FormaPagamento_ID"]),
+                        text = Convert.ToString(reader["FormaPagamento_Nome"]),
+                    };
 
-        //        while (reader.Read())
-        //        {
-        //            var pais = new Select.Paises.Select
-        //            {
-        //                id = Convert.ToInt32(reader["Pais_ID"]),
-        //                text = Convert.ToString(reader["Pais_Nome"]),
-        //                ddi = Convert.ToString(reader["Pais_DDI"]),
-        //                sigla = Convert.ToString(reader["Pais_Sigla"]),
-        //                dtCadastro = Convert.ToDateTime(reader["Pais_DataCadastro"]),
-        //                dtUltAlteracao = Convert.ToDateTime(reader["Pais_DataUltAlteracao"]),
-        //            };
+                    list.Add(formaPagamento);
+                }
 
-        //            list.Add(pais);
-        //        }
-
-        //        return list;
-        //    }
-        //    catch (Exception error)
-        //    {
-        //        throw new Exception(error.Message);
-        //    }
-        //    finally
-        //    {
-        //        CloseConnection();
-        //    }
-        //}
+                return list;
+            }
+            catch (Exception error)
+            {
+                throw new Exception(error.Message);
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
 
         private string Search(int? id, string filter, string[] flSituacao)
         {

@@ -142,6 +142,7 @@
     <Compile Include="DAO\DAOEstados.cs" />
     <Compile Include="DAO\DAOGrupos.cs" />
     <Compile Include="DAO\DAOFormaPagamento.cs" />
+    <Compile Include="DAO\DAOCondicaoPagamento.cs" />
     <Compile Include="DAO\DAOServicos.cs" />
     <Compile Include="DAO\DAOPaises.cs" />
     <Compile Include="DAO\DAO.cs" />
@@ -155,6 +156,7 @@
     <Compile Include="DataTables\IDataTablesRequest.cs" />
     <Compile Include="DataTables\NameValueCollectionExtensions.cs" />
     <Compile Include="DataTables\Search.cs" />
+    <Compile Include="Models\DataAccess.cs" />
     <Compile Include="Models\FormaPagamento.cs" />
     <Compile Include="Models\Funcionarios.cs" />
     <Compile Include="Models\Fornecedores.cs" />
@@ -166,6 +168,8 @@
     <Compile Include="Models\Clientes.cs" />
     <Compile Include="Models\Servicos.cs" />
     <Compile Include="Models\Estados.cs" />
+    <Compile Include="Select\CondicaoPagamento\Select.cs" />
+    <Compile Include="Select\FormaPagamento\Select.cs" />
     <Compile Include="Select\Servicos\Select.cs" />
     <Compile Include="Select\Grupos\Select.cs" />
     <Compile Include="Select\Cidades\Select.cs" />
@@ -220,6 +224,7 @@
     <Content Include="Scripts\bootstrap-notify.js" />
     <Content Include="Scripts\Functions.js" />
     <Content Include="Scripts\functionsb3.js" />
+    <Content Include="Scripts\tDataTable.js" />
     <Content Include="Scripts\jquery.mask.js" />
     <Content Include="Scripts\jquery.mask.min.js" />
     <Content Include="Scripts\select2.js" />
@@ -454,6 +459,8 @@
     <Content Include="Views\Funcionarios\Edit.cshtml" />
     <Content Include="Views\Funcionarios\Form.cshtml" />
     <Content Include="Views\Funcionarios\Index.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\FormaPagamento\Select.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Cidades\Select.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

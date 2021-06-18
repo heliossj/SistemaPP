@@ -54,18 +54,9 @@
 
 
 <div class="bs-callout bs-callout-primary">
+
     <div class="form-row">
-        @*<p class="@Util.Input9"> CondicaoPagamento </p>*@
-
-        <div class="@Util.Input2">
-            @Html.Label("codForma", "Cod..", new { @class = "required" })
-            @Html.TextBox("codForma", "", new { @class = "form-control", maxlength = "8", style = "text-transform:uppercase", minlength = "3" })
-        </div>
-
-        <div class="@Util.Input10">
-            @Html.Label("nomeForma", "Forma de pagamento.", new { @class = "required" })
-            @Html.TextBox("nomeForma", "", new { @class = "form-control", maxlength = "8", style = "text-transform:uppercase", minlength = "3" })
-        </div>
+        @Html.EditorFor(model => model.FormaPagamento, "FormaPagamento/Select", new { Disabled = false, Required = false })
     </div>
 
     <div class="form-row">
@@ -86,10 +77,11 @@
         </div>
     </div>
 
-    @Html.HiddenFor(model => model.ListCondicaoPagamento)
-    <table id="tbcondicao" class="table table-striped table-bordered" style="width:100%">
+    @Html.HiddenFor(model => model.ListCondicao.js)
+    <table id="tblCondicao" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
+                <th></th>
                 <th width="5%">Nº</th>
                 <th width="5%">Dias</th>
                 <th width="5%">Percentual</th>

@@ -25,19 +25,21 @@ namespace Sistema.Models
         public DateTime? dtUltAlteracao { get; set; }
 
         [Display(Name = "Taxa de juros")]
-        public decimal txJuros { get; set; }
+        public decimal? txJuros { get; set; }
 
         [Display(Name = "Porcentagem (%)")]
-        public decimal txPercentual { get; set; }
+        public decimal? txPercentual { get; set; }
 
         [Display(Name = "Dias")]
         public short qtDias { get; set; }
 
         [Display(Name = "Multa")]
-        public decimal multa { get; set; }
+        public decimal? multa { get; set; }
 
         [Display(Name = "Desconto")]
         public decimal desconto { get; set; }
+
+        public Select.FormaPagamento.Select FormaPagamento { get; set; }
 
         public static SelectListItem[] Situacao
         {
@@ -86,6 +88,6 @@ namespace Sistema.Models
             public string nomeFormaPagamento { get; set; }
         }
 
-        public List<CondicaoPagamentoVM> ListCondicaoPagamento { get; set; }
+        public Models.DataTablesList<CondicaoPagamentoVM> ListCondicao { get; set; }
     }
 }

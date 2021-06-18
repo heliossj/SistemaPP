@@ -37,10 +37,15 @@ namespace Sistema
                         ));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
+                    
                       "~/Scripts/bootstrap.js",
+                      "~/Scripts/tDataTable.js",
+
                         "~/Scripts/jquery.dataTables.min.js",
+                        
                         "~/Scripts/dataTables.bootstrap4.min.js",
                         "~/Scripts/bootstrap-datepicker.js",
+                        
 
                         "~/Scripts/select2.js",
                         "~/Scripts/select2_locale_pt_BR.js",
@@ -50,6 +55,7 @@ namespace Sistema
                         "~/Scripts/jquery.mask.js",
                         "~/Scripts/bootstrap-notify.js",
                         "~/Scripts/Sistema.js"
+                        
                       ));
 
         }

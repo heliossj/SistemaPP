@@ -28,7 +28,6 @@
         @Html.DropDownListFor(model => model.situacao, Sistema.Models.Clientes.Situacao, new { @class = "form-control" })
         @Html.ValidationMessageFor(model => model.situacao, null, new { @class = "text-danger" })
     </div>
-
 </div>
 
 <div class="form-row">
@@ -95,9 +94,15 @@
 </div>
 
 <div class="form-row">
+    @Html.EditorFor(model => model.Cidade, "Cidades/Select", new { Disabled = false, Required = false })
+    @*, @classForm = Util.Input5*@
+</div>
+
+
+<div class="form-row">
     @*<p class="@Util.Input9"> Cidade </p>*@
 
-    <div class="@Util.Input2">
+    @*<div class="@Util.Input2">
         @Html.Label("codCidade", "Cod.", new { @class = "required" })
         @Html.TextBox("codCidade", "", new { @class = "form-control", maxlength = "8", style = "text-transform:uppercase", minlength = "3" })
     </div>
@@ -105,9 +110,11 @@
     <div class="@Util.Input7">
         @Html.Label("nomeCidade", "Cidade.", new { @class = "required" })
         @Html.TextBox("nomeCidade", "", new { @class = "form-control", maxlength = "8", style = "text-transform:uppercase", minlength = "3" })
-    </div>
+    </div>*@
 
     @*<p class="@Util.Input9"> Cidade </p>*@
+
+
 
     <div class="@Util.Input3">
         @Html.LabelFor(model => model.cep, new { @class = "required" })

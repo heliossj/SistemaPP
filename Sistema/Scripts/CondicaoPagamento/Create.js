@@ -1,36 +1,32 @@
 ﻿$(function () {
-
     var cond = new CondicaoPagamento;
     cond.init();
-    //$(document).ready(function () {
-
-    //});
-
-
-
     $("#addCondPagamento").click(function () {
-        //alert();
         cond.addItem();
-
     })
-
-
 });
 
 
 CondicaoPagamento = function () {
     self = this;
-    var dt = null;
+    let nr = 1; 
+    var dtCondicao = null;
     this.init = function () {
-        dt = $('#tbcondicao').DataTable({
-            language: {
-                //url: 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Portuguese-Brasil.json',
+        dtCondicao = new tDataTable({
+            table: {
+                jsItem: "ListCondicao_js",
+                name: "tblCondicao",
+                remove: true,
+                order: [[1, "asc"]],
+                columns: [
+                    { data: "nrParcela" },
+                    { data: "qtDias" },
+                    { data: "txPercentual" },
+                    { data: "nomeFormaPagamento" },
+                ]
             },
-            //data: "ListCondicaoPagamento",
-            searching: false,
         });
     }
-    console.log(dt)
 
     self.valid = function () {
         let valid = true;
@@ -44,9 +40,8 @@ CondicaoPagamento = function () {
             valid = false;
         }
 
-        if (IsNullOrEmpty($("#codForma").val())) {
-            $("#codForma").blink({ msg: "Informe a condição de pagamento" });
-            $("#nomeForma").blink({ msg: "Informe a condição de pagamento" });
+        if (IsNullOrEmpty($("#FormaPagamento_id").val())) {
+            $("#FormaPagamento_id").blink({ msg: "Informe a condição de pagamento" });
             valid = false;
         }
 
@@ -55,8 +50,8 @@ CondicaoPagamento = function () {
 
     self.getModel = function () {
         var model = {
-            codFormaPagamento: $("#codForma").val(),
-            nomeFormaPagamento: $("#nomeForma").val(),
+            codFormaPagamento: $("#FormaPagamento_id").val(),
+            nomeFormaPagamento: $("#FormaPagamento_text").val(),
             qtDias: $("#qtDias").val(),
             txPercentual: $("#txPercentual").val()
         }
@@ -65,29 +60,26 @@ CondicaoPagamento = function () {
     }
 
     self.clear = function () {
-        $("#codForma").val('');
-        $("#nomeForma").val('');
+        $("#FormaPagamento_id").val('');
+        $("#FormaPagamento_text").val('');
         $("#qtDias").val('');
         $("#txPercentual").val('');
     }
 
     self.addItem = function () {
         if (self.valid()) {
-            var model = self.getModel();
-            console.log(model);
-            alert("addItem");
-
-
-            let nr = 0;
-            
-            dt.row.add([
-                nr+= 1,
-                model.qtDias,
-                model.txPercentual,
-                model.nomeFormaPagamento,
-            ]).draw(true);
+            var model = self.getModel();           
+            let item = {
+                nrParcela: nr,
+                codFormaPagamento: model.codFormaPagamento,
+                nomeFormaPagamento: model.nomeFormaPagamento,
+                qtDias: model.qtDias,
+                txPercentual: model.txPercentual,
+            }
+            nr++;
+            dtCondicao.addItem(item)
             self.clear();
-            console.log(dt.rows().data());
+
             
         }
     }
