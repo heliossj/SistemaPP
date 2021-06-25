@@ -156,6 +156,8 @@
     <Compile Include="DataTables\IDataTablesRequest.cs" />
     <Compile Include="DataTables\NameValueCollectionExtensions.cs" />
     <Compile Include="DataTables\Search.cs" />
+    <Compile Include="Models\Pessoas.cs" />
+    <Compile Include="Models\Pai.cs" />
     <Compile Include="Models\DataAccess.cs" />
     <Compile Include="Models\FormaPagamento.cs" />
     <Compile Include="Models\Funcionarios.cs" />
@@ -461,6 +463,7 @@
     <Content Include="Views\Funcionarios\Index.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\FormaPagamento\Select.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Cidades\Select.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\CondicaoPagamento\Select.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -25,7 +25,7 @@
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.codServico)
+                        @Html.DisplayFor(modelItem => item.codigo)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.nomeServico)
@@ -37,9 +37,9 @@
                         @Html.DisplayFor(modelItem => item.situacao)
                     </td>
                     <td>
-                        @Html.ActionLink(" ", "Details", new { id = item.codServico }, new { @class = "btn btn-success btn-sm fa fa-eye", @title = "Visualizar registro" })
-                        @Html.ActionLink(" ", "Edit", new { id = item.codServico }, new { @class = "btn btn-warning btn-sm fa fa-edit", @title = "Editar registro" })
-                        @Html.ActionLink(" ", "Delete", new { id = item.codServico }, new { @class = "btn btn-danger btn-sm fa fa-trash-o", @title = "Excluir registro" })
+                        @Html.ActionLink(" ", "Details", new { id = item.codigo }, new { @class = "btn btn-success btn-sm fa fa-eye", @title = "Visualizar registro" })
+                        @Html.ActionLink(" ", "Edit", new { id = item.codigo }, new { @class = "btn btn-warning btn-sm fa fa-edit", @title = "Editar registro" })
+                        @Html.ActionLink(" ", "Delete", new { id = item.codigo }, new { @class = "btn btn-danger btn-sm fa fa-trash-o", @title = "Excluir registro" })
                     </td>
                 </tr>
             }

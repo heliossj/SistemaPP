@@ -31,10 +31,10 @@ namespace Sistema.Controllers
             {
                 ModelState.AddModelError("nomeCondicao", "Informe um nome de condição de pagamento válido");
             }
-            if (model.ListCondicao == null || !model.ListCondicao.Get.Any())
-            {
-                ModelState.AddModelError("ListCondicao", "Informe ao menos uma forma de pagamento");
-            }
+            //if (model.ListCondicao.Get == null)
+            //{
+            //    ModelState.AddModelError("ListCondicao", "Informe ao menos um item na lista");
+            //}
             if (ModelState.IsValid)
             {
                 daoCondicaoPagamento = new DAOCondicaoPagamento();
@@ -58,10 +58,6 @@ namespace Sistema.Controllers
             if (string.IsNullOrWhiteSpace(model.nomeCondicao))
             {
                 ModelState.AddModelError("nomeCondicao", "Informe um nome de condição de pagamento válido");
-            }
-            if (model.ListCondicao == null || !model.ListCondicao.Get.Any())
-            {
-                ModelState.AddModelError("ListCondicao", "Informe ao menos uma forma de pagamento");
             }
             if (ModelState.IsValid)
             {

@@ -6,11 +6,8 @@ using System.Web;
 
 namespace Sistema.Models
 {
-    public class Estados
+    public class Estados : Pai
     {
-        [Display(Name = "Código")]
-        public int? codEstado { get; set; }
-
         [Display(Name = "Estado")]
         public string nomeEstado { get; set; }
 
@@ -18,11 +15,5 @@ namespace Sistema.Models
         public string uf { get; set; }
 
         public Select.Paises.Select Pais { get; set; }
-
-        [Display(Name = "Data de cadastro")]
-        public DateTime? dtCadastro { get; set; }
-
-        [Display(Name = "Data da últ. alteração")]
-        public DateTime? dtUltAlteracao { get; set; }
     }
 }

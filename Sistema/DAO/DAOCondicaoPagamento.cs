@@ -26,9 +26,9 @@ namespace Sistema.DAO
                 {
                     var condicaoPagamento = new CondicaoPagamento
                     {
-                        codCondicao = Convert.ToInt32(reader["CondicaoPagamento_ID"]),
+                        codigo = Convert.ToInt32(reader["CondicaoPagamento_ID"]),
                         nomeCondicao = Convert.ToString(reader["CondicaoPagamento_Nome"]),
-                        situacao= Convert.ToString(reader["CondicaoPagamento_Situacao"]),
+                        situacao = Sistema.Util.FormatSituacao.Situacao(Convert.ToString(reader["CondicaoPagamento_Situacao"])),
                     };
 
                     list.Add(condicaoPagamento);
@@ -50,27 +50,47 @@ namespace Sistema.DAO
         {
             try
             {
-                var sql = string.Format("INSERT INTO tbcondpagamentos ( nomecondicaopagamento, txjuros, multa, desconto, situacao, dtcadastro, dtultalteracao) VALUES ('{0}', {1}, {2}, {3}, '{4}', '{5}', '{6}')",
+                var sql = string.Format("INSERT INTO tbcondpagamentos ( nomecondicao, txjuros, multa, desconto, situacao, dtcadastro, dtultalteracao) VALUES ('{0}', {1}, {2}, {3}, '{4}', '{5}', '{6}'); SELECT SCOPE_IDENTITY()",
                     condicaPagamento.nomeCondicao.ToUpper().Trim(),
-                    condicaPagamento.txJuros,
-                    condicaPagamento.multa,
-                    condicaPagamento.desconto,
+                    condicaPagamento.txJuros != null ? condicaPagamento.txJuros : 0,
+                    condicaPagamento.multa != null ? condicaPagamento.multa : 0,
+                    condicaPagamento.desconto != null ? condicaPagamento.desconto : 0,
                     condicaPagamento.situacao.ToUpper().Trim(),
                     DateTime.Now.ToString("yyyy-MM-dd"),
                     DateTime.Now.ToString("yyyy-MM-dd")
                     );
-                OpenConnection();
-                SqlQuery = new SqlCommand(sql, con);
-                int i = SqlQuery.ExecuteNonQuery();
+                string sqlItem = "INSERT INTO tbparcelascondicao (codcondicao, codforma, nrparcela, qtdias, txpercentual) VALUES ({0}, {1}, {2}, {3}, {4} )";
+                using (con)
+                {
+                    OpenConnection();
 
-                if (i > 1)
-                {
-                    return true;
+                    SqlTransaction sqlTrans = con.BeginTransaction();
+                    SqlCommand command = con.CreateCommand();
+                    command.Transaction = sqlTrans;
+                    try
+                    {
+                        command.CommandText = sql;
+                        //command.ExecuteNonQuery();
+                        var codCondicao = Convert.ToInt32(command.ExecuteScalar());
+                        foreach (var item in condicaPagamento.ListCondicao)
+                        {
+                            var Item = string.Format(sqlItem, codCondicao, item.codFormaPagamento, item.nrParcela, item.qtDias, item.txPercentual);
+                            command.CommandText = Item;
+                            command.ExecuteNonQuery();
+                        }
+                        sqlTrans.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        sqlTrans.Rollback();
+                        throw new Exception(ex.Message);
+                    }
+                    finally
+                    {
+                        con.Close();
+                    }
                 }
-                else
-                {
-                    return false;
-                }
+                return true;
             }
             catch (Exception error)
             {
@@ -129,7 +149,7 @@ namespace Sistema.DAO
                     reader = SqlQuery.ExecuteReader();
                     while (reader.Read())
                     {
-                        model.codCondicao = Convert.ToInt32(reader["CondicaoPagamento_ID"]);
+                        model.codigo = Convert.ToInt32(reader["CondicaoPagamento_ID"]);
                         model.nomeCondicao = Convert.ToString(reader["CondicaoPagamento_Nome"]);
                         model.situacao = Convert.ToString(reader["CondicaoPagamento_Situacao"]);
                         model.txJuros = Convert.ToDecimal(reader["CondicaoPagamento_TaxaJuros"]);

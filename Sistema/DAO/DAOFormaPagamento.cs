@@ -27,7 +27,7 @@ namespace Sistema.DAO
                     {
                         codForma = Convert.ToInt32(reader["FormaPagamento_ID"]),
                         nomeForma = Convert.ToString(reader["FormaPagamento_Nome"]),
-                        situacao = Convert.ToString(reader["FormaPagamento_Situacao"]),
+                        situacao = Sistema.Util.FormatSituacao.Situacao(Convert.ToString(reader["FormaPagamento_Situacao"])),
                         dtCadastro = Convert.ToDateTime(reader["FormaPagamento_DataCadastro"]),
                         dtUltAlteracao = Convert.ToDateTime(reader["FormaPagamento_DataUltAlteracao"]),
                     };

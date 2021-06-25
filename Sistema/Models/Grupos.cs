@@ -7,11 +7,8 @@ using System.Web.Mvc;
 
 namespace Sistema.Models
 {
-    public class Grupos
+    public class Grupos : Pai
     {
-        [Display(Name = "Código")]
-        public int? codGrupo { get; set; }
-
         [Display(Name = "Grupo")]
         public string nomeGrupo { get; set; }
 
@@ -20,12 +17,6 @@ namespace Sistema.Models
 
         [Display(Name = "Observação")]
         public string observacao { get; set; }
-
-        [Display(Name = "Data de cadastro")]
-        public DateTime? dtCadastro { get; set; }
-
-        [Display(Name = "Data da últ. alteração")]
-        public DateTime? dtUltAlteracao { get; set; }
 
         public static SelectListItem[] Situacao
         {

@@ -7,11 +7,11 @@
 
 @if (action != "create")
 {
-    @Html.HiddenFor(model => model.codFornecedor)
+    @Html.HiddenFor(model => model.codigo)
     <div class="form-row">
         <div class="@Util.Input2">
-            @Html.LabelFor(model => model.codFornecedor)
-            @Html.TextBoxFor(model => model.codFornecedor, new { @class = "form-control", disabled = false })
+            @Html.LabelFor(model => model.codigo)
+            @Html.TextBoxFor(model => model.codigo, new { @class = "form-control", disabled = false })
         </div>
     </div>
 }
@@ -68,27 +68,17 @@
 </div>
 
 <div class="form-row">
-    @*<p class="@Util.Input9"> Cidade </p>*@
+    @Html.EditorFor(model => model.Cidade, "Cidades/Select", new { Disabled = false, Required = false })
+</div>
 
-    <div class="@Util.Input1">
-        @Html.Label("codCidade", "Cod.", new { @class = "required" })
-        @Html.TextBox("codCidade", "", new { @class = "form-control", maxlength = "8", style = "text-transform:uppercase", minlength = "3" })
-    </div>
-
-    <div class="@Util.Input5">
-        @Html.Label("nomeCidade", "Cidade.", new { @class = "required" })
-        @Html.TextBox("nomeCidade", "", new { @class = "form-control", maxlength = "8", style = "text-transform:uppercase", minlength = "3" })
-    </div>
-
-    @*<p class="@Util.Input9"> Cidade </p>*@
-
+<div class="form-row">
     <div class="@Util.Input2">
         @Html.LabelFor(model => model.cep, new { @class = "required" })
         @Html.TextBoxFor(model => model.cep, new { @class = "form-control", maxlength = "8", style = "text-transform:uppercase", minlength = "3" })
         @Html.ValidationMessageFor(model => model.cep, null, new { @class = "text-danger" })
     </div>
 
-    <div class="@Util.Input4">
+    <div class="@Util.Input10">
         @Html.LabelFor(model => model.site, new { @class = "required" })
         @Html.TextBoxFor(model => model.site, new { @class = "form-control", maxlength = "100", style = "text-transform:uppercase", minlength = "3" })
         @Html.ValidationMessageFor(model => model.site, null, new { @class = "text-danger" })
@@ -124,27 +114,14 @@
     </div>
 
     <div class="@Util.Input4">
-        @Html.LabelFor(model => model.IE, new { @class = "required" })
-        @Html.TextBoxFor(model => model.IE, new { @class = "form-control", maxlength = "15", style = "text-transform:uppercase", minlength = "3" })
-        @Html.ValidationMessageFor(model => model.IE, null, new { @class = "text-danger" })
+        @Html.LabelFor(model => model.ie, new { @class = "required" })
+        @Html.TextBoxFor(model => model.ie, new { @class = "form-control", maxlength = "15", style = "text-transform:uppercase", minlength = "3" })
+        @Html.ValidationMessageFor(model => model.ie, null, new { @class = "text-danger" })
     </div>
 </div>
 
 <div class="form-row">
-    @*<p class="@Util.Input9"> CondicaoPagamento </p>*@
-
-    <div class="@Util.Input2">
-        @Html.Label("codCond", "Cod..", new { @class = "required" })
-        @Html.TextBox("codCond", "", new { @class = "form-control", maxlength = "8", style = "text-transform:uppercase", minlength = "3" })
-    </div>
-
-    <div class="@Util.Input10">
-        @Html.Label("nomeCondicao", "Cond. pagamento.", new { @class = "required" })
-        @Html.TextBox("nomeCondicao", "", new { @class = "form-control", maxlength = "8", style = "text-transform:uppercase", minlength = "3" })
-    </div>
-
-    @*<p class="@Util.Input9"> CondicaoPagamento </p>*@
-
+    @Html.EditorFor(model => model.CondicaoPagamento, "CondicaoPagamento/Select", new { Required = false, Disabled = false })
 </div>
 
 <div class="form-row">

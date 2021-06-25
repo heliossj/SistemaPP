@@ -7,11 +7,8 @@ using System.Web.Mvc;
 
 namespace Sistema.Models
 {
-    public class Produtos
+    public class Produtos : Pai
     {
-        [Display(Name = "Código")]
-        public int? codProduto { get; set; }
-
         [Display(Name = "Produto")]
         public string nomeProduto { get; set; }
 
@@ -45,12 +42,6 @@ namespace Sistema.Models
 
         [Display(Name = "Observacao")]
         public string observacao { get; set; }
-
-        [Display(Name = "Data de cadastro")]
-        public DateTime? dtCadastro { get; set; }
-
-        [Display(Name = "Data da últ. alteração")]
-        public DateTime? dtUltAlteracao { get; set; }
 
         public static SelectListItem[] Situacao
         {

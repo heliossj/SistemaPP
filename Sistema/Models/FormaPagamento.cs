@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace Sistema.Models
 {
-    public class FormaPagamento
+    public class FormaPagamento : Pai
     {
         [Display(Name = "Código")]
         public int? codForma { get; set; }
@@ -17,12 +17,6 @@ namespace Sistema.Models
 
         [Display(Name = "Situação")]
         public string situacao { get; set; }
-
-        [Display(Name = "Data de cadastro")]
-        public DateTime? dtCadastro { get; set; }
-
-        [Display(Name = "Data da últ. alteração")]
-        public DateTime? dtUltAlteracao { get; set; }
 
         public static SelectListItem[] Situacao
         {

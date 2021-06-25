@@ -7,11 +7,11 @@
 
 @if (action != "create")
 {
-    @Html.HiddenFor(model => model.codPais)
+    @Html.HiddenFor(model => model.codigo)
     <div class="form-row" style="">
         <div class="@Util.Input2">
-            @Html.LabelFor(model => model.codPais)
-            @Html.TextBoxFor(model => model.codPais, new { @class = "form-control", disabled = true })
+            @Html.LabelFor(model => model.codigo)
+            @Html.TextBoxFor(model => model.codigo, new { @class = "form-control", disabled = true })
         </div>
     </div>
 }

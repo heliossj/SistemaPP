@@ -26,7 +26,7 @@ namespace Sistema.DAO
                 {
                     var pais = new Paises
                     {
-                        codPais = Convert.ToInt32(reader["Pais_ID"]),
+                        codigo = Convert.ToInt32(reader["Pais_ID"]),
                         nomePais = Convert.ToString(reader["Pais_Nome"]),
                         sigla = Convert.ToString(reader["Pais_Sigla"]),
                         DDI = Convert.ToString(reader["Pais_DDI"]),
@@ -90,7 +90,7 @@ namespace Sistema.DAO
                     " ddi = '" + pais.DDI.ToUpper().Trim() + "'," +
                     " sigla = '" + pais.sigla.ToUpper().Trim() + "'," +
                     " dtultalteracao = '" + DateTime.Now.ToString("yyyy-MM-dd")
-                    + "' WHERE codpais = " + pais.codPais;
+                    + "' WHERE codpais = " + pais.codigo;
                 OpenConnection();
                 SqlQuery = new SqlCommand(sql, con);
 
@@ -128,7 +128,7 @@ namespace Sistema.DAO
                     reader = SqlQuery.ExecuteReader();
                     while (reader.Read())
                     {
-                        model.codPais = Convert.ToInt32(reader["Pais_ID"]);
+                        model.codigo = Convert.ToInt32(reader["Pais_ID"]);
                         model.nomePais = Convert.ToString(reader["Pais_Nome"]);
                         model.DDI = Convert.ToString(reader["Pais_DDI"]);
                         model.sigla = Convert.ToString(reader["Pais_Sigla"]);

@@ -7,11 +7,8 @@ using System.Web.Mvc;
 
 namespace Sistema.Models
 {
-    public class Servicos
+    public class Servicos : Pai
     {
-        [Display(Name = "Código")]
-        public int? codServico { get; set; }
-
         [Display(Name = "Serviço")]
         public string nomeServico { get; set; }
 
@@ -23,12 +20,6 @@ namespace Sistema.Models
 
         [Display(Name = "Valor")]
         public decimal vlServico { get; set; }
-
-        [Display(Name = "Data de cadastro")]
-        public DateTime? dtCadastro { get; set; }
-
-        [Display(Name = "Data da últ. alteração")]
-        public DateTime? dtUltAlteracao { get; set; }
 
         public static SelectListItem[] Situacao
         {

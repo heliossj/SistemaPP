@@ -26,7 +26,7 @@ namespace Sistema.DAO
                 {
                     var estado = new Estados
                     {
-                        codEstado = Convert.ToInt32(reader["Estado_ID"]),
+                        codigo = Convert.ToInt32(reader["Estado_ID"]),
                         nomeEstado = Convert.ToString(reader["Estado_Nome"]),
                         uf = Convert.ToString(reader["Estado_UF"]),
                         Pais = new Select.Paises.Select
@@ -94,7 +94,7 @@ namespace Sistema.DAO
                     " uf = '" + estado.uf.ToUpper().Trim() + "'," +
                     " dtultalteracao = '" + DateTime.Now.ToString("yyyy-MM-dd") + "',"+
                     " codpais = " + estado.Pais.id +
-                    " WHERE codestado = " + estado.codEstado;
+                    " WHERE codestado = " + estado.codigo;
                 OpenConnection();
                 SqlQuery = new SqlCommand(sql, con);
 
@@ -132,7 +132,7 @@ namespace Sistema.DAO
                     reader = SqlQuery.ExecuteReader();
                     while (reader.Read())
                     {
-                        model.codEstado = Convert.ToInt32(reader["Estado_ID"]);
+                        model.codigo = Convert.ToInt32(reader["Estado_ID"]);
                         model.nomeEstado = Convert.ToString(reader["Estado_Nome"]);
                         model.uf = Convert.ToString(reader["Estado_UF"]);
                         model.dtCadastro = Convert.ToDateTime(reader["Estado_DataCadastro"]);

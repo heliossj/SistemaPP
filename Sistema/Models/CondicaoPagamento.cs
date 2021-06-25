@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -7,22 +8,13 @@ using System.Web.Mvc;
 
 namespace Sistema.Models
 {
-    public class CondicaoPagamento
+    public class CondicaoPagamento : Pai
     {
-        [Display(Name = "Código")]
-        public int? codCondicao { get; set; }
-
         [Display(Name = "Condição de pagamento")]
         public string nomeCondicao { get; set; }
 
         [Display(Name = "Situação")]
         public string situacao { get; set; }
-
-        [Display(Name = "Data de cadastro")]
-        public DateTime? dtCadastro { get; set; }
-
-        [Display(Name = "Data da últ. alteração")]
-        public DateTime? dtUltAlteracao { get; set; }
 
         [Display(Name = "Taxa de juros")]
         public decimal? txJuros { get; set; }
@@ -31,13 +23,13 @@ namespace Sistema.Models
         public decimal? txPercentual { get; set; }
 
         [Display(Name = "Dias")]
-        public short qtDias { get; set; }
+        public short? qtDias { get; set; }
 
         [Display(Name = "Multa")]
         public decimal? multa { get; set; }
 
         [Display(Name = "Desconto")]
-        public decimal desconto { get; set; }
+        public decimal? desconto { get; set; }
 
         public Select.FormaPagamento.Select FormaPagamento { get; set; }
 
@@ -88,6 +80,19 @@ namespace Sistema.Models
             public string nomeFormaPagamento { get; set; }
         }
 
-        public Models.DataTablesList<CondicaoPagamentoVM> ListCondicao { get; set; }
+        public string jsItens { get; set; }
+        public List<CondicaoPagamentoVM> ListCondicao
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(jsItens))
+                    return new List<CondicaoPagamentoVM>();
+                return JsonConvert.DeserializeObject<List<CondicaoPagamentoVM>>(jsItens);
+            }
+            set
+            {
+                jsItens = JsonConvert.SerializeObject(value);
+            }
+        }
     }
 }

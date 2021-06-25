@@ -14,7 +14,7 @@ CondicaoPagamento = function () {
     this.init = function () {
         dtCondicao = new tDataTable({
             table: {
-                jsItem: "ListCondicao_js",
+                jsItem: "jsItens",
                 name: "tblCondicao",
                 remove: true,
                 order: [[1, "asc"]],

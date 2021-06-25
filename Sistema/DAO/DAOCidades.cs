@@ -26,7 +26,7 @@ namespace Sistema.DAO
                 {
                     var cidade = new Cidades
                     {
-                        codCidade = Convert.ToInt32(reader["Cidade_ID"]),
+                        codigo = Convert.ToInt32(reader["Cidade_ID"]),
                         nomeCidade = Convert.ToString(reader["Cidade_Nome"]),
                         ddd = Convert.ToString(reader["Cidade_DDD"]),
                         sigla = Convert.ToString(reader["Cidade_Sigla"]),
@@ -97,7 +97,7 @@ namespace Sistema.DAO
                     " sigla = '" + cidade.sigla.ToUpper().Trim() + "',"+
                     " dtultalteracao = '" + DateTime.Now.ToString("yyyy-MM-dd") + "',"+
                     " codestado = " + cidade.Estado.id +
-                    " WHERE codcidade = " + cidade.codCidade;
+                    " WHERE codcidade = " + cidade.codigo;
                 OpenConnection();
                 SqlQuery = new SqlCommand(sql, con);
 
@@ -135,7 +135,7 @@ namespace Sistema.DAO
                     reader = SqlQuery.ExecuteReader();
                     while (reader.Read())
                     {
-                        model.codCidade = Convert.ToInt32(reader["Cidade_ID"]);
+                        model.codigo = Convert.ToInt32(reader["Cidade_ID"]);
                         model.nomeCidade = Convert.ToString(reader["Cidade_Nome"]);
                         model.ddd = Convert.ToString(reader["Cidade_DDD"]);
                         model.sigla = Convert.ToString(reader["Cidade_Sigla"]);

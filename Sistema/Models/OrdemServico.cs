@@ -7,11 +7,8 @@ using System.Web.Mvc;
 
 namespace Sistema.Models
 {
-    public class OrdemServico
+    public class OrdemServico : Pai
     {
-        [Display(Name = "Nº")]
-        public int? codOS { get; set; }
-
         [Display(Name = "Situação")]
         public string situacao { get; set; }
 
@@ -27,12 +24,6 @@ namespace Sistema.Models
 
         [Display(Name = "Observação")]
         public string observacao { get; set; }
-
-        [Display(Name = "Data de cadastro")]
-        public DateTime? dtCadastro { get; set; }
-
-        [Display(Name = "Data da últ. alteração")]
-        public DateTime? dtUltAlteracao { get; set; }
 
         public class Servicos
         {

@@ -25,9 +25,9 @@ namespace Sistema.DAO
                 {
                     var grupo = new Grupos
                     {
-                        codGrupo = Convert.ToInt32(reader["Grupo_ID"]),
+                        codigo = Convert.ToInt32(reader["Grupo_ID"]),
                         nomeGrupo = Convert.ToString(reader["Grupo_Nome"]),
-                        situacao = Convert.ToString(reader["Grupo_Situacao"]),
+                        situacao = Sistema.Util.FormatSituacao.Situacao(Convert.ToString(reader["Grupo_Situacao"])),
                         observacao = Convert.ToString(reader["Grupo_Observacao"]),
                         dtCadastro = Convert.ToDateTime(reader["Grupo_DataCadastro"]),
                         dtUltAlteracao = Convert.ToDateTime(reader["Grupo_DataUltAlteracao"]),
@@ -91,7 +91,7 @@ namespace Sistema.DAO
                     " situacao = '" + grupo.situacao.ToUpper().Trim() + "'," +
                     " observacao = '" + grupo.observacao.ToUpper().Trim() + "'," +
                     " dtultalteracao = '" + DateTime.Now.ToString("yyyy-MM-dd")
-                    + "' WHERE tbgrupos.codgrupo = " + grupo.codGrupo;
+                    + "' WHERE tbgrupos.codgrupo = " + grupo.codigo;
                 OpenConnection();
                 SqlQuery = new SqlCommand(sql, con);
                 int i = SqlQuery.ExecuteNonQuery();
@@ -128,7 +128,7 @@ namespace Sistema.DAO
                     reader = SqlQuery.ExecuteReader();
                     while (reader.Read())
                     {
-                        model.codGrupo = Convert.ToInt32(reader["Grupo_ID"]);
+                        model.codigo = Convert.ToInt32(reader["Grupo_ID"]);
                         model.nomeGrupo = Convert.ToString(reader["Grupo_Nome"]);
                         model.situacao = Convert.ToString(reader["Grupo_Situacao"]);
                         model.observacao = Convert.ToString(reader["Grupo_Observacao"]);

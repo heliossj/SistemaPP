@@ -26,9 +26,9 @@ namespace Sistema.DAO
                 {
                     var servico = new Servicos
                     {
-                        codServico = Convert.ToInt32(reader["Servico_ID"]),
+                        codigo = Convert.ToInt32(reader["Servico_ID"]),
                         nomeServico = Convert.ToString(reader["Servico_Nome"]),
-                        situacao = Convert.ToString(reader["Servico_Situacao"]),
+                        situacao = Sistema.Util.FormatSituacao.Situacao(Convert.ToString(reader["Servico_Situacao"])),
                         vlServico = Convert.ToDecimal(reader["Servico_Valor"]),
                         dtCadastro = Convert.ToDateTime(reader["Servico_DataCadastro"]),
                         dtUltAlteracao = Convert.ToDateTime(reader["Servicos_DataUltAlteracao"]),
@@ -94,7 +94,7 @@ namespace Sistema.DAO
                     " vlservico = " + servicos.vlServico.ToString().Replace(",", ".") + ", "+
                     " situacao = '" + servicos.situacao.ToUpper().Trim() + "'," +
                     " dtultalteracao = '" + DateTime.Now.ToString("yyyy-MM-dd")
-                    + "' WHERE codservico = " + servicos.codServico;
+                    + "' WHERE codservico = " + servicos.codigo;
                 OpenConnection();
                 SqlQuery = new SqlCommand(sql, con);
 
@@ -132,7 +132,7 @@ namespace Sistema.DAO
                     reader = SqlQuery.ExecuteReader();
                     while (reader.Read())
                     {
-                        model.codServico = Convert.ToInt32(reader["Servico_ID"]);
+                        model.codigo = Convert.ToInt32(reader["Servico_ID"]);
                         model.nomeServico = Convert.ToString(reader["Servico_Nome"]);
                         model.descricao = Convert.ToString(reader["Servico_Descricao"]);
                         model.vlServico = Convert.ToDecimal(reader["Servico_Valor"]);
