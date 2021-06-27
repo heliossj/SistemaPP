@@ -139,6 +139,9 @@
     <Compile Include="Controllers\CidadesController.cs" />
     <Compile Include="Controllers\EstadosController.cs" />
     <Compile Include="DAO\DAOCidades.cs" />
+    <Compile Include="DAO\DAOFornecedores.cs" />
+    <Compile Include="DAO\DAOFuncionarios.cs" />
+    <Compile Include="DAO\DAOClientes.cs" />
     <Compile Include="DAO\DAOEstados.cs" />
     <Compile Include="DAO\DAOGrupos.cs" />
     <Compile Include="DAO\DAOFormaPagamento.cs" />
@@ -170,6 +173,9 @@
     <Compile Include="Models\Clientes.cs" />
     <Compile Include="Models\Servicos.cs" />
     <Compile Include="Models\Estados.cs" />
+    <Compile Include="Select\Fornecedores\Select.cs" />
+    <Compile Include="Select\Funcionarios\Select.cs" />
+    <Compile Include="Select\Clientes\Select.cs" />
     <Compile Include="Select\CondicaoPagamento\Select.cs" />
     <Compile Include="Select\FormaPagamento\Select.cs" />
     <Compile Include="Select\Servicos\Select.cs" />
@@ -224,6 +230,7 @@
     <Content Include="Scripts\Clientes\Create.js" />
     <Content Include="Scripts\CondicaoPagamento\Create.js" />
     <Content Include="Scripts\bootstrap-notify.js" />
+    <Content Include="Scripts\Fornecedores\Create.js" />
     <Content Include="Scripts\Functions.js" />
     <Content Include="Scripts\functionsb3.js" />
     <Content Include="Scripts\tDataTable.js" />

@@ -91,7 +91,7 @@ namespace Sistema.Util
 
     }
 
-    public class FormatSituacao
+    public class FormatFlag
     {
         public static string Situacao(string flSituacao)
         {
@@ -100,6 +100,14 @@ namespace Sistema.Util
             if (flSituacao == "I")
                 return "INATIVA";
             return flSituacao;
+        }
+        public static string TipoPessoa(string flPessoa)
+        {
+            if (flPessoa == "F")
+                return "FÍSICA";
+            if (flPessoa == "J")
+                return "JURÍDICA";
+            return flPessoa;
         }
     }
 }

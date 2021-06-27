@@ -28,7 +28,7 @@ namespace Sistema.DAO
                     {
                         codigo = Convert.ToInt32(reader["Servico_ID"]),
                         nomeServico = Convert.ToString(reader["Servico_Nome"]),
-                        situacao = Sistema.Util.FormatSituacao.Situacao(Convert.ToString(reader["Servico_Situacao"])),
+                        situacao = Sistema.Util.FormatFlag.Situacao(Convert.ToString(reader["Servico_Situacao"])),
                         vlServico = Convert.ToDecimal(reader["Servico_Valor"]),
                         dtCadastro = Convert.ToDateTime(reader["Servico_DataCadastro"]),
                         dtUltAlteracao = Convert.ToDateTime(reader["Servicos_DataUltAlteracao"]),

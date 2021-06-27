@@ -28,7 +28,7 @@ namespace Sistema.DAO
                     {
                         codigo = Convert.ToInt32(reader["CondicaoPagamento_ID"]),
                         nomeCondicao = Convert.ToString(reader["CondicaoPagamento_Nome"]),
-                        situacao = Sistema.Util.FormatSituacao.Situacao(Convert.ToString(reader["CondicaoPagamento_Situacao"])),
+                        situacao = Sistema.Util.FormatFlag.Situacao(Convert.ToString(reader["CondicaoPagamento_Situacao"])),
                     };
 
                     list.Add(condicaoPagamento);

@@ -22,18 +22,35 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>1</td>
-                <td>ROBSON ALVES</td>
-                <td>23/08/2020</td>
-                <td>998542311</td>
-                <td>ATIVA</td>
-                <td>
-                    @Html.ActionLink(" ", "Details", new {  }, new { @class = "btn btn-success btn-sm fa fa-eye", @title = "Visualizar registro" })
-                    @Html.ActionLink(" ", "Edit", new {   }, new { @class = "btn btn-warning btn-sm fa fa-edit", @title = "Editar registro" })
-                    @Html.ActionLink(" ", "Delete", new {   }, new { @class = "btn btn-danger btn-sm fa fa-trash-o", @title = "Excluir registro" })
-                </td>
-            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.codigo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.nomePessoa)
+                    </td>
+                    <td>
+                        @if (item.dtAdmissao != null)
+                        {
+                            var dtAuxAdmissao = item.dtAdmissao.Value.ToString("dd/MM/yyyy");
+                            @Html.DisplayFor(modelItem => dtAuxAdmissao)
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.telefoneCelular)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.situacao)
+                    </td>
+                    <td>
+                        @Html.ActionLink(" ", "Details", new { id = item.codigo }, new { @class = "btn btn-success btn-sm fa fa-eye", @title = "Visualizar registro" })
+                        @Html.ActionLink(" ", "Edit", new { id = item.codigo }, new { @class = "btn btn-warning btn-sm fa fa-edit", @title = "Editar registro" })
+                        @Html.ActionLink(" ", "Delete", new { id = item.codigo }, new { @class = "btn btn-danger btn-sm fa fa-trash-o", @title = "Excluir registro" })
+                    </td>
+                </tr>
+            }
         </tbody>
     </table>
 </div>

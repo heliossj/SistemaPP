@@ -27,7 +27,7 @@ namespace Sistema.DAO
                     {
                         codigo = Convert.ToInt32(reader["Grupo_ID"]),
                         nomeGrupo = Convert.ToString(reader["Grupo_Nome"]),
-                        situacao = Sistema.Util.FormatSituacao.Situacao(Convert.ToString(reader["Grupo_Situacao"])),
+                        situacao = Sistema.Util.FormatFlag.Situacao(Convert.ToString(reader["Grupo_Situacao"])),
                         observacao = Convert.ToString(reader["Grupo_Observacao"]),
                         dtCadastro = Convert.ToDateTime(reader["Grupo_DataCadastro"]),
                         dtUltAlteracao = Convert.ToDateTime(reader["Grupo_DataUltAlteracao"]),
