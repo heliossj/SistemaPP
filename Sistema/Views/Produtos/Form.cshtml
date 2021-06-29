@@ -46,32 +46,11 @@
 </div>
 
 <div class="form-row">
-    @*<p class="@Util.Input9"> Cliente </p>*@
-    <div class="@Util.Input2">
-        @Html.Label("codCond", "Cod.", new { @class = "required" })
-        @Html.TextBox("codCond", "", new { @class = "form-control", maxlength = "8", style = "text-transform:uppercase", minlength = "3" })
-    </div>
-
-    <div class="@Util.Input10">
-        @Html.Label("nomeCondicao", "Grupo.", new { @class = "required" })
-        @Html.TextBox("nomeCondicao", "", new { @class = "form-control", maxlength = "8", style = "text-transform:uppercase", minlength = "3" })
-    </div>
-
-    @*<p class="@Util.Input9"> Cliente </p>*@
+    @Html.EditorFor(model => model.Grupo, "Grupos/Select", new { Required = false, Disabled = false })
 </div>
 
 <div class="form-row">
-    @*<p class="@Util.Input9"> Cliente </p>*@
-    <div class="@Util.Input2">
-        @Html.Label("codCond", "Cod.", new { @class = "required" })
-        @Html.TextBox("codCond", "", new { @class = "form-control", maxlength = "8", style = "text-transform:uppercase", minlength = "3" })
-    </div>
-
-    <div class="@Util.Input10">
-        @Html.Label("nomeCondicao", "Fornecedor.", new { @class = "required" })
-        @Html.TextBox("nomeCondicao", "", new { @class = "form-control", maxlength = "8", style = "text-transform:uppercase", minlength = "3" })
-    </div>
-    @*<p class="@Util.Input9"> Cliente </p>*@
+    @Html.EditorFor(model => model.Fornecedor, "Fornecedores/Select", new { Required = false, Disabled = false })
 </div>
 
 <div class="form-row">

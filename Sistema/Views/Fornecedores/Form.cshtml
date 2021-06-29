@@ -110,12 +110,17 @@
     @Html.EditorFor(model => model.Cidade, "Cidades/Select", new { Disabled = false, Required = false })
 </div>
 
-
 <div class="form-row">
     <div class="@Util.Input3">
         @Html.LabelFor(model => model.cep, new { @class = "required" })
         @Html.TextBoxFor(model => model.cep, new { @class = "form-control", maxlength = "8", style = "text-transform:uppercase", minlength = "3" })
         @Html.ValidationMessageFor(model => model.cep, null, new { @class = "text-danger" })
+    </div>
+
+    <div class="@Util.Input9">
+        @Html.LabelFor(model => model.site, new { @class = "required" })
+        @Html.TextBoxFor(model => model.site, new { @class = "form-control", maxlength = "100", style = "text-transform:uppercase", minlength = "3" })
+        @Html.ValidationMessageFor(model => model.site, null, new { @class = "text-danger" })
     </div>
 </div>
 
@@ -169,7 +174,7 @@
 <div class="form-row">
     <div class="@Util.Input12">
         @Html.LabelFor(model => model.observacao)
-        @Html.TextAreaFor(model => model.observacao, new { @class = "form-control" })
+        @Html.TextAreaFor(model => model.observacao, new { @class = "form-control", style = "text-transform:uppercase" })
     </div>
 </div>
 

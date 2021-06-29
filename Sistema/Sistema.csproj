@@ -146,6 +146,7 @@
     <Compile Include="DAO\DAOGrupos.cs" />
     <Compile Include="DAO\DAOFormaPagamento.cs" />
     <Compile Include="DAO\DAOCondicaoPagamento.cs" />
+    <Compile Include="DAO\DAOProdutos.cs" />
     <Compile Include="DAO\DAOServicos.cs" />
     <Compile Include="DAO\DAOPaises.cs" />
     <Compile Include="DAO\DAO.cs" />
@@ -178,6 +179,7 @@
     <Compile Include="Select\Clientes\Select.cs" />
     <Compile Include="Select\CondicaoPagamento\Select.cs" />
     <Compile Include="Select\FormaPagamento\Select.cs" />
+    <Compile Include="Select\Produtos\Select.cs" />
     <Compile Include="Select\Servicos\Select.cs" />
     <Compile Include="Select\Grupos\Select.cs" />
     <Compile Include="Select\Cidades\Select.cs" />
@@ -471,6 +473,8 @@
     <Content Include="Views\Shared\EditorTemplates\FormaPagamento\Select.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Cidades\Select.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\CondicaoPagamento\Select.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Grupos\Select.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Fornecedores\Select.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -51,7 +51,7 @@ namespace Sistema.DAO
                         dtCadastro = Convert.ToDateTime(reader["Fornecedor_DataCadastro"]),
                         dtUltAlteracao = Convert.ToDateTime(reader["Fornecedor_DataUltAlteracao"]),
                         site = Convert.ToString(reader["Fornecedor_Site"]),
-                        observacao = Convert.ToString(reader["Forecedor_Observacao"]),
+                        observacao = Convert.ToString(reader["Fornecedor_Observacao"]),
                         //Física
                         nomePessoa = tipoPessoa == "F" ? Convert.ToString(reader["Fornecedor_RazaoSocial_NomeFornecedor"]) : "",
                         apelidoPessoa = tipoPessoa == "F" ? Convert.ToString(reader["Fornecedor_NomeFantasia_ApelidoFornecedor"]) : "",
@@ -86,7 +86,7 @@ namespace Sistema.DAO
         {
             try
             {
-                var sql = string.Format("INSERT INTO tbclientes ( tipo, nomerazaosocial, sexo, logradouro, numero, complemento, bairro, telfixo, telcelular, email, codcidade, cep, cpfcnpj, rgie, dtnascimentofundacao, situacao, codcondicao, dtcadastro, dtultalteracao, apelidonomefantasia, site, observacao)" +
+                var sql = string.Format("INSERT INTO tbfornecedores ( tipo, nomerazaosocial, sexo, logradouro, numero, complemento, bairro, telfixo, telcelular, email, codcidade, cep, cpfcnpj, rgie, dtnascimentofundacao, situacao, codcondicao, dtcadastro, dtultalteracao, apelidonomefantasia, site, observacao)" +
                     "VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', {10}, '{11}', '{12}', '{13}', '{14}', '{15}', {16}, '{17}', '{18}', '{19}', '{20}', '{21}' )",
                     fornecedor.tipo.ToUpper().Trim(),
                     fornecedor.tipo == "F" ? fornecedor.nomePessoa.ToUpper().Trim() : fornecedor.razaoSocial.ToUpper().Trim(),
@@ -138,7 +138,7 @@ namespace Sistema.DAO
         {
             try
             {
-                string sql = "UPDATE tbclientes SET tipo = '"
+                string sql = "UPDATE tbfornecedores SET tipo = '"
                     + fornecedor.tipo.ToUpper().Trim() + "', " +
                     " nomerazaosocial = '" + fornecedor.tipo == "F" ? fornecedor.nomePessoa.ToUpper().Trim() : fornecedor.razaoSocial.ToUpper().Trim() + "'," +
                     " sexo = '" + fornecedor.tipo == "F" ? fornecedor.sexo.ToUpper().Trim() : "" + "', " +
@@ -160,7 +160,7 @@ namespace Sistema.DAO
                     " apelidonomefantasia = '" + fornecedor.tipo == "F" ? fornecedor.apelidoPessoa.ToUpper().ToString() : fornecedor.nomeFantasia.ToUpper().ToString() + "' " +
                     " site = '" + fornecedor.site + "', " +
                     " observacao = '" + fornecedor.observacao + "', " +
-                    " WHERE codcliente = " + fornecedor.codigo;
+                    " WHERE codfornecedor = " + fornecedor.codigo;
                 OpenConnection();
                 SqlQuery = new SqlCommand(sql, con);
 
@@ -185,21 +185,21 @@ namespace Sistema.DAO
             }
         }
 
-        public Fornecedores GetFornecedor(int? codCliente)
+        public Fornecedores GetFornecedor(int? codFornecedor)
         {
             try
             {
                 var model = new Models.Fornecedores();
-                if (codCliente != null)
+                if (codFornecedor != null)
                 {
                     OpenConnection();
-                    var sql = this.Search(codCliente, null);
+                    var sql = this.Search(codFornecedor, null);
                     SqlQuery = new SqlCommand(sql, con);
                     reader = SqlQuery.ExecuteReader();
                     var tipoPessoa = string.Empty;
-                    tipoPessoa = Convert.ToString(reader["Fornecedor_Tipo"]);
                     while (reader.Read())
                     {
+                        tipoPessoa = Convert.ToString(reader["Fornecedor_Tipo"]);
                         model.codigo = Convert.ToInt32(reader["Fornecedor_ID"]);
                         model.tipo = Util.FormatFlag.TipoPessoa(Convert.ToString(reader["Fornecedor_Tipo"]));
                         model.situacao = Util.FormatFlag.Situacao(Convert.ToString(reader["Fornecedor_Situacao"]));
@@ -224,7 +224,7 @@ namespace Sistema.DAO
                         model.dtCadastro = Convert.ToDateTime(reader["Fornecedor_DataCadastro"]);
                         model.dtUltAlteracao = Convert.ToDateTime(reader["Fornecedor_DataUltAlteracao"]);
                         model.site = Convert.ToString(reader["Fornecedor_Site"]);
-                        model.observacao = Convert.ToString(reader["Forecedor_Observacao"]);
+                        model.observacao = Convert.ToString(reader["Fornecedor_Observacao"]);
                         //Física
                         model.nomePessoa = tipoPessoa == "F" ? Convert.ToString(reader["Fornecedor_RazaoSocial_NomeFornecedor"]) : "";
                         model.apelidoPessoa = tipoPessoa == "F" ? Convert.ToString(reader["Fornecedor_NomeFantasia_ApelidoFornecedor"]) : "";
@@ -293,13 +293,14 @@ namespace Sistema.DAO
                 var list = new List<Select.Fornecedores.Select>();
                 while (reader.Read())
                 {
-                    var cliente = new Select.Fornecedores.Select
+                    var tipoPessoa = Convert.ToString(reader["Fornecedor_Tipo"]);
+                    var fornecedor = new Select.Fornecedores.Select
                     {
                         id = Convert.ToInt32(reader["Fornecedor_ID"]),
-                        text = Convert.ToString(reader["Fornecedor_Nome"]),
+                        text = Convert.ToString(reader["Fornecedor_NomeFantasia_ApelidoFornecedor"]),
                     };
 
-                    list.Add(cliente);
+                    list.Add(fornecedor);
                 }
 
                 return list;
@@ -333,32 +334,34 @@ namespace Sistema.DAO
             }
             sql = @"
                     SELECT 
-                        tbclientes.codcliente AS Cliente_ID,
-                        tbclientes.tipo AS Cliente_Tipo,
-                        tbclientes.situacao AS Cliente_Situacao,
-                        tbclientes.logradouro AS Cliente_Logradouro,
-                        tbclientes.numero AS Cliente_Numero,
-                        tbclientes.complemento AS Cliente_Complemento,
-                        tbclientes.bairro AS Cliente_Bairro,
-                        tbclientes.telfixo AS Cliente_TelefoneFixo,
-                        tbclientes.telcelular AS Cliente_TelefoneCelular,
-                        tbclientes.email AS Cliente_Email,
-                        tbcidades.codcidade AS Cliente_Cidade_ID,
-                        tbcidades.nomecidade AS Cliente_Cidade_Nome,
-                        tbclientes.cep AS Cliente_CEP,
-                        tbcondpagamentos.codcondicao AS Cliente_CondicaoPagamento_ID,
-                        tbcondpagamentos.nomecondicao AS Cliente_CondicaoPagamento_Nome,
-                        tbclientes.dtcadastro AS Cliente_DataCadastro,
-                        tbclientes.dtultalteracao AS Cliente_DataUltAlteracao,
-                        tbclientes.nomerazaosocial AS Cliente_RazaoSocial_NomeCliente,
-                        tbclientes.apelidonomefantasia AS Cliente_NomeFantasia_ApelidoCliente,
-                        tbclientes.sexo AS Cliente_Sexo,
-                        tbclientes.cpfcnpj AS Cliente_CNPJ_CPF,
-                        tbclientes.rgie AS Cliente_IE_RG,
-                        tbclientes.dtnascimentofundacao AS Cliente_DataFundacao_DataNascimento
-                        FROM tbclientes
-                    INNER JOIN tbcidades on tbclientes.codcidade = tbcidades.codcidade
-                    INNER JOIN tbcondpagamentos on tbclientes.codcondicao = tbcondpagamentos.codcondicao
+                        tbfornecedores.codfornecedor AS Fornecedor_ID,
+                        tbfornecedores.tipo AS Fornecedor_Tipo,
+                        tbfornecedores.situacao AS Fornecedor_Situacao,
+                        tbfornecedores.logradouro AS Fornecedor_Logradouro,
+                        tbfornecedores.numero AS Fornecedor_Numero,
+                        tbfornecedores.complemento AS Fornecedor_Complemento,
+                        tbfornecedores.bairro AS Fornecedor_Bairro,
+                        tbfornecedores.telfixo AS Fornecedor_TelefoneFixo,
+                        tbfornecedores.telcelular AS Fornecedor_TelefoneCelular,
+                        tbfornecedores.email AS Fornecedor_Email,
+                        tbcidades.codcidade AS Fornecedor_Cidade_ID,
+                        tbcidades.nomecidade AS Fornecedor_Cidade_Nome,
+                        tbfornecedores.cep AS Fornecedor_CEP,
+                        tbcondpagamentos.codcondicao AS Fornecedor_CondicaoPagamento_ID,
+                        tbcondpagamentos.nomecondicao AS Fornecedor_CondicaoPagamento_Nome,
+                        tbfornecedores.dtcadastro AS Fornecedor_DataCadastro,
+                        tbfornecedores.dtultalteracao AS Fornecedor_DataUltAlteracao,
+                        tbfornecedores.nomerazaosocial AS Fornecedor_RazaoSocial_NomeFornecedor,
+                        tbfornecedores.apelidonomefantasia AS Fornecedor_NomeFantasia_ApelidoFornecedor,
+                        tbfornecedores.sexo AS Fornecedor_Sexo,
+                        tbfornecedores.cpfcnpj AS Fornecedor_CNPJ_CPF,
+                        tbfornecedores.rgie AS Fornecedor_IE_RG,
+                        tbfornecedores.dtnascimentofundacao AS Fornecedor_DataFundacao_DataNascimento,
+	                    tbfornecedores.site AS Fornecedor_Site,
+	                    tbfornecedores.observacao AS Fornecedor_Observacao
+                        FROM tbfornecedores
+                    INNER JOIN tbcidades on tbfornecedores.codcidade = tbcidades.codcidade
+                    INNER JOIN tbcondpagamentos on tbfornecedores.codcondicao = tbcondpagamentos.codcondicao
                     " + swhere;
             return sql;
         }

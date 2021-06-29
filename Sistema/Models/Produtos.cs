@@ -19,8 +19,10 @@ namespace Sistema.Models
         public string unidade { get; set; }
 
         //grupo
+        public Select.Grupos.Select Grupo { get; set; }
 
         //fornecedor
+        public Select.Fornecedores.Select Fornecedor { get; set; }
 
         [Display(Name = "Largura (cm)")]
         public string largura { get; set; }
