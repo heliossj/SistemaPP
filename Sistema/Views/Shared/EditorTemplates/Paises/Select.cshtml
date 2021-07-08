@@ -9,18 +9,19 @@
     string classLabel = Convert.ToString(ViewData["classLabel"] ?? Util.Input12);
     string classForm = Convert.ToString(ViewData["classForm"] ?? Util.Input12);
     var Prefix = Html.ClientPrefixName().ToString();
+    string action = Convert.ToString(ViewBag.Action);
 }
 
 @Html.Hidden("isEdit")
-
+@Html.HiddenFor(k => action)
 <div class="@classForm">
     @Html.Label("", Label, new { @class = "required" })
     <div class="input-group">
-        @Html.HiddenFor(model => model.text)
         @Html.TextBoxFor(model => model.id, new { @style = "border-radius: 4px 0px 0px 4px; width: 15%;", @class = "form-control number", maxLength = "6" })
         @Html.TextBoxFor(model => model.text, new { @class = "form-control", @style = "width:70%", Disabled = true })
-            <a style="border-radius:0px 3px 3px 0px" data-target="#@Sistema.Util.SelectFunctions.getInputId("Modal", Prefix)" id="@Sistema.Util.SelectFunctions.getInputId("btn-localizar", Prefix)" title="Abrir a busca de @Label" class="btn btn-success" data-toggle="modal"><i class="fa fa-search"></i></a>
+        <a style="border-radius:0px 3px 3px 0px" data-target="#@Sistema.Util.SelectFunctions.getInputId("Modal", Prefix)" id="@Sistema.Util.SelectFunctions.getInputId("btn-localizar", Prefix)" title="Abrir a busca de @Label" class="btn btn-success" data-toggle="modal"><i class="fa fa-search"></i></a>
         @Html.ValidationMessageFor(model => model.id, null, new { @class = "text-danger" })
+        @Html.HiddenFor(k => k.text)
     </div>
 </div>
 
@@ -114,8 +115,6 @@
                                     </div>
                                 </div>
                             </div>
-
-
                         </div>
                     </div>
 
@@ -221,7 +220,7 @@
 
     getModel = function (form) {
         var model = {
-            codPais: form.codPais.val(),
+            codigo: form.codPais.val(),
             nomePais: form.nomePais.val(),
             ddi: form.ddi.val(),
             sigla: form.sigla.val(),
@@ -266,7 +265,7 @@
     this.update = function () {
         var form = self.getForm();
         var model = getModel(form);
-
+        console.log(model)
         if (self.isValid(model)) {
 
             $.ajax({

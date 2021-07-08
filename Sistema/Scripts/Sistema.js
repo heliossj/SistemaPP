@@ -1,7 +1,7 @@
 $(function () {
 
     // format input datepicker
-    $.fn.datepicker.dates['pt-BR'] = {
+    $.fn.datepicker.dates['en'] = {
         days: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"],
         daysShort: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"],
         daysMin: ["Do", "Se", "Te", "Qu", "Qu", "Se", "Sa", "Do"],
