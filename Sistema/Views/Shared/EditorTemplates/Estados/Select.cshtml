@@ -3,149 +3,416 @@
 @{
     bool Disabled = Convert.ToBoolean(ViewData["Disabled"]);
     bool Required = Convert.ToBoolean(ViewData["Required"] ?? true);
-    bool OnlySelect = Convert.ToBoolean(ViewData["onlySelect"] ?? false);
+    bool OnlySelect = Convert.ToBoolean(ViewData["onlySelect"] ?? true);
     bool LabelVertical = Convert.ToBoolean(ViewData["LabelVertical"]);
-    bool CriarEstado = Convert.ToBoolean(ViewData["CriarEstado"] ?? false);
-    string Label = Convert.ToString(ViewData["Label"] ?? "Estado");
+    string Label = Convert.ToString(ViewData["Label"] ?? "Estados");
     string classLabel = Convert.ToString(ViewData["classLabel"] ?? Util.Input12);
     string classForm = Convert.ToString(ViewData["classForm"] ?? Util.Input12);
-    string Prefix = Html.ClientPrefixName().ToString();
+    var Prefix = Html.ClientPrefixName().ToString();
+    var Pais = new Sistema.Select.Paises.Select();
 }
-@if (Disabled)
-{
-    //using (Html.BeginFormContainer(Prefix + ".idMarca"))
-    using (Html.BeginForm())
-    {
-        if (!LabelVertical)
-        {
-            @Html.LabelFor(e => e.text, Label, new { @class = classLabel })
-        }
-        <div class="@classForm">
-            @if (LabelVertical)
-            {
-                @Html.LabelFor(e => e.text, Label, new { @class = "control-label" })
-            }
-            <div class="input-group">
-                <div class="input-group-btn" style="width:15%">
-                    @Html.TextBoxFor(model => model.id, new { @style = "border-radius: 4px 0px 0px 4px;", @class = "form-control", @readonly = "readonly" })
-                </div>
-                <div class="input-group-btn">
-                    <a disabled style="border-radius:0" title="Localizar marca" class="btn btn-default" data-toggle="modal"><i class="fa fa-search"></i></a>
-                </div>
-                @Html.TextBoxFor(model => model.text, new { @class = "form-control", @readonly = "readonly" })
-            </div>
-        </div>
-    }
-}
-else
-{
-    //using (Html.BeginFormContainer(Prefix + ".idMarca"))
-    using (Html.BeginForm())
-    {
-        if (!LabelVertical)
-        {
-            @Html.LabelFor(e => e.text, Label, new { @class = classLabel + " required"})
-        }
-        <div class="@classForm">
-            @if (LabelVertical)
-            {
-                @Html.LabelFor(e => e.text, Label, new { @class = "control-label" })
-            }
-            @if (OnlySelect)
-            {
-                @Html.HiddenFor(model => model.id)
-                @Html.HiddenFor(model => model.text)
-                if (CriarEstado)
-                {
-                    <div class="input-group col-lg-12">
-                        @Html.DropDownList("select", new List<SelectListItem>(), new { @class = "form-control" })
-                        <div class="input-group-btn">
-                            <a style="border-radius:0px 3px 3px 0px" data-target="#@Sistema.Util.SelectFunctions.getInputId("Form_Modal", Prefix)" href="#@Sistema.Util.SelectFunctions.getInputId("Form_Modal", Prefix)" title="Adicionar novo registro" class="btn btn-success" data-toggle="modal"><i class="glyphicon glyphicon-plus-sign"></i></a>
+
+@Html.Hidden("isEdit")
+
+<div class="@classForm">
+    @Html.Label("", Label, new { @class = "required" })
+    <div class="input-group">
+        @Html.HiddenFor(model => model.text)
+        @Html.TextBoxFor(model => model.id, new { @style = "border-radius: 4px 0px 0px 4px; width: 15%;", @class = "form-control number", maxLength = "6" })
+        @Html.TextBoxFor(model => model.text, new { @class = "form-control", @style = "width:70%", Disabled = true })
+        <a style="border-radius:0px 3px 3px 0px" data-target="#@Sistema.Util.SelectFunctions.getInputId("Modal", Prefix)" id="@Sistema.Util.SelectFunctions.getInputId("btn-localizar", Prefix)" title="Abrir a busca de @Label" class="btn btn-success" data-toggle="modal"><i class="fa fa-search"></i></a>
+        @Html.ValidationMessageFor(model => model.id, null, new { @class = "text-danger" })
+    </div>
+</div>
+
+<div id="@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)" class="modal fade" data-backdrop="static" data-keyboard="false" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body no-padding">
+                <div class="panel panel-primary" style="margin-bottom: -1px;">
+                    <div class="panel-heading" style="height: 41px; padding-left:2px;font-weight: bold;">
+                        <h3 class="panel-title pull-right"><button type="button" style="opacity: inherit;color: #fff;" class="close" data-dismiss="modal">&times;</button></h3>
+                        <ul class="nav panel-tabs" style="width:400px">
+                            <li class="active"><a data-event="true" style="margin-top:1px;color: black;" data-toggle="tab"><b><i class="fa fa-list-alt" aria-hidden="true"></i> Estados </b></a></li>
+                        </ul>
+                    </div>
+
+                    <div style="text-align:right">
+                        <button id="@Sistema.Util.SelectFunctions.getInputId("Create", Prefix)" onclick="OpenModalCreate()" type="button" class="btn btn-success"><i class="fa fa-plus"></i>  Adicionar</button>
+                    </div>
+
+                    <div id="body" class="modal-body" style="padding: 33px 0px 0px 0px;">
+                        <div class="container-fluid">
+                            <div id="TableEstados"></div>
                         </div>
                     </div>
-                }
-                else
-                {
-                    @Html.DropDownList("select", new List<SelectListItem>(), new { @class = "form-control" })
-                }
-            }
-            else
-            {
-   
-                <div class="input-group">
-                    @Html.HiddenFor(model => model.text)
-                    <div style="width:15%">
-                        @Html.TextBoxFor(model => model.id, new { @style = "border-radius: 4px 0px 0px 4px;", @class = "form-control", @autocomplete = "off" })
-                    </div>
-                    <div class="input-group-append">
-                        <a style="border-radius:0" data-target="#@Sistema.Util.SelectFunctions.getInputId("Modal", Prefix)" href="#@Sistema.Util.SelectFunctions.getInputId("Modal", Prefix)" id="@Sistema.Util.SelectFunctions.getInputId("btn-localizar", Prefix)" title="Localizar marca" class="btn btn-primary" data-toggle="modal"><i class="fa fa-search"></i></a>
-                    </div>
-                    <div >
-                        @Html.DropDownList("select", new List<SelectListItem>(), new { @class = "form-control", style = "height:38px;"})
-                    </div>
-                    @if (CriarEstado)
-                    {
-                        <a style="border-radius:0px 3px 3px 0px" data-target="#@Sistema.Util.SelectFunctions.getInputId("Form_Modal", Prefix)" href="#@Sistema.Util.SelectFunctions.getInputId("Form_Modal", Prefix)" title="Adicionar novo registro" class="btn btn-success" data-toggle="modal"><i class="fa fa-plus"></i></a>
-                    }
-                </div>
-            }
-            @Html.ValidationMessageFor(model => model.id, null, new { @class = "help-block" })
-        </div>
-    }
-    <div id="@Sistema.Util.SelectFunctions.getInputId("Modal", Prefix)" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Consultar @Prefix</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
 
-                </div>
-                <div class="modal-body">
-                    @Html.Editor("Modal", "Estados/Query")
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    <div class="modal-footer">
+                        <div style="text-align:right">
+                            <button id="@Sistema.Util.SelectFunctions.getInputId("Fechar", Prefix)" onclick="FecharModal()" type="button" class="btn btn-outline-dark"><i class="fa fa-times"></i> Fechar</button>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
     </div>
-    @Html.Editor("Form", "Estados/Form")
-    @Html.AddScriptBlock(
-       @<script type="text/javascript">
-        $(function () {
+</div>
+<div id="@Sistema.Util.SelectFunctions.getInputId("ModalCreate", Prefix)" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-body no-padding">
+                <div class="panel panel-primary" style="margin-bottom: -1px;">
+                    <div class="panel-heading" style="height: 41px; padding-left:2px;font-weight: bold;">
+                        <h3 class="panel-title pull-right"><button type="button" style="opacity: inherit;color: #fff;" class="close" data-dismiss="modal">&times;</button></h3>
+                        <ul class="nav panel-tabs" style="width:400px">
+                            <li class="active"><a data-event="true" style="margin-top:1px;color: black;" data-toggle="tab"><b><i class="fa fa-list-alt" aria-hidden="true"></i> Estados </b></a></li>
+                        </ul>
+                    </div>
+                    <div id="body" class="modal-body" style="padding: 33px 0px 0px 0px;">
+                        <div class="container-fluid">
+                            <p style="text-align: right; color: red; font-size:16px; font-weight: bold;">* Campos obrigatórios</p>
 
-            $(document).on('@Sistema.Util.SelectFunctions.getInputId("Form_Insert", Html.ClientPrefixName().ToString())', function (e, data) {
-                shared_function["@Prefix"].data = { id: data.idMarca, text: data.nmMarca};
-            });
+                            <div class="form-row isEdit">
+                                <div class="@Util.Input2">
+                                    @Html.Label("codPais", "Código")
+                                    @Html.TextBox("codPais", null, new { @class = "form-control", disabled = true })
+                                </div>
+                            </div>
 
-            shared_function["@Prefix"] = new sSelect({
-                prefix: "@Prefix",
-                select: {
-                    url: '@Url.Action("JsSelect", "Estados")',
+                            <div class="form-row">
+                                <div class="@Util.Input6">
+                                    @Html.Label("nomePais", "País", new { @class = "required" })
+                                    @Html.TextBox("nomePais", null, new { @class = "form-control", maxlength = "50", style = "text-transform:uppercase" })
+                                    @Html.ValidationMessage("nomePais", null, new { @class = "text-danger" })
+                                </div>
+
+                                <div class="@Util.Input3">
+                                    @Html.Label("ddi", "DDI", new { @class = "required" })
+                                    @Html.TextBox("ddi", null, new { @class = "form-control", maxlength = "5", style = "text-transform:uppercase" })
+                                </div>
+
+                                <div class="@Util.Input3">
+                                    @Html.Label("sigla", "Sigla", new { @class = "required" })
+                                    @Html.TextBox("sigla", null, new { @class = "form-control", maxlength = "2", style = "text-transform:uppercase" })
+                                </div>
+                            </div>
+
+                            <div class="form-row isEdit">
+                                <div class="@Util.Input3">
+                                    @Html.Label("dtCadastro", "Data de cadastro", new { @class = "required" })
+                                    <div class="input-group-append">
+                                        @Html.TextBox("dtCadastro", null, new { @class = "form-control", disabled = true })
+                                        <span class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></span>
+                                    </div>
+                                </div>
+
+                                <div class="@Util.Input3 ">
+                                    @Html.Label("dtUltAlteracao", "Data de cadastro", new { @class = "required" })
+                                    <div class="input-group">
+                                        @Html.TextBox("dtUltAlteracao", null, new { @class = "form-control", disabled = true })
+                                        <div class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                @Html.EditorFor(model => Pais, "Paises/Select", new { Required = true, Disabled = false })
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <div style="text-align:right">
+                            <button id="@Sistema.Util.SelectFunctions.getInputId("btnSave", Prefix)" type="button" class="btn btn-success"><i class="fa fa-save"></i>  Salvar</button>
+                            <button id="@Sistema.Util.SelectFunctions.getInputId("FecharCreate", Prefix)" onclick="FecharModalCreate()" type="button" class="btn btn-danger"><i class="fa fa-ban"></i>  Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/Scripts/bootstrap-notify.js")
+@Html.AddScriptBlock(
+@<script type="text/javascript">
+
+    self = this;
+    $(function () {
+         $("#@Sistema.Util.SelectFunctions.getInputId("btn-localizar", Prefix)").on("click", function () {
+             InitModalEstados();
+         });
+
+         $('#@Sistema.Util.SelectFunctions.getInputId("btnSave", Prefix)').on('click', function () {
+                self.save();
+         });
+
+         $('#@Sistema.Util.SelectFunctions.getInputId("id", Prefix)').change(function (data, e) {
+             var id = $('#@Sistema.Util.SelectFunctions.getInputId("id", Prefix)').val();
+             if (id == "") {
+                 $("#@Sistema.Util.SelectFunctions.getInputId("id", Prefix)").val("");
+                 $("#@Sistema.Util.SelectFunctions.getInputId("text", Prefix)").val("");
+             } else {
+                 $.ajax({
+                     dataType: 'json',
+                     type: 'GET',
+                     url: '@Url.Action("JsDetails", "Estados")',
+                     data: { 'id': id },
+                     success: function (data) {
+                         if (!data) {
+                             $.notify({ message: 'Nenhum registro encontrado para o código informado', icon: 'fa fa-exclamation' }, { type: 'danger' } );
+                         }
+                         $("#@Sistema.Util.SelectFunctions.getInputId("id", Prefix)").val(data.id);
+                         $("#@Sistema.Util.SelectFunctions.getInputId("text", Prefix)").val(data.text);
+                     },
+                     error: function (err) {
+                         alert(err);
+                         alert("Erro ao buscar registro");
+                     }
+                 });
+             }
+         });
+
+     });
+
+    this.getForm = function() {
+        var form = {
+                codPais : $('#@Sistema.Util.SelectFunctions.getInputId("codPais", Prefix)'),
+                nomePais: $('#@Sistema.Util.SelectFunctions.getInputId("nomePais", Prefix)'),
+                ddi: $('#@Sistema.Util.SelectFunctions.getInputId("ddi", Prefix)'),
+                sigla: $('#@Sistema.Util.SelectFunctions.getInputId("sigla", Prefix)'),
+                dtCadastro: $('#@Sistema.Util.SelectFunctions.getInputId("dtCadastro", Prefix)'),
+                dtUltAlteracao: $('#@Sistema.Util.SelectFunctions.getInputId("dtUltAlteracao", Prefix)'),
+        }
+        return form;
+    };
+
+    this.clear = function () {
+        var form = self.getForm();
+        form.codPais.val("");
+        form.nomePais.val("");
+        form.ddi.val("");
+        form.sigla.val("");
+        form.dtCadastro.val("");
+        form.dtUltAlteracao.val("");
+        form.nomePais.focus();
+    };
+
+    this.isValid = function () {
+        var valid = true;
+        var form = self.getForm();
+
+        if (IsNullOrEmpty(form.nomePais.val())) {
+            form.nomePais.blink({ msg: "Campo país é obrigatório" });
+            form.nomePais.focus();
+            valid = false;
+        }
+
+        else if (IsNullOrEmpty(form.ddi.val())) {
+            form.ddi.blink({ msg: "Campo DDI é obrigatório" });
+            form.ddi.focus();
+            valid = false;
+        }
+
+        else if (IsNullOrEmpty(form.sigla.val())) {
+            form.sigla.blink({ msg: "Campo sigla é obrigatório" });
+            form.sigla.focus();
+            valid = false;
+        }
+        return valid;
+    };
+
+    getModel = function (form) {
+        var model = {
+            codPais: form.codPais.val(),
+            nomePais: form.nomePais.val(),
+            ddi: form.ddi.val(),
+            sigla: form.sigla.val(),
+        }
+        return model;
+    };
+
+    this.save = function () {
+        if ($('#@Sistema.Util.SelectFunctions.getInputId("isEdit", Prefix)').val() == "S") {
+            this.update();
+        } else {
+            this.insert();
+        }
+    }
+
+    this.insert = function () {
+        var form = self.getForm();
+        var model = getModel(form);
+
+        if (self.isValid(model)) {
+
+            $.ajax({
+                dataType: 'json',
+                type: 'POST',
+                url: '@Url.Action("jsCreate", "Estados")',
+                data: model,
+                success: function (data) {
+                    self.clear();
+                    InitModalEstados();
+                    $("#@Sistema.Util.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("hide");
+                    $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
+                    $.notify({ message: data.message, icon: 'fa fa-exclamation' }, { type: 'success', z_index: 2000, });
+
                 },
-                details:{
-                    url: '@Url.Action("JsDetails", "Estados")',
-                },
-                placeholder: "Buscar @Label".toLowerCase(),
-                elements: {
-                    $id: $('#@Html.ClientIdFor(e => e.id)'),
-                    $text: $('#@Html.ClientIdFor(e => e.text)'),
-                },
-                templateResult: function (data) {
-                    if (data.loading) return data.text;
-                    return '<div class="row no-margin">' +
-                        '<div class="col-lg-2  col-md-2  col-sm-3 col-xs-3">' + data.id + '</div>' +
-                        '<div class="col-lg-10 col-md-10 col-sm-9 col-xs-9">' + data.text + '</div>' +
-                        '</div>';
-                },
-                templateHeader: '<div class="row no-margin select2-header">' +
-                '<div class="col-lg-2  col-md-2  col-sm-3 col-xs-3">Id</div>' +
-                '<div class="col-lg-10 col-md-10 col-sm-9 col-xs-9">Nome</div>' +
-                '</div>'
+                error: function (request) {
+                    alert("Erro ao adicionar registro")
+                }
             });
-           shared_function["@Prefix"].init();
+        }
+    };
+
+    this.update = function () {
+        var form = self.getForm();
+        var model = getModel(form);
+
+        if (self.isValid(model)) {
+
+            $.ajax({
+                dataType: 'json',
+                type: 'POST',
+                url: '@Url.Action("jsUpdate", "Estados")',
+                data: model,
+                success: function (data) {
+                    console.log(data)
+                    self.clear();
+                    InitModalEstados();
+                    $("#@Sistema.Util.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("hide");
+                    $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
+                    $.notify({ message: data.message, icon: 'fa fa-exclamation' }, { type: 'success', z_index: 2000, });
+                },
+            });
+        }
+    };
+
+    function InitModalEstados() {
+        $("#TableEstados").empty();
+          let table = null
+        let lis = getTableEstados();
+        $("#TableEstados").append(lis);
+
+        table = $('#listEstados').DataTable({
+            ajax: { url: $('#listEstados').attr('data-url') },
+                language: {
+                    url: 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Portuguese-Brasil.json',
+            },
+            columns: [
+                {
+                    sortable: false,
+                    data: null,
+                    sClass: 'details-control center',
+                    mRender: function (data) {
+                        return '<a class="btn btn-primary btn-sm" data-evet="item" title="Selecionar registro"><i class="fa fa-check"></i> </a>';
+                    }
+                },
+                {
+                    sortable: false,
+                    data: null,
+                    mRender: function (data) {
+                        return '<a class="btn btn-warning btn-sm" onclick="OpenEdit(' + data.id + ')" title="Alterar registro"><i class="fa fa-edit"></i> </a>';
+                    }
+                },
+                { data: "id" },
+                { data: "text" }
+
+            ],
         });
+        $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").modal("show");
 
-     </script>
+        $('#listEstados tbody').on('click', 'td.details-control', function () {
+            var tr = $(this).closest('tr');
+            var row = table.row(tr);
+            if (row.child.isShown()) {
+                $('div.slider', row.child()).slideUp(function () {
+                    row.child.hide();
+                    tr.removeClass('shown');
+                });
+            }
+            else {
+                row.child(SelectEstados(row.data())).show();
+                tr.addClass('shown');
+                $('div.slider', row.child()).slideDown();
+            }
+        });
+      }
+    function getTableEstados() {
+        let tmp = `<table id="listEstados" class="table table-striped table-bordered" style="width:100%" data-url="@Url.Action("JsQuery", "Estados")">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th export="true" style="width:10%">Código</th>
+                                <th export="true" style="width:90%">Nome</th>
+                            </tr>
+                        </thead>
+                   </table>`;
+          return tmp;
+    };
+
+    function FecharModal() {
+        $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").modal("hide");
+    };
+    function FecharModalCreate() {
+        $("#@Sistema.Util.SelectFunctions.getInputId("ModalCreate", Prefix)").css("overflow", "hidden");
+        $("#@Sistema.Util.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("hide");
+        $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
+        self.clear();
+    };
+
+    function OpenModalCreate() {
+        $("#@Sistema.Util.SelectFunctions.getInputId("btnUpdate", Prefix)").hide();
+        $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "hidden");
+        $("#@Sistema.Util.SelectFunctions.getInputId("ModalCreate", Prefix)").css("overflow", "auto");
+        $("#@Sistema.Util.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("show");
+        $("#@Sistema.Util.SelectFunctions.getInputId("isEdit", Prefix)").val("N");
+        if ($("#@Sistema.Util.SelectFunctions.getInputId("isEdit", Prefix)").val() == "N") {
+            $(".isEdit").hide();
+        }
+
+    };
+
+    function SelectEstados(data) {
+        $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").modal("hide");
+        $("#@Sistema.Util.SelectFunctions.getInputId("id", Prefix)").val(data.id);
+        $("#@Sistema.Util.SelectFunctions.getInputId("text", Prefix)").val(data.text);
+        return false;
+    };
+
+    function OpenEdit(id) {
+        $.ajax({
+            dataType: 'json',
+            type: 'GET',
+            url: '@Url.Action("JsDetails", "Estados")',
+            data: { 'id': id },
+            success: function (data) {
+                self.clear();
+                $("#@Sistema.Util.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("show");
+                $("#@Sistema.Util.SelectFunctions.getInputId("isEdit", Prefix)").val("S");
+                if ($("#@Sistema.Util.SelectFunctions.getInputId("isEdit", Prefix)").val() == "S") {
+                    $(".isEdit").show();
+                }
+
+                $("#@Sistema.Util.SelectFunctions.getInputId("codPais", Prefix)").val(data.id);
+                $("#@Sistema.Util.SelectFunctions.getInputId("nomePais", Prefix)").val(data.text);
+                $("#@Sistema.Util.SelectFunctions.getInputId("ddi", Prefix)").val(data.ddi);
+                $("#@Sistema.Util.SelectFunctions.getInputId("sigla", Prefix)").val(data.sigla);
+                $("#@Sistema.Util.SelectFunctions.getInputId("dtCadastro", Prefix)").val(JSONDate(data.dtCadastro));
+
+                $("#@Sistema.Util.SelectFunctions.getInputId("dtUltAlteracao", Prefix)").val(JSONDate(data.dtUltAlteracao));
+
+                $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
+            },
+            error: function (request) {
+                alert("Erro ao buscar registro");
+            }
+        });
+        return false;
+    }
+</script>
 )
-}

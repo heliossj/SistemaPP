@@ -28,6 +28,7 @@ namespace Sistema.Controllers
         [HttpPost]
         public ActionResult Create(Sistema.Models.Fornecedores model)
         {
+            this.validForm(model);
             if (ModelState.IsValid)
             {
                 daoFornecedores = new DAOFornecedores();
@@ -48,6 +49,7 @@ namespace Sistema.Controllers
         [HttpPost]
         public ActionResult Edit(Sistema.Models.Fornecedores model)
         {
+            this.validForm(model);
             if (ModelState.IsValid)
             {
 
@@ -175,6 +177,105 @@ namespace Sistema.Controllers
                 model = model
             };
             return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        private Models.Fornecedores validForm(Models.Fornecedores model)
+        {
+            if (string.IsNullOrEmpty(model.situacao))
+            {
+                ModelState.AddModelError("situacao", "Informe a situação");
+            }
+            if (model.tipo == "F")
+            {
+                if (string.IsNullOrWhiteSpace(model.nomePessoa))
+                {
+                    ModelState.AddModelError("nomePessoa", "Informe o nome");
+                }
+                if (string.IsNullOrWhiteSpace(model.apelidoPessoa))
+                {
+                    ModelState.AddModelError("apelidoPessoa", "Informe o apelido");
+                }
+                if (string.IsNullOrEmpty(model.sexo))
+                {
+                    ModelState.AddModelError("sexo", "Informe o sexo");
+                }
+                if (string.IsNullOrWhiteSpace(model.cpf))
+                {
+                    ModelState.AddModelError("cpf", "Informe o CPF");
+                }
+                if (string.IsNullOrWhiteSpace(model.rg))
+                {
+                    ModelState.AddModelError("rg", "Informe o RG");
+                }
+                if (model.dtNascimento == null)
+                {
+                    ModelState.AddModelError("dtNascimento", "Informe a data de nascimento");
+                }
+            }
+            else
+            {
+                if (string.IsNullOrWhiteSpace(model.razaoSocial))
+                {
+                    ModelState.AddModelError("razaoSocial", "Informe a razão social");
+                }
+                if (string.IsNullOrWhiteSpace(model.nomeFantasia))
+                {
+                    ModelState.AddModelError("nomeFantasia", "Informe o nome fantasia");
+                }
+                if (string.IsNullOrWhiteSpace(model.cnpj))
+                {
+                    ModelState.AddModelError("cnpj", "Informe o CNPJ");
+                }
+                if (string.IsNullOrWhiteSpace(model.ie))
+                {
+                    ModelState.AddModelError("ie", "Informe a Inscrição Estadual");
+                }
+                if (model.dtFundacao == null)
+                {
+                    ModelState.AddModelError("dtFundacao", "Informe a data de fundação");
+                }
+            }
+
+            //Dados em comum
+            if (string.IsNullOrWhiteSpace(model.dsLogradouro))
+            {
+                ModelState.AddModelError("dsLogradouro", "Informe o logradouro");
+            }
+            if (string.IsNullOrWhiteSpace(model.numero))
+            {
+                ModelState.AddModelError("numero", "Informe o número");
+            }
+            if (string.IsNullOrWhiteSpace(model.complemento))
+            {
+                ModelState.AddModelError("complemento", "Informe o complemento");
+            }
+            if (string.IsNullOrWhiteSpace(model.bairro))
+            {
+                ModelState.AddModelError("bairro", "Informe o bairro");
+            }
+            if (string.IsNullOrEmpty(model.telefoneFixo) && string.IsNullOrEmpty(model.telefoneCelular))
+            {
+                ModelState.AddModelError("telefoneFixo", "Informe ao menos um telefone");
+                ModelState.AddModelError("telefoneCelular", "Informe ao menos telefone");
+            }
+            if (model.Cidade.id == null)
+            {
+                ModelState.AddModelError("Cidade.id", "Informe a cidade");
+            }
+            if (string.IsNullOrWhiteSpace(model.cep))
+            {
+                ModelState.AddModelError("cep", "Informe o CEP");
+            }
+            if (model.CondicaoPagamento.id == null)
+            {
+                ModelState.AddModelError("CondicaoPagamento.id", "Informe a condição de pagamento");
+            }
+            if (string.IsNullOrWhiteSpace(model.email))
+            {
+                ModelState.AddModelError("email", "Informe o email");
+            }
+            
+            return model;
         }
     }
 }

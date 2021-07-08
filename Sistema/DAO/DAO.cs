@@ -41,7 +41,64 @@ namespace Sistema.DAO
                 throw new Exception("Erro ao fechar a conexão: " + error.Message);
             }
         }
+
+        protected string FormatString(string text)
+        {
+            if (!string.IsNullOrEmpty(text))
+            {
+                text = text.ToUpper().Trim();
+            }
+            return text;
+        }
+
+        protected string FormatRG(string text)
+        {
+            if (!string.IsNullOrEmpty(text))
+            {
+                text = text.Replace(".", "").Replace("-", "");
+            }
+            return text;
+        }
+
+        protected string FormatCPF(string text)
+        {
+            if (!string.IsNullOrEmpty(text))
+            {
+                text = text.Replace(".", "").Replace("-", "");
+            }
+            return text;
+        }
+
+        protected string FormatCNPJ(string text)
+        {
+            if (!string.IsNullOrEmpty(text))
+            {
+                text = text.Replace(".", "").Replace("/", "").Replace("-", "");
+            }
+            return text;
+        }
+
+        protected string FormatCEP(string text)
+        {
+            if (!string.IsNullOrEmpty(text))
+            {
+                text = text.Replace("-", "");
+            }
+            return text;
+        }
+
+        protected string FormatPhone(string text)
+        {
+            if (!string.IsNullOrEmpty(text))
+            {
+                text = text.Replace("(", "").Replace(")", "").Replace("-", "").Replace(" ", "");
+            }
+            return text;
+        }
+
+
+
+
+
     }
-
-
 }

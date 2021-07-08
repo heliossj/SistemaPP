@@ -88,28 +88,28 @@ namespace Sistema.DAO
             {
                 var sql = string.Format("INSERT INTO tbfornecedores ( tipo, nomerazaosocial, sexo, logradouro, numero, complemento, bairro, telfixo, telcelular, email, codcidade, cep, cpfcnpj, rgie, dtnascimentofundacao, situacao, codcondicao, dtcadastro, dtultalteracao, apelidonomefantasia, site, observacao)" +
                     "VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', {10}, '{11}', '{12}', '{13}', '{14}', '{15}', {16}, '{17}', '{18}', '{19}', '{20}', '{21}' )",
-                    fornecedor.tipo.ToUpper().Trim(),
-                    fornecedor.tipo == "F" ? fornecedor.nomePessoa.ToUpper().Trim() : fornecedor.razaoSocial.ToUpper().Trim(),
-                    fornecedor.tipo == "F" ? fornecedor.sexo.ToUpper().Trim() : "",
-                    fornecedor.dsLogradouro.ToUpper().Trim(),
-                    fornecedor.numero.ToUpper().Trim(),
-                    fornecedor.complemento.ToUpper().Trim(),
-                    fornecedor.bairro.ToUpper().Trim(),
-                    fornecedor.telefoneFixo,
-                    fornecedor.telefoneCelular,
-                    fornecedor.email.ToUpper().Trim(),
+                    this.FormatString(fornecedor.tipo),
+                    fornecedor.tipo == "F" ? this.FormatString(fornecedor.nomePessoa) : this.FormatString(fornecedor.razaoSocial),
+                    fornecedor.tipo == "F" ? this.FormatString(fornecedor.sexo) : "",
+                    this.FormatString(fornecedor.dsLogradouro),
+                    fornecedor.numero,
+                    this.FormatString(fornecedor.complemento),
+                    this.FormatString(fornecedor.bairro),
+                    this.FormatPhone(fornecedor.telefoneFixo),
+                    this.FormatPhone(fornecedor.telefoneCelular),
+                    this.FormatString(fornecedor.email),
                     fornecedor.Cidade.id,
-                    fornecedor.cep,
-                    fornecedor.tipo == "F" ? fornecedor.cpf : fornecedor.cnpj,
-                    fornecedor.tipo == "F" ? fornecedor.rg : fornecedor.ie,
+                    this.FormatCEP(fornecedor.cep),
+                    fornecedor.tipo == "F" ? this.FormatCPF(fornecedor.cpf) : this.FormatCNPJ(fornecedor.cnpj),
+                    fornecedor.tipo == "F" ? this.FormatRG(fornecedor.rg) : fornecedor.ie,
                     fornecedor.tipo == "F" ? fornecedor.dtNascimento.Value.ToString("yyyy-MM-dd") : fornecedor.dtFundacao.Value.ToString("yyyy-MM-dd"),
-                    fornecedor.situacao.ToUpper().Trim(),
+                    this.FormatString(fornecedor.situacao),
                     fornecedor.CondicaoPagamento.id,
                     DateTime.Now.ToString("yyyy-MM-dd"),
                     DateTime.Now.ToString("yyyy-MM-dd"),
-                    fornecedor.tipo == "F" ? fornecedor.apelidoPessoa : fornecedor.nomeFantasia,
-                    fornecedor.site = fornecedor.site,
-                    fornecedor.tipo = fornecedor.observacao
+                    fornecedor.tipo == "F" ? this.FormatString(fornecedor.apelidoPessoa) : this.FormatString(fornecedor.nomeFantasia),
+                    this.FormatString(fornecedor.site),
+                    this.FormatString(fornecedor.observacao)
                     );
                 OpenConnection();
                 SqlQuery = new SqlCommand(sql, con);
@@ -139,27 +139,27 @@ namespace Sistema.DAO
             try
             {
                 string sql = "UPDATE tbfornecedores SET tipo = '"
-                    + fornecedor.tipo.ToUpper().Trim() + "', " +
-                    " nomerazaosocial = '" + fornecedor.tipo == "F" ? fornecedor.nomePessoa.ToUpper().Trim() : fornecedor.razaoSocial.ToUpper().Trim() + "'," +
-                    " sexo = '" + fornecedor.tipo == "F" ? fornecedor.sexo.ToUpper().Trim() : "" + "', " +
-                    " logradouro = '" + fornecedor.dsLogradouro.ToUpper().Trim() + "', " +
+                    + this.FormatString(fornecedor.tipo) + "', " +
+                    " nomerazaosocial = '" + ( fornecedor.tipo == "F" ? this.FormatString(fornecedor.nomePessoa) : this.FormatString(fornecedor.razaoSocial) )+ "'," +
+                    " sexo = '" + ( fornecedor.tipo == "F" ? this.FormatString(fornecedor.sexo) : "" ) + "', " +
+                    " logradouro = '" + this.FormatString(fornecedor.dsLogradouro) + "', " +
                     " numero = '" + fornecedor.numero + "', " +
-                    " complemento '" + fornecedor.complemento.ToUpper().Trim() + "', " +
-                    " bairro = '" + fornecedor.bairro.ToUpper().Trim() + "', " +
-                    " telfixo = '" + fornecedor.telefoneFixo + "', " +
-                    " telcelular = '" + fornecedor.telefoneCelular + "', " +
-                    " email = '" + fornecedor.email.ToUpper().Trim() + "', " +
+                    " complemento = '" + this.FormatString(fornecedor.complemento) + "', " +
+                    " bairro = '" + this.FormatString(fornecedor.bairro) + "', " +
+                    " telfixo = '" + this.FormatPhone(fornecedor.telefoneFixo) + "', " +
+                    " telcelular = '" + this.FormatPhone(fornecedor.telefoneCelular) + "', " +
+                    " email = '" + this.FormatString(fornecedor.email) + "', " +
                     " codcidade = " + fornecedor.Cidade.id + ", " +
-                    " cep = '" + fornecedor.cep + "', " +
-                    " cpfcnpj = '" + fornecedor.tipo == "F" ? fornecedor.cpf : fornecedor.cnpj + "', " +
-                    " rgie = '" + fornecedor.tipo == "F" ? fornecedor.rg : fornecedor.ie + "', " +
-                    " dtnascimentofundacao = '" + fornecedor.tipo == "F" ? fornecedor.dtNascimento.Value.ToString("yyyy-MM-dd") : fornecedor.dtFundacao.Value.ToString("yyyy-MM-dd") + "', " +
+                    " cep = '" + this.FormatCEP(fornecedor.cep) + "', " +
+                    " cpfcnpj = '" + ( fornecedor.tipo == "F" ? this.FormatCPF(fornecedor.cpf) : this.FormatCNPJ(fornecedor.cnpj) ) + "', " +
+                    " rgie = '" + ( fornecedor.tipo == "F" ? this.FormatRG(fornecedor.rg) : fornecedor.ie )+ "', " +
+                    " dtnascimentofundacao = '" + ( fornecedor.tipo == "F" ? fornecedor.dtNascimento.Value.ToString("yyyy-MM-dd") : fornecedor.dtFundacao.Value.ToString("yyyy-MM-dd") ) + "', " +
                     " situacao = '" + fornecedor.situacao.ToUpper().ToString() + "', " +
                     " codcondicao = " + fornecedor.CondicaoPagamento.id + ", " +
                     " dtultalteracao = '" + DateTime.Now.ToString("yyyy-MM-dd") + "'," +
-                    " apelidonomefantasia = '" + fornecedor.tipo == "F" ? fornecedor.apelidoPessoa.ToUpper().ToString() : fornecedor.nomeFantasia.ToUpper().ToString() + "' " +
-                    " site = '" + fornecedor.site + "', " +
-                    " observacao = '" + fornecedor.observacao + "', " +
+                    " apelidonomefantasia = '" + ( fornecedor.tipo == "F" ? this.FormatString(fornecedor.apelidoPessoa) : this.FormatString(fornecedor.nomeFantasia) ) + "', " +
+                    " site = '" + this.FormatString(fornecedor.site) + "', " +
+                    " observacao = '" + this.FormatString(fornecedor.observacao) + "' " +
                     " WHERE codfornecedor = " + fornecedor.codigo;
                 OpenConnection();
                 SqlQuery = new SqlCommand(sql, con);
@@ -200,8 +200,9 @@ namespace Sistema.DAO
                     while (reader.Read())
                     {
                         tipoPessoa = Convert.ToString(reader["Fornecedor_Tipo"]);
+                        model.dsTipo = tipoPessoa == "F" ? "FÍSICA" : "JURÍDICA";
                         model.codigo = Convert.ToInt32(reader["Fornecedor_ID"]);
-                        model.tipo = Util.FormatFlag.TipoPessoa(Convert.ToString(reader["Fornecedor_Tipo"]));
+                        model.tipo = Convert.ToString(reader["Fornecedor_Tipo"]);
                         model.situacao = Util.FormatFlag.Situacao(Convert.ToString(reader["Fornecedor_Situacao"]));
                         model.dsLogradouro = Convert.ToString(reader["Fornecedor_Logradouro"]);
                         model.numero = Convert.ToString(reader["Fornecedor_Numero"]);

@@ -19,7 +19,7 @@ namespace Sistema.Models
         public string situacao { get; set; }
 
         [Display(Name = "Valor")]
-        public decimal vlServico { get; set; }
+        public decimal? vlServico { get; set; }
 
         public static SelectListItem[] Situacao
         {

@@ -1,6 +1,4 @@
-﻿
-
-/*Callout colors*/
+﻿/*Callout colors*/
 .bs-callout {
     padding: 20px;
     margin: 20px 0;
@@ -82,6 +80,16 @@
     text-align: center;
     color: red;
     font-size: 18px;
+}
+
+.no-required:after {
+    content: "*";
+    margin-left: 5px;
+    text-align: center;
+    color: red;
+    font-size: 18px;
+    visibility: hidden;
+    margin-top: 4px;
 }
 
 /*header index*/
@@ -199,7 +207,10 @@
 
     .breadcrumb-fill2, .breadcrumb-fill2 li, .breadcrumb-fill2 li.active, .breadcrumb-fill2 li a {
         color: #ffffff;
+        font-size: 18px;
     }
+
+    .breadcrumb-fill0 li
 
     .breadcrumb-fill2 li:first-child {
         margin-right: 30px;
@@ -217,7 +228,7 @@
 
 /* Bredcrumb Fill 2 - style 3 */
 .breadcrumb-fill2.style3 {
-    border-radius: 30px;
+    border-radius: 20px;
     background: #bb123c;
 }
 

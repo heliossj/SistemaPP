@@ -31,16 +31,16 @@ namespace Sistema.Models
         public string ncm { get; set; }
 
         [Display(Name = "Quant. estoque")]
-        public decimal qtEstoque { get; set; }
+        public decimal? qtEstoque { get; set; }
 
         [Display(Name = "Valor do custo")]
-        public decimal vlCusto { get; set; }
+        public decimal? vlCusto { get; set; }
 
         [Display(Name = "Valor últ. compra")]
-        public decimal vlUltCompra { get; set; }
+        public decimal? vlUltCompra { get; set; }
 
         [Display(Name = "Valor de venda")]
-        public decimal vlVenda { get; set; }
+        public decimal? vlVenda { get; set; }
 
         [Display(Name = "Observacao")]
         public string observacao { get; set; }

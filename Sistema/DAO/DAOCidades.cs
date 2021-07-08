@@ -57,9 +57,9 @@ namespace Sistema.DAO
             try
             {
                 var sql = string.Format("INSERT INTO tbcidades ( nomecidade, ddd, sigla, codestado, dtcadastro, dtultalteracao) VALUES ('{0}', '{1}', '{2}', {3}, '{4}', '{5}')",
-                    cidade.nomeCidade.ToUpper().Trim(),
-                    cidade.ddd.ToUpper().Trim(),
-                    cidade.sigla.ToUpper().Trim(),
+                    this.FormatString(cidade.nomeCidade),
+                    this.FormatString(cidade.ddd),
+                    this.FormatString(cidade.sigla),
                     cidade.Estado.id,
                     DateTime.Now.ToString("yyyy-MM-dd"),
                     DateTime.Now.ToString("yyyy-MM-dd")
@@ -92,9 +92,9 @@ namespace Sistema.DAO
             try
             {
                 string sql = "UPDATE tbcidades SET nomecidade = '"
-                    + cidade.nomeCidade.ToUpper().Trim() + "'," +
-                    " ddd = '" + cidade.ddd.ToUpper().Trim() + "'," +
-                    " sigla = '" + cidade.sigla.ToUpper().Trim() + "',"+
+                    + this.FormatString(cidade.nomeCidade) + "'," +
+                    " ddd = '" + this.FormatString(cidade.ddd) + "'," +
+                    " sigla = '" + this.FormatString(cidade.sigla) + "',"+
                     " dtultalteracao = '" + DateTime.Now.ToString("yyyy-MM-dd") + "',"+
                     " codestado = " + cidade.Estado.id +
                     " WHERE codcidade = " + cidade.codigo;

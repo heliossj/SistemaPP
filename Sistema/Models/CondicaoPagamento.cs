@@ -22,14 +22,17 @@ namespace Sistema.Models
         [Display(Name = "Porcentagem (%)")]
         public decimal? txPercentual { get; set; }
 
-        [Display(Name = "Dias")]
+        [Display(Name = "Dias (%)")]
         public short? qtDias { get; set; }
 
-        [Display(Name = "Multa")]
+        [Display(Name = "Multa (%)")]
         public decimal? multa { get; set; }
 
-        [Display(Name = "Desconto")]
+        [Display(Name = "Desconto (%)")]
         public decimal? desconto { get; set; }
+
+        [Display(Name = "Total (%)")]
+        public decimal? txPercentualTotal { get; set; }
 
         public Select.FormaPagamento.Select FormaPagamento { get; set; }
 

@@ -54,12 +54,12 @@ namespace Sistema.DAO
             try
             {
                 var sql = string.Format("INSERT INTO tbservicos ( nomeservico, descricao, vlservico, dtcadastro, dtultalteracao, situacao) VALUES ('{0}', '{1}', {2}, '{3}', '{4}', '{5}')",
-                    servico.nomeServico.ToUpper().Trim(),
-                    !string.IsNullOrEmpty(servico.descricao) ? servico.descricao.ToUpper().Trim() : "",
+                    this.FormatString(servico.nomeServico),
+                    !string.IsNullOrEmpty(servico.descricao) ? this.FormatString(servico.descricao) : "",
                     servico.vlServico.ToString().Replace(",", "."),
                     DateTime.Now.ToString("yyyy-MM-dd"),
                     DateTime.Now.ToString("yyyy-MM-dd"),
-                    servico.situacao.ToUpper().Trim()
+                    this.FormatString(servico.situacao)
                     );
                 OpenConnection();
                 SqlQuery = new SqlCommand(sql, con);
@@ -89,8 +89,8 @@ namespace Sistema.DAO
             try
             {
                 string sql = "UPDATE tbservicos SET nomeservico = '"
-                    + servicos.nomeServico.ToUpper().Trim() + "'," +
-                    " descricao = '" + (!string.IsNullOrEmpty(servicos.descricao) ? servicos.descricao.ToUpper().Trim() : "") + "'," +
+                    + this.FormatString(servicos.nomeServico) + "'," +
+                    " descricao = '" + (!string.IsNullOrEmpty(servicos.descricao) ? this.FormatString(servicos.descricao) : "") + "'," +
                     " vlservico = " + servicos.vlServico.ToString().Replace(",", ".") + ", "+
                     " situacao = '" + servicos.situacao.ToUpper().Trim() + "'," +
                     " dtultalteracao = '" + DateTime.Now.ToString("yyyy-MM-dd")

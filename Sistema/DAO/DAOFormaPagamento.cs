@@ -25,7 +25,7 @@ namespace Sistema.DAO
                 {
                     var formaPagamento = new FormaPagamento
                     {
-                        codForma = Convert.ToInt32(reader["FormaPagamento_ID"]),
+                        codigo = Convert.ToInt32(reader["FormaPagamento_ID"]),
                         nomeForma = Convert.ToString(reader["FormaPagamento_Nome"]),
                         situacao = Sistema.Util.FormatFlag.Situacao(Convert.ToString(reader["FormaPagamento_Situacao"])),
                         dtCadastro = Convert.ToDateTime(reader["FormaPagamento_DataCadastro"]),
@@ -47,49 +47,15 @@ namespace Sistema.DAO
             }
         }
 
-        //public List<FormaPagamento> GetFormaPagamentos()
-        //{
-        //    try
-        //    {
-        //        var sql = this.Search(null, null, null);
-        //        OpenConnection();
-        //        SqlQuery = new SqlCommand(sql, con);
-        //        reader = SqlQuery.ExecuteReader();
-        //        var list = new List<FormaPagamento>();
-
-        //        while (reader.Read())
-        //        {
-        //            var formaPagamento = new FormaPagamento
-        //            {
-        //                codForma = Convert.ToInt32(reader["FormaPagamento_ID"]),
-        //                nomeForma = Convert.ToString(reader["FormaPagamento_Nome"]),
-        //                situacao = Convert.ToString(reader["FormaPagamento_Situacao"]),
-        //                dtCadastro = Convert.ToDateTime(reader["FormaPagamento_DataCadastro"]),
-        //                dtUltAlteracao = Convert.ToDateTime(reader["FormaPagamento_DataUltAlteracao"]),
-        //            };
-
-        //            list.Add(formaPagamento);
-        //        }
-
-        //        return list;
-        //    }
-        //    catch (Exception error)
-        //    {
-        //        throw new Exception(error.Message);
-        //    }
-        //    finally
-        //    {
-        //        CloseConnection();
-        //    }
-        //}
+       
 
         public bool Insert(Models.FormaPagamento formaPagamento)
         {
             try
             {
                 var sql = string.Format("INSERT INTO tbformapagamento ( nomeforma, situacao, dtcadastro, dtultalteracao) VALUES ('{0}', '{1}', '{2}', '{3}')",
-                    formaPagamento.nomeForma.ToUpper().Trim(),
-                    formaPagamento.situacao.ToUpper().Trim(),
+                    this.FormatString(formaPagamento.nomeForma),
+                    this.FormatString(formaPagamento.situacao),
                     DateTime.Now.ToString("yyyy-MM-dd"),
                     DateTime.Now.ToString("yyyy-MM-dd")
                     );
@@ -121,10 +87,10 @@ namespace Sistema.DAO
             try
             {
                 string sql = "UPDATE tbformapagamento SET nomeforma = '"
-                    + formaPagamento.nomeForma.ToUpper().Trim() + "'," +
-                    " situacao = '" + formaPagamento.situacao.ToUpper().Trim() + "'," +
+                    + this.FormatString(formaPagamento.nomeForma) + "'," +
+                    " situacao = '" + this.FormatString(formaPagamento.situacao) + "'," +
                     " dtultalteracao = '" + DateTime.Now.ToString("yyyy-MM-dd")
-                    + "' WHERE tbformapagamento.codforma = " + formaPagamento.codForma;
+                    + "' WHERE tbformapagamento.codforma = " + formaPagamento.codigo;
                 OpenConnection();
                 SqlQuery = new SqlCommand(sql, con);
 
@@ -162,7 +128,7 @@ namespace Sistema.DAO
                     reader = SqlQuery.ExecuteReader();
                     while (reader.Read())
                     {
-                        model.codForma = Convert.ToInt32(reader["FormaPagamento_ID"]);
+                        model.codigo = Convert.ToInt32(reader["FormaPagamento_ID"]);
                         model.nomeForma = Convert.ToString(reader["FormaPagamento_Nome"]);
                         model.situacao = Convert.ToString(reader["FormaPagamento_Situacao"]);
                         model.dtCadastro = Convert.ToDateTime(reader["FormaPagamento_DataCadastro"]);

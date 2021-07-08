@@ -28,6 +28,30 @@ namespace Sistema.Controllers
         [HttpPost]
         public ActionResult Create(Sistema.Models.Produtos model)
         {
+            if (string.IsNullOrWhiteSpace(model.nomeProduto))
+            {
+                ModelState.AddModelError("nomeProduto", "Informe o nome do produto");
+            }
+            if (model.Grupo.id == null)
+            {
+                ModelState.AddModelError("Grupo.id", "Informe o grupo");
+            }
+            if (model.Fornecedor.id == null)
+            {
+                ModelState.AddModelError("Fornecedor.id", "Informe o fornecedor");
+            }
+            if (string.IsNullOrWhiteSpace(model.ncm))
+            {
+                ModelState.AddModelError("ncm", "Informe o NCM");
+            }
+            if (model.vlCusto == null || model.vlCusto <= 0)
+            {
+                ModelState.AddModelError("vlCusto", "Informe o valor de custo");
+            }
+            if (model.vlVenda == null || model.vlVenda <= 0)
+            {
+                ModelState.AddModelError("vlVenda", "Informe o valor de venda");
+            }
             if (ModelState.IsValid)
             {
                 daoProdutos = new DAOProdutos();
@@ -48,6 +72,30 @@ namespace Sistema.Controllers
         [HttpPost]
         public ActionResult Edit(Sistema.Models.Produtos model)
         {
+            if (string.IsNullOrWhiteSpace(model.nomeProduto))
+            {
+                ModelState.AddModelError("nomeProduto", "Informe o nome do produto");
+            }
+            if (model.Grupo.id == null)
+            {
+                ModelState.AddModelError("Grupo.id", "Informe o grupo");
+            }
+            if (model.Fornecedor.id == null)
+            {
+                ModelState.AddModelError("Fornecedor.id", "Informe o fornecedor");
+            }
+            if (string.IsNullOrWhiteSpace(model.ncm))
+            {
+                ModelState.AddModelError("ncm", "Informe o NCM");
+            }
+            if (model.vlCusto == null || model.vlCusto <= 0)
+            {
+                ModelState.AddModelError("vlCusto", "Informe o valor de custo");
+            }
+            if (model.vlVenda == null || model.vlVenda <= 0)
+            {
+                ModelState.AddModelError("vlVenda", "Informe o valor de venda");
+            }
             if (ModelState.IsValid)
             {
 

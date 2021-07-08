@@ -15,19 +15,12 @@
 @Html.Hidden("isEdit")
 
 <div class="@classForm">
-
-    @Html.Label("", Label)
+    @Html.Label("", Label, new { @class = "required" })
     <div class="input-group">
-        <div class="input-group-btn" style="width:15%">
-            @Html.TextBoxFor(model => model.id, new { @style = "border-radius: 4px 0px 0px 4px;", @class = "form-control number", maxLength = "6" })
-            @*<span id="errmsg"></span>*@
-        </div>
-        <div class="input-group-btn" style="width:81%">
-            @Html.TextBoxFor(model => model.text, new { @class = "form-control", Disabled = true })
-        </div>
-        <div class="input-group-btn">
-            <a style="border-radius:0" data-target="#@Sistema.Util.SelectFunctions.getInputId("Modal", Prefix)" id="@Sistema.Util.SelectFunctions.getInputId("btn-localizar", Prefix)" title="Abrir a busca de @Label" class="btn btn-primary" data-toggle="modal"><i class="fa fa-search"></i></a>
-        </div>
+        @Html.HiddenFor(model => model.text)
+        @Html.TextBoxFor(model => model.id, new { @style = "border-radius: 4px 0px 0px 4px; width: 15%;", @class = "form-control number", maxLength = "6" })
+        @Html.TextBoxFor(model => model.text, new { @class = "form-control", @style = "width:70%", Disabled = true })
+        <a style="border-radius:0px 3px 3px 0px" data-target="#@Sistema.Util.SelectFunctions.getInputId("Modal", Prefix)" id="@Sistema.Util.SelectFunctions.getInputId("btn-localizar", Prefix)" title="Abrir a busca de @Label" class="btn btn-success" data-toggle="modal"><i class="fa fa-search"></i></a>
         @Html.ValidationMessageFor(model => model.id, null, new { @class = "text-danger" })
     </div>
 </div>

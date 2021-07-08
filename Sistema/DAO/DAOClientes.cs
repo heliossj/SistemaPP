@@ -86,26 +86,26 @@ namespace Sistema.DAO
             {
                 var sql = string.Format("INSERT INTO tbclientes ( tipo, nomerazaosocial, sexo, logradouro, numero, complemento, bairro, telfixo, telcelular, email, codcidade, cep, cpfcnpj, rgie, dtnascimentofundacao, situacao, codcondicao, dtcadastro, dtultalteracao, apelidonomefantasia)" +
                     "VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', {10}, '{11}', '{12}', '{13}', '{14}', '{15}', {16}, '{17}', '{18}', '{19}' )",
-                    cliente.tipo.ToUpper().Trim(),
-                    cliente.tipo == "F" ? cliente.nomePessoa.ToUpper().Trim() : cliente.razaoSocial.ToUpper().Trim(),
-                    cliente.tipo == "F" ? cliente.sexo.ToUpper().Trim() : "",
-                    cliente.dsLogradouro.ToUpper().Trim(),
-                    cliente.numero.ToUpper().Trim(),
-                    cliente.complemento.ToUpper().Trim(),
-                    cliente.bairro.ToUpper().Trim(),
-                    cliente.telefoneFixo,
-                    cliente.telefoneCelular,
-                    cliente.email.ToUpper().Trim(),
+                    this.FormatString(cliente.tipo),
+                    cliente.tipo == "F" ? this.FormatString(cliente.nomePessoa) : this.FormatString(cliente.razaoSocial),
+                    cliente.tipo == "F" ? this.FormatString(cliente.sexo) : "",
+                    this.FormatString(cliente.dsLogradouro),
+                    this.FormatString(cliente.numero),
+                    this.FormatString(cliente.complemento),
+                    this.FormatString(cliente.bairro),
+                    this.FormatPhone(cliente.telefoneFixo),
+                    this.FormatPhone(cliente.telefoneCelular),
+                    this.FormatString(cliente.email),
                     cliente.Cidade.id,
-                    cliente.cep,
-                    cliente.tipo == "F" ? cliente.cpf : cliente.cnpj,
-                    cliente.tipo == "F" ? cliente.rg : cliente.ie,
+                    this.FormatCEP(cliente.cep),
+                    cliente.tipo == "F" ? this.FormatCPF(cliente.cpf) : this.FormatCNPJ(cliente.cnpj),
+                    cliente.tipo == "F" ? this.FormatRG(cliente.rg) : cliente.ie,
                     cliente.tipo == "F" ? cliente.dtNascimento.Value.ToString("yyyy-MM-dd") : cliente.dtFundacao.Value.ToString("yyyy-MM-dd"),
                     cliente.situacao.ToUpper().Trim(),
                     cliente.CondicaoPagamento.id,
                     DateTime.Now.ToString("yyyy-MM-dd"),
                     DateTime.Now.ToString("yyyy-MM-dd"),
-                    cliente.tipo == "F" ? cliente.apelidoPessoa : cliente.nomeFantasia
+                    cliente.tipo == "F" ? this.FormatString(cliente.apelidoPessoa) : this.FormatString(cliente.nomeFantasia)
                     );
                 OpenConnection();
                 SqlQuery = new SqlCommand(sql, con);
@@ -134,26 +134,26 @@ namespace Sistema.DAO
         {
             try
             {
-                string sql = "UPDATE tbclientes SET tipo = '"
-                    + cliente.tipo.ToUpper().Trim() + "', " +
-                    " nomerazaosocial = '" + cliente.tipo == "F" ? cliente.nomePessoa.ToUpper().Trim() : cliente.razaoSocial.ToUpper().Trim() + "'," +
-                    " sexo = '" + cliente.tipo == "F" ? cliente.sexo.ToUpper().Trim() : "" + "', " +
-                    " logradouro = '" + cliente.dsLogradouro.ToUpper().Trim() + "', " +
+                string sql = "UPDATE tbclientes SET tipo = '" +
+                    this.FormatString(cliente.tipo) + "', " +
+                    " nomerazaosocial = '" + (cliente.tipo == "F" ? this.FormatString(cliente.nomePessoa) : this.FormatString(cliente.razaoSocial)) + "', " +
+                    " sexo = '" + (cliente.tipo == "F" ? this.FormatString(cliente.sexo) : "") + "', " +
+                    " logradouro = '" + this.FormatString(cliente.dsLogradouro) + "', " +
                     " numero = '" + cliente.numero + "', " +
-                    " complemento '" + cliente.complemento.ToUpper().Trim() + "', " +
-                    " bairro = '" + cliente.bairro.ToUpper().Trim() + "', " +
-                    " telfixo = '" + cliente.telefoneFixo + "', " +
-                    " telcelular = '" + cliente.telefoneCelular + "', " +
-                    " email = '" + cliente.email.ToUpper().Trim() + "', " +
+                    " complemento ='" + this.FormatString(cliente.complemento) + "', " +
+                    " bairro = '" + this.FormatString(cliente.bairro) + "', " +
+                    " telfixo = '" + this.FormatPhone(cliente.telefoneFixo) + "', " +
+                    " telcelular = '" + this.FormatPhone(cliente.telefoneCelular) + "', " +
+                    " email = '" + this.FormatString(cliente.email) + "', " +
                     " codcidade = " + cliente.Cidade.id + ", " +
-                    " cep = '" + cliente.cep + "', " +
-                    " cpfcnpj = '" + cliente.tipo == "F" ? cliente.cpf : cliente.cnpj + "', " +
-                    " rgie = '" + cliente.tipo == "F" ? cliente.rg : cliente.ie + "', " +
-                    " dtnascimentofundacao = '" + cliente.tipo == "F" ? cliente.dtNascimento.Value.ToString("yyyy-MM-dd") : cliente.dtFundacao.Value.ToString("yyyy-MM-dd") + "', " +
-                    " situacao = '" + cliente.situacao.ToUpper().ToString() + "', " +
+                    " cep = '" + this.FormatCEP(cliente.cep) + "', " +
+                    " cpfcnpj = '" + ( cliente.tipo == "F" ? this.FormatCPF(cliente.cpf) : this.FormatCNPJ(cliente.cnpj) )+ "', " +
+                    " rgie = '" + ( cliente.tipo == "F" ? this.FormatRG(cliente.rg) : cliente.ie )+ "'," +
+                    " dtnascimentofundacao = '" + (cliente.tipo == "F" ? cliente.dtNascimento.Value.ToString("yyyy-MM-dd") : cliente.dtFundacao.Value.ToString("yyyy-MM-dd")) + "', " +
+                    " situacao = '" + this.FormatString(cliente.situacao) + "', " +
                     " codcondicao = " + cliente.CondicaoPagamento.id + ", " +
-                    " dtultalteracao = '" + DateTime.Now.ToString("yyyy-MM-dd") + "'," +
-                    " apelidonomefantasia = '" + cliente.tipo == "F" ? cliente.apelidoPessoa.ToUpper().ToString() : cliente.nomeFantasia.ToUpper().ToString() + "' " +
+                    " dtultalteracao = '" + ( DateTime.Now.ToString("yyyy-MM-dd") )+ "'," +
+                    " apelidonomefantasia = '" + ( cliente.tipo == "F" ? this.FormatString(cliente.apelidoPessoa) : this.FormatString(cliente.nomeFantasia) )+ "'" +
                     " WHERE codcliente = " + cliente.codigo;
                 OpenConnection();
                 SqlQuery = new SqlCommand(sql, con);
@@ -191,9 +191,12 @@ namespace Sistema.DAO
                     SqlQuery = new SqlCommand(sql, con);
                     reader = SqlQuery.ExecuteReader();
                     var tipoPessoa = string.Empty;
-                    tipoPessoa = Convert.ToString(reader["Cliente_Tipo"]);
                     while (reader.Read())
                     {
+                        //dsTipo = tipoPessoa == "F" ? "FÍSICA" : "JURÍDICA",
+                        tipoPessoa = Convert.ToString(reader["Cliente_Tipo"]);
+                        model.dsTipo = tipoPessoa == "F" ? "FÍSICA" : "JURÍDICA";
+
                         model.codigo = Convert.ToInt32(reader["Cliente_ID"]);
                         model.tipo = Convert.ToString(reader["Cliente_Tipo"]);
                         model.situacao = Convert.ToString(reader["Cliente_Situacao"]);

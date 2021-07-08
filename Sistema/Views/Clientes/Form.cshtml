@@ -17,11 +17,23 @@
 }
 
 <div class="form-row">
-    <div class="@Util.Input3">
-        @Html.LabelFor(model => model.tipo, new { @class = "required" })
-        @Html.DropDownListFor(model => model.tipo, Sistema.Models.Clientes.Tipo, new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => model.tipo, null, new { @class = "text-danger" })
-    </div>
+    @if (action == "create")
+    {
+        <div class="@Util.Input3">
+            @Html.LabelFor(model => model.tipo, new { @class = "required" })
+            @Html.DropDownListFor(model => model.tipo, Sistema.Models.Clientes.Tipo, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.tipo, null, new { @class = "text-danger" })
+        </div>
+    }
+    else
+    {
+        <div class="@Util.Input3">
+            @Html.LabelFor(model => model.tipo, new { @class = "required" })
+            @Html.TextBoxFor(model => model.dsTipo, new { @class = "form-control", disabled = true })
+            @Html.HiddenFor(model => model.tipo)
+            @*@Html.DropDownListFor(model => model.tipo, Sistema.Models.Clientes.Tipo, new { @class = "form-control", disabled = true })*@
+        </div>
+    }
 
     <div class="@Util.Input3">
         @Html.LabelFor(model => model.situacao, new { @class = "required" })
@@ -72,7 +84,7 @@
     </div>
     <div class="@Util.Input1">
         @Html.LabelFor(model => model.numero, new { @class = "required" })
-        @Html.TextBoxFor(model => model.numero, new { @class = "form-control", maxlength = "8", style = "text-transform:uppercase", minlength = "3" })
+        @Html.TextBoxFor(model => model.numero, new { @class = "form-control number", maxlength = "6", minlength = "1" })
         @Html.ValidationMessageFor(model => model.numero, null, new { @class = "text-danger" })
     </div>
     <div class="@Util.Input3">
@@ -90,18 +102,18 @@
 <div class="form-row">
     <div class="@Util.Input4">
         @Html.LabelFor(model => model.telefoneFixo, new { @class = "required" })
-        @Html.TextBoxFor(model => model.telefoneFixo, new { @class = "form-control", maxlength = "10", style = "text-transform:uppercase", minlength = "3" })
+        @Html.TextBoxFor(model => model.telefoneFixo, new { @class = "form-control phone_with_ddd", maxlength = "10", @placeholder = "(XX) XXXX-XXXX", minlength = "3" })
         @Html.ValidationMessageFor(model => model.telefoneFixo, null, new { @class = "text-danger" })
     </div>
 
     <div class="@Util.Input4">
         @Html.LabelFor(model => model.telefoneCelular, new { @class = "required" })
-        @Html.TextBoxFor(model => model.telefoneCelular, new { @class = "form-control", maxlength = "11", style = "text-transform:uppercase", minlength = "3", @placeholder = "(XX) X XXXX-XXXX" })
+        @Html.TextBoxFor(model => model.telefoneCelular, new { @class = "form-control phone", maxlength = "11", minlength = "3", @placeholder = "(XX) X XXXX-XXXX" })
         @Html.ValidationMessageFor(model => model.telefoneCelular, null, new { @class = "text-danger" })
     </div>
 
     <div class="@Util.Input4">
-        @Html.LabelFor(model => model.email, new { @class = "required" })
+        @Html.LabelFor(model => model.email, new { @class = "no-required" })
         @Html.TextBoxFor(model => model.email, new { @class = "form-control", maxlength = "100", style = "text-transform:uppercase", minlength = "3" })
         @Html.ValidationMessageFor(model => model.email, null, new { @class = "text-danger" })
     </div>
@@ -111,11 +123,10 @@
     @Html.EditorFor(model => model.Cidade, "Cidades/Select", new { Disabled = false, Required = false })
 </div>
 
-
 <div class="form-row">
     <div class="@Util.Input3">
         @Html.LabelFor(model => model.cep, new { @class = "required" })
-        @Html.TextBoxFor(model => model.cep, new { @class = "form-control", maxlength = "8", style = "text-transform:uppercase", minlength = "3" })
+        @Html.TextBoxFor(model => model.cep, new { @class = "form-control cep", maxlength = "8", minlength = "3" })
         @Html.ValidationMessageFor(model => model.cep, null, new { @class = "text-danger" })
     </div>
 </div>
@@ -123,42 +134,44 @@
 <div class="form-row">
     <div class="@Util.Input3 fisica">
         @Html.LabelFor(model => model.cpf, new { @class = "required" })
-        @Html.TextBoxFor(model => model.cpf, new { @class = "form-control", maxlength = "15", style = "text-transform:uppercase", minlength = "3" })
+        @Html.TextBoxFor(model => model.cpf, new { @class = "form-control cpf", maxlength = "15", style = "text-transform:uppercase", minlength = "3" })
         @Html.ValidationMessageFor(model => model.cpf, null, new { @class = "text-danger" })
     </div>
 
     <div class="@Util.Input3 juridica">
         @Html.LabelFor(model => model.cnpj, new { @class = "required" })
-        @Html.TextBoxFor(model => model.cnpj, new { @class = "form-control", maxlength = "15", style = "text-transform:uppercase", minlength = "3" })
+        @Html.TextBoxFor(model => model.cnpj, new { @class = "form-control cnpj", maxlength = "15", style = "text-transform:uppercase", minlength = "3" })
         @Html.ValidationMessageFor(model => model.cnpj, null, new { @class = "text-danger" })
     </div>
 
     <div class="@Util.Input3 fisica">
         @Html.LabelFor(model => model.rg, new { @class = "required" })
-        @Html.TextBoxFor(model => model.rg, new { @class = "form-control", maxlength = "15", style = "text-transform:uppercase", minlength = "3" })
+        @Html.TextBoxFor(model => model.rg, new { @class = "form-control rg", maxlength = "15", style = "text-transform:uppercase", minlength = "3" })
         @Html.ValidationMessageFor(model => model.rg, null, new { @class = "text-danger" })
     </div>
 
     <div class="@Util.Input3 juridica">
         @Html.LabelFor(model => model.ie, new { @class = "required" })
-        @Html.TextBoxFor(model => model.ie, new { @class = "form-control", maxlength = "15", style = "text-transform:uppercase", minlength = "3" })
+        @Html.TextBoxFor(model => model.ie, new { @class = "form-control number", maxlength = "14" })
         @Html.ValidationMessageFor(model => model.ie, null, new { @class = "text-danger" })
     </div>
 
     <div class="@Util.Input3 fisica">
         @Html.LabelFor(model => model.dtNascimento)
         <div class="input-group-append">
-            @Html.TextBoxFor(model => model.dtNascimento, new { @class = "form-control datepicker" })
+            @Html.TextBoxFor(model => model.dtNascimento, new { @class = "form-control datepicker date" })
             <span class="fa fa-calendar input-group-text" style="font-size:23px"></span>
         </div>
+        @Html.ValidationMessageFor(model => model.dtNascimento, null, new { @class = "text-danger" })
     </div>
 
     <div class="@Util.Input3 juridica">
         @Html.LabelFor(model => model.dtFundacao)
         <div class="input-group-append">
-            @Html.TextBoxFor(model => model.dtFundacao, new { @class = "form-control datepicker" })
+            @Html.TextBoxFor(model => model.dtFundacao, new { @class = "form-control datepicker date" })
             <span class="fa fa-calendar input-group-text" style="font-size:23px"></span>
         </div>
+        @Html.ValidationMessageFor(model => model.dtFundacao, null, new { @class = "text-danger" })
     </div>
 </div>
 
@@ -172,6 +185,7 @@
         <div class="@Util.Input3">
             @Html.LabelFor(model => model.dtCadastro)
             <div class="input-group-append">
+                @Html.HiddenFor(model => model.dtCadastro)
                 @Html.TextBoxFor(model => model.dtCadastro, new { @class = "form-control datepicke date", disabled = true })
                 <span class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></span>
             </div>
@@ -180,6 +194,7 @@
         <div class="@Util.Input3 ">
             @Html.LabelFor(model => model.dtUltAlteracao)
             <div class="input-group">
+                @Html.HiddenFor(model => model.dtUltAlteracao)
                 @Html.TextBoxFor(model => model.dtUltAlteracao, new { @class = "form-control datepicker date", disabled = true })
                 <div class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></div>
             </div>

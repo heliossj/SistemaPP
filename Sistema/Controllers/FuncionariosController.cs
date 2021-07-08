@@ -28,6 +28,7 @@ namespace Sistema.Controllers
         [HttpPost]
         public ActionResult Create(Sistema.Models.Funcionarios model)
         {
+            this.validForm(model);
             if (ModelState.IsValid)
             {
                 daoFuncionarios = new DAOFuncionarios();
@@ -48,6 +49,7 @@ namespace Sistema.Controllers
         [HttpPost]
         public ActionResult Edit(Sistema.Models.Funcionarios model)
         {
+            this.validForm(model);
             if (ModelState.IsValid)
             {
 
@@ -175,6 +177,72 @@ namespace Sistema.Controllers
                 model = model
             };
             return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        private Models.Funcionarios validForm(Models.Funcionarios model)
+        {
+            if (string.IsNullOrWhiteSpace(model.nomePessoa))
+            {
+                ModelState.AddModelError("nomePessoa", "Informe o nome");
+            }
+            if (string.IsNullOrWhiteSpace(model.apelidoPessoa))
+            {
+                ModelState.AddModelError("apelidoPessoa", "Informe o apelido");
+            }
+            if (string.IsNullOrEmpty(model.sexo))
+            {
+                ModelState.AddModelError("sexo", "Informe o sexo");
+            }
+            if (string.IsNullOrWhiteSpace(model.cpf))
+            {
+                ModelState.AddModelError("cpf", "Informe o CPF");
+            }
+            if (string.IsNullOrWhiteSpace(model.rg))
+            {
+                ModelState.AddModelError("rg", "Informe o RG");
+            }
+            if (model.dtNascimento == null)
+            {
+                ModelState.AddModelError("dtNascimento", "Informe a data de nascimento");
+            }
+            if (string.IsNullOrWhiteSpace(model.dsLogradouro))
+            {
+                ModelState.AddModelError("dsLogradouro", "Informe o logradouro");
+            }
+            if (string.IsNullOrWhiteSpace(model.numero))
+            {
+                ModelState.AddModelError("numero", "Informe o número");
+            }
+            if (string.IsNullOrWhiteSpace(model.complemento))
+            {
+                ModelState.AddModelError("complemento", "Informe o complemento");
+            }
+            if (string.IsNullOrWhiteSpace(model.bairro))
+            {
+                ModelState.AddModelError("bairro", "Informe o bairro");
+            }
+            if (string.IsNullOrEmpty(model.telefoneFixo) && string.IsNullOrEmpty(model.telefoneCelular))
+            {
+                ModelState.AddModelError("telefoneFixo", "Informe ao menos um telefone");
+                ModelState.AddModelError("telefoneCelular", "Informe ao menos telefone");
+            }
+            if (model.Cidade.id == null)
+            {
+                ModelState.AddModelError("Cidade.id", "Informe a cidade");
+            }
+            if (string.IsNullOrWhiteSpace(model.cep))
+            {
+                ModelState.AddModelError("cep", "Informe o CEP");
+            }
+            if (model.dtAdmissao == null)
+            {
+                ModelState.AddModelError("dtAdmissao", "Informe a data de admissão");
+            }
+            if (model.vlSalario == null || model.vlSalario == 0)
+            {
+                ModelState.AddModelError("vlSalario", "Informe um valor de salário válido");
+            }
+            return model;
         }
     }
 }

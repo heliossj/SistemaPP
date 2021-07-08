@@ -14,19 +14,12 @@
 @Html.Hidden("isEdit")
 
 <div class="@classForm">
-
-    @Html.Label("", Label)
+    @Html.Label("", Label, new { @class = "required" })
     <div class="input-group">
-        <div class="input-group-btn" style="width:15%">
-            @Html.TextBoxFor(model => model.id, new { @style = "border-radius: 4px 0px 0px 4px;", @class = "form-control number", maxLength = "6" })
-            @*<span id="errmsg"></span>*@
-        </div>
-        <div class="input-group-btn" style="width:81%">
-            @Html.TextBoxFor(model => model.text, new { @class = "form-control", Disabled = true })
-        </div>
-        <div class="input-group-btn">
-            <a style="border-radius:0" data-target="#@Sistema.Util.SelectFunctions.getInputId("Modal", Prefix)" id="@Sistema.Util.SelectFunctions.getInputId("btn-localizar", Prefix)" title="Abrir a busca de @Label" class="btn btn-primary" data-toggle="modal"><i class="fa fa-search"></i></a>
-        </div>
+        @Html.HiddenFor(model => model.text)
+        @Html.TextBoxFor(model => model.id, new { @style = "border-radius: 4px 0px 0px 4px; width: 15%;", @class = "form-control number", maxLength = "6" })
+        @Html.TextBoxFor(model => model.text, new { @class = "form-control", @style = "width:70%", Disabled = true })
+            <a style="border-radius:0px 3px 3px 0px" data-target="#@Sistema.Util.SelectFunctions.getInputId("Modal", Prefix)" id="@Sistema.Util.SelectFunctions.getInputId("btn-localizar", Prefix)" title="Abrir a busca de @Label" class="btn btn-success" data-toggle="modal"><i class="fa fa-search"></i></a>
         @Html.ValidationMessageFor(model => model.id, null, new { @class = "text-danger" })
     </div>
 </div>
@@ -261,7 +254,7 @@
                     $("#@Sistema.Util.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("hide");
                     $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
                     $.notify({ message: data.message, icon: 'fa fa-exclamation' }, { type: 'success', z_index: 2000, });
-                    
+
                 },
                 error: function (request) {
                     alert("Erro ao adicionar registro")
@@ -299,8 +292,8 @@
           let lis = getTablePaises();
           $("#TablePaises").append(lis);
 
-        table = $('#lista').DataTable({
-                ajax: { url: $('#lista').attr('data-url') },
+        table = $('#listPaises').DataTable({
+            ajax: { url: $('#listPaises').attr('data-url') },
                 language: {
                     url: 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Portuguese-Brasil.json',
             },
@@ -327,7 +320,7 @@
         });
         $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").modal("show");
 
-        $('#lista tbody').on('click', 'td.details-control', function () {
+        $('#listPaises tbody').on('click', 'td.details-control', function () {
             var tr = $(this).closest('tr');
             var row = table.row(tr);
             if (row.child.isShown()) {
@@ -344,7 +337,7 @@
         });
       }
     function getTablePaises() {
-        let tmp = `<table id="lista" class="table table-striped table-bordered" style="width:100%" data-url="@Url.Action("JsQuery", "Paises")">
+        let tmp = `<table id="listPaises" class="table table-striped table-bordered" style="width:100%" data-url="@Url.Action("JsQuery", "Paises")">
                         <thead>
                             <tr>
                                 <th></th>

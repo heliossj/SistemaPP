@@ -31,10 +31,26 @@ namespace Sistema.Controllers
             {
                 ModelState.AddModelError("nomeCondicao", "Informe um nome de condição de pagamento válido");
             }
-            //if (model.ListCondicao.Get == null)
-            //{
-            //    ModelState.AddModelError("ListCondicao", "Informe ao menos um item na lista");
-            //}
+            if (model.ListCondicao == null || !model.ListCondicao.Any())
+            {
+                ModelState.AddModelError("ListCondicao", "Informe ao menos um item na lista");
+            }
+            if (model.txJuros == null)
+            {
+                ModelState.AddModelError("txJuros", "Informe a taxa de juros");
+            }
+            if (model.multa == null)
+            {
+                ModelState.AddModelError("multa", "Informe a multa");
+            }
+            if (model.desconto == null)
+            {
+                ModelState.AddModelError("desconto", "informe o desconto");
+            }
+            if (model.txPercentualTotal != 100)
+            {
+                ModelState.AddModelError("txPercentualTotal", "A porcentagem total das parcelas deve ser igual a 100%, verifique");
+            }
             if (ModelState.IsValid)
             {
                 daoCondicaoPagamento = new DAOCondicaoPagamento();
@@ -58,6 +74,26 @@ namespace Sistema.Controllers
             if (string.IsNullOrWhiteSpace(model.nomeCondicao))
             {
                 ModelState.AddModelError("nomeCondicao", "Informe um nome de condição de pagamento válido");
+            }
+            if (model.ListCondicao == null || !model.ListCondicao.Any())
+            {
+                ModelState.AddModelError("ListCondicao", "Informe ao menos um item na lista");
+            }
+            if (model.txJuros == null)
+            {
+                ModelState.AddModelError("txJuros", "Informe a taxa de juros");
+            }
+            if (model.multa == null)
+            {
+                ModelState.AddModelError("multa", "Informe a multa");
+            }
+            if (model.desconto == null)
+            {
+                ModelState.AddModelError("desconto", "informe o desconto");
+            }
+            if (model.txPercentualTotal != 100)
+            {
+                ModelState.AddModelError("txPercentualTotal", "A porcentagem total das parcelas deve ser igual a 100%, verifique");
             }
             if (ModelState.IsValid)
             {

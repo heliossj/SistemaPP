@@ -51,11 +51,11 @@ namespace Sistema.DAO
             try
             {
                 var sql = string.Format("INSERT INTO tbcondpagamentos ( nomecondicao, txjuros, multa, desconto, situacao, dtcadastro, dtultalteracao) VALUES ('{0}', {1}, {2}, {3}, '{4}', '{5}', '{6}'); SELECT SCOPE_IDENTITY()",
-                    condicaPagamento.nomeCondicao.ToUpper().Trim(),
+                    this.FormatString(condicaPagamento.nomeCondicao),
                     condicaPagamento.txJuros != null ? condicaPagamento.txJuros : 0,
                     condicaPagamento.multa != null ? condicaPagamento.multa : 0,
                     condicaPagamento.desconto != null ? condicaPagamento.desconto : 0,
-                    condicaPagamento.situacao.ToUpper().Trim(),
+                    this.FormatString(condicaPagamento.situacao),
                     DateTime.Now.ToString("yyyy-MM-dd"),
                     DateTime.Now.ToString("yyyy-MM-dd")
                     );
@@ -145,7 +145,9 @@ namespace Sistema.DAO
                 {
                     OpenConnection();
                     var sql = this.Search(codCondicaoPagamento, null);
-                    SqlQuery = new SqlCommand(sql, con);
+                    var sqlParcelas = this.SearchParcelas(codCondicaoPagamento);
+                    var list = new List<CondicaoPagamento.CondicaoPagamentoVM>();
+                    SqlQuery = new SqlCommand(sql + sqlParcelas, con);
                     reader = SqlQuery.ExecuteReader();
                     while (reader.Read())
                     {
@@ -157,7 +159,25 @@ namespace Sistema.DAO
                         model.desconto = Convert.ToDecimal(reader["CondicaoPagamento_Desconto"]);
                         model.dtCadastro = Convert.ToDateTime(reader["CondicaoPagamento_DataCadastro"]);
                         model.dtUltAlteracao = Convert.ToDateTime(reader["CondicaoPagamento_DataUltAlteracao"]);
+                    };
+
+                    if (reader.NextResult())
+                    {
+                        while (reader.Read())
+                        {
+                            var item = new CondicaoPagamento.CondicaoPagamentoVM()
+                            {
+                                codCondicaoPagamento = Convert.ToInt32(reader["Condicao_ID"]),
+                                codFormaPagamento = Convert.ToInt32(reader["Condicao_Forma_ID"]),
+                                nomeFormaPagamento = Convert.ToString(reader["Condicao_Forma_Nome"]),
+                                nrParcela = Convert.ToInt16(reader["Parcela_Nr"]),
+                                qtDias = Convert.ToInt16(reader["Parcela_QtDias"]),
+                                txPercentual = Convert.ToDecimal(reader["Parcela_TaxaPercentual"])
+                            };
+                            list.Add(item);
+                        }
                     }
+                    model.ListCondicao = list;
                 }
                 return model;
             }
@@ -175,7 +195,7 @@ namespace Sistema.DAO
         {
             try
             {
-                string sql = "DELETE FROM tbcondicaopagamento WHERE codcondicao = " + codCondicaoPagamento;
+                string sql = "DELETE FROM tbcondpagamentos WHERE codcondicao = " + codCondicaoPagamento;
                 OpenConnection();
                 SqlQuery = new SqlCommand(sql, con);
 
@@ -247,7 +267,7 @@ namespace Sistema.DAO
                 var filterQ = filter.Split(' ');
                 foreach (var word in filterQ)
                 {
-                    swhere += " OR tbcondpagamentos.nomedocondicaoLIKE'%" + word + "%'";
+                    swhere += " OR tbcondpagamentos.nomedocondicao LIKE'%" + word + "%'";
                 }
                 swhere = " WHERE " + swhere.Remove(0, 3);
             }
@@ -256,12 +276,31 @@ namespace Sistema.DAO
                     tbcondpagamentos.codcondicao AS CondicaoPagamento_ID,
                     tbcondpagamentos.nomecondicao AS CondicaoPagamento_Nome,
                     tbcondpagamentos.situacao AS CondicaoPagamento_Situacao,
-                    tbcondpagamentos.txjuros AS CondicaoPagamento_Juros,
+                    tbcondpagamentos.txjuros AS CondicaoPagamento_TaxaJuros,
                     tbcondpagamentos.multa AS CondicaoPagamento_Multa,
                     tbcondpagamentos.desconto AS CondicaoPagamento_Desconto,
                     tbcondpagamentos.dtcadastro AS CondicaoPagamento_DataCadastro,
                     tbcondpagamentos.dtultalteracao AS CondicaoPagamento_DataUltAlteracao
-                FROM tbcondpagamentos" + swhere;
+                FROM tbcondpagamentos" + swhere + ";";
+            return sql;
+        }
+
+        private string SearchParcelas(int? id)
+        {
+            var sql = string.Empty;
+
+            sql = @"
+                    SELECT
+                    tbparcelascondicao.codcondicao AS Condicao_ID,
+                    tbparcelascondicao.codforma AS Condicao_Forma_ID,
+                    tbformapagamento.nomeforma AS Condicao_Forma_Nome,
+                    tbparcelascondicao.nrparcela AS Parcela_Nr,
+                    tbparcelascondicao.qtdias AS Parcela_QtDias,
+                    tbparcelascondicao.txpercentual AS Parcela_TaxaPercentual
+                    FROM tbparcelascondicao
+                    INNER JOIN tbformapagamento on tbparcelascondicao.codforma = tbformapagamento.codforma
+                    WHERE tbparcelascondicao.codcondicao = " + id
+            ;
             return sql;
         }
 

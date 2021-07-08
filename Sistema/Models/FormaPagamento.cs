@@ -9,9 +9,6 @@ namespace Sistema.Models
 {
     public class FormaPagamento : Pai
     {
-        [Display(Name = "Código")]
-        public int? codForma { get; set; }
-
         [Display(Name = "Forma de pagamento")]
         public string nomeForma { get; set; }
 

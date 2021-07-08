@@ -12,6 +12,8 @@ namespace Sistema.Models
         [Display(Name = "Tipo")]
         public string tipo { get; set; }
 
+        public string dsTipo { get; set; }
+
         [Display(Name = "Situação")]
         public string situacao { get; set; }
 
@@ -60,7 +62,7 @@ namespace Sistema.Models
         [Display(Name = "CNPJ")]
         public string cnpj { get; set; }
 
-        [Display(Name = "IE")]
+        [Display(Name = "Inscrição Estadual")]
         public string ie { get; set; }
 
         [Display(Name = "Site")]

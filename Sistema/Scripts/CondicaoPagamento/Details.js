@@ -5,14 +5,19 @@
         cond.addItem();
     })
 
+
+
+
+
+
+
 });
 
 
 CondicaoPagamento = function () {
     self = this;
-    //let nr = 1;
+    let nr = 1;
     var dtCondicao = null;
-    var nrParcelaAux = 0;
     this.init = function () {
         dtCondicao = new tDataTable({
             table: {
@@ -29,16 +34,14 @@ CondicaoPagamento = function () {
             },
         });
 
-        self.AtualizaTaxa(dtCondicao);
-
         $(document).on('tblCondicaoAfterDelete', function (e, data) {
             self.AtualizaTaxa(dtCondicao);
         })
+
     }
 
     self.valid = function () {
         let valid = true;
-
         if (IsNullOrEmpty($("#qtDias").val())) {
             $("#qtDias").blink({ msg: "Informe a quantidade de dias" });
             valid = false;
@@ -53,30 +56,6 @@ CondicaoPagamento = function () {
             $("#FormaPagamento_id").blink({ msg: "Informe a condição de pagamento" });
             valid = false;
         }
-
-        //taxa total
-        let txTotal = $("#txPercentualTotal").val();
-        let txPercentual = $("#txPercentual").val();
-
-        if (!IsNullOrEmpty(txPercentual)) {
-            if (!IsNullOrEmpty(txTotal)) {
-                txTotal = parseFloat(txTotal);
-            }
-            txPercentual = txPercentual.replace(",", ".");
-            txPercentual = parseFloat(txPercentual);
-            txTotal = parseFloat(txTotal);
-
-            let total = txTotal + txPercentual;
-            if (total > 100) {
-                $("#txPercentualTotal").blink({ msg: "O valor total deve ser equivalente a 100%, verifique!" });
-                valid = false;
-            }
-        }
-
-        //item
-        console.log(dtCondicao.length)
-        nrParcelaAux = dtCondicao.length;
-        console.log(nrParcelaAux)
 
         return valid;
     }
@@ -103,32 +82,28 @@ CondicaoPagamento = function () {
         if (self.valid()) {
             var model = self.getModel();
             let item = {
-                nrParcela: dtCondicao.length + 1, //nr
+                nrParcela: nr,
                 codFormaPagamento: model.codFormaPagamento,
                 nomeFormaPagamento: model.nomeFormaPagamento,
                 qtDias: model.qtDias,
                 txPercentual: model.txPercentual,
             }
-            //nr++;
+            nr++;
             dtCondicao.addItem(item)
             self.clear();
             self.AtualizaTaxa(dtCondicao);
+
+
         }
     }
 
     self.AtualizaTaxa = function (data) {
-        
         let taxaTotal = 0;
         let dt = data.data;
-        let aux = "";
         for (var i = 0; i < dt.length; i++) {
-            if (typeof (dt[i].txPercentual) == "string") {
-                aux = dt[i].txPercentual.replace(",", ".");
-                aux = parseFloat(aux);
-            } else {
-                aux = dt[i].txPercentual;
-            }
-            taxaTotal += aux;
+            //console.log(dt[i].txPercentual);
+            //console.log(parseFloat(dt[i].txPercentual))
+            taxaTotal += parseFloat(dt[i].txPercentual);
         }
         $("#txPercentualTotal").val(taxaTotal);
     }

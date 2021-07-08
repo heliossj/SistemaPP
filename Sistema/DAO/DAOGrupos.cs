@@ -53,9 +53,9 @@ namespace Sistema.DAO
             try
             {
                 var sql = string.Format("INSERT INTO tbgrupos ( nomegrupo, situacao, observacao, dtcadastro, dtultalteracao) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}')",
-                    grupo.nomeGrupo.ToUpper().Trim(),
-                    grupo.situacao.ToUpper().Trim(),
-                    grupo.observacao.ToUpper().Trim(),
+                    this.FormatString(grupo.nomeGrupo),
+                    this.FormatString(grupo.situacao),
+                    this.FormatString(grupo.observacao),
                     DateTime.Now.ToString("yyyy-MM-dd"),
                     DateTime.Now.ToString("yyyy-MM-dd")
                     );
@@ -87,9 +87,9 @@ namespace Sistema.DAO
             try
             {
                 string sql = "UPDATE tbgrupos SET nomegrupo = '"
-                    + grupo.nomeGrupo.ToUpper().Trim() + "'," +
-                    " situacao = '" + grupo.situacao.ToUpper().Trim() + "'," +
-                    " observacao = '" + grupo.observacao.ToUpper().Trim() + "'," +
+                    + this.FormatString(grupo.nomeGrupo) + "'," +
+                    " situacao = '" + this.FormatString(grupo.situacao) + "'," +
+                    " observacao = '" + this.FormatString(grupo.observacao) + "'," +
                     " dtultalteracao = '" + DateTime.Now.ToString("yyyy-MM-dd")
                     + "' WHERE tbgrupos.codgrupo = " + grupo.codigo;
                 OpenConnection();

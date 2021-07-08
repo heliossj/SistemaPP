@@ -16,6 +16,7 @@ namespace Sistema
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            BinderConfig.RegisterGlobalBinders(ModelBinders.Binders);
         }
     }
 }

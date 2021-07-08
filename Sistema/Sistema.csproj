@@ -125,6 +125,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\BinderConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\OrdemServicoController.cs" />
@@ -230,6 +231,7 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\Clientes\Create.js" />
+    <Content Include="Scripts\CondicaoPagamento\Details.js" />
     <Content Include="Scripts\CondicaoPagamento\Create.js" />
     <Content Include="Scripts\bootstrap-notify.js" />
     <Content Include="Scripts\Fornecedores\Create.js" />
@@ -462,8 +464,6 @@
     <Content Include="Views\Clientes\Index.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Paises\Select.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Estados\Select.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\Estados\Form.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\Estados\Query.cshtml" />
     <Content Include="Views\Funcionarios\Create.cshtml" />
     <Content Include="Views\Funcionarios\Delete.cshtml" />
     <Content Include="Views\Funcionarios\Details.cshtml" />

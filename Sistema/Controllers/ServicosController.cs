@@ -32,7 +32,7 @@ namespace Sistema.Controllers
             {
                 ModelState.AddModelError("nomeServico", "Informe um nome do serviço");
             }
-            if (model.vlServico <= 0)
+            if (model.vlServico == null || model.vlServico == 0)
             {
                 ModelState.AddModelError("vlServico", "Informe o valor do serviço");
             }
@@ -64,10 +64,10 @@ namespace Sistema.Controllers
             {
                 ModelState.AddModelError("nomeServico", "Informe um nome do serviço");
             }
-            //if (model.vlServico == null || model.vlServico <= 0)
-            //{
-            //    ModelState.AddModelError("vlServico", "Informe o valor do serviço");
-            //}
+            if (model.vlServico == null || model.vlServico == 0)
+            {
+                ModelState.AddModelError("vlServico", "Informe o valor do serviço");
+            }
             if (string.IsNullOrWhiteSpace(model.situacao))
             {
                 ModelState.AddModelError("situacao", "Informe a situação");

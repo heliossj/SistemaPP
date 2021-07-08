@@ -72,18 +72,18 @@ namespace Sistema.DAO
             {
                 var sql = string.Format("INSERT INTO tbprodutos ( situacao, nomeproduto, unidade, largura, codgrupo, codfornecedor, ncm, qtestoque, vlcusto, vlultcompra, vlvenda, observacao, dtcadastro, dtultalteracao )" +
                     " VALUES ('{0}', '{1}', '{2}', '{3}', {4}, {5}, '{6}', {7}, {8}, {9}, {10}, '{11}', '{12}', '{13}' )",
-                    produto.situacao.ToUpper().Trim(),
-                    produto.nomeProduto.ToUpper().Trim(),
+                    this.FormatString(produto.situacao),
+                    this.FormatString(produto.nomeProduto),
                     produto.unidade,
                     produto.largura,
                     produto.Grupo.id,
                     produto.Fornecedor.id,
                     produto.ncm,
-                    produto.qtEstoque,
-                    produto.vlCusto,
-                    produto.vlUltCompra,
-                    produto.vlVenda,
-                    produto.observacao,
+                    produto.qtEstoque != null ? produto.qtEstoque : 0,
+                    produto.vlCusto.ToString().Replace(",", "."),
+                    produto.vlUltCompra != null ? produto.vlUltCompra : 0,
+                    produto.vlVenda.ToString().Replace(",", "."),
+                    !string.IsNullOrWhiteSpace(produto.observacao) ? this.FormatString(produto.observacao) : "",
                     DateTime.Now.ToString("yyyy-MM-dd"),
                     DateTime.Now.ToString("yyyy-MM-dd")
                     );
@@ -114,21 +114,20 @@ namespace Sistema.DAO
         {
             try
             {
-                string sql = "UPDATE tbprodutos SET situacao = '"
-                    + produto.situacao.ToUpper().Trim() + "'," +
-                    " nomeproduto = '" + produto.nomeProduto.ToUpper().Trim() + "', " +
-                    " unidade = '" + produto.unidade + "', " +
-                    " largura = '" + produto.largura + "', " +
-                    " codgrupo = " + produto.Grupo.id + ", " +
-                    " codfornecedor = " + produto.Fornecedor.id + ", " +
-                    " ncm = '" + produto.ncm + "', " +
-                    " qtestoque = " + produto.qtEstoque + ", " +
-                    " vlcusto = " + produto.vlCusto + ", " +
-                    " vlultcompra = " + produto.vlUltCompra + ", " +
-                    " vlvenda = " + produto.vlVenda + ", " + 
-                    " observacao = '" + produto.observacao.ToUpper().Trim() + "', " +
-                    " dtultalteracao = '" + DateTime.Now.ToString("yyyy-MM-dd")
-                    + "' WHERE codproduto = " + produto.codigo;
+                //string sql = "teste";
+                var sql = "UPDATE tbprodutos SET situacao = '"
+                    + this.FormatString(produto.situacao) + "', " +
+                " nomeproduto = '" + this.FormatString(produto.nomeProduto) + "', " +
+                " unidade = '" + produto.unidade + "', " +
+                " largura = '" + produto.largura + "', " +
+                " codgrupo = " + produto.Grupo.id + ", " +
+                " codfornecedor = " + produto.Fornecedor.id + ", " +
+                " ncm = '" + produto.ncm + "', " +
+                " vlcusto = " + produto.vlCusto.ToString().Replace(",", ".") + ", " +
+                " vlvenda = " + produto.vlVenda.ToString().Replace(",", ".") + ", " +
+                " observacao = '" + this.FormatString(produto.observacao) + "', " +
+                " dtultalteracao = '" + DateTime.Now.ToString("yyyy-MM-dd") + "'" +
+                " WHERE codproduto = " + produto.codigo;
                 OpenConnection();
                 SqlQuery = new SqlCommand(sql, con);
 

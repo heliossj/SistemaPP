@@ -62,7 +62,7 @@
 
     <div class="@Util.Input3">
         @Html.LabelFor(model => model.qtEstoque)
-        @Html.TextBoxFor(model => model.qtEstoque, new { @class = "form-control", maxlength = "10", style = "text-transform:uppercase", minlength = "3", disabled = true })
+        @Html.TextBoxFor(model => model.qtEstoque, new { @class = "form-control money", maxlength = "10", style = "text-transform:uppercase", minlength = "3", disabled = true })
         @Html.ValidationMessageFor(model => model.qtEstoque, null, new { @class = "text-danger" })
     </div>
 </div>
@@ -76,7 +76,7 @@
 
     <div class="@Util.Input3">
         @Html.LabelFor(model => model.vlUltCompra)
-        @Html.TextBoxFor(model => model.vlUltCompra, new { @class = "form-control", type = "number", min = "0.01", step = ".01", placeholder = "0,00", oninput = "this.value = Math.abs(this.value)", disabled = true })
+        @Html.TextBoxFor(model => model.vlUltCompra, new { @class = "form-control money", type = "number", min = "0.01", step = ".01", placeholder = "0,00", oninput = "this.value = Math.abs(this.value)", disabled = true })
         @Html.ValidationMessageFor(model => model.vlUltCompra, null, new { @class = "text-danger" })
     </div>
 
@@ -100,6 +100,7 @@
         <div class="@Util.Input3">
             @Html.LabelFor(model => model.dtCadastro)
             <div class="input-group-append">
+                @Html.HiddenFor(model => model.dtCadastro)
                 @Html.TextBoxFor(model => model.dtCadastro, new { @class = "form-control datepicke date", disabled = true })
                 <span class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></span>
             </div>
@@ -108,6 +109,7 @@
         <div class="@Util.Input3 ">
             @Html.LabelFor(model => model.dtUltAlteracao)
             <div class="input-group">
+                @Html.HiddenFor(model => model.dtUltAlteracao)
                 @Html.TextBoxFor(model => model.dtUltAlteracao, new { @class = "form-control datepicker date", disabled = true })
                 <div class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></div>
             </div>

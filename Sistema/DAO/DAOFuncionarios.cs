@@ -74,27 +74,27 @@ namespace Sistema.DAO
             {
                 var sql = string.Format("INSERT INTO tbfuncionarios ( situacao, nomefuncionario, sexo, logradouro, numero, complemento, bairro, telfixo, telcelular, email, codcidade, cep, cpf, rg, dtnascimento, dtadmissao, vlsalario, dtdemissao, dtcadastro, dtultalteracao, apelido )" +
                     "VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', {10}, '{11}', '{12}', '{13}', '{14}', '{15}', {16}, '{17}', '{18}', '{19}', '{20}' )",
-                    funcionario.situacao.ToUpper().Trim(),
-                    funcionario.nomePessoa.ToUpper().Trim(),
-                    funcionario.sexo.ToUpper().Trim(),
-                    funcionario.dsLogradouro.ToUpper().Trim(),
-                    funcionario.numero.ToUpper().Trim(),
-                    funcionario.complemento.ToUpper().Trim(),
-                    funcionario.bairro.ToUpper().Trim(),
-                    funcionario.telefoneFixo,
-                    funcionario.telefoneCelular,
-                    funcionario.email.ToUpper().Trim(),
+                    this.FormatString(funcionario.situacao),
+                    this.FormatString(funcionario.nomePessoa),
+                    this.FormatString(funcionario.sexo),
+                    this.FormatString(funcionario.dsLogradouro),
+                    funcionario.numero,
+                    this.FormatString(funcionario.complemento),
+                    this.FormatString(funcionario.bairro),
+                    this.FormatPhone(funcionario.telefoneFixo),
+                    this.FormatPhone(funcionario.telefoneCelular),
+                    this.FormatString(funcionario.email),
                     funcionario.Cidade.id,
-                    funcionario.cep,
-                    funcionario.cpf,
-                    funcionario.rg,
+                    this.FormatCEP(funcionario.cep),
+                    this.FormatCPF(funcionario.cpf),
+                    this.FormatRG(funcionario.rg),
                     funcionario.dtNascimento.Value.ToString("yyyy-MM-dd"),
                     funcionario.dtAdmissao.Value.ToString("yyyy-MM-dd"),
-                    funcionario.vlSalario,
+                    funcionario.vlSalario.ToString().Replace(",", "."),
                     funcionario.dtDemissao != null ? funcionario.dtDemissao.Value.ToString("yyyy-MM-dd") : null ,
                     DateTime.Now.ToString("yyyy-MM-dd"),
                     DateTime.Now.ToString("yyyy-MM-dd"),
-                    funcionario.apelidoPessoa.ToUpper().Trim()
+                    this.FormatString(funcionario.apelidoPessoa)
                     );
                 OpenConnection();
                 SqlQuery = new SqlCommand(sql, con);
@@ -124,26 +124,26 @@ namespace Sistema.DAO
             try
             {
                 string sql = "UPDATE tbfuncionarios SET situacao = '"
-                    + funcionario.tipo.ToUpper().Trim() + "', " +
-                    " nomefuncionario = '" + funcionario.nomePessoa.ToUpper().Trim() + "'," +
-                    " sexo = '" + funcionario.sexo.ToUpper().Trim() + "', " +
-                    " logradouro = '" + funcionario.dsLogradouro.ToUpper().Trim() + "', " +
+                    + this.FormatString(funcionario.tipo) + "', " +
+                    " nomefuncionario = '" + this.FormatString(funcionario.nomePessoa) + "'," +
+                    " sexo = '" + this.FormatString(funcionario.sexo) + "', " +
+                    " logradouro = '" + this.FormatString(funcionario.dsLogradouro) + "', " +
                     " numero = '" + funcionario.numero + "', " +
-                    " complemento '" + funcionario.complemento.ToUpper().Trim() + "', " +
-                    " bairro = '" + funcionario.bairro.ToUpper().Trim() + "', " +
-                    " telfixo = '" + funcionario.telefoneFixo + "', " +
-                    " telcelular = '" + funcionario.telefoneCelular + "', " +
-                    " email = '" + funcionario.email.ToUpper().Trim() + "', " +
+                    " complemento = '" + this.FormatString(funcionario.complemento) + "', " +
+                    " bairro = '" + this.FormatString(funcionario.bairro) + "', " +
+                    " telfixo = '" + this.FormatPhone(funcionario.telefoneFixo) + "', " +
+                    " telcelular = '" + this.FormatPhone(funcionario.telefoneCelular) + "', " +
+                    " email = '" + this.FormatString(funcionario.email) + "', " +
                     " codcidade = " + funcionario.Cidade.id + ", " +
-                    " cep = '" + funcionario.cep + "', " +
-                    " cpf = '" + funcionario.cpf + "', " +
-                    " rg = '" + funcionario.rg + "', " +
+                    " cep = '" + this.FormatCEP(funcionario.cep) + "', " +
+                    " cpf = '" + this.FormatCPF(funcionario.cpf) + "', " +
+                    " rg = '" + this.FormatRG(funcionario.rg) + "', " +
                     " dtnascimento = '" + funcionario.dtNascimento.Value.ToString("yyyy-MM-dd") + "', " +
                     " dtadmissao = '" + funcionario.dtAdmissao.Value.ToString("yyyy-MM-dd") + "', " +
-                    " vlsalario = " + funcionario.vlSalario + ", " +
-                    " dtdemissao = '" + funcionario.dtDemissao.Value.ToString("yyyy-MM-dd") != null ? funcionario.dtDemissao.Value.ToString("yyyy-MM-dd") : null + "', " +
+                    " vlsalario = " + funcionario.vlSalario.ToString().Replace(",", ".") + ", " +
+                    " dtdemissao = '" + ( funcionario.dtDemissao.Value.ToString("yyyy-MM-dd") != null ? funcionario.dtDemissao.Value.ToString("yyyy-MM-dd") : null )+ "', " +
                     " dtultalteracao = '" + DateTime.Now.ToString("yyyy-MM-dd") + "'," +
-                    " apelido = '" + funcionario.apelidoPessoa.ToUpper().ToString() + "' " +
+                    " apelido = '" + this.FormatString(funcionario.apelidoPessoa) + "' " +
                     " WHERE codfuncionario = " + funcionario.codigo;
                 OpenConnection();
                 SqlQuery = new SqlCommand(sql, con);

@@ -56,8 +56,8 @@ namespace Sistema.DAO
             try
             {
                 var sql = string.Format("INSERT INTO tbestados ( nomeestado, uf, codpais, dtcadastro, dtultalteracao) VALUES ('{0}', '{1}', {2}, '{3}', '{4}')",
-                    estado.nomeEstado.ToUpper().Trim(),
-                    estado.uf.ToUpper().Trim(),
+                    this.FormatString(estado.nomeEstado),
+                    this.FormatString(estado.uf),
                     estado.Pais.id,
                     DateTime.Now.ToString("yyyy-MM-dd"),
                     DateTime.Now.ToString("yyyy-MM-dd")
@@ -90,8 +90,8 @@ namespace Sistema.DAO
             try
             {
                 string sql = "UPDATE tbestados SET nomeestado = '"
-                    + estado.nomeEstado.ToUpper().Trim() + "'," +
-                    " uf = '" + estado.uf.ToUpper().Trim() + "'," +
+                    + this.FormatString(estado.nomeEstado) + "'," +
+                    " uf = '" + this.FormatString(estado.uf) + "'," +
                     " dtultalteracao = '" + DateTime.Now.ToString("yyyy-MM-dd") + "',"+
                     " codpais = " + estado.Pais.id +
                     " WHERE codestado = " + estado.codigo;
