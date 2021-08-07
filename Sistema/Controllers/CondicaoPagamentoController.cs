@@ -14,9 +14,17 @@ namespace Sistema.Controllers
 
         public ActionResult Index()
         {
-            var daoCondicaoPagamento = new DAOCondicaoPagamento();
-            List<Models.CondicaoPagamento> list = daoCondicaoPagamento.GetCondicaoPagamentos();
-            return View(list);
+            try
+            {
+                var daoCondicaoPagamento = new DAOCondicaoPagamento();
+                List<Models.CondicaoPagamento> list = daoCondicaoPagamento.GetCondicaoPagamentos();
+                return View(list);
+            }
+            catch (Exception ex)
+            {
+                this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                return View();
+            }
         }
 
         public ActionResult Create()
@@ -43,19 +51,24 @@ namespace Sistema.Controllers
             {
                 ModelState.AddModelError("multa", "Informe a multa");
             }
-            if (model.desconto == null)
-            {
-                ModelState.AddModelError("desconto", "informe o desconto");
-            }
-            if (model.txPercentualTotal != 100)
+            if (model.txPercentualTotalAux != 100)
             {
                 ModelState.AddModelError("txPercentualTotal", "A porcentagem total das parcelas deve ser igual a 100%, verifique");
             }
             if (ModelState.IsValid)
             {
-                daoCondicaoPagamento = new DAOCondicaoPagamento();
-                daoCondicaoPagamento.Insert(model);
-                return RedirectToAction("Index");
+                try
+                {
+                    daoCondicaoPagamento = new DAOCondicaoPagamento();
+                    daoCondicaoPagamento.Insert(model);
+                    this.AddFlashMessage(Util.AlertMessage.INSERT_SUCESS);
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                    return View(model);
+                }
             }
             else
             {
@@ -87,21 +100,26 @@ namespace Sistema.Controllers
             {
                 ModelState.AddModelError("multa", "Informe a multa");
             }
-            if (model.desconto == null)
-            {
-                ModelState.AddModelError("desconto", "informe o desconto");
-            }
-            if (model.txPercentualTotal != 100)
+            if (model.txPercentualTotalAux != 100)
             {
                 ModelState.AddModelError("txPercentualTotal", "A porcentagem total das parcelas deve ser igual a 100%, verifique");
             }
             if (ModelState.IsValid)
             {
-                daoCondicaoPagamento = new DAOCondicaoPagamento();
-                //daoCondicaoPagamento.Update(model);
-                return RedirectToAction("Index");
+                try
+                {
+                    daoCondicaoPagamento = new DAOCondicaoPagamento();
+                    daoCondicaoPagamento.Update(model);
+                    this.AddFlashMessage(Util.AlertMessage.EDIT_SUCESS);
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                    return View(model);
+                }
             }
-            return View();
+            return View(model);
         }
 
         public ActionResult Delete(int? id)
@@ -113,9 +131,18 @@ namespace Sistema.Controllers
         [ActionName("Delete")]
         public ActionResult DeleteConfirmed(int? id)
         {
-            daoCondicaoPagamento = new DAOCondicaoPagamento();
-            daoCondicaoPagamento.Delete(id);
-            return RedirectToAction("Index");
+            try
+            {
+                daoCondicaoPagamento = new DAOCondicaoPagamento();
+                daoCondicaoPagamento.Delete(id);
+                this.AddFlashMessage(Util.AlertMessage.DELETE_SUCESS);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                return View();
+            }
         }
 
         public ActionResult Details(int? id)
@@ -125,9 +152,16 @@ namespace Sistema.Controllers
 
         private ActionResult GetView(int? codCondicaoPagamento)
         {
-            var daoCondicaoPagamento = new DAOCondicaoPagamento();
-            var model = daoCondicaoPagamento.GetCondicaoPagamento(codCondicaoPagamento);
-            return View(model);
+            try
+            {
+                var daoCondicaoPagamento = new DAOCondicaoPagamento();
+                var model = daoCondicaoPagamento.GetCondicaoPagamento(codCondicaoPagamento);
+                return View(model);
+            } catch (Exception ex)
+            {
+                this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                return View();
+            }
         }
 
         public JsonResult JsQuery([ModelBinder(typeof(DataTablesBinder))] IDataTablesRequest requestModel)

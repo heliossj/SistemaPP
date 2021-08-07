@@ -14,9 +14,17 @@ namespace Sistema.Controllers
 
         public ActionResult Index()
         {
-            var daoEstados = new DAOEstados();
-            List<Models.Estados> list = daoEstados.GetEstados();
-            return View(list);
+            try
+            {
+                var daoEstados = new DAOEstados();
+                List<Models.Estados> list = daoEstados.GetEstados();
+                return View(list);
+            }
+            catch (Exception ex)
+            {
+                this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                return View();
+            }
         }
 
         public ActionResult Create()
@@ -39,12 +47,19 @@ namespace Sistema.Controllers
             {
                 ModelState.AddModelError("Pais.id", "Informe um país");
             }
-
             if (ModelState.IsValid)
             {
-                daoEstados = new DAOEstados();
-                daoEstados.Insert(model);
-                return RedirectToAction("Index");
+                try
+                {
+                    daoEstados = new DAOEstados();
+                    daoEstados.Insert(model);
+                    this.AddFlashMessage(Util.AlertMessage.INSERT_SUCESS);
+                    return RedirectToAction("Index");
+                } catch (Exception ex)
+                {
+                    this.AddFlashMessage(ex.Message);
+                    return View(model);
+                }
             }
             else
             {
@@ -72,12 +87,19 @@ namespace Sistema.Controllers
             {
                 ModelState.AddModelError("Pais.id", "Informe um país");
             }
-
             if (ModelState.IsValid)
             {
-                daoEstados = new DAOEstados();
-                daoEstados.Update(model);
-                return RedirectToAction("Index");
+                try
+                {
+                    daoEstados = new DAOEstados();
+                    daoEstados.Update(model);
+                    this.AddFlashMessage(Util.AlertMessage.EDIT_SUCESS);
+                    return RedirectToAction("Index");
+                } catch (Exception ex)
+                {
+                    this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                    return View(model);
+                } 
             }
             else
             {
@@ -94,9 +116,17 @@ namespace Sistema.Controllers
         [ActionName("Delete")]
         public ActionResult DeleteConfirmed(int? id)
         {
-            daoEstados = new DAOEstados();
-            daoEstados.Delete(id);
-            return RedirectToAction("Index");
+            try
+            {
+                daoEstados = new DAOEstados();
+                daoEstados.Delete(id);
+                this.AddFlashMessage(Util.AlertMessage.DELETE_SUCESS);
+                return RedirectToAction("Index");
+            } catch(Exception ex)
+            {
+                this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                return View();
+            }
         }
 
         public ActionResult Details(int? id)
@@ -106,9 +136,16 @@ namespace Sistema.Controllers
 
         private ActionResult GetView(int? codEstado)
         {
-            var daoEstados = new DAOEstados();
-            var model = daoEstados.GetEstado(codEstado);
-            return View(model);
+            try
+            {
+                var daoEstados = new DAOEstados();
+                var model = daoEstados.GetEstado(codEstado);
+                return View(model);
+            } catch (Exception ex)
+            {
+                this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                return View();
+            }
         }
 
         public JsonResult JsQuery([ModelBinder(typeof(DataTablesBinder))] IDataTablesRequest requestModel)

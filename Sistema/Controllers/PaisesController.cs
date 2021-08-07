@@ -15,9 +15,17 @@ namespace Sistema.Controllers
 
         public ActionResult Index()
         {
-            var daoPaises = new DAOPaises();
-            List<Models.Paises> list = daoPaises.GetPaises();
-            return View(list);
+            try
+            {
+                var daoPaises = new DAOPaises();
+                List<Models.Paises> list = daoPaises.GetPaises();
+                return View(list);
+            }
+            catch (Exception ex)
+            {
+                this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                return View();
+            }
         }
 
         public ActionResult Create()
@@ -42,14 +50,20 @@ namespace Sistema.Controllers
             }
             if (ModelState.IsValid)
             {
-                daoPaises = new DAOPaises();
-                daoPaises.Insert(model);
-                return RedirectToAction("Index");
+                try
+                {
+                    daoPaises = new DAOPaises();
+                    daoPaises.Insert(model);
+                    this.AddFlashMessage("Registro salvo com sucesso!"); ;
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                    return View(model);
+                }
             }
-            else
-            {
-                return View(model);
-            }
+            return View(model);
         }
 
         public ActionResult Edit(int? id)
@@ -74,12 +88,20 @@ namespace Sistema.Controllers
             }
             if (ModelState.IsValid)
             {
-
-                daoPaises = new DAOPaises();
-                daoPaises.Update(model);
-                return RedirectToAction("Index");
+                try
+                {
+                    daoPaises = new DAOPaises();
+                    daoPaises.Update(model);
+                    this.AddFlashMessage(Util.AlertMessage.EDIT_SUCESS);
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                    return View(model);
+                }
             }
-            return View();
+            return View(model);
         }
 
         public ActionResult Delete(int? id)
@@ -91,9 +113,18 @@ namespace Sistema.Controllers
         [ActionName("Delete")]
         public ActionResult DeleteConfirmed(int? id)
         {
-            daoPaises = new DAOPaises();
-            daoPaises.Delete(id);
-            return RedirectToAction("Index");
+            try
+            {
+                daoPaises = new DAOPaises();
+                daoPaises.Delete(id);
+                this.AddFlashMessage(Util.AlertMessage.DELETE_SUCESS);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                return View();
+            }
         }
 
         public ActionResult Details(int? id)
@@ -103,9 +134,17 @@ namespace Sistema.Controllers
 
         private ActionResult GetView(int? codPais)
         {
-            var daoPaises = new DAOPaises();
-            var model = daoPaises.GetPais(codPais);
-            return View(model);
+            try
+            {
+                var daoPaises = new DAOPaises();
+                var model = daoPaises.GetPais(codPais);
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                return View();
+            }
         }
 
         public JsonResult JsQuery([ModelBinder(typeof(DataTablesBinder))] IDataTablesRequest requestModel)
@@ -173,7 +212,7 @@ namespace Sistema.Controllers
                 sigla = u.sigla,
                 dtCadastro = u.dtCadastro,
                 dtUltAlteracao = u.dtUltAlteracao
-               
+
             }).OrderBy(u => u.text).ToList();
             return select.AsQueryable();
         }

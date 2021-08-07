@@ -15,14 +15,14 @@
 @Html.Hidden("isEdit")
 @Html.HiddenFor(k => action)
 <div class="@classForm">
-    @Html.Label("", Label, new { @class = "required" })
+    @Html.LabelFor(model => model.id, Label, new { @class = "required" })
     <div class="input-group">
         @Html.TextBoxFor(model => model.id, new { @style = "border-radius: 4px 0px 0px 4px; width: 15%;", @class = "form-control number", maxLength = "6" })
         @Html.TextBoxFor(model => model.text, new { @class = "form-control", @style = "width:70%", Disabled = true })
         <a style="border-radius:0px 3px 3px 0px" data-target="#@Sistema.Util.SelectFunctions.getInputId("Modal", Prefix)" id="@Sistema.Util.SelectFunctions.getInputId("btn-localizar", Prefix)" title="Abrir a busca de @Label" class="btn btn-success" data-toggle="modal"><i class="fa fa-search"></i></a>
-        @Html.ValidationMessageFor(model => model.id, null, new { @class = "text-danger" })
         @Html.HiddenFor(k => k.text)
     </div>
+    @Html.ValidationMessageFor(model => model.id, null, new { @class = "text-danger" })
 </div>
 
 <div id="@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)" class="modal fade" data-backdrop="static" data-keyboard="false" role="dialog">
@@ -33,15 +33,15 @@
                     <div class="panel-heading" style="height: 41px; padding-left:2px;font-weight: bold;">
                         <h3 class="panel-title pull-right"><button type="button" style="opacity: inherit;color: #fff;" class="close" data-dismiss="modal">&times;</button></h3>
                         <ul class="nav panel-tabs" style="width:400px">
-                            <li class="active"><a data-event="true" style="margin-top:1px;color: black;" data-toggle="tab"><b><i class="fa fa-list-alt" aria-hidden="true"></i> Paises </b></a></li>
+                            <li class="active"><a data-event="true" style="margin-top:1px;color: black;" data-toggle="tab"><b><i class="fa fa-list" aria-hidden="true"></i> Países </b></a></li>
                         </ul>
                     </div>
 
-                    <div style="text-align:right">
-                        <button id="@Sistema.Util.SelectFunctions.getInputId("Create", Prefix)" onclick="OpenModalCreate()" type="button" class="btn btn-success"><i class="fa fa-plus"></i>  Adicionar</button>
+                    <div style="text-align:right; margin-right:15px">
+                        <button id="@Sistema.Util.SelectFunctions.getInputId("Create", Prefix)" onclick="OpenModalCreatePais()" type="button" class="btn btn-success"><i class="fa fa-plus"></i>  Adicionar</button>
                     </div>
 
-                    <div id="body" class="modal-body" style="padding: 33px 0px 0px 0px;">
+                    <div id="body" class="modal-body" style="padding: 3px 0px 0px 0px;">
                         <div class="container-fluid">
                             <div id="TablePaises"></div>
                         </div>
@@ -49,7 +49,7 @@
 
                     <div class="modal-footer">
                         <div style="text-align:right">
-                            <button id="@Sistema.Util.SelectFunctions.getInputId("Fechar", Prefix)" onclick="FecharModal()" type="button" class="btn btn-outline-dark"><i class="fa fa-times"></i> Fechar</button>
+                            <button id="@Sistema.Util.SelectFunctions.getInputId("Fechar", Prefix)" onclick="FecharModalPais()" type="button" class="btn btn-outline-dark"><i class="fa fa-times"></i> Fechar</button>
                         </div>
                     </div>
 
@@ -73,7 +73,7 @@
                         <div class="container-fluid">
                             <p style="text-align: right; color: red; font-size:16px; font-weight: bold;">* Campos obrigatórios</p>
 
-                            <div class="form-row isEdit">
+                            <div class="form-row">
                                 <div class="@Util.Input2">
                                     @Html.Label("codPais", "Código")
                                     @Html.TextBox("codPais", null, new { @class = "form-control", disabled = true })
@@ -100,7 +100,7 @@
 
                             <div class="form-row isEdit">
                                 <div class="@Util.Input3">
-                                    @Html.Label("dtCadastro", "Data de cadastro", new { @class = "required" })
+                                    @Html.Label("dtCadastro", "Data de cadastro", new { @class = "no-required" })
                                     <div class="input-group-append">
                                         @Html.TextBox("dtCadastro", null, new { @class = "form-control", disabled = true })
                                         <span class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></span>
@@ -108,7 +108,7 @@
                                 </div>
 
                                 <div class="@Util.Input3 ">
-                                    @Html.Label("dtUltAlteracao", "Data de cadastro", new { @class = "required" })
+                                    @Html.Label("dtUltAlteracao", "Data de cadastro", new { @class = "no-required" })
                                     <div class="input-group">
                                         @Html.TextBox("dtUltAlteracao", null, new { @class = "form-control", disabled = true })
                                         <div class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></div>
@@ -121,7 +121,7 @@
                     <div class="modal-footer">
                         <div style="text-align:right">
                             <button id="@Sistema.Util.SelectFunctions.getInputId("btnSave", Prefix)" type="button" class="btn btn-success"><i class="fa fa-save"></i>  Salvar</button>
-                            <button id="@Sistema.Util.SelectFunctions.getInputId("FecharCreate", Prefix)" onclick="FecharModalCreate()" type="button" class="btn btn-danger"><i class="fa fa-ban"></i>  Cancelar</button>
+                            <button id="@Sistema.Util.SelectFunctions.getInputId("FecharCreate", Prefix)" onclick="FecharModalCreatePais()" type="button" class="btn btn-danger"><i class="fa fa-ban"></i>  Cancelar</button>
                         </div>
                     </div>
                 </div>
@@ -140,7 +140,7 @@
          });
 
          $('#@Sistema.Util.SelectFunctions.getInputId("btnSave", Prefix)').on('click', function () {
-                self.save();
+                self.savePais();
          });
 
          $('#@Sistema.Util.SelectFunctions.getInputId("id", Prefix)').change(function (data, e) {
@@ -171,7 +171,7 @@
 
      });
 
-    this.getForm = function() {
+    this.getFormPais = function() {
         var form = {
                 codPais : $('#@Sistema.Util.SelectFunctions.getInputId("codPais", Prefix)'),
                 nomePais: $('#@Sistema.Util.SelectFunctions.getInputId("nomePais", Prefix)'),
@@ -183,8 +183,8 @@
         return form;
     };
 
-    this.clear = function () {
-        var form = self.getForm();
+    this.clearPais = function () {
+        var form = self.getFormPais();
         form.codPais.val("");
         form.nomePais.val("");
         form.ddi.val("");
@@ -194,9 +194,9 @@
         form.nomePais.focus();
     };
 
-    this.isValid = function () {
+    this.isValidPais = function () {
         var valid = true;
-        var form = self.getForm();
+        var form = self.getFormPais();
 
         if (IsNullOrEmpty(form.nomePais.val())) {
             form.nomePais.blink({ msg: "Campo país é obrigatório" });
@@ -218,7 +218,7 @@
         return valid;
     };
 
-    getModel = function (form) {
+    getModelPais = function (form) {
         var model = {
             codigo: form.codPais.val(),
             nomePais: form.nomePais.val(),
@@ -228,19 +228,19 @@
         return model;
     };
 
-    this.save = function () {
+    this.savePais = function () {
         if ($('#@Sistema.Util.SelectFunctions.getInputId("isEdit", Prefix)').val() == "S") {
-            this.update();
+            this.updatePais();
         } else {
-            this.insert();
+            this.insertPais();
         }
     }
 
-    this.insert = function () {
-        var form = self.getForm();
-        var model = getModel(form);
+    this.insertPais = function () {
+        var form = self.getFormPais();
+        var model = getModelPais(form);
 
-        if (self.isValid(model)) {
+        if (self.isValidPais(model)) {
 
             $.ajax({
                 dataType: 'json',
@@ -248,7 +248,7 @@
                 url: '@Url.Action("jsCreate", "Paises")',
                 data: model,
                 success: function (data) {
-                    self.clear();
+                    self.clearPais();
                     InitModalPaises();
                     $("#@Sistema.Util.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("hide");
                     $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
@@ -262,11 +262,12 @@
         }
     };
 
-    this.update = function () {
-        var form = self.getForm();
-        var model = getModel(form);
+    this.updatePais = function () {
+        //debugger;
+        var form = self.getFormPais();
+        var model = getModelPais(form);
         console.log(model)
-        if (self.isValid(model)) {
+        if (self.isValidPais(model)) {
 
             $.ajax({
                 dataType: 'json',
@@ -275,7 +276,7 @@
                 data: model,
                 success: function (data) {
                     console.log(data)
-                    self.clear();
+                    self.clearPais();
                     InitModalPaises();
                     $("#@Sistema.Util.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("hide");
                     $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
@@ -291,8 +292,8 @@
           let lis = getTablePaises();
           $("#TablePaises").append(lis);
 
-        table = $('#listPaises').DataTable({
-            ajax: { url: $('#listPaises').attr('data-url') },
+        table = $('#@Sistema.Util.SelectFunctions.getInputId("list", Prefix)').DataTable({
+            ajax: { url: $('#@Sistema.Util.SelectFunctions.getInputId("list", Prefix)').attr('data-url') },
                 language: {
                     url: 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Portuguese-Brasil.json',
             },
@@ -309,7 +310,7 @@
                     sortable: false,
                     data: null,
                     mRender: function (data) {
-                        return '<a class="btn btn-warning btn-sm" onclick="OpenEdit(' + data.id + ')" title="Alterar registro"><i class="fa fa-edit"></i> </a>';
+                        return '<a class="btn btn-warning btn-sm" onclick="OpenEditPais(' + data.id + ')" title="Alterar registro"><i class="fa fa-edit"></i> </a>';
                     }
                 },
                 { data: "id" },
@@ -319,7 +320,7 @@
         });
         $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").modal("show");
 
-        $('#listPaises tbody').on('click', 'td.details-control', function () {
+        $('#@Sistema.Util.SelectFunctions.getInputId("list", Prefix) tbody').on('click', 'td.details-control', function () {
             var tr = $(this).closest('tr');
             var row = table.row(tr);
             if (row.child.isShown()) {
@@ -336,7 +337,7 @@
         });
       }
     function getTablePaises() {
-        let tmp = `<table id="listPaises" class="table table-striped table-bordered" style="width:100%" data-url="@Url.Action("JsQuery", "Paises")">
+        let tmp = `<table id="@Sistema.Util.SelectFunctions.getInputId("list", Prefix)" class="table table-striped table-bordered" style="width:100%" data-url="@Url.Action("JsQuery", "Paises")">
                         <thead>
                             <tr>
                                 <th></th>
@@ -349,17 +350,17 @@
           return tmp;
     };
 
-    function FecharModal() {
+    function FecharModalPais() {
         $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").modal("hide");
     };
-    function FecharModalCreate() {
+    function FecharModalCreatePais() {
         $("#@Sistema.Util.SelectFunctions.getInputId("ModalCreate", Prefix)").css("overflow", "hidden");
         $("#@Sistema.Util.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("hide");
         $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
-        self.clear();
+        self.clearPais();
     };
 
-    function OpenModalCreate() {
+    function OpenModalCreatePais() {
         $("#@Sistema.Util.SelectFunctions.getInputId("btnUpdate", Prefix)").hide();
         $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "hidden");
         $("#@Sistema.Util.SelectFunctions.getInputId("ModalCreate", Prefix)").css("overflow", "auto");
@@ -378,14 +379,14 @@
         return false;
     };
 
-    function OpenEdit(id) {
+    function OpenEditPais(id) {
         $.ajax({
             dataType: 'json',
             type: 'GET',
             url: '@Url.Action("JsDetails", "Paises")',
             data: { 'id': id },
             success: function (data) {
-                self.clear();
+                self.clearPais();
                 $("#@Sistema.Util.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("show");
                 $("#@Sistema.Util.SelectFunctions.getInputId("isEdit", Prefix)").val("S");
                 if ($("#@Sistema.Util.SelectFunctions.getInputId("isEdit", Prefix)").val() == "S") {

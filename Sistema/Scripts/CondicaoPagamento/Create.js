@@ -3,7 +3,15 @@
     cond.init();
     $("#addCondPagamento").click(function () {
         cond.addItem();
-    })
+    });
+
+    $("#removeAll").click(function (e) {
+        cond.removerTudo();
+        e.preventDefault();
+    });
+
+    $(document).on("tblCondicaoOpenEdit", cond.openEdit);
+    $(document).on("tblCondicaoCancelEdit", cond.clear);
 
 });
 
@@ -18,22 +26,29 @@ CondicaoPagamento = function () {
             table: {
                 jsItem: "jsItens",
                 name: "tblCondicao",
-                remove: true,
+                remove: false,
+                edit: true,
                 order: [[1, "asc"]],
                 columns: [
                     { data: "nrParcela" },
                     { data: "qtDias" },
-                    { data: "txPercentual" },
+                    {
+                        data: null,
+                        mRender: function (data) {
+                            let result = "";
+                            if (data) {
+                                result = data.txPercentual.toFixed(2).replace(".", ",");
+                            }
+                            return result;
+                        }
+                    },
+
                     { data: "nomeFormaPagamento" },
                 ]
             },
         });
 
         self.AtualizaTaxa(dtCondicao);
-
-        $(document).on('tblCondicaoAfterDelete', function (e, data) {
-            self.AtualizaTaxa(dtCondicao);
-        })
     }
 
     self.valid = function () {
@@ -43,6 +58,30 @@ CondicaoPagamento = function () {
             $("#qtDias").blink({ msg: "Informe a quantidade de dias" });
             valid = false;
         }
+
+        if ($("#qtDias").val() == 0 || $("#qtDias").val() == "") {
+            $("#qtDias").blink({ msg: "Informe uma quantidade de dias válido" });
+            valid = false;
+        }
+
+        //dias parcelas
+        if (!dtCondicao.isEdit) {
+            let maior = 0;
+            if (dtCondicao.data != null && dtCondicao.data.length) {
+                for (var i = 0; i < dtCondicao.data.length; i++) {
+                    //console.log(dtCondicao.data[i].qtDias)
+                    if (dtCondicao.data[i].qtDias > maior) {
+                        maior = dtCondicao.data[i].qtDias;
+                    }
+                }
+                //console.log(maior);
+                if ($("#qtDias").val() <= maior) {
+                    $("#qtDias").blink({ msg: "Não é permitido adicionar uma parcela menor ou igual, verifique!" });
+                    valid = false;
+                }
+            }
+        }
+
 
         if (IsNullOrEmpty($("#txPercentual").val())) {
             $("#txPercentual").blink({ msg: "Informe o percentual" });
@@ -66,27 +105,45 @@ CondicaoPagamento = function () {
             txPercentual = parseFloat(txPercentual);
             txTotal = parseFloat(txTotal);
 
-            let total = txTotal + txPercentual;
-            if (total > 100) {
-                $("#txPercentualTotal").blink({ msg: "O valor total deve ser equivalente a 100%, verifique!" });
-                valid = false;
+            let total = 0;
+
+            //console.log(dtCondicao.data)
+            if (dtCondicao.isEdit) {
+                total = txTotal - dtCondicao.dataSelected.item.txPercentual + txPercentual;
+                if (total > 100) {
+                    $("#txPercentualTotal").blink({ msg: "O valor total deve ser equivalente a 100%, verifique!" });
+                    valid = false;
+                } else {
+                    if (valid == "true") {
+                        $("#txPercentualTotal").val(total);
+                        $("#txPercentualTotalAux").val(total);
+                    }
+                }
+            } else {
+                total = txTotal + txPercentual;
+                if (total > 100) {
+                    $("#txPercentualTotal").blink({ msg: "O valor total deve ser equivalente a 100%, verifique!" });
+                    valid = false;
+                } else {
+                    if (valid == "true") {
+                        $("#txPercentualTotal").val(total);
+                        $("#txPercentualTotalAux").val(total);
+                    }
+                }
             }
         }
-
-        //item
-        console.log(dtCondicao.length)
-        nrParcelaAux = dtCondicao.length;
-        console.log(nrParcelaAux)
 
         return valid;
     }
 
     self.getModel = function () {
+        let taxa = $("#txPercentual").val().replace(",", ".");
+        taxa = parseFloat(taxa)
         var model = {
             codFormaPagamento: $("#FormaPagamento_id").val(),
             nomeFormaPagamento: $("#FormaPagamento_text").val(),
             qtDias: $("#qtDias").val(),
-            txPercentual: $("#txPercentual").val()
+            txPercentual: taxa,
         }
         return model;
 
@@ -97,27 +154,30 @@ CondicaoPagamento = function () {
         $("#FormaPagamento_text").val('');
         $("#qtDias").val('');
         $("#txPercentual").val('');
+        $('input[name="qtDias"]').prop('disabled', false)
     }
 
     self.addItem = function () {
         if (self.valid()) {
             var model = self.getModel();
             let item = {
-                nrParcela: dtCondicao.length + 1, //nr
+                nrParcela: dtCondicao.isEdit ? dtCondicao.dataSelected.item.nrParcela : dtCondicao.length + 1, //nr
                 codFormaPagamento: model.codFormaPagamento,
                 nomeFormaPagamento: model.nomeFormaPagamento,
-                qtDias: model.qtDias,
+                qtDias: parseFloat(model.qtDias),
                 txPercentual: model.txPercentual,
             }
             //nr++;
-            dtCondicao.addItem(item)
+            self.save(item)
+            //dtCondicao.addItem(item)
+
             self.clear();
             self.AtualizaTaxa(dtCondicao);
         }
     }
 
     self.AtualizaTaxa = function (data) {
-        
+
         let taxaTotal = 0;
         let dt = data.data;
         let aux = "";
@@ -130,8 +190,36 @@ CondicaoPagamento = function () {
             }
             taxaTotal += aux;
         }
-        $("#txPercentualTotal").val(taxaTotal);
+        $("#txPercentualTotal").val(taxaTotal.toFixed(2).replace(".", ","));
+        $("#txPercentualTotalAux").val(taxaTotal);
     }
+
+    self.removerTudo = function () {
+        if (dtCondicao.data == null || !dtCondicao.data.length) {
+            $.notify({ message: "Não existem parcelas para serem removidas", icon: 'fa fa-exclamation' }, { type: 'danger', z_index: 2000, });
+        } else {
+            dtCondicao.data = null;
+            $("#txPercentualTotal").val(0);
+            $("#txPercentualTotalAux").val(0);
+        }
+    }
+
+    self.openEdit = function (e, data) {
+        let item = dtCondicao.dataSelected.item;
+        $("#FormaPagamento_id").val(item.codFormaPagamento);
+        $("#FormaPagamento_text").val(item.nomeFormaPagamento);
+        $("#qtDias").val(item.qtDias);
+        $("#txPercentual").val(item.txPercentual.toFixed(2).replace(".", ","));
+        $('input[name="qtDias"]').prop('disabled', true)
+    };
+
+    self.save = function (data) {
+        if (dtCondicao.isEdit) {
+            dtCondicao.editItem(data);
+        } else {
+            dtCondicao.addItem(data);
+        }
+    };
 
 
 }

@@ -74,7 +74,7 @@ namespace Sistema.DAO
                         var codCondicao = Convert.ToInt32(command.ExecuteScalar());
                         foreach (var item in condicaPagamento.ListCondicao)
                         {
-                            var Item = string.Format(sqlItem, codCondicao, item.codFormaPagamento, item.nrParcela, item.qtDias, item.txPercentual);
+                            var Item = string.Format(sqlItem, codCondicao, item.codFormaPagamento, item.nrParcela, item.qtDias, item.txPercentual.ToString().Replace(",", "."));
                             command.CommandText = Item;
                             command.ExecuteNonQuery();
                         }
@@ -102,39 +102,68 @@ namespace Sistema.DAO
             }
         }
 
-        //public bool Update(Models.Paises pais)
-        //{
-        //    try
-        //    {
-        //        string sql = "UPDATE tbpaises SET nomepais = '"
-        //            + pais.nomePais.ToUpper().Trim() + "'," +
-        //            " ddi = '" + pais.DDI.ToUpper().Trim() + "'," +
-        //            " sigla = '" + pais.sigla.ToUpper().Trim() + "'," +
-        //            " dtultalteracao = '" + DateTime.Now.ToString("yyyy-MM-dd")
-        //            + "' WHERE codpais = " + pais.codPais;
-        //        OpenConnection();
-        //        SqlQuery = new SqlCommand(sql, con);
+        public bool Update(Models.CondicaoPagamento condicaoPagamento)
+        {
+            try
+            {
+                string sqlItensRemove = "DELETE FROM tbparcelascondicao WHERE codcondicao = " + condicaoPagamento.codigo;
 
-        //        int i = SqlQuery.ExecuteNonQuery();
+                string sql = "UPDATE tbcondpagamentos SET nomecondicao = '"
+                    + this.FormatString(condicaoPagamento.nomeCondicao) + "', "
+                    + " txjuros = " + ( condicaoPagamento.txJuros != null ? condicaoPagamento.txJuros.ToString().Replace(",", ".") : "0" ) + ", "
+                    + " multa = " + ( condicaoPagamento.multa != null ? condicaoPagamento.multa.ToString().Replace(",", ".") : "0" ) + ", "
+                    + " desconto = " + ( condicaoPagamento.desconto != null ? condicaoPagamento.desconto.ToString().Replace(",", ".") : "0" ) + ", "
+                    + " situacao = '" + this.FormatString(condicaoPagamento.situacao) + "', "
+                    + " dtultalteracao = '" + ( DateTime.Now.ToString("yyyy-MM-dd") )+ "' "
+                    + " WHERE codcondicao = " + condicaoPagamento.codigo;
 
-        //        if (i > 1)
-        //        {
-        //            return true;
-        //        }
-        //        else
-        //        {
-        //            return false;
-        //        }
-        //    }
-        //    catch (Exception error)
-        //    {
-        //        throw new Exception(error.Message);
-        //    }
-        //    finally
-        //    {
-        //        CloseConnection();
-        //    }
-        //}
+                string sqlItem = "INSERT INTO tbparcelascondicao (codcondicao, codforma, nrparcela, qtdias, txpercentual) VALUES ({0}, {1}, {2}, {3}, {4} )";
+
+                using (con)
+                {
+                    OpenConnection();
+
+                    SqlTransaction sqlTrans = con.BeginTransaction();
+                    SqlCommand command = con.CreateCommand();
+                    command.Transaction = sqlTrans;
+                    try
+                    {
+                        command.CommandText = sqlItensRemove;
+                        command.ExecuteNonQuery();
+                        command.CommandText = sql;
+                        command.ExecuteNonQuery();
+
+                        foreach (var item in condicaoPagamento.ListCondicao)
+                        {
+                            var Item = string.Format(sqlItem, condicaoPagamento.codigo, item.codFormaPagamento, item.nrParcela, item.qtDias, item.txPercentual.ToString().Replace(",", "."));
+                            command.CommandText = Item;
+                            command.ExecuteNonQuery();
+                        }
+                        sqlTrans.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        sqlTrans.Rollback();
+                        throw new Exception(ex.Message);
+                    }
+                    finally
+                    {
+                        con.Close();
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception error)
+            {
+                throw new Exception(error.Message);
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
+
 
         public CondicaoPagamento GetCondicaoPagamento(int? codCondicaoPagamento)
         {

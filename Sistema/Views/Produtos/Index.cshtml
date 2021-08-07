@@ -5,7 +5,8 @@
 }
 <div class="container-fluid">
     <div class="container">
-        <div class="horizontal">
+        <div class="horizontal" style="margin-top:15px;">
+            @Html.RenderFlashMessage()
             <div class="verticals ten offset-by-one">
                 <ol class="breadcrumb breadcrumb-fill2">
                     <li class="active"><a href="@Url.Action("Index")"><i class="fa fa-home"></i></a> </li>
@@ -40,7 +41,7 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.nomeProduto)
                     </td>
-                    <td>
+                    <td style="text-align: right">
                         @Html.DisplayFor(modelItem => item.vlVenda)
                     </td>
                     <td>

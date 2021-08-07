@@ -14,9 +14,17 @@ namespace Sistema.Controllers
 
         public ActionResult Index()
         {
-            var daoGrupos = new DAOGrupos();
-            List<Models.Grupos> list = daoGrupos.GetGrupos();
-            return View(list);
+            try
+            {
+                var daoGrupos = new DAOGrupos();
+                List<Models.Grupos> list = daoGrupos.GetGrupos();
+                return View(list);
+            }
+            catch (Exception ex)
+            {
+                this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                return View();
+            }
         }
 
         public ActionResult Create()
@@ -37,9 +45,18 @@ namespace Sistema.Controllers
             }
             if (ModelState.IsValid)
             {
-                daoGrupos = new DAOGrupos();
-                daoGrupos.Insert(model);
-                return RedirectToAction("Index");
+                try
+                {
+                    daoGrupos = new DAOGrupos();
+                    daoGrupos.Insert(model);
+                    this.AddFlashMessage(Util.AlertMessage.INSERT_SUCESS);
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                    return View(model);
+                }
             }
             else
             {
@@ -65,9 +82,18 @@ namespace Sistema.Controllers
             }
             if (ModelState.IsValid)
             {
-                daoGrupos = new DAOGrupos();
-                daoGrupos.Update(model);
-                return RedirectToAction("Index");
+                try
+                {
+                    daoGrupos = new DAOGrupos();
+                    daoGrupos.Update(model);
+                    this.AddFlashMessage(Util.AlertMessage.EDIT_SUCESS);
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                    return View(model);
+                }
             }
             else
             {
@@ -84,9 +110,18 @@ namespace Sistema.Controllers
         [ActionName("Delete")]
         public ActionResult DeleteConfirmed(int? id)
         {
-            daoGrupos = new DAOGrupos();
-            daoGrupos.Delete(id);
-            return RedirectToAction("Index");
+            try
+            {
+                daoGrupos = new DAOGrupos();
+                daoGrupos.Delete(id);
+                this.AddFlashMessage(Util.AlertMessage.DELETE_SUCESS);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                return View();
+            }
         }
 
         public ActionResult Details(int? id)
@@ -96,9 +131,16 @@ namespace Sistema.Controllers
 
         private ActionResult GetView(int? codGrupo)
         {
-            var daoGrupo = new DAOGrupos();
-            var model = daoGrupo.GetGrupo(codGrupo);
-            return View(model);
+            try
+            {
+                var daoGrupo = new DAOGrupos();
+                var model = daoGrupo.GetGrupo(codGrupo);
+                return View(model);
+            } catch (Exception ex)
+            {
+                this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                return View();
+            }
         }
 
         public JsonResult JsQuery([ModelBinder(typeof(DataTablesBinder))] IDataTablesRequest requestModel)

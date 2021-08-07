@@ -235,6 +235,7 @@
     <Content Include="Scripts\CondicaoPagamento\Create.js" />
     <Content Include="Scripts\bootstrap-notify.js" />
     <Content Include="Scripts\Fornecedores\Create.js" />
+    <Content Include="Scripts\Funcionarios\Create.js" />
     <Content Include="Scripts\Functions.js" />
     <Content Include="Scripts\functionsb3.js" />
     <Content Include="Scripts\tDataTable.js" />

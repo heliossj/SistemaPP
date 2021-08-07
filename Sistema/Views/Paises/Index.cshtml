@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<Sistema.Models.Paises>
+@using Sistema.Util;
 @{
     ViewBag.Title = "Países";
     ViewBag.Layout = "~/_Styles/Style.css";
@@ -6,7 +7,8 @@
 
 <div class="container-fluid">
     <div class="container">
-        <div class="horizontal">
+        <div class="horizontal" style="margin-top:15px;">
+            @Html.RenderFlashMessage()
             <div class="verticals ten offset-by-one">
                 <ol class="breadcrumb breadcrumb-fill2">
                     <li class="active"><a href="@Url.Action("Index")"><i class="fa fa-home"></i></a> </li>

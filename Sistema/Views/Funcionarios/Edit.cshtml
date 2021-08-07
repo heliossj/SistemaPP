@@ -23,7 +23,8 @@
         </div>
 
         <div class="pull-left col-lg-12 col-md-12 col-sm-10 col-xs-10">
-            @Html.ValidationSummary(true, Sistema.Util.AlertMessage.VALIDATION_MESSAGE, new { @class = "alert alert-danger" })
+            @Html.RenderFlashMessage()
+            @Html.CustomValidationSummary(true, true, Sistema.Util.AlertMessage.VALIDATION_MESSAGE, new { @class = "alert alert-danger", role = "alert" })
             <p style="text-align: right; color: red; font-size:16px; font-weight: bold;">* Campos obrigatórios</p>
             @Html.Partial("Form", Model)
         </div>
@@ -33,4 +34,7 @@
             <a href="@Url.Action("Index")" class="btn btn-secondary" role="button" aria-pressed="true"> <i class="fa fa-arrow-left"></i> Voltar</a>
         </div>
     </div>
+}
+@section scripts{
+    @Scripts.Render("~/Scripts/Funcionarios/Create.js")
 }

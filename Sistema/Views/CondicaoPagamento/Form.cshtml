@@ -35,19 +35,19 @@
 <div class="form-row">
     <div class="@Util.Input3">
         @Html.LabelFor(model => model.txJuros, new { @class = "required" })
-        @Html.TextBoxFor(model => model.txJuros, new { @class = "form-control money", placeholder = "00,00" })
+        @Html.TextBoxFor(model => model.txJuros, new { @class = "form-control money", placeholder = "0,00", style = "text-align: right" })
         @Html.ValidationMessageFor(model => model.txJuros, null, new { @class = "text-danger" })
     </div>
 
     <div class="@Util.Input3">
         @Html.LabelFor(model => model.multa, new { @class = "required" })
-        @Html.TextBoxFor(model => model.multa, new { @class = "form-control money", placeholder = "00,00" })
+        @Html.TextBoxFor(model => model.multa, new { @class = "form-control money", placeholder = "0,00", style = "text-align: right" })
         @Html.ValidationMessageFor(model => model.multa, null, new { @class = "text-danger" })
     </div>
 
     <div class="@Util.Input3">
         @Html.LabelFor(model => model.desconto, new { @class = "required" })
-        @Html.TextBoxFor(model => model.desconto, new { @class = "form-control money", placeholder = "00,00" })
+        @Html.TextBoxFor(model => model.desconto, new { @class = "form-control money", placeholder = "0,00", style = "text-align: right" })
         @Html.ValidationMessageFor(model => model.desconto, null, new { @class = "text-danger" })
     </div>
 </div>
@@ -55,33 +55,39 @@
 
 <div class="bs-callout bs-callout-primary">
 
-    <div class="form-row">
-        @Html.EditorFor(model => model.FormaPagamento, "FormaPagamento/Select", new { Disabled = false, Required = false })
-    </div>
-
-    <div class="form-row">
-        <div class="@Util.Input3">
-            @Html.LabelFor(model => model.qtDias, new { @class = "required" })
-            @Html.TextBoxFor(model => model.qtDias, new { @class = "form-control number", @maxLength = "6" })
-            @Html.ValidationMessageFor(model => model.qtDias, null, new { @class = "text-danger" })
+    @if (action == "create" || action == "edit")
+    {
+        <div class="form-row">
+            @Html.EditorFor(model => model.FormaPagamento, "FormaPagamento/Select", new { Disabled = false, Required = false })
         </div>
 
-        <div class="@Util.Input3">
-            @Html.LabelFor(model => model.txPercentual, new { @class = "required" })
-            @Html.TextBoxFor(model => model.txPercentual, new { @class = "form-control money" })
-            @Html.ValidationMessageFor(model => model.txPercentual, null, new { @class = "text-danger" })
-        </div>
+        <div class="form-row">
+            <div class="@Util.Input3">
+                @Html.LabelFor(model => model.qtDias, new { @class = "required" })
+                <div id="divDias">
+                    @Html.TextBoxFor(model => model.qtDias, new { @class = "form-control number", @maxLength = "6", style = "text-align: right" })
+                </div>
+                @Html.ValidationMessageFor(model => model.qtDias, null, new { @class = "text-danger" })
+            </div>
 
-        <div>
-            <button id="addCondPagamento" type="button" class="btn btn-success btn-lg" style="margin-top:35px; font-size:14px" title="Adicionar"><i class="fa fa-plus"></i></button>
-        </div>
+            <div class="@Util.Input3">
+                @Html.LabelFor(model => model.txPercentual, new { @class = "required" })
+                @Html.TextBoxFor(model => model.txPercentual, new { @class = "form-control money", placeholder = "0,00", style = "text-align: right" })
+                @Html.ValidationMessageFor(model => model.txPercentual, null, new { @class = "text-danger" })
+            </div>
 
-        <div class="@Util.Input3">
-            @Html.LabelFor(model => model.txPercentualTotal, new { @class = "no-required" })
-            @Html.TextBoxFor(model => model.txPercentualTotal, new { @class = "form-control money", disabled = false })
-            @Html.ValidationMessageFor(model => model.txPercentualTotal, null, new { @class = "text-danger" })
+            <div>
+                <button id="addCondPagamento" type="button" class="btn btn-success btn-lg" style="margin-top:35px; font-size:14px" title="Adicionar"><i class="fa fa-plus"></i></button>
+            </div>
+
+            <div class="@Util.Input3">
+                @Html.HiddenFor(model => model.txPercentualTotalAux)
+                @Html.LabelFor(model => model.txPercentualTotal, new { @class = "no-required" })
+                @Html.TextBoxFor(model => model.txPercentualTotal, new { @class = "form-control money", disabled = false, style = "text-align: right" })
+                @Html.ValidationMessageFor(model => model.txPercentualTotal, null, new { @class = "text-danger" })
+            </div>
         </div>
-    </div>
+    }
 
     @Html.HiddenFor(model => model.jsItens)
     <table id="tblCondicao" class="table table-striped table-bordered" style="width:100%">
@@ -89,7 +95,9 @@
             <tr>
                 @if (action == "create" || action == "edit")
                 {
-                    <th></th>
+                    <th>
+                        <a class="btn btn-danger btn-sm" id="removeAll" title="Remover parcelas"><i class="fa fa-times"></i> </a>
+                    </th>
                 }
                 <th width="5%">Nº</th>
                 <th width="5%">Dias</th>
@@ -108,7 +116,7 @@
             @Html.LabelFor(model => model.dtCadastro)
             <div class="input-group-append">
                 @Html.HiddenFor(model => model.dtCadastro)
-                @Html.TextBoxFor(model => model.dtCadastro, new { @class = "form-control datepicke date", disabled = true })
+                @Html.TextBoxFor(model => model.dtCadastro, new { @class = "form-control datepicker date", disabled = true })
                 <span class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></span>
             </div>
         </div>

@@ -138,7 +138,7 @@
     <div class="@Util.Input3 ">
         @Html.LabelFor(model => model.vlSalario, new { @class = "required" })
         <div class="input-group">
-            @Html.TextBoxFor(model => model.vlSalario, new { @class = "form-control money2", placeholder = "00,00" })
+            @Html.TextBoxFor(model => model.vlSalario, new { @class = "form-control money2", placeholder = "0,00" })
             @Html.ValidationMessageFor(model => model.vlSalario, null, new { @class = "text-danger" })
         </div>
     </div>
@@ -162,7 +162,7 @@
             @Html.LabelFor(model => model.dtCadastro)
             <div class="input-group-append">
                 @Html.HiddenFor(model => model.dtCadastro)
-                @Html.TextBoxFor(model => model.dtCadastro, new { @class = "form-control datepicke date", disabled = true })
+                @Html.TextBoxFor(model => model.dtCadastro, new { @class = "form-control datepicker date", disabled = true })
                 <span class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></span>
             </div>
         </div>

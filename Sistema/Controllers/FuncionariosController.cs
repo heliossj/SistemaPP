@@ -15,9 +15,16 @@ namespace Sistema.Controllers
 
         public ActionResult Index()
         {
-            var daoFuncionarios = new DAOFuncionarios();
-            List<Models.Funcionarios> list = daoFuncionarios.GetFuncionarios();
-            return View(list);
+            try
+            {
+                var daoFuncionarios = new DAOFuncionarios();
+                List<Models.Funcionarios> list = daoFuncionarios.GetFuncionarios();
+                return View(list);
+            } catch (Exception ex)
+            {
+                this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                return View();
+            }
         }
 
         public ActionResult Create()
@@ -31,9 +38,17 @@ namespace Sistema.Controllers
             this.validForm(model);
             if (ModelState.IsValid)
             {
-                daoFuncionarios = new DAOFuncionarios();
-                daoFuncionarios.Insert(model);
-                return RedirectToAction("Index");
+                try
+                {
+                    daoFuncionarios = new DAOFuncionarios();
+                    daoFuncionarios.Insert(model);
+                    this.AddFlashMessage(Util.AlertMessage.INSERT_SUCESS);
+                    return RedirectToAction("Index");
+                } catch (Exception ex)
+                {
+                    this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                    return View(model);
+                }
             }
             else
             {
@@ -52,12 +67,20 @@ namespace Sistema.Controllers
             this.validForm(model);
             if (ModelState.IsValid)
             {
-
-                daoFuncionarios = new DAOFuncionarios();
-                daoFuncionarios.Update(model);
-                return RedirectToAction("Index");
+                try
+                {
+                    daoFuncionarios = new DAOFuncionarios();
+                    daoFuncionarios.Update(model);
+                    this.AddFlashMessage(Util.AlertMessage.EDIT_SUCESS);
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                    return View(model);
+                }
             }
-            return View();
+            return View(model);
         }
 
         public ActionResult Delete(int? id)
@@ -69,9 +92,17 @@ namespace Sistema.Controllers
         [ActionName("Delete")]
         public ActionResult DeleteConfirmed(int? id)
         {
-            daoFuncionarios = new DAOFuncionarios();
-            daoFuncionarios.Delete(id);
-            return RedirectToAction("Index");
+            try
+            {
+                daoFuncionarios = new DAOFuncionarios();
+                daoFuncionarios.Delete(id);
+                this.AddFlashMessage(Util.AlertMessage.DELETE_SUCESS);
+                return RedirectToAction("Index");
+            } catch (Exception ex)
+            {
+                this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                return View();
+            }
         }
 
         public ActionResult Details(int? id)
@@ -81,9 +112,16 @@ namespace Sistema.Controllers
 
         private ActionResult GetView(int? codFuncionario)
         {
-            var daoFuncionarios = new DAOFuncionarios();
-            var model = daoFuncionarios.GetFuncionario(codFuncionario);
-            return View(model);
+            try
+            {
+                var daoFuncionarios = new DAOFuncionarios();
+                var model = daoFuncionarios.GetFuncionario(codFuncionario);
+                return View(model);
+            } catch (Exception ex)
+            {
+                this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                return View();
+            }
         }
 
         public JsonResult JsQuery([ModelBinder(typeof(DataTablesBinder))] IDataTablesRequest requestModel)

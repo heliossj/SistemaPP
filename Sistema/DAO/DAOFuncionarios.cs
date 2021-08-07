@@ -124,7 +124,7 @@ namespace Sistema.DAO
             try
             {
                 string sql = "UPDATE tbfuncionarios SET situacao = '"
-                    + this.FormatString(funcionario.tipo) + "', " +
+                    + this.FormatString(funcionario.situacao) + "', " +
                     " nomefuncionario = '" + this.FormatString(funcionario.nomePessoa) + "'," +
                     " sexo = '" + this.FormatString(funcionario.sexo) + "', " +
                     " logradouro = '" + this.FormatString(funcionario.dsLogradouro) + "', " +
@@ -141,7 +141,7 @@ namespace Sistema.DAO
                     " dtnascimento = '" + funcionario.dtNascimento.Value.ToString("yyyy-MM-dd") + "', " +
                     " dtadmissao = '" + funcionario.dtAdmissao.Value.ToString("yyyy-MM-dd") + "', " +
                     " vlsalario = " + funcionario.vlSalario.ToString().Replace(",", ".") + ", " +
-                    " dtdemissao = '" + ( funcionario.dtDemissao.Value.ToString("yyyy-MM-dd") != null ? funcionario.dtDemissao.Value.ToString("yyyy-MM-dd") : null )+ "', " +
+                    " dtdemissao = '" + ( funcionario.dtDemissao != null ? funcionario.dtDemissao.Value.ToString("yyyy-MM-dd") : "" )+ "', " +
                     " dtultalteracao = '" + DateTime.Now.ToString("yyyy-MM-dd") + "'," +
                     " apelido = '" + this.FormatString(funcionario.apelidoPessoa) + "' " +
                     " WHERE codfuncionario = " + funcionario.codigo;

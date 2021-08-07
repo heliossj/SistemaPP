@@ -43,18 +43,20 @@
             @Html.LabelFor(model => model.dtCadastro)
             <div class="input-group-append">
                 @Html.HiddenFor(model => model.dtCadastro)
-                @Html.TextBoxFor(model => model.dtCadastro, new { @class = "form-control datepicke date", disabled = true })
+                @Html.TextBoxFor(model => model.dtCadastro, new { @class = "form-control datepicker date", disabled = true })
                 <span class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></span>
             </div>
         </div>
 
+
         <div class="@Util.Input3 ">
             @Html.LabelFor(model => model.dtUltAlteracao)
             <div class="input-group">
-                @Html.HiddenFor(model => model.dtUltAlteracao)
                 @Html.TextBoxFor(model => model.dtUltAlteracao, new { @class = "form-control datepicker date", disabled = true })
+                @Html.HiddenFor(model => model.dtUltAlteracao)
                 <div class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></div>
             </div>
         </div>
+
     </div>
 }

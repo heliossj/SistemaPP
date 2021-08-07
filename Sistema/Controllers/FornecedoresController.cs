@@ -15,9 +15,16 @@ namespace Sistema.Controllers
 
         public ActionResult Index()
         {
-            var daoFornecedores = new DAOFornecedores();
-            List<Models.Fornecedores> list = daoFornecedores.GetFornecedores();
-            return View(list);
+            try
+            {
+                var daoFornecedores = new DAOFornecedores();
+                List<Models.Fornecedores> list = daoFornecedores.GetFornecedores();
+                return View(list);
+            } catch (Exception ex)
+            {
+                this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                return View();
+            }
         }
 
         public ActionResult Create()
@@ -31,9 +38,18 @@ namespace Sistema.Controllers
             this.validForm(model);
             if (ModelState.IsValid)
             {
-                daoFornecedores = new DAOFornecedores();
-                daoFornecedores.Insert(model);
-                return RedirectToAction("Index");
+                try
+                {
+                    daoFornecedores = new DAOFornecedores();
+                    daoFornecedores.Insert(model);
+                    this.AddFlashMessage(Util.AlertMessage.INSERT_SUCESS);
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                    return View(model);
+                }
             }
             else
             {
@@ -52,12 +68,18 @@ namespace Sistema.Controllers
             this.validForm(model);
             if (ModelState.IsValid)
             {
-
-                daoFornecedores = new DAOFornecedores();
-                daoFornecedores.Update(model);
-                return RedirectToAction("Index");
+                try
+                {
+                    daoFornecedores = new DAOFornecedores();
+                    daoFornecedores.Update(model);
+                    this.AddFlashMessage(Util.AlertMessage.EDIT_SUCESS);
+                    return RedirectToAction("Index");
+                } catch (Exception ex) {
+                    this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                    return View(model);
+                }
             }
-            return View();
+            return View(model);
         }
 
         public ActionResult Delete(int? id)
@@ -69,9 +91,17 @@ namespace Sistema.Controllers
         [ActionName("Delete")]
         public ActionResult DeleteConfirmed(int? id)
         {
-            daoFornecedores = new DAOFornecedores();
-            daoFornecedores.Delete(id);
-            return RedirectToAction("Index");
+            try
+            {
+                daoFornecedores = new DAOFornecedores();
+                daoFornecedores.Delete(id);
+                this.AddFlashMessage(Util.AlertMessage.DELETE_SUCESS);
+                return RedirectToAction("Index");
+            } catch (Exception ex)
+            {
+                this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                return View();
+            }
         }
 
         public ActionResult Details(int? id)
@@ -81,9 +111,16 @@ namespace Sistema.Controllers
 
         private ActionResult GetView(int? codFornecedor)
         {
-            var daoFornecedores = new DAOFornecedores();
-            var model = daoFornecedores.GetFornecedor(codFornecedor);
-            return View(model);
+            try
+            {
+                var daoFornecedores = new DAOFornecedores();
+                var model = daoFornecedores.GetFornecedor(codFornecedor);
+                return View(model);
+            } catch (Exception ex)
+            {
+                this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                return View();
+            }
         }
 
         public JsonResult JsQuery([ModelBinder(typeof(DataTablesBinder))] IDataTablesRequest requestModel)
@@ -207,13 +244,10 @@ namespace Sistema.Controllers
                 {
                     ModelState.AddModelError("rg", "Informe o RG");
                 }
-                if (model.dtNascimento == null)
-                {
-                    ModelState.AddModelError("dtNascimento", "Informe a data de nascimento");
-                }
             }
             else
             {
+                model.email = model.emailJuridica;
                 if (string.IsNullOrWhiteSpace(model.razaoSocial))
                 {
                     ModelState.AddModelError("razaoSocial", "Informe a razão social");
@@ -230,9 +264,9 @@ namespace Sistema.Controllers
                 {
                     ModelState.AddModelError("ie", "Informe a Inscrição Estadual");
                 }
-                if (model.dtFundacao == null)
+                if (string.IsNullOrWhiteSpace(model.emailJuridica))
                 {
-                    ModelState.AddModelError("dtFundacao", "Informe a data de fundação");
+                    ModelState.AddModelError("emailJuridica", "Informe o email");
                 }
             }
 

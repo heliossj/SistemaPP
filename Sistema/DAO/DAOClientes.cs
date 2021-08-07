@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Configuration;
 using Sistema.Select;
+using Sistema.Util;
 
 namespace Sistema.DAO
 {
@@ -82,43 +83,48 @@ namespace Sistema.DAO
 
         public bool Insert(Models.Clientes cliente)
         {
+
             try
             {
-                var sql = string.Format("INSERT INTO tbclientes ( tipo, nomerazaosocial, sexo, logradouro, numero, complemento, bairro, telfixo, telcelular, email, codcidade, cep, cpfcnpj, rgie, dtnascimentofundacao, situacao, codcondicao, dtcadastro, dtultalteracao, apelidonomefantasia)" +
-                    "VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', {10}, '{11}', '{12}', '{13}', '{14}', '{15}', {16}, '{17}', '{18}', '{19}' )",
-                    this.FormatString(cliente.tipo),
-                    cliente.tipo == "F" ? this.FormatString(cliente.nomePessoa) : this.FormatString(cliente.razaoSocial),
-                    cliente.tipo == "F" ? this.FormatString(cliente.sexo) : "",
-                    this.FormatString(cliente.dsLogradouro),
-                    this.FormatString(cliente.numero),
-                    this.FormatString(cliente.complemento),
-                    this.FormatString(cliente.bairro),
-                    this.FormatPhone(cliente.telefoneFixo),
-                    this.FormatPhone(cliente.telefoneCelular),
-                    this.FormatString(cliente.email),
-                    cliente.Cidade.id,
-                    this.FormatCEP(cliente.cep),
-                    cliente.tipo == "F" ? this.FormatCPF(cliente.cpf) : this.FormatCNPJ(cliente.cnpj),
-                    cliente.tipo == "F" ? this.FormatRG(cliente.rg) : cliente.ie,
-                    cliente.tipo == "F" ? cliente.dtNascimento.Value.ToString("yyyy-MM-dd") : cliente.dtFundacao.Value.ToString("yyyy-MM-dd"),
-                    cliente.situacao.ToUpper().Trim(),
-                    cliente.CondicaoPagamento.id,
-                    DateTime.Now.ToString("yyyy-MM-dd"),
-                    DateTime.Now.ToString("yyyy-MM-dd"),
-                    cliente.tipo == "F" ? this.FormatString(cliente.apelidoPessoa) : this.FormatString(cliente.nomeFantasia)
-                    );
-                OpenConnection();
-                SqlQuery = new SqlCommand(sql, con);
-                int i = SqlQuery.ExecuteNonQuery();
+                if (this.ValidCPFCNPJ(this.FormatCPF(cliente.cpf), "tbclientes", "cpfcnpj", this.FormatString(cliente.tipo)))
+                {
+                    var sql = string.Format("INSERT INTO tbclientes ( tipo, nomerazaosocial, sexo, logradouro, numero, complemento, bairro, telfixo, telcelular, email, codcidade, cep, cpfcnpj, rgie, dtnascimentofundacao, situacao, codcondicao, dtcadastro, dtultalteracao, apelidonomefantasia)" +
+                        "VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', {10}, '{11}', '{12}', '{13}', '{14}', '{15}', {16}, '{17}', '{18}', '{19}' )",
+                        this.FormatString(cliente.tipo),
+                        cliente.tipo == "F" ? this.FormatString(cliente.nomePessoa) : this.FormatString(cliente.razaoSocial),
+                        cliente.tipo == "F" ? this.FormatString(cliente.sexo) : "",
+                        this.FormatString(cliente.dsLogradouro),
+                        this.FormatString(cliente.numero),
+                        this.FormatString(cliente.complemento),
+                        this.FormatString(cliente.bairro),
+                        this.FormatPhone(cliente.telefoneFixo),
+                        this.FormatPhone(cliente.telefoneCelular),
+                        this.FormatString(cliente.email),
+                        cliente.Cidade.id,
+                        this.FormatCEP(cliente.cep),
+                        cliente.tipo == "F" ? this.FormatCPF(cliente.cpf) : this.FormatCNPJ(cliente.cnpj),
+                        cliente.tipo == "F" ? this.FormatRG(cliente.rg) : cliente.ie,
+                        cliente.tipo == "F" ? (cliente.dtNascimento != null ? cliente.dtNascimento.Value.ToString("yyyy-MM-dd") : "") : (cliente.dtNascimento != null ? cliente.dtFundacao.Value.ToString("yyyy-MM-dd") : ""),
+                        cliente.situacao.ToUpper().Trim(),
+                        cliente.CondicaoPagamento.id,
+                        DateTime.Now.ToString("yyyy-MM-dd"),
+                        DateTime.Now.ToString("yyyy-MM-dd"),
+                        cliente.tipo == "F" ? this.FormatString(cliente.apelidoPessoa) : this.FormatString(cliente.nomeFantasia)
+                        );
+                    OpenConnection();
+                    //SqlQuery = new SqlCommand(sql, con);
+                    int i = SqlQuery.ExecuteNonQuery();
 
-                if (i > 1)
-                {
-                    return true;
+                    if (i > 1)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
-                else
-                {
-                    return false;
-                }
+                return false;
             }
             catch (Exception error)
             {
@@ -128,13 +134,17 @@ namespace Sistema.DAO
             {
                 CloseConnection();
             }
+
+
         }
 
         public bool Update(Models.Clientes cliente)
         {
             try
             {
-                string sql = "UPDATE tbclientes SET tipo = '" +
+                if (this.ValidCPFCNPJ(this.FormatCPF(cliente.cpf), "tbclientes", "cpfcnpj", this.FormatString(cliente.tipo)))
+                {
+                    string sql = "UPDATE tbclientes SET tipo = '" +
                     this.FormatString(cliente.tipo) + "', " +
                     " nomerazaosocial = '" + (cliente.tipo == "F" ? this.FormatString(cliente.nomePessoa) : this.FormatString(cliente.razaoSocial)) + "', " +
                     " sexo = '" + (cliente.tipo == "F" ? this.FormatString(cliente.sexo) : "") + "', " +
@@ -147,27 +157,29 @@ namespace Sistema.DAO
                     " email = '" + this.FormatString(cliente.email) + "', " +
                     " codcidade = " + cliente.Cidade.id + ", " +
                     " cep = '" + this.FormatCEP(cliente.cep) + "', " +
-                    " cpfcnpj = '" + ( cliente.tipo == "F" ? this.FormatCPF(cliente.cpf) : this.FormatCNPJ(cliente.cnpj) )+ "', " +
-                    " rgie = '" + ( cliente.tipo == "F" ? this.FormatRG(cliente.rg) : cliente.ie )+ "'," +
-                    " dtnascimentofundacao = '" + (cliente.tipo == "F" ? cliente.dtNascimento.Value.ToString("yyyy-MM-dd") : cliente.dtFundacao.Value.ToString("yyyy-MM-dd")) + "', " +
+                    " cpfcnpj = '" + (cliente.tipo == "F" ? this.FormatCPF(cliente.cpf) : this.FormatCNPJ(cliente.cnpj)) + "', " +
+                    " rgie = '" + (cliente.tipo == "F" ? this.FormatRG(cliente.rg) : cliente.ie) + "'," +
+                    " dtnascimentofundacao = '" + (cliente.tipo == "F" ? (cliente.dtNascimento != null ? cliente.dtNascimento.Value.ToString("yyyy-MM-dd") : "") : (cliente.dtFundacao != null ? cliente.dtFundacao.Value.ToString("yyyy-MM-dd") : "")) + "', " +
                     " situacao = '" + this.FormatString(cliente.situacao) + "', " +
                     " codcondicao = " + cliente.CondicaoPagamento.id + ", " +
-                    " dtultalteracao = '" + ( DateTime.Now.ToString("yyyy-MM-dd") )+ "'," +
-                    " apelidonomefantasia = '" + ( cliente.tipo == "F" ? this.FormatString(cliente.apelidoPessoa) : this.FormatString(cliente.nomeFantasia) )+ "'" +
+                    " dtultalteracao = '" + (DateTime.Now.ToString("yyyy-MM-dd")) + "'," +
+                    " apelidonomefantasia = '" + (cliente.tipo == "F" ? this.FormatString(cliente.apelidoPessoa) : this.FormatString(cliente.nomeFantasia)) + "'" +
                     " WHERE codcliente = " + cliente.codigo;
-                OpenConnection();
-                SqlQuery = new SqlCommand(sql, con);
+                    OpenConnection();
+                    SqlQuery = new SqlCommand(sql, con);
 
-                int i = SqlQuery.ExecuteNonQuery();
+                    int i = SqlQuery.ExecuteNonQuery();
 
-                if (i > 1)
-                {
-                    return true;
+                    if (i > 1)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
-                else
-                {
-                    return false;
-                }
+                return false;
             }
             catch (Exception error)
             {
@@ -233,6 +245,7 @@ namespace Sistema.DAO
                         model.cnpj = tipoPessoa == "J" ? Convert.ToString(reader["Cliente_CNPJ_CPF"]) : "";
                         model.ie = tipoPessoa == "J" ? Convert.ToString(reader["Cliente_IE_RG"]) : "";
                         model.dtFundacao = tipoPessoa == "J" ? Convert.ToDateTime(reader["Cliente_DataFundacao_DataNascimento"]) : (DateTime?)null;
+                        model.emailJuridica = Convert.ToString(reader["Cliente_Email"]);
                     }
                 }
                 return model;

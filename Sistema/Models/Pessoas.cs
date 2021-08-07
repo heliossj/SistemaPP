@@ -26,6 +26,9 @@ namespace Sistema.Models
         [Display(Name = "E-mail")]
         public string email { get; set; }
 
+        [Display(Name = "E-mail")]
+        public string emailJuridica { get; set; }
+
         public Select.Cidades.Select Cidade { get; set; }
 
         //Física

@@ -341,3 +341,4 @@ C:\Sistema\Sistema\Sistema\obj\Debug\Sistema.csproj.CoreCompileInputs.cache
 C:\Sistema\Sistema\Sistema\obj\Debug\Sistema.csproj.CopyComplete
 C:\Sistema\Sistema\Sistema\obj\Debug\Sistema.dll
 C:\Sistema\Sistema\Sistema\obj\Debug\Sistema.pdb
+C:\Sistema\Sistema\Sistema\obj\Debug\Sistema.csprojAssemblyReference.cache

@@ -15,9 +15,17 @@ namespace Sistema.Controllers
 
         public ActionResult Index()
         {
-            var daoServicos = new DAOServicos();
-            List<Models.Servicos> list = daoServicos.GetServicos();
-            return View(list);
+            try
+            {
+                var daoServicos = new DAOServicos();
+                List<Models.Servicos> list = daoServicos.GetServicos();
+                return View(list);
+            }
+            catch (Exception ex)
+            {
+                this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                return View();
+            }
         }
 
         public ActionResult Create()
@@ -42,9 +50,18 @@ namespace Sistema.Controllers
             }
             if (ModelState.IsValid)
             {
-                daoServicos = new DAOServicos();
-                daoServicos.Insert(model);
-                return RedirectToAction("Index");
+                try
+                {
+                    daoServicos = new DAOServicos();
+                    daoServicos.Insert(model);
+                    this.AddFlashMessage(Util.AlertMessage.INSERT_SUCESS);
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                    return View(model);
+                }
             }
             else
             {
@@ -74,11 +91,19 @@ namespace Sistema.Controllers
             }
             if (ModelState.IsValid)
             {
-                daoServicos = new DAOServicos();
-                daoServicos.Update(model);
-                return RedirectToAction("Index");
+                try
+                {
+                    daoServicos = new DAOServicos();
+                    daoServicos.Update(model);
+                    this.AddFlashMessage(Util.AlertMessage.EDIT_SUCESS);
+                    return RedirectToAction("Index");
+                } catch (Exception ex)
+                {
+                    this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                    return View(model);
+                }
             }
-            return View();
+            return View(model);
         }
 
         public ActionResult Delete(int? id)
@@ -90,9 +115,17 @@ namespace Sistema.Controllers
         [ActionName("Delete")]
         public ActionResult DeleteConfirmed(int? id)
         {
-            daoServicos = new DAOServicos();
-            daoServicos.Delete(id);
-            return RedirectToAction("Index");
+            try
+            {
+                daoServicos = new DAOServicos();
+                daoServicos.Delete(id);
+                this.AddFlashMessage(Util.AlertMessage.DELETE_SUCESS);
+                return RedirectToAction("Index");
+            } catch ( Exception ex)
+            {
+                this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                return View();
+            }
         }
 
         public ActionResult Details(int? id)
@@ -102,9 +135,16 @@ namespace Sistema.Controllers
 
         private ActionResult GetView(int? codServico)
         {
-            var daoServicos = new DAOServicos();
-            var model = daoServicos.GetServico(codServico);
-            return View(model);
+            try
+            {
+                var daoServicos = new DAOServicos();
+                var model = daoServicos.GetServico(codServico);
+                return View(model);
+            } catch (Exception ex)
+            {
+                this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                return View();
+            }
         }
 
         public JsonResult JsQuery([ModelBinder(typeof(DataTablesBinder))] IDataTablesRequest requestModel)

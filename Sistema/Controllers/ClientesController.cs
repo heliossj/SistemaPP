@@ -15,9 +15,17 @@ namespace Sistema.Controllers
 
         public ActionResult Index()
         {
-            var daoClientes = new DAOClientes();
-            List<Models.Clientes> list = daoClientes.GetClientes();
-            return View(list);
+            try
+            {
+                var daoClientes = new DAOClientes();
+                List<Models.Clientes> list = daoClientes.GetClientes();
+                return View(list);
+            }
+            catch (Exception ex)
+            {
+                this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                return View();
+            }
         }
 
         public ActionResult Create()
@@ -31,9 +39,17 @@ namespace Sistema.Controllers
             this.validForm(model);
             if (ModelState.IsValid)
             {
-                daoClientes = new DAOClientes();
-                daoClientes.Insert(model);
-                return RedirectToAction("Index");
+                try
+                {
+                    daoClientes = new DAOClientes();
+                    daoClientes.Insert(model);
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                    return View(model);
+                }
             }
             else
             {
@@ -52,12 +68,20 @@ namespace Sistema.Controllers
             this.validForm(model);
             if (ModelState.IsValid)
             {
-
-                daoClientes = new DAOClientes();
-                daoClientes.Update(model);
-                return RedirectToAction("Index");
+                try
+                {
+                    daoClientes = new DAOClientes();
+                    daoClientes.Update(model);
+                    this.AddFlashMessage(Util.AlertMessage.EDIT_SUCESS);
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                    return View(model);
+                }
             }
-            return View();
+            return View(model);
         }
 
         public ActionResult Delete(int? id)
@@ -69,9 +93,18 @@ namespace Sistema.Controllers
         [ActionName("Delete")]
         public ActionResult DeleteConfirmed(int? id)
         {
-            daoClientes = new DAOClientes();
-            daoClientes.Delete(id);
-            return RedirectToAction("Index");
+            try
+            {
+                daoClientes = new DAOClientes();
+                daoClientes.Delete(id);
+                this.AddFlashMessage(Util.AlertMessage.DELETE_SUCESS);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                return View();
+            }
         }
 
         public ActionResult Details(int? id)
@@ -211,8 +244,10 @@ namespace Sistema.Controllers
                 {
                     ModelState.AddModelError("dtNascimento", "Informe a data de nascimento");
                 }
-            } else
+            }
+            else
             {
+                model.email = model.emailJuridica;
                 if (string.IsNullOrWhiteSpace(model.razaoSocial))
                 {
                     ModelState.AddModelError("razaoSocial", "Informe a razão social");
@@ -229,9 +264,9 @@ namespace Sistema.Controllers
                 {
                     ModelState.AddModelError("ie", "Informe a Inscrição Estadual");
                 }
-                if (model.dtFundacao == null)
+                if (string.IsNullOrWhiteSpace(model.emailJuridica))
                 {
-                    ModelState.AddModelError("dtFundacao", "Informe a data de fundação");
+                    ModelState.AddModelError("emailJuridica", "Informe o email");
                 }
             }
 

@@ -96,6 +96,67 @@ namespace Sistema.DAO
             return text;
         }
 
+        protected bool ValidCPFCNPJ(string campoValor, string tabela, string coluna, string pessoaTipo)
+        {
+            try
+            {
+                string sql = "SELECT " + coluna + " FROM " + tabela + " WHERE " + coluna + " = '" + campoValor + "'";
+                OpenConnection();
+                SqlQuery = new SqlCommand(sql, con);
+                SqlQuery.ExecuteNonQuery();
+                reader = SqlQuery.ExecuteReader();
+                string cpfcnpjAux = string.Empty;
+                while (reader.Read())
+                {
+                    cpfcnpjAux = Convert.ToString(reader["" + coluna + ""]);
+                }
+
+                if (string.IsNullOrEmpty(cpfcnpjAux))
+                    return true;
+                else
+                {
+                    throw new Exception("Já existe um registro utilizando este "+ ( pessoaTipo == "J" ? "CNPJ" : "CPF" ) +", verifique!");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
+
+        protected bool ValidName(string campoValor, string tabela, string coluna)
+        {
+            try
+            {
+                string sql = "SELECT " + coluna + " FROM " + tabela + " WHERE " + coluna + " = '" + campoValor + "'";
+                OpenConnection();
+                SqlQuery = new SqlCommand(sql, con);
+                SqlQuery.ExecuteNonQuery();
+                reader = SqlQuery.ExecuteReader();
+                string name = string.Empty;
+                while (reader.Read())
+                {
+                    name = Convert.ToString(reader["cpfcnpj"]);
+                }
+
+                if (string.IsNullOrEmpty(name))
+                    return true;
+                else
+                    return false;
+            }
+            catch (Exception error)
+            {
+                throw new Exception(error.Message);
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
 
 
 

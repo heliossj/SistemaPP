@@ -14,8 +14,5 @@ namespace Sistema.Select.Paises
         public string sigla { get; set; }
         public DateTime? dtCadastro { get; set; }
         public DateTime? dtUltAlteracao { get; set; }
-
-        //public string flCreate { get; set; }
-       
     }
 }

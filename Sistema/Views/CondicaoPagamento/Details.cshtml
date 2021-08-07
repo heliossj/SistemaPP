@@ -23,6 +23,8 @@
         </div>
 
         <div class="pull-left col-lg-12 col-md-12 col-sm-10 col-xs-10">
+            @Html.RenderFlashMessage()
+            @Html.CustomValidationSummary(true, true, Sistema.Util.AlertMessage.ERROR_MESSAGE, new { @class = "alert alert-danger", role = "alert" })
             <fieldset disabled>
                 @Html.Partial("Form", Model)
             </fieldset>
@@ -34,5 +36,5 @@
     </div>
 }
 @section scripts{
-    @Scripts.Render("~/Scripts/CondicaoPagamento/Create.js")
+    @Scripts.Render("~/Scripts/CondicaoPagamento/Details.js")
 }

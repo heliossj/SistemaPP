@@ -28,8 +28,9 @@
     else
     {
         <div class="@Util.Input3">
-            @Html.LabelFor(model => model.tipo, new { @class = "required" })
+            @Html.LabelFor(model => model.tipo, new { @class = "no-required" })
             @Html.TextBoxFor(model => model.dsTipo, new { @class = "form-control", disabled = true })
+            @Html.HiddenFor(model => model.dsTipo)
             @Html.HiddenFor(model => model.tipo)
             @*@Html.DropDownListFor(model => model.tipo, Sistema.Models.Clientes.Tipo, new { @class = "form-control", disabled = true })*@
         </div>
@@ -111,10 +112,16 @@
         @Html.ValidationMessageFor(model => model.telefoneCelular, null, new { @class = "text-danger" })
     </div>
 
-    <div class="@Util.Input4">
-        @Html.LabelFor(model => model.email, new { @class = "required" })
+    <div class="@Util.Input4 fisica">
+        @Html.LabelFor(model => model.email, new { @class = "no-required" })
         @Html.TextBoxFor(model => model.email, new { @class = "form-control", maxlength = "100", style = "text-transform:uppercase", minlength = "3" })
         @Html.ValidationMessageFor(model => model.email, null, new { @class = "text-danger" })
+    </div>
+
+    <div class="@Util.Input4 juridica">
+        @Html.LabelFor(model => model.emailJuridica, new { @class = "required" })
+        @Html.TextBoxFor(model => model.emailJuridica, new { @class = "form-control", maxlength = "100", style = "text-transform:uppercase", minlength = "3" })
+        @Html.ValidationMessageFor(model => model.emailJuridica, null, new { @class = "text-danger" })
     </div>
 </div>
 
@@ -162,7 +169,7 @@
     </div>
 
     <div class="@Util.Input3 fisica">
-        @Html.LabelFor(model => model.dtNascimento, new { @class = "required" })
+        @Html.LabelFor(model => model.dtNascimento, new { @class = "no-required" })
         <div class="input-group-append">
             @Html.TextBoxFor(model => model.dtNascimento, new { @class = "form-control datepicker date" })
             <span class="fa fa-calendar input-group-text" style="font-size:23px"></span>
@@ -170,7 +177,7 @@
     </div>
 
     <div class="@Util.Input3 juridica">
-        @Html.LabelFor(model => model.dtFundacao, new { @class = "required" })
+        @Html.LabelFor(model => model.dtFundacao, new { @class = "no-required" })
         <div class="input-group-append">
             @Html.TextBoxFor(model => model.dtFundacao, new { @class = "form-control datepicker date" })
             <span class="fa fa-calendar input-group-text" style="font-size:23px"></span>
@@ -196,7 +203,7 @@
             @Html.LabelFor(model => model.dtCadastro)
             <div class="input-group-append">
                 @Html.HiddenFor(model => model.dtCadastro)
-                @Html.TextBoxFor(model => model.dtCadastro, new { @class = "form-control datepicke date", disabled = true })
+                @Html.TextBoxFor(model => model.dtCadastro, new { @class = "form-control datepicker date", disabled = true })
                 <span class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></span>
             </div>
         </div>

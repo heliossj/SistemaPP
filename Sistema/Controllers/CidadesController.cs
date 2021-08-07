@@ -46,9 +46,18 @@ namespace Sistema.Controllers
 
             if (ModelState.IsValid)
             {
-                daoCidades = new DAOCidades();
-                daoCidades.Insert(model);
-                return RedirectToAction("Index");
+                try
+                {
+                    daoCidades = new DAOCidades();
+                    daoCidades.Insert(model);
+                    this.AddFlashMessage(Util.AlertMessage.INSERT_SUCESS);
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                    return View(model);
+                }
             }
             else
             {
@@ -80,12 +89,20 @@ namespace Sistema.Controllers
             {
                 ModelState.AddModelError("Estado.id", "Informe um estado");
             }
-
             if (ModelState.IsValid)
             {
-                daoCidades = new DAOCidades();
-                daoCidades.Update(model);
-                return RedirectToAction("Index");
+                try
+                {
+                    daoCidades = new DAOCidades();
+                    daoCidades.Update(model);
+                    this.AddFlashMessage(Util.AlertMessage.EDIT_SUCESS);
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                    return View(model);
+                }
             }
             else
             {
@@ -102,9 +119,18 @@ namespace Sistema.Controllers
         [ActionName("Delete")]
         public ActionResult DeleteConfirmed(int? id)
         {
-            daoCidades = new DAOCidades();
-            daoCidades.Delete(id);
-            return RedirectToAction("Index");
+            try
+            {
+                daoCidades = new DAOCidades();
+                daoCidades.Delete(id);
+                this.AddFlashMessage(Util.AlertMessage.DELETE_SUCESS);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                return View();
+            }
         }
 
         public ActionResult Details(int? id)
@@ -114,9 +140,17 @@ namespace Sistema.Controllers
 
         private ActionResult GetView(int? codCidade)
         {
-            var daoCidades = new DAOCidades();
-            var model = daoCidades.GetCidade(codCidade);
-            return View(model);
+            try
+            {
+                var daoCidades = new DAOCidades();
+                var model = daoCidades.GetCidade(codCidade);
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                return View();
+            }
         }
 
         public JsonResult JsQuery([ModelBinder(typeof(DataTablesBinder))] IDataTablesRequest requestModel)

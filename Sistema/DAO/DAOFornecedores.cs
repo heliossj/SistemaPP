@@ -102,7 +102,7 @@ namespace Sistema.DAO
                     this.FormatCEP(fornecedor.cep),
                     fornecedor.tipo == "F" ? this.FormatCPF(fornecedor.cpf) : this.FormatCNPJ(fornecedor.cnpj),
                     fornecedor.tipo == "F" ? this.FormatRG(fornecedor.rg) : fornecedor.ie,
-                    fornecedor.tipo == "F" ? fornecedor.dtNascimento.Value.ToString("yyyy-MM-dd") : fornecedor.dtFundacao.Value.ToString("yyyy-MM-dd"),
+                    fornecedor.tipo == "F" ? ( fornecedor.dtNascimento != null ? fornecedor.dtNascimento.Value.ToString("yyyy-MM-dd") : "" ) : ( fornecedor.dtFundacao != null ? fornecedor.dtFundacao.Value.ToString("yyyy-MM-dd") : ""),
                     this.FormatString(fornecedor.situacao),
                     fornecedor.CondicaoPagamento.id,
                     DateTime.Now.ToString("yyyy-MM-dd"),
@@ -153,7 +153,7 @@ namespace Sistema.DAO
                     " cep = '" + this.FormatCEP(fornecedor.cep) + "', " +
                     " cpfcnpj = '" + ( fornecedor.tipo == "F" ? this.FormatCPF(fornecedor.cpf) : this.FormatCNPJ(fornecedor.cnpj) ) + "', " +
                     " rgie = '" + ( fornecedor.tipo == "F" ? this.FormatRG(fornecedor.rg) : fornecedor.ie )+ "', " +
-                    " dtnascimentofundacao = '" + ( fornecedor.tipo == "F" ? fornecedor.dtNascimento.Value.ToString("yyyy-MM-dd") : fornecedor.dtFundacao.Value.ToString("yyyy-MM-dd") ) + "', " +
+                    " dtnascimentofundacao = '" + ( fornecedor.tipo == "F" ? ( fornecedor.dtNascimento != null ?  fornecedor.dtNascimento.Value.ToString("yyyy-MM-dd") : "" ) : ( fornecedor.dtFundacao != null ?  fornecedor.dtFundacao.Value.ToString("yyyy-MM-dd") : "") ) + "', " +
                     " situacao = '" + fornecedor.situacao.ToUpper().ToString() + "', " +
                     " codcondicao = " + fornecedor.CondicaoPagamento.id + ", " +
                     " dtultalteracao = '" + DateTime.Now.ToString("yyyy-MM-dd") + "'," +
@@ -239,6 +239,7 @@ namespace Sistema.DAO
                         model.cnpj = tipoPessoa == "J" ? Convert.ToString(reader["Fornecedor_CNPJ_CPF"]) : "";
                         model.ie = tipoPessoa == "J" ? Convert.ToString(reader["Fornecedor_IE_RG"]) : "";
                         model.dtFundacao = tipoPessoa == "J" ? Convert.ToDateTime(reader["Fornecedor_DataFundacao_DataNascimento"]) : (DateTime?)null;
+                        model.emailJuridica = Convert.ToString(reader["Fornecedor_Email"]);
                     }
                 }
                 return model;

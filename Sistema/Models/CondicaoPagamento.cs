@@ -16,13 +16,13 @@ namespace Sistema.Models
         [Display(Name = "Situação")]
         public string situacao { get; set; }
 
-        [Display(Name = "Taxa de juros")]
+        [Display(Name = "Taxa de juros (%)")]
         public decimal? txJuros { get; set; }
 
         [Display(Name = "Porcentagem (%)")]
         public decimal? txPercentual { get; set; }
 
-        [Display(Name = "Dias (%)")]
+        [Display(Name = "Dias")]
         public short? qtDias { get; set; }
 
         [Display(Name = "Multa (%)")]
@@ -33,6 +33,7 @@ namespace Sistema.Models
 
         [Display(Name = "Total (%)")]
         public decimal? txPercentualTotal { get; set; }
+        public decimal? txPercentualTotalAux { get; set; }
 
         public Select.FormaPagamento.Select FormaPagamento { get; set; }
 
