@@ -34,7 +34,7 @@
                     <div class="panel-heading" style="height: 41px; padding-left:2px;font-weight: bold;">
                         <h3 class="panel-title pull-right"><button type="button" style="opacity: inherit;color: #fff;" class="close" data-dismiss="modal">&times;</button></h3>
                         <ul class="nav panel-tabs" style="width:400px">
-                            <li class="active"><a data-event="true" style="margin-top:1px;color: black;" data-toggle="tab"><b><i class="fa fa-list" aria-hidden="true"></i> Países </b></a></li>
+                            <li class="active"><a data-event="true" style="margin-top:1px;color: black;" data-toggle="tab"><b><i class="fa fa-list" aria-hidden="true"></i> Estados </b></a></li>
                         </ul>
                     </div>
 
@@ -155,7 +155,7 @@
                      data: { 'id': id },
                      success: function (data) {
                          if (!data) {
-                             $.notify({ message: 'Nenhum registro encontrado para o código informado', icon: 'fa fa-exclamation' }, { type: 'danger' });
+                             $.notify({ message: 'Nenhum registro encontrado para o código informado', icon: 'fa fa-exclamation' }, { type: 'danger', z_index: 2000 });
                          }
                          $("#@Sistema.Util.SelectFunctions.getInputId("id", Prefix)").val(data.id);
                          $("#@Sistema.Util.SelectFunctions.getInputId("text", Prefix)").val(data.text);
@@ -175,6 +175,11 @@
                 codEstado : $('#@Sistema.Util.SelectFunctions.getInputId("codEstado", Prefix)'),
                 nomeEstado: $('#@Sistema.Util.SelectFunctions.getInputId("nomeEstado", Prefix)'),
                 uf: $('#@Sistema.Util.SelectFunctions.getInputId("uf", Prefix)'),
+                codPais: $('#@Sistema.Util.SelectFunctions.getInputId("Pais_id", Prefix)'),
+                Pais: {
+                    id: $('#@Sistema.Util.SelectFunctions.getInputId("Pais_id", Prefix)').val(),
+                    text: $('#@Sistema.Util.SelectFunctions.getInputId("Pais_text", Prefix)').val()
+                },
                 dtCadastro: $('#@Sistema.Util.SelectFunctions.getInputId("dtCadastro", Prefix)'),
                 dtUltAlteracao: $('#@Sistema.Util.SelectFunctions.getInputId("dtUltAlteracao", Prefix)'),
         }
@@ -206,15 +211,20 @@
             valid = false;
         }
 
+        else if (form.codPais.val() == "" || IsNullOrEmpty(form.codPais.val())) {
+            $('#@Sistema.Util.SelectFunctions.getInputId("Pais_id", Prefix)').blink({ msg: "Informe um país!!" });
+            $('#@Sistema.Util.SelectFunctions.getInputId("Pais_ID", Prefix)').focus();
+            valid = false;
+        }
         return valid;
     };
 
     getModelEstado = function (form) {
         var model = {
-            codigo: form.codPais.val(),
-            nomePais: form.nomePais.val(),
-            ddi: form.ddi.val(),
-            sigla: form.sigla.val(),
+            codigo: form.codEstado.val(),
+            nomeEstado: form.nomeEstado.val(),
+            uf: form.uf.val(),
+            Pais: form.Pais,
         }
         return model;
     };
@@ -230,8 +240,7 @@
     this.insertEstado = function () {
         var form = self.getFormEstado();
         var model = getModelEstado(form);
-
-        if (self.isValid(model)) {
+        if (self.isValidEstado(model)) {
 
             $.ajax({
                 dataType: 'json',
@@ -243,8 +252,7 @@
                     InitModalEstados();
                     $("#@Sistema.Util.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("hide");
                     $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
-                    $.notify({ message: data.message, icon: 'fa fa-exclamation' }, { type: 'success', z_index: 2000, });
-
+                    $.notify({ message: data.message, icon: 'fa fa-exclamation' }, { type: 'success', z_index: 2000 });
                 },
                 error: function (request) {
                     alert("Erro ao adicionar registro")
@@ -256,21 +264,19 @@
     this.updateEstado = function () {
         var formEstado = self.getFormEstado();
         var modelEstado = getModelEstado(formEstado);
-        console.log(model)
         if (self.isValidEstado(modelEstado)) {
 
             $.ajax({
                 dataType: 'json',
                 type: 'POST',
                 url: '@Url.Action("jsUpdate", "Estados")',
-                data: model,
+                data: modelEstado,
                 success: function (data) {
-                    console.log(data)
                     self.clearEstado();
                     InitModalEstados();
                     $("#@Sistema.Util.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("hide");
                     $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
-                    $.notify({ message: data.message, icon: 'fa fa-exclamation' }, { type: 'success', z_index: 2000, });
+                    $.notify({ message: data.message, icon: 'fa fa-exclamation' }, { type: 'success', z_index: 2000 });
                 },
             });
         }
@@ -382,13 +388,12 @@
                 if ($("#@Sistema.Util.SelectFunctions.getInputId("isEdit", Prefix)").val() == "S") {
                     $(".isEdit").show();
                 }
-
-                $("#@Sistema.Util.SelectFunctions.getInputId("codPais", Prefix)").val(data.id);
-                $("#@Sistema.Util.SelectFunctions.getInputId("nomePais", Prefix)").val(data.text);
-                $("#@Sistema.Util.SelectFunctions.getInputId("ddi", Prefix)").val(data.ddi);
-                $("#@Sistema.Util.SelectFunctions.getInputId("sigla", Prefix)").val(data.sigla);
+                $("#@Sistema.Util.SelectFunctions.getInputId("codEstado", Prefix)").val(data.id);
+                $("#@Sistema.Util.SelectFunctions.getInputId("nomeEstado", Prefix)").val(data.text);
+                $("#@Sistema.Util.SelectFunctions.getInputId("uf", Prefix)").val(data.uf);
+                $("#@Sistema.Util.SelectFunctions.getInputId("Pais_id", Prefix)").val(data.Pais.id);
+                $("#@Sistema.Util.SelectFunctions.getInputId("Pais_text", Prefix)").val(data.Pais.text);
                 $("#@Sistema.Util.SelectFunctions.getInputId("dtCadastro", Prefix)").val(JSONDate(data.dtCadastro));
-
                 $("#@Sistema.Util.SelectFunctions.getInputId("dtUltAlteracao", Prefix)").val(JSONDate(data.dtUltAlteracao));
 
                 $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");

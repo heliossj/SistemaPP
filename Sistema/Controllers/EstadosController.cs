@@ -209,6 +209,13 @@ namespace Sistema.Controllers
             {
                 id = u.id,
                 text = u.text,
+                uf = u.uf,
+                Pais = new Sistema.Select.Paises.Select {
+                    id = u.PaisSelect.id,
+                    text = u.PaisSelect.text
+                },
+                dtCadastro = u.dtCadastro,
+                dtUltAlteracao = u.dtUltAlteracao
             }).OrderBy(u => u.text).ToList();
             return select.AsQueryable();
         }

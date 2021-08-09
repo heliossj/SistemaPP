@@ -201,6 +201,14 @@ namespace Sistema.DAO
                     {
                         id = Convert.ToInt32(reader["Estado_ID"]),
                         text = Convert.ToString(reader["Estado_Nome"]),
+                        uf = Convert.ToString(reader["Estado_UF"]),
+                        PaisSelect = new Select.Paises.Select
+                        {
+                            id = Convert.ToInt32(reader["Pais_ID"]),
+                            text = Convert.ToString(reader["Pais_Nome"]),
+                        },
+                        dtCadastro = Convert.ToDateTime(reader["Estado_DataCadastro"]),
+                        dtUltAlteracao = Convert.ToDateTime(reader["Estado_DataUltAlteracao"]),
                     };
 
                     list.Add(estado);

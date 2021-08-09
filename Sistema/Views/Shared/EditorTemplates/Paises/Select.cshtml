@@ -73,7 +73,7 @@
                         <div class="container-fluid">
                             <p style="text-align: right; color: red; font-size:16px; font-weight: bold;">* Campos obrigatórios</p>
 
-                            <div class="form-row">
+                            <div class="form-row isEdit">
                                 <div class="@Util.Input2">
                                     @Html.Label("codPais", "Código")
                                     @Html.TextBox("codPais", null, new { @class = "form-control", disabled = true })
@@ -156,7 +156,7 @@
                      data: { 'id': id },
                      success: function (data) {
                          if (!data) {
-                             $.notify({ message: 'Nenhum registro encontrado para o código informado', icon: 'fa fa-exclamation' }, { type: 'danger' } );
+                             $.notify({ message: 'Nenhum registro encontrado para o código informado', icon: 'fa fa-exclamation' }, { type: 'danger', z_index: 2000 } );
                          }
                          $("#@Sistema.Util.SelectFunctions.getInputId("id", Prefix)").val(data.id);
                          $("#@Sistema.Util.SelectFunctions.getInputId("text", Prefix)").val(data.text);
@@ -252,7 +252,7 @@
                     InitModalPaises();
                     $("#@Sistema.Util.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("hide");
                     $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
-                    $.notify({ message: data.message, icon: 'fa fa-exclamation' }, { type: 'success', z_index: 2000, });
+                    $.notify({ message: data.message, icon: 'fa fa-exclamation' }, { type: 'success', z_index: 2000 });
 
                 },
                 error: function (request) {
@@ -266,7 +266,6 @@
         //debugger;
         var form = self.getFormPais();
         var model = getModelPais(form);
-        console.log(model)
         if (self.isValidPais(model)) {
 
             $.ajax({
@@ -275,12 +274,11 @@
                 url: '@Url.Action("jsUpdate", "Paises")',
                 data: model,
                 success: function (data) {
-                    console.log(data)
                     self.clearPais();
                     InitModalPaises();
                     $("#@Sistema.Util.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("hide");
                     $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
-                    $.notify({ message: data.message, icon: 'fa fa-exclamation' }, { type: 'success', z_index: 2000, });
+                    $.notify({ message: data.message, icon: 'fa fa-exclamation' }, { type: 'success', z_index: 2000 });
                 },
             });
         }
