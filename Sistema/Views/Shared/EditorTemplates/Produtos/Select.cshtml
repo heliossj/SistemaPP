@@ -1,17 +1,17 @@
-﻿@model Sistema.Select.Paises.Select
+﻿@model Sistema.Select.Produtos.Select
 @using Sistema.Util;
 @{
     bool Disabled = Convert.ToBoolean(ViewData["Disabled"]);
     bool Required = Convert.ToBoolean(ViewData["Required"] ?? true);
     bool OnlySelect = Convert.ToBoolean(ViewData["onlySelect"] ?? true);
     bool LabelVertical = Convert.ToBoolean(ViewData["LabelVertical"]);
-    string Label = Convert.ToString(ViewData["Label"] ?? "Pais");
+    string Label = Convert.ToString(ViewData["Label"] ?? "Produto");
     string classLabel = Convert.ToString(ViewData["classLabel"] ?? Util.Input12);
     string classForm = Convert.ToString(ViewData["classForm"] ?? Util.Input12);
     var Prefix = Html.ClientPrefixName().ToString();
     string action = Convert.ToString(ViewBag.Action);
 }
-
+@Html.HiddenFor(model => model.vlVenda)
 @Html.Hidden("isEdit")
 @Html.HiddenFor(k => action)
 <div class="@classForm">
@@ -38,18 +38,18 @@
                     </div>
 
                     <div style="text-align:right; margin-right:15px">
-                        <button id="@Sistema.Util.SelectFunctions.getInputId("Create", Prefix)" onclick="OpenModalCreatePais()" type="button" class="btn btn-success"><i class="fa fa-plus"></i>  Adicionar</button>
+                        <button id="@Sistema.Util.SelectFunctions.getInputId("Create", Prefix)" onclick="OpenModalCreateProduto()" type="button" class="btn btn-success"><i class="fa fa-plus"></i>  Adicionar</button>
                     </div>
 
                     <div id="body" class="modal-body" style="padding: 3px 0px 0px 0px;">
                         <div class="container-fluid">
-                            <div id="TablePaises"></div>
+                            <div id="TableProduto"></div>
                         </div>
                     </div>
 
                     <div class="modal-footer">
                         <div style="text-align:right">
-                            <button id="@Sistema.Util.SelectFunctions.getInputId("Fechar", Prefix)" onclick="FecharModalPais()" type="button" class="btn btn-outline-dark"><i class="fa fa-times"></i> Fechar</button>
+                            <button id="@Sistema.Util.SelectFunctions.getInputId("Fechar", Prefix)" onclick="FecharModalProduto()" type="button" class="btn btn-outline-dark"><i class="fa fa-times"></i> Fechar</button>
                         </div>
                     </div>
 
@@ -66,7 +66,7 @@
                     <div class="panel-heading" style="height: 41px; padding-left:2px;font-weight: bold;">
                         <h3 class="panel-title pull-right"><button type="button" style="opacity: inherit;color: #fff;" class="close" data-dismiss="modal">&times;</button></h3>
                         <ul class="nav panel-tabs" style="width:400px">
-                            <li class="active"><a data-event="true" style="margin-top:1px;color: black;" data-toggle="tab"><b><i class="fa fa-list-alt" aria-hidden="true"></i> Paises </b></a></li>
+                            <li class="active"><a data-event="true" style="margin-top:1px;color: black;" data-toggle="tab"><b><i class="fa fa-list-alt" aria-hidden="true"></i> Produtos </b></a></li>
                         </ul>
                     </div>
                     <div id="body" class="modal-body" style="padding: 33px 0px 0px 0px;">
@@ -121,7 +121,7 @@
                     <div class="modal-footer">
                         <div style="text-align:right">
                             <button id="@Sistema.Util.SelectFunctions.getInputId("btnSave", Prefix)" type="button" class="btn btn-success"><i class="fa fa-save"></i>  Salvar</button>
-                            <button id="@Sistema.Util.SelectFunctions.getInputId("FecharCreate", Prefix)" onclick="FecharModalCreatePais()" type="button" class="btn btn-danger"><i class="fa fa-ban"></i>  Cancelar</button>
+                            <button id="@Sistema.Util.SelectFunctions.getInputId("FecharCreate", Prefix)" onclick="FecharModalCreateProduto()" type="button" class="btn btn-danger"><i class="fa fa-ban"></i>  Cancelar</button>
                         </div>
                     </div>
                 </div>
@@ -136,11 +136,11 @@
     self = this;
     $(function () {
          $("#@Sistema.Util.SelectFunctions.getInputId("btn-localizar", Prefix)").on("click", function () {
-             InitModalPaises();
+             InitModalProduto();
          });
 
          $('#@Sistema.Util.SelectFunctions.getInputId("btnSave", Prefix)').on('click', function () {
-                self.savePais();
+             self.saveProduto();
          });
 
          $('#@Sistema.Util.SelectFunctions.getInputId("id", Prefix)').change(function (data, e) {
@@ -152,7 +152,7 @@
                  $.ajax({
                      dataType: 'json',
                      type: 'GET',
-                     url: '@Url.Action("JsDetails", "Paises")',
+                     url: '@Url.Action("JsDetails", "Produtos")',
                      data: { 'id': id },
                      success: function (data) {
                          if (!data) {
@@ -160,6 +160,7 @@
                          }
                          $("#@Sistema.Util.SelectFunctions.getInputId("id", Prefix)").val(data.id);
                          $("#@Sistema.Util.SelectFunctions.getInputId("text", Prefix)").val(data.text);
+                         $("#@Sistema.Util.SelectFunctions.getInputId("vlVenda", Prefix)").val(data.vlVenda);
                      },
                      error: function (err) {
                          alert(err);
@@ -171,7 +172,7 @@
 
      });
 
-    this.getFormPais = function() {
+    this.getFormProduto = function() {
         var form = {
                 codPais : $('#@Sistema.Util.SelectFunctions.getInputId("codPais", Prefix)'),
                 nomePais: $('#@Sistema.Util.SelectFunctions.getInputId("nomePais", Prefix)'),
@@ -183,8 +184,8 @@
         return form;
     };
 
-    this.clearPais = function () {
-        var form = self.getFormPais();
+    this.clearProduto = function () {
+        var form = self.getFormProduto();
         form.codPais.val("");
         form.nomePais.val("");
         form.ddi.val("");
@@ -194,9 +195,9 @@
         form.nomePais.focus();
     };
 
-    this.isValidPais = function () {
+    this.isValidProduto = function () {
         var valid = true;
-        var form = self.getFormPais();
+        var form = self.getFormProduto();
 
         if (IsNullOrEmpty(form.nomePais.val())) {
             form.nomePais.blink({ msg: "Campo país é obrigatório" });
@@ -218,7 +219,7 @@
         return valid;
     };
 
-    getModelPais = function (form) {
+    getModelProduto = function (form) {
         var model = {
             codigo: form.codPais.val(),
             nomePais: form.nomePais.val(),
@@ -228,28 +229,28 @@
         return model;
     };
 
-    this.savePais = function () {
+    this.saveProduto = function () {
         if ($('#@Sistema.Util.SelectFunctions.getInputId("isEdit", Prefix)').val() == "S") {
-            this.updatePais();
+            this.updateProduto();
         } else {
-            this.insertPais();
+            this.insertProduto();
         }
     }
 
-    this.insertPais = function () {
-        var form = self.getFormPais();
-        var model = getModelPais(form);
+    this.insertProduto = function () {
+        var form = self.getFormProduto();
+        var model = getModelProduto(form);
 
-        if (self.isValidPais(model)) {
+        if (self.isValidProduto(model)) {
 
             $.ajax({
                 dataType: 'json',
                 type: 'POST',
-                url: '@Url.Action("jsCreate", "Paises")',
+                url: '@Url.Action("jsCreate", "Produtos")',
                 data: model,
                 success: function (data) {
-                    self.clearPais();
-                    InitModalPaises();
+                    self.clearProduto();
+                    InitModalProduto();
                     $("#@Sistema.Util.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("hide");
                     $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
                     $.notify({ message: data.message, icon: 'fa fa-exclamation' }, { type: 'success', z_index: 2000 });
@@ -262,20 +263,20 @@
         }
     };
 
-    this.updatePais = function () {
+    this.updateProduto = function () {
         //debugger;
-        var form = self.getFormPais();
-        var model = getModelPais(form);
-        if (self.isValidPais(model)) {
+        var form = self.getFormProduto();
+        var model = getModelProduto(form);
+        if (self.isValidProduto(model)) {
 
             $.ajax({
                 dataType: 'json',
                 type: 'POST',
-                url: '@Url.Action("jsUpdate", "Paises")',
+                url: '@Url.Action("jsUpdate", "Produtos")',
                 data: model,
                 success: function (data) {
-                    self.clearPais();
-                    InitModalPaises();
+                    self.clearProduto();
+                    InitModalProduto();
                     $("#@Sistema.Util.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("hide");
                     $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
                     $.notify({ message: data.message, icon: 'fa fa-exclamation' }, { type: 'success', z_index: 2000 });
@@ -284,11 +285,11 @@
         }
     };
 
-    function InitModalPaises() {
-          $("#TablePaises").empty();
-          let table = null
-          let lis = getTablePaises();
-          $("#TablePaises").append(lis);
+    function InitModalProduto() {
+        $("#TableProduto").empty();
+        let table = null
+        let lis = getTableProduto();
+        $("#TableProduto").append(lis);
 
         table = $('#@Sistema.Util.SelectFunctions.getInputId("list", Prefix)').DataTable({
             ajax: { url: $('#@Sistema.Util.SelectFunctions.getInputId("list", Prefix)').attr('data-url') },
@@ -308,11 +309,17 @@
                     sortable: false,
                     data: null,
                     mRender: function (data) {
-                        return '<a class="btn btn-warning btn-sm" onclick="OpenEditPais(' + data.id + ')" title="Alterar registro"><i class="fa fa-edit"></i> </a>';
+                        return '<a class="btn btn-warning btn-sm" onclick="OpenEditProduto(' + data.id + ')" title="Alterar registro"><i class="fa fa-edit"></i> </a>';
                     }
                 },
                 { data: "id" },
-                { data: "text" }
+                { data: "text" },
+                {
+                    data: null,
+                    mRender: function (data) {
+                        return data.vlVenda.toFixed(2).replace(".", ",")
+                    }
+                }
 
             ],
         });
@@ -328,37 +335,38 @@
                 });
             }
             else {
-                row.child(SelectPais(row.data())).show();
+                row.child(SelectProduto(row.data())).show();
                 tr.addClass('shown');
                 $('div.slider', row.child()).slideDown();
             }
         });
       }
-    function getTablePaises() {
-        let tmp = `<table id="@Sistema.Util.SelectFunctions.getInputId("list", Prefix)" class="table table-striped table-bordered" style="width:100%" data-url="@Url.Action("JsQuery", "Paises")">
+    function getTableProduto() {
+        let tmp = `<table id="@Sistema.Util.SelectFunctions.getInputId("list", Prefix)" class="table table-striped table-bordered" style="width:100%" data-url="@Url.Action("JsQuery", "Produtos")">
                         <thead>
                             <tr>
                                 <th></th>
                                 <th></th>
                                 <th export="true" style="width:10%">Código</th>
-                                <th export="true" style="width:90%">Nome</th>
+                                <th export="true" style="width:80%">Nome</th>
+                                <th export="true" style="width:10%">Valor</th>
                             </tr>
                         </thead>
                    </table>`;
           return tmp;
     };
 
-    function FecharModalPais() {
+    function FecharModalProduto() {
         $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").modal("hide");
     };
-    function FecharModalCreatePais() {
+    function FecharModalCreateProduto() {
         $("#@Sistema.Util.SelectFunctions.getInputId("ModalCreate", Prefix)").css("overflow", "hidden");
         $("#@Sistema.Util.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("hide");
         $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
-        self.clearPais();
+        self.clearProduto();
     };
 
-    function OpenModalCreatePais() {
+    function OpenModalCreateProduto() {
         $("#@Sistema.Util.SelectFunctions.getInputId("btnUpdate", Prefix)").hide();
         $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "hidden");
         $("#@Sistema.Util.SelectFunctions.getInputId("ModalCreate", Prefix)").css("overflow", "auto");
@@ -369,21 +377,23 @@
         }
     };
 
-    function SelectPais(data) {
+    function SelectProduto(data) {
+        console.log(data)
         $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").modal("hide");
         $("#@Sistema.Util.SelectFunctions.getInputId("id", Prefix)").val(data.id);
         $("#@Sistema.Util.SelectFunctions.getInputId("text", Prefix)").val(data.text);
+        $("#@Sistema.Util.SelectFunctions.getInputId("vlVenda", Prefix)").val(data.vlVenda);
         return false;
     };
 
-    function OpenEditPais(id) {
+    function OpenEditProduto(id) {
         $.ajax({
             dataType: 'json',
             type: 'GET',
-            url: '@Url.Action("JsDetails", "Paises")',
+            url: '@Url.Action("JsDetails", "Produtos")',
             data: { 'id': id },
             success: function (data) {
-                self.clearPais();
+                self.clearProduto();
                 $("#@Sistema.Util.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("show");
                 $("#@Sistema.Util.SelectFunctions.getInputId("isEdit", Prefix)").val("S");
                 if ($("#@Sistema.Util.SelectFunctions.getInputId("isEdit", Prefix)").val() == "S") {

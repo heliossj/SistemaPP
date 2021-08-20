@@ -213,7 +213,7 @@
 
         else if (form.codPais.val() == "" || IsNullOrEmpty(form.codPais.val())) {
             $('#@Sistema.Util.SelectFunctions.getInputId("Pais_id", Prefix)').blink({ msg: "Informe um país!!" });
-            $('#@Sistema.Util.SelectFunctions.getInputId("Pais_ID", Prefix)').focus();
+            $('#@Sistema.Util.SelectFunctions.getInputId("Pais_id", Prefix)').focus();
             valid = false;
         }
         return valid;

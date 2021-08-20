@@ -9,5 +9,7 @@ namespace Sistema.Select.Produtos
     {
         public int? id { get; set; }
         public string text { get; set; }
+
+        public decimal? vlVenda { get; set; }
     }
 }

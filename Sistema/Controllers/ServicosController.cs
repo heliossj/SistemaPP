@@ -208,6 +208,7 @@ namespace Sistema.Controllers
             {
                 id = u.id,
                 text = u.text,
+                vlServico = u.vlServico,
             }).OrderBy(u => u.text).ToList();
             return select.AsQueryable();
         }

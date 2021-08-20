@@ -9,5 +9,6 @@ namespace Sistema.Select.Servicos
     {
         public int? id { get; set; }
         public string text { get; set; }
+        public decimal? vlServico { get; set; }
     }
 }

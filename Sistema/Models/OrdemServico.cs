@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -20,12 +21,21 @@ namespace Sistema.Models
 
         //Cliente
 
+        public Select.Funcionarios.Select Funcionario { get; set; }
+        public Select.Clientes.Select Cliente { get; set; }
+        public Select.CondicaoPagamento.Select CondicaoPagamento { get; set; }
+
+        public decimal? vlServicoTotal { get; set; }
+
         //Condição de pagamento
+
+        public Select.Servicos.Select Servico { get; set; }
+        public Select.Produtos.Select Produto { get; set; }
 
         [Display(Name = "Observação")]
         public string observacao { get; set; }
 
-        public class Servicos
+        public class ServicosVM
         {
             public int? codServico { get; set; }
             public string nomeServico { get; set; }
@@ -34,9 +44,22 @@ namespace Sistema.Models
             public decimal? vlTotal { get; set; }
         }
         
-        public List<Servicos> ServicosOS { get; set; }
+        public string jsServicos { get; set; }
+        public List<ServicosVM> ServicosOS
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(jsServicos))
+                    return new List<ServicosVM>();
+                return JsonConvert.DeserializeObject<List<ServicosVM>>(jsServicos);
+            }
+            set
+            {
+                jsServicos = JsonConvert.SerializeObject(value);
+            }
+        }
 
-        public class Produtos
+        public class ProdutosVM
         {
             public int? codProduto { get; set; }
             public string nomeServico { get; set; }
@@ -45,7 +68,20 @@ namespace Sistema.Models
             public decimal vlTotal { get; set; }
         }
 
-        public List<Produtos> ProdutosOS { get; set; }
+        public string jsProdutos { get; set; }
+        public List<ProdutosVM> ProdutosOS
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(jsProdutos))
+                    return new List<ProdutosVM>();
+                return JsonConvert.DeserializeObject<List<ProdutosVM>>(jsProdutos);
+            }
+            set
+            {
+                jsProdutos = JsonConvert.SerializeObject(value);
+            }
+        }
 
         public static SelectListItem[] Situacao
         {
@@ -60,6 +96,8 @@ namespace Sistema.Models
                 };
             }
         }
+
+
 
     }
 }

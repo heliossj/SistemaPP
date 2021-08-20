@@ -238,6 +238,8 @@
     <Content Include="Scripts\Funcionarios\Create.js" />
     <Content Include="Scripts\Functions.js" />
     <Content Include="Scripts\functionsb3.js" />
+    <Content Include="Scripts\OrdemServico\Details.js" />
+    <Content Include="Scripts\OrdemServico\Create.js" />
     <Content Include="Scripts\tDataTable.js" />
     <Content Include="Scripts\jquery.mask.js" />
     <Content Include="Scripts\jquery.mask.min.js" />
@@ -373,6 +375,8 @@
     <Content Include="Scripts\umd\popper.js" />
     <Content Include="Scripts\umd\popper.min.js" />
     <Content Include="Scripts\_Layout\Layout.css" />
+    <Content Include="Views\favicon.ico" />
+    <Content Include="Views\Shared\EditorTemplates\favicon.ico" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -476,6 +480,10 @@
     <Content Include="Views\Shared\EditorTemplates\CondicaoPagamento\Select.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Grupos\Select.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Fornecedores\Select.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Servicos\Select.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Produtos\Select.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Clientes\Select.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Funcionarios\Select.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -47,7 +47,7 @@ namespace Sistema.DAO
             }
         }
 
-       
+
 
         public bool Insert(Models.FormaPagamento formaPagamento)
         {
@@ -192,8 +192,10 @@ namespace Sistema.DAO
                     {
                         id = Convert.ToInt32(reader["FormaPagamento_ID"]),
                         text = Convert.ToString(reader["FormaPagamento_Nome"]),
+                        situacao = Convert.ToString(reader["FormaPagamento_Situacao"]),
+                        dtCadastro = Convert.ToDateTime(reader["FormaPagamento_DataCadastro"]),
+                        dtUltAlteracao = Convert.ToDateTime(reader["FormaPagamento_DataUltAlteracao"])
                     };
-
                     list.Add(formaPagamento);
                 }
 

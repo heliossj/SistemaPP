@@ -231,7 +231,8 @@ namespace Sistema.Controllers
             var select = list.Select(u => new
             {
                 id = u.id,
-                text = u.text
+                text = u.text,
+                vlVenda = u.vlVenda
             }).OrderBy(u => u.text).ToList();
             return select.AsQueryable();
         }

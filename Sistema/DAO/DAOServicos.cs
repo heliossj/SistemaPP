@@ -91,7 +91,7 @@ namespace Sistema.DAO
                 string sql = "UPDATE tbservicos SET nomeservico = '"
                     + this.FormatString(servicos.nomeServico) + "'," +
                     " descricao = '" + (!string.IsNullOrEmpty(servicos.descricao) ? this.FormatString(servicos.descricao) : "") + "'," +
-                    " vlservico = " + servicos.vlServico.ToString().Replace(",", ".") + ", "+
+                    " vlservico = " + servicos.vlServico.ToString().Replace(",", ".") + ", " +
                     " situacao = '" + servicos.situacao.ToUpper().Trim() + "'," +
                     " dtultalteracao = '" + DateTime.Now.ToString("yyyy-MM-dd")
                     + "' WHERE codservico = " + servicos.codigo;
@@ -199,10 +199,10 @@ namespace Sistema.DAO
                     {
                         id = Convert.ToInt32(reader["Servico_ID"]),
                         text = Convert.ToString(reader["Servico_Nome"]),
+                        vlServico = Convert.ToDecimal(reader["Servico_Valor"])
                     };
                     list.Add(servico);
                 }
-
                 return list;
             }
             catch (Exception error)

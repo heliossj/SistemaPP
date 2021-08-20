@@ -192,6 +192,10 @@ namespace Sistema.DAO
                     {
                         id = Convert.ToInt32(reader["Grupo_ID"]),
                         text = Convert.ToString(reader["Grupo_Nome"]),
+                        situacao = Convert.ToString(reader["Grupo_Situacao"]),
+                        observacao = Convert.ToString(reader["Grupo_Observacao"]),
+                        dtCadastro = Convert.ToDateTime(reader["Grupo_DataCadastro"]),
+                        dtUltAlteracao = Convert.ToDateTime(reader["Grupo_DataUltAlteracao"]),
                     };
 
                     list.Add(grupo);

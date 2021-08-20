@@ -94,8 +94,8 @@ namespace Sistema.DAO
                 string sql = "UPDATE tbcidades SET nomecidade = '"
                     + this.FormatString(cidade.nomeCidade) + "'," +
                     " ddd = '" + this.FormatString(cidade.ddd) + "'," +
-                    " sigla = '" + this.FormatString(cidade.sigla) + "',"+
-                    " dtultalteracao = '" + DateTime.Now.ToString("yyyy-MM-dd") + "',"+
+                    " sigla = '" + this.FormatString(cidade.sigla) + "'," +
+                    " dtultalteracao = '" + DateTime.Now.ToString("yyyy-MM-dd") + "'," +
                     " codestado = " + cidade.Estado.id +
                     " WHERE codcidade = " + cidade.codigo;
                 OpenConnection();
@@ -204,6 +204,15 @@ namespace Sistema.DAO
                     {
                         id = Convert.ToInt32(reader["Cidade_ID"]),
                         text = Convert.ToString(reader["Cidade_Nome"]),
+                        ddd = Convert.ToString(reader["Cidade_DDD"]),
+                        sigla = Convert.ToString(reader["Cidade_Sigla"]),
+                        dtCadastro = Convert.ToDateTime(reader["Cidade_DataCadastro"]),
+                        dtUltAlteracao = Convert.ToDateTime(reader["Cidade_DataUltAlteracao"]),
+                        EstadoSelect = new Select.Estados.Select
+                        {
+                            id = Convert.ToInt32(reader["Estado_ID"]),
+                            text = Convert.ToString(reader["Estado_Nome"]),
+                        }
                     };
 
                     list.Add(cidade);

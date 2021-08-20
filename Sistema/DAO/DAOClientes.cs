@@ -304,7 +304,7 @@ namespace Sistema.DAO
                     var cliente = new Select.Clientes.Select
                     {
                         id = Convert.ToInt32(reader["Cliente_ID"]),
-                        text = Convert.ToString(reader["Cliente_Nome"]),
+                        text = Convert.ToString(reader["Cliente_RazaoSocial_NomeCliente"]),
                     };
 
                     list.Add(cliente);

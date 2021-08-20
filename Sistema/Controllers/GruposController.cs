@@ -198,6 +198,10 @@ namespace Sistema.Controllers
             {
                 id = u.id,
                 text = u.text,
+                situacao = u.situacao, 
+                observacao = u.observacao,
+                dtCadastro = u.dtCadastro,
+                dtUltAlteracao = u.dtUltAlteracao,
             }).OrderBy(u => u.text).ToList();
             return select.AsQueryable();
         }

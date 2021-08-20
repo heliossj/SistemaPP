@@ -248,9 +248,8 @@ namespace Sistema.DAO
                     {
                         id = Convert.ToInt32(reader["Produto_ID"]),
                         text = Convert.ToString(reader["Produto_Nome"]),
-
+                        vlVenda = Convert.ToDecimal(reader["Produto_VlVenda"])
                     };
-
                     list.Add(produto);
                 }
 

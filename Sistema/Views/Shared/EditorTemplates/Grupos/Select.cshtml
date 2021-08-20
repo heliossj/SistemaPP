@@ -5,23 +5,24 @@
     bool Required = Convert.ToBoolean(ViewData["Required"] ?? true);
     bool OnlySelect = Convert.ToBoolean(ViewData["onlySelect"] ?? true);
     bool LabelVertical = Convert.ToBoolean(ViewData["LabelVertical"]);
-    string Label = Convert.ToString(ViewData["Label"] ?? "Grupo");
+    string Label = Convert.ToString(ViewData["Label"] ?? "Grupos");
     string classLabel = Convert.ToString(ViewData["classLabel"] ?? Util.Input12);
     string classForm = Convert.ToString(ViewData["classForm"] ?? Util.Input12);
     var Prefix = Html.ClientPrefixName().ToString();
+    string action = Convert.ToString(ViewBag.Action);
 }
 
 @Html.Hidden("isEdit")
-
+@Html.HiddenFor(k => action)
 <div class="@classForm">
-    @Html.Label("", Label, new { @class = "required" })
+    @Html.LabelFor(model => model.id, Label, new { @class = "required" })
     <div class="input-group">
         @Html.TextBoxFor(model => model.id, new { @style = "border-radius: 4px 0px 0px 4px; width: 15%;", @class = "form-control number", maxLength = "6" })
         @Html.TextBoxFor(model => model.text, new { @class = "form-control", @style = "width:70%", Disabled = true })
         <a style="border-radius:0px 3px 3px 0px" data-target="#@Sistema.Util.SelectFunctions.getInputId("Modal", Prefix)" id="@Sistema.Util.SelectFunctions.getInputId("btn-localizar", Prefix)" title="Abrir a busca de @Label" class="btn btn-success" data-toggle="modal"><i class="fa fa-search"></i></a>
-        @Html.ValidationMessageFor(model => model.id, null, new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.text)
+        @Html.HiddenFor(k => k.text)
     </div>
+    @Html.ValidationMessageFor(model => model.id, null, new { @class = "text-danger" })
 </div>
 
 <div id="@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)" class="modal fade" data-backdrop="static" data-keyboard="false" role="dialog">
@@ -29,19 +30,18 @@
         <div class="modal-content">
             <div class="modal-body no-padding">
                 <div class="panel panel-primary" style="margin-bottom: -1px;">
-
                     <div class="panel-heading" style="height: 41px; padding-left:2px;font-weight: bold;">
                         <h3 class="panel-title pull-right"><button type="button" style="opacity: inherit;color: #fff;" class="close" data-dismiss="modal">&times;</button></h3>
                         <ul class="nav panel-tabs" style="width:400px">
-                            <li class="active"><a data-event="true" style="margin-top:1px;color: black;" data-toggle="tab"><b><i class="fa fa-list-alt" aria-hidden="true"></i> Grupos </b></a></li>
+                            <li class="active"><a data-event="true" style="margin-top:1px;color: black;" data-toggle="tab"><b><i class="fa fa-list" aria-hidden="true"></i> Países </b></a></li>
                         </ul>
                     </div>
 
-                    <div style="text-align:right">
-                        <button id="@Sistema.Util.SelectFunctions.getInputId("Create", Prefix)" onclick="OpenModalCreate()" type="button" class="btn btn-success"><i class="fa fa-plus"></i>  Adicionar</button>
+                    <div style="text-align:right; margin-right:15px">
+                        <button id="@Sistema.Util.SelectFunctions.getInputId("Create", Prefix)" onclick="OpenModalCreateGrupos()" type="button" class="btn btn-success"><i class="fa fa-plus"></i>  Adicionar</button>
                     </div>
 
-                    <div id="body" class="modal-body" style="padding: 33px 0px 0px 0px;">
+                    <div id="body" class="modal-body" style="padding: 3px 0px 0px 0px;">
                         <div class="container-fluid">
                             <div id="TableGrupos"></div>
                         </div>
@@ -49,7 +49,7 @@
 
                     <div class="modal-footer">
                         <div style="text-align:right">
-                            <button id="@Sistema.Util.SelectFunctions.getInputId("Fechar", Prefix)" onclick="FecharModal()" type="button" class="btn btn-outline-dark"><i class="fa fa-times"></i> Fechar</button>
+                            <button id="@Sistema.Util.SelectFunctions.getInputId("Fechar", Prefix)" onclick="FecharModalGrupos()" type="button" class="btn btn-outline-dark"><i class="fa fa-times"></i> Fechar</button>
                         </div>
                     </div>
 
@@ -75,32 +75,35 @@
 
                             <div class="form-row isEdit">
                                 <div class="@Util.Input2">
-                                    @Html.Label("codPais", "Código")
-                                    @Html.TextBox("codPais", null, new { @class = "form-control", disabled = true })
+                                    @Html.Label("codGrupo", "Código")
+                                    @Html.TextBox("codGrupo", null, new { @class = "form-control", disabled = true })
                                 </div>
                             </div>
 
                             <div class="form-row">
-                                <div class="@Util.Input6">
-                                    @Html.Label("nomePais", "País", new { @class = "required" })
-                                    @Html.TextBox("nomePais", null, new { @class = "form-control", maxlength = "50", style = "text-transform:uppercase" })
-                                    @Html.ValidationMessage("nomePais", null, new { @class = "text-danger" })
-                                </div>
-
                                 <div class="@Util.Input3">
-                                    @Html.Label("ddi", "DDI", new { @class = "required" })
-                                    @Html.TextBox("ddi", null, new { @class = "form-control", maxlength = "5", style = "text-transform:uppercase" })
+                                    @Html.Label("situacao", "Situação", new { @class = "required" })
+                                    @Html.DropDownList("situacao", Sistema.Models.Grupos.Situacao, new { @class = "form-control" })
                                 </div>
+                            </div>
 
-                                <div class="@Util.Input3">
-                                    @Html.Label("sigla", "Sigla", new { @class = "required" })
-                                    @Html.TextBox("sigla", null, new { @class = "form-control", maxlength = "2", style = "text-transform:uppercase" })
+                            <div class="form-row">
+                                <div class="@Util.Input12">
+                                    @Html.Label("nomeGrupo", "Grupo", new { @class = "required" })
+                                    @Html.TextBox("nomeGrupo", null, new { @class = "form-control", maxlength = "50", style = "text-transform:uppercase" })
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="@Util.Input12">
+                                    @Html.Label("observacao", "Observação", new { @class = "no-required" })
+                                    @Html.TextArea("observacao", null, new { @class = "form-control", maxlength = "500", style = "text-transform:uppercase" })
                                 </div>
                             </div>
 
                             <div class="form-row isEdit">
                                 <div class="@Util.Input3">
-                                    @Html.Label("dtCadastro", "Data de cadastro", new { @class = "required" })
+                                    @Html.Label("dtCadastro", "Data de cadastro", new { @class = "no-required" })
                                     <div class="input-group-append">
                                         @Html.TextBox("dtCadastro", null, new { @class = "form-control", disabled = true })
                                         <span class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></span>
@@ -108,22 +111,20 @@
                                 </div>
 
                                 <div class="@Util.Input3 ">
-                                    @Html.Label("dtUltAlteracao", "Data de cadastro", new { @class = "required" })
+                                    @Html.Label("dtUltAlteracao", "Data de cadastro", new { @class = "no-required" })
                                     <div class="input-group">
                                         @Html.TextBox("dtUltAlteracao", null, new { @class = "form-control", disabled = true })
                                         <div class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></div>
                                     </div>
                                 </div>
                             </div>
-
-
                         </div>
                     </div>
 
                     <div class="modal-footer">
                         <div style="text-align:right">
                             <button id="@Sistema.Util.SelectFunctions.getInputId("btnSave", Prefix)" type="button" class="btn btn-success"><i class="fa fa-save"></i>  Salvar</button>
-                            <button id="@Sistema.Util.SelectFunctions.getInputId("FecharCreate", Prefix)" onclick="FecharModalCreate()" type="button" class="btn btn-danger"><i class="fa fa-ban"></i>  Cancelar</button>
+                            <button id="@Sistema.Util.SelectFunctions.getInputId("FecharCreate", Prefix)" onclick="FecharModalCreateGrupos()" type="button" class="btn btn-danger"><i class="fa fa-ban"></i>  Cancelar</button>
                         </div>
                     </div>
                 </div>
@@ -142,7 +143,7 @@
          });
 
          $('#@Sistema.Util.SelectFunctions.getInputId("btnSave", Prefix)').on('click', function () {
-                self.save();
+                self.saveGrupos();
          });
 
          $('#@Sistema.Util.SelectFunctions.getInputId("id", Prefix)').change(function (data, e) {
@@ -158,7 +159,7 @@
                      data: { 'id': id },
                      success: function (data) {
                          if (!data) {
-                             $.notify({ message: 'Nenhum registro encontrado para o código informado', icon: 'fa fa-exclamation' }, { type: 'danger' } );
+                             $.notify({ message: 'Nenhum registro encontrado para o código informado', icon: 'fa fa-exclamation' }, { type: 'danger', z_index: 2000 } );
                          }
                          $("#@Sistema.Util.SelectFunctions.getInputId("id", Prefix)").val(data.id);
                          $("#@Sistema.Util.SelectFunctions.getInputId("text", Prefix)").val(data.text);
@@ -173,76 +174,69 @@
 
      });
 
-    this.getForm = function() {
+    this.getFormGrupos = function() {
         var form = {
-                codPais : $('#@Sistema.Util.SelectFunctions.getInputId("codPais", Prefix)'),
-                nomePais: $('#@Sistema.Util.SelectFunctions.getInputId("nomePais", Prefix)'),
-                ddi: $('#@Sistema.Util.SelectFunctions.getInputId("ddi", Prefix)'),
-                sigla: $('#@Sistema.Util.SelectFunctions.getInputId("sigla", Prefix)'),
+                codGrupo: $('#@Sistema.Util.SelectFunctions.getInputId("codGrupo", Prefix)'),
+                nomeGrupo: $('#@Sistema.Util.SelectFunctions.getInputId("nomeGrupo", Prefix)'),
+                situacao: $('#@Sistema.Util.SelectFunctions.getInputId("situacao", Prefix)'),
+                observacao: $('#@Sistema.Util.SelectFunctions.getInputId("observacao", Prefix)'),
                 dtCadastro: $('#@Sistema.Util.SelectFunctions.getInputId("dtCadastro", Prefix)'),
                 dtUltAlteracao: $('#@Sistema.Util.SelectFunctions.getInputId("dtUltAlteracao", Prefix)'),
         }
         return form;
     };
 
-    this.clear = function () {
-        var form = self.getForm();
-        form.codPais.val("");
-        form.nomePais.val("");
-        form.ddi.val("");
-        form.sigla.val("");
+    this.clearGrupos = function () {
+        var form = self.getFormGrupos();
+        form.codGrupo.val("");
+        form.nomeGrupo.val("");
+        form.observacao.val("");
         form.dtCadastro.val("");
+        form.situacao.val("");
         form.dtUltAlteracao.val("");
-        form.nomePais.focus();
     };
 
-    this.isValid = function () {
+    this.isValidGrupos = function () {
         var valid = true;
-        var form = self.getForm();
+        var form = self.getFormGrupos();
 
-        if (IsNullOrEmpty(form.nomePais.val())) {
-            form.nomePais.blink({ msg: "Campo país é obrigatório" });
-            form.nomePais.focus();
+        if (IsNullOrEmpty(form.situacao.val())) {
+            form.situacao.blink({ msg: "Informe a situação" });
+            form.situacao.focus();
             valid = false;
         }
 
-        else if (IsNullOrEmpty(form.ddi.val())) {
-            form.ddi.blink({ msg: "Campo DDI é obrigatório" });
-            form.ddi.focus();
+        else if (IsNullOrEmpty(form.nomeGrupo.val())) {
+            form.nomeGrupo.blink({ msg: "Campo grupo é obrigatório" });
+            form.nomeGrupo.focus();
             valid = false;
         }
 
-        else if (IsNullOrEmpty(form.sigla.val())) {
-            form.sigla.blink({ msg: "Campo sigla é obrigatório" });
-            form.sigla.focus();
-            valid = false;
-        }
         return valid;
     };
 
-    getModel = function (form) {
+    getModelGrupos = function (form) {
         var model = {
-            codPais: form.codPais.val(),
-            nomePais: form.nomePais.val(),
-            ddi: form.ddi.val(),
-            sigla: form.sigla.val(),
+            codigo: form.codGrupo.val(),
+            nomeGrupo: form.nomeGrupo.val(),
+            observacao: form.observacao.val(),
+            situacao: form.situacao.val()
         }
         return model;
     };
 
-    this.save = function () {
+    this.saveGrupos = function () {
         if ($('#@Sistema.Util.SelectFunctions.getInputId("isEdit", Prefix)').val() == "S") {
-            this.update();
+            this.updateGrupos();
         } else {
-            this.insert();
+            this.insertGrupos();
         }
     }
 
-    this.insert = function () {
-        var form = self.getForm();
-        var model = getModel(form);
-
-        if (self.isValid(model)) {
+    this.insertGrupos = function () {
+        var form = self.getFormGrupos();
+        var model = getModelGrupos(form);
+        if (self.isValidGrupos(model)) {
 
             $.ajax({
                 dataType: 'json',
@@ -250,11 +244,11 @@
                 url: '@Url.Action("jsCreate", "Grupos")',
                 data: model,
                 success: function (data) {
-                    self.clear();
+                    self.clearGrupos();
                     InitModalGrupos();
                     $("#@Sistema.Util.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("hide");
                     $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
-                    $.notify({ message: data.message, icon: 'fa fa-exclamation' }, { type: 'success', z_index: 2000, });
+                    $.notify({ message: data.message, icon: 'fa fa-exclamation' }, { type: 'success', z_index: 2000 });
 
                 },
                 error: function (request) {
@@ -264,24 +258,22 @@
         }
     };
 
-    this.update = function () {
-        var form = self.getForm();
-        var model = getModel(form);
-
-        if (self.isValid(model)) {
-
+    this.updateGrupos = function () {
+        //debugger;
+        var form = self.getFormGrupos();
+        var model = getModelGrupos(form);
+        if (self.isValidGrupos(model)) {
             $.ajax({
                 dataType: 'json',
                 type: 'POST',
                 url: '@Url.Action("jsUpdate", "Grupos")',
                 data: model,
                 success: function (data) {
-                    console.log(data)
-                    self.clear();
+                    self.clearGrupos();
                     InitModalGrupos();
                     $("#@Sistema.Util.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("hide");
                     $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
-                    $.notify({ message: data.message, icon: 'fa fa-exclamation' }, { type: 'success', z_index: 2000, });
+                    $.notify({ message: data.message, icon: 'fa fa-exclamation' }, { type: 'success', z_index: 2000 });
                 },
             });
         }
@@ -293,8 +285,8 @@
         let lis = getTableGrupos();
         $("#TableGrupos").append(lis);
 
-        table = $('#lista').DataTable({
-                ajax: { url: $('#lista').attr('data-url') },
+        table = $('#@Sistema.Util.SelectFunctions.getInputId("list", Prefix)').DataTable({
+            ajax: { url: $('#@Sistema.Util.SelectFunctions.getInputId("list", Prefix)').attr('data-url') },
                 language: {
                     url: 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Portuguese-Brasil.json',
             },
@@ -311,7 +303,7 @@
                     sortable: false,
                     data: null,
                     mRender: function (data) {
-                        return '<a class="btn btn-warning btn-sm" onclick="OpenEdit(' + data.id + ')" title="Alterar registro"><i class="fa fa-edit"></i> </a>';
+                        return '<a class="btn btn-warning btn-sm" onclick="OpenEditGrupos(' + data.id + ')" title="Alterar registro"><i class="fa fa-edit"></i> </a>';
                     }
                 },
                 { data: "id" },
@@ -321,7 +313,7 @@
         });
         $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").modal("show");
 
-        $('#lista tbody').on('click', 'td.details-control', function () {
+        $('#@Sistema.Util.SelectFunctions.getInputId("list", Prefix) tbody').on('click', 'td.details-control', function () {
             var tr = $(this).closest('tr');
             var row = table.row(tr);
             if (row.child.isShown()) {
@@ -338,7 +330,7 @@
         });
       }
     function getTableGrupos() {
-        let tmp = `<table id="lista" class="table table-striped table-bordered" style="width:100%" data-url="@Url.Action("JsQuery", "Grupos")">
+        let tmp = `<table id="@Sistema.Util.SelectFunctions.getInputId("list", Prefix)" class="table table-striped table-bordered" style="width:100%" data-url="@Url.Action("JsQuery", "Grupos")">
                         <thead>
                             <tr>
                                 <th></th>
@@ -351,17 +343,17 @@
           return tmp;
     };
 
-    function FecharModal() {
+    function FecharModalGrupos() {
         $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").modal("hide");
     };
-    function FecharModalCreate() {
+    function FecharModalCreateGrupos() {
         $("#@Sistema.Util.SelectFunctions.getInputId("ModalCreate", Prefix)").css("overflow", "hidden");
         $("#@Sistema.Util.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("hide");
         $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
-        self.clear();
+        self.clearGrupos();
     };
 
-    function OpenModalCreate() {
+    function OpenModalCreateGrupos() {
         $("#@Sistema.Util.SelectFunctions.getInputId("btnUpdate", Prefix)").hide();
         $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "hidden");
         $("#@Sistema.Util.SelectFunctions.getInputId("ModalCreate", Prefix)").css("overflow", "auto");
@@ -370,7 +362,6 @@
         if ($("#@Sistema.Util.SelectFunctions.getInputId("isEdit", Prefix)").val() == "N") {
             $(".isEdit").hide();
         }
-
     };
 
     function SelectGrupos(data) {
@@ -380,26 +371,24 @@
         return false;
     };
 
-    function OpenEdit(id) {
+    function OpenEditGrupos(id) {
         $.ajax({
             dataType: 'json',
             type: 'GET',
             url: '@Url.Action("JsDetails", "Grupos")',
             data: { 'id': id },
             success: function (data) {
-                self.clear();
+                self.clearGrupos();
                 $("#@Sistema.Util.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("show");
                 $("#@Sistema.Util.SelectFunctions.getInputId("isEdit", Prefix)").val("S");
                 if ($("#@Sistema.Util.SelectFunctions.getInputId("isEdit", Prefix)").val() == "S") {
                     $(".isEdit").show();
                 }
-
-                $("#@Sistema.Util.SelectFunctions.getInputId("codPais", Prefix)").val(data.id);
-                $("#@Sistema.Util.SelectFunctions.getInputId("nomePais", Prefix)").val(data.text);
-                $("#@Sistema.Util.SelectFunctions.getInputId("ddi", Prefix)").val(data.ddi);
-                $("#@Sistema.Util.SelectFunctions.getInputId("sigla", Prefix)").val(data.sigla);
+                $("#@Sistema.Util.SelectFunctions.getInputId("codGrupo", Prefix)").val(data.id);
+                $("#@Sistema.Util.SelectFunctions.getInputId("nomeGrupo", Prefix)").val(data.text);
+                $("#@Sistema.Util.SelectFunctions.getInputId("situacao", Prefix)").val(data.situacao);
+                $("#@Sistema.Util.SelectFunctions.getInputId("observacao", Prefix)").val(data.observacao);
                 $("#@Sistema.Util.SelectFunctions.getInputId("dtCadastro", Prefix)").val(JSONDate(data.dtCadastro));
-
                 $("#@Sistema.Util.SelectFunctions.getInputId("dtUltAlteracao", Prefix)").val(JSONDate(data.dtUltAlteracao));
 
                 $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");

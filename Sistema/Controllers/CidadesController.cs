@@ -208,6 +208,15 @@ namespace Sistema.Controllers
             {
                 id = u.id,
                 text = u.text,
+                ddd = u.ddd,
+                sigla = u.sigla,
+                Estado = new
+                {
+                    id = u.EstadoSelect.id,
+                    text = u.EstadoSelect.text
+                },
+                dtCadastro = u.dtCadastro,
+                dtUltAlteracao = u.dtUltAlteracao
             }).OrderBy(u => u.text).ToList();
             return select.AsQueryable();
         }

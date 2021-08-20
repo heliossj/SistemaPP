@@ -15,7 +15,11 @@ namespace Sistema.Controllers
 
         public ActionResult Create()
         {
-            return View();
+            var model = new Models.OrdemServico()
+            {
+                dtAbertura = DateTime.Now,
+            };
+            return View(model);
         }
 
         public ActionResult Details()
