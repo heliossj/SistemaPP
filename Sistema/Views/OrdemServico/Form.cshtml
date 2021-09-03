@@ -3,7 +3,6 @@
 @{
     bool readOnly = Convert.ToBoolean(ViewBag.ReadOnly);
     string action = Convert.ToString(ViewBag.Action);
-    Model.vlServicoTotal = 0;
 }
 
 
@@ -56,15 +55,17 @@
     <div class="separador"></div>
 
     <div class="form-row">
-        @Html.EditorFor(model => model.Servico, "Servicos/Select", new { Disabled = false, Required = true, classForm = Util.Input9 })
+        @Html.EditorFor(model => model.Servico, "Servicos/Select", new { Disabled = false, Required = true, classForm = Util.Input10, @flValor = "S" })
+    </div>
 
+    <div class="form-row">
         <div class="@Util.Input2">
             @Html.Label("qtServico", "Quantidade", new { @class = "required" })
             @Html.TextBox("qtServico", "", new { @class = "form-control money", placeholder = "0,00", style = "text-align: right" })
         </div>
 
-        <div>
-            <button id="addServico" type="button" class="btn btn-success btn-lg" style="margin-top:35px; font-size:14px" title="Adicionar"><i class="fa fa-plus"></i></button>
+        <div style="margin-block:-1px">
+            <button id="addServico" type="button" class="btn btn-success btn-lg" style="margin-top:35px; font-size:14px" title="Adicionar"><b>Adicionar </b> <i class="fa fa-plus"></i></button>
         </div>
     </div>
 
@@ -94,18 +95,18 @@
     <div class="separador"></div>
 
     <div class="form-row">
+        @Html.EditorFor(model => model.Produto, "Produtos/Select", new { Disabled = false, Required = true, classForm = Util.Input10, @flValor = "S" })
+    </div>
 
-        @Html.EditorFor(model => model.Produto, "Produtos/Select", new { Disabled = false, Required = true, classForm = Util.Input9 })
-
+    <div class="form-row">
         <div class="@Util.Input2">
             @Html.Label("qtProduto", "Quantidade", new { @class = "required" })
             @Html.TextBox("qtProduto", "", new { @class = "form-control money", placeholder = "0,00", style = "text-align: right" })
         </div>
 
-        <div>
-            <button id="addProduto" type="button" class="btn btn-success btn-lg" style="margin-top:35px; font-size:14px" title="Adicionar"><i class="fa fa-plus"></i></button>
+        <div style="margin-block:-1px">
+            <button id="addProduto" type="button" class="btn btn-success btn-lg" style="margin-top:35px; font-size:14px" title="Adicionar"><b>Adicionar </b> <i class="fa fa-plus"></i></button>
         </div>
-
     </div>
 
     @Html.HiddenFor(model => model.jsProdutos)

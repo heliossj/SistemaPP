@@ -128,6 +128,10 @@
     <Compile Include="App_Start\BinderConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\ComprasController.cs" />
+    <Compile Include="Controllers\ContasReceber.cs" />
+    <Compile Include="Controllers\ContasPagar.cs" />
+    <Compile Include="Controllers\VendasController.cs" />
     <Compile Include="Controllers\OrdemServicoController.cs" />
     <Compile Include="Controllers\ServicosController.cs" />
     <Compile Include="Controllers\ProdutosController.cs" />
@@ -161,6 +165,8 @@
     <Compile Include="DataTables\IDataTablesRequest.cs" />
     <Compile Include="DataTables\NameValueCollectionExtensions.cs" />
     <Compile Include="DataTables\Search.cs" />
+    <Compile Include="Models\Vendas.cs" />
+    <Compile Include="Models\Compras.cs" />
     <Compile Include="Models\Pessoas.cs" />
     <Compile Include="Models\Pai.cs" />
     <Compile Include="Models\DataAccess.cs" />
@@ -231,6 +237,9 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\Clientes\Create.js" />
+    <Content Include="Scripts\Vendas\Create.js" />
+    <Content Include="Scripts\Vendas\Details.js" />
+    <Content Include="Scripts\Vendas\Index.js" />
     <Content Include="Scripts\CondicaoPagamento\Details.js" />
     <Content Include="Scripts\CondicaoPagamento\Create.js" />
     <Content Include="Scripts\bootstrap-notify.js" />
@@ -238,6 +247,9 @@
     <Content Include="Scripts\Funcionarios\Create.js" />
     <Content Include="Scripts\Functions.js" />
     <Content Include="Scripts\functionsb3.js" />
+    <Content Include="Scripts\Compras\Create.js" />
+    <Content Include="Scripts\Compras\Details.js" />
+    <Content Include="Scripts\Compras\Index.js" />
     <Content Include="Scripts\OrdemServico\Details.js" />
     <Content Include="Scripts\OrdemServico\Create.js" />
     <Content Include="Scripts\tDataTable.js" />
@@ -484,6 +496,18 @@
     <Content Include="Views\Shared\EditorTemplates\Produtos\Select.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Clientes\Select.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Funcionarios\Select.cshtml" />
+    <Content Include="Views\Compras\Create.cshtml" />
+    <Content Include="Views\Compras\Delete.cshtml" />
+    <Content Include="Views\Compras\Details.cshtml" />
+    <Content Include="Views\Compras\Edit.cshtml" />
+    <Content Include="Views\Compras\Form.cshtml" />
+    <Content Include="Views\Compras\Index.cshtml" />
+    <Content Include="Views\Vendas\Create.cshtml" />
+    <Content Include="Views\Vendas\Delete.cshtml" />
+    <Content Include="Views\Vendas\Details.cshtml" />
+    <Content Include="Views\Vendas\Edit.cshtml" />
+    <Content Include="Views\Vendas\Form.cshtml" />
+    <Content Include="Views\Vendas\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

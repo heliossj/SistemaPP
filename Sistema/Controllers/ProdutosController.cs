@@ -52,6 +52,10 @@ namespace Sistema.Controllers
             {
                 ModelState.AddModelError("ncm", "Informe o NCM");
             }
+            if (string.IsNullOrWhiteSpace(model.cfop))
+            {
+                ModelState.AddModelError("cfop", "Informe o CFOP");
+            }
             if (model.vlCusto == null || model.vlCusto <= 0)
             {
                 ModelState.AddModelError("vlCusto", "Informe o valor de custo");
@@ -104,6 +108,10 @@ namespace Sistema.Controllers
             if (string.IsNullOrWhiteSpace(model.ncm))
             {
                 ModelState.AddModelError("ncm", "Informe o NCM");
+            }
+            if (string.IsNullOrWhiteSpace(model.cfop))
+            {
+                ModelState.AddModelError("cfop", "Informe o CFOP");
             }
             if (model.vlCusto == null || model.vlCusto <= 0)
             {

@@ -25,8 +25,6 @@ namespace Sistema.Models
         public Select.Clientes.Select Cliente { get; set; }
         public Select.CondicaoPagamento.Select CondicaoPagamento { get; set; }
 
-        public decimal? vlServicoTotal { get; set; }
-
         //Condição de pagamento
 
         public Select.Servicos.Select Servico { get; set; }
@@ -64,7 +62,7 @@ namespace Sistema.Models
             public int? codProduto { get; set; }
             public string nomeServico { get; set; }
             public decimal? vlUnitario { get; set; }
-            public decimal? qtServico { get; set; }
+            public decimal? qtProduto { get; set; }
             public decimal vlTotal { get; set; }
         }
 

@@ -30,6 +30,9 @@ namespace Sistema.Models
         [Display(Name = "NCM")]
         public string ncm { get; set; }
 
+        [Display(Name = "CFOP")]
+        public string cfop { get; set; }
+
         [Display(Name = "Quant. estoque")]
         public decimal? qtEstoque { get; set; }
 

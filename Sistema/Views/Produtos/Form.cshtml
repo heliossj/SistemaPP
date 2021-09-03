@@ -24,7 +24,6 @@
     </div>
 </div>
 
-
 <div class="form-row">
     <div class="@Util.Input8">
         @Html.LabelFor(model => model.nomeProduto, new { @class = "required" })
@@ -56,8 +55,14 @@
 <div class="form-row">
     <div class="@Util.Input3">
         @Html.LabelFor(model => model.ncm, new { @class = "required" })
-        @Html.TextBoxFor(model => model.ncm, new { @class = "form-control", maxlength = "10", style = "text-transform:uppercase", minlength = "3" })
+        @Html.TextBoxFor(model => model.ncm, new { @class = "form-control number", maxlength = "10", minlength = "3" })
         @Html.ValidationMessageFor(model => model.ncm, null, new { @class = "text-danger" })
+    </div>
+
+    <div class="@Util.Input3">
+        @Html.LabelFor(model => model.cfop, new { @class = "required" })
+        @Html.TextBoxFor(model => model.cfop, new { @class = "form-control number", maxlength = "4" })
+        @Html.ValidationMessageFor(model => model.cfop, null, new { @class = "text-danger" })
     </div>
 
     <div class="@Util.Input3">

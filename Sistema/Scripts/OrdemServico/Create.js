@@ -11,6 +11,13 @@
     });
 
     $(document).on("tblServicoAfterDelete", OS.calcTotalServico);
+    $(document).on("tblProdutoAfterDelete", OS.calcTotalProduto);
+
+    $(document).on("tblProdutoOpenEdit", OS.openEditProduto);
+    $(document).on("tblProdutoCancelEdit", OS.clearProduto);
+
+    $(document).on("tblServicoOpenEdit", OS.openEditServico);
+    $(document).on("tblServicoCancelEdit", OS.clearServico);
 
 });
 
@@ -68,8 +75,6 @@ OrdemServico = function () {
                     {
                         data: null,
                         mRender: function (data) {
-                            vlUnitario.toFixed(2);
-
                             return data.vlUnitario.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
                         }
                     },
@@ -121,10 +126,13 @@ OrdemServico = function () {
             valid = false;
         }
 
-        else if (dtServicos.exists("codServico", $("#Servico_id").val())) {
-            $("#Servico_id").blink({ msg: "Serviço já informado, verifique!" });
-            valid = false;
+        if (!dtServicos.isEdit) {
+            if (dtServicos.exists("codServico", $("#Servico_id").val())) {
+                $("#Servico_id").blink({ msg: "Serviço já informado, verifique!" });
+                valid = false;
+            }
         }
+
 
         return valid;
     }
@@ -133,7 +141,8 @@ OrdemServico = function () {
         $("#Servico_id").val("");
         $("#Servico_text").val("");
         $("#Servico_vlServico").val("");
-        $("#qtServico").val("")
+        $("#qtServico").val("");
+        $('input[name="Servico.id"]').prop('disabled', false)
     }
 
     self.addServico = function () {
@@ -146,7 +155,8 @@ OrdemServico = function () {
                 qtServico: model.qtServico,
                 vlTotal: model.vlTotal
             }
-            dtServicos.addItem(item);
+            //dtServicos.addItem(item);
+            self.saveServico(item);
             self.clearServico();
             self.calcTotalServico();
         }
@@ -162,6 +172,24 @@ OrdemServico = function () {
         }
         total = total.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
         $("#fts").text("Total: " + total);
+    }
+
+    self.openEditServico = function (e, data) {
+        let item = dtServicos.dataSelected.item;
+        console.log(item)
+        $("#Servico_id").val(item.codServico);
+        $("#Servico_text").val(item.nomeServico);
+        $("#Servico_vlServico").val(item.vlUnitario);
+        $("#qtServico").val(item.qtServico);
+        $('input[name="Servico.id"]').prop('disabled', true)
+    }
+
+    self.saveServico = function (data) {
+        if (dtServicos.isEdit) {
+            dtServicos.editItem(data);
+        } else {
+            dtServicos.addItem(data)
+        }
     }
 
     //Produto
@@ -182,11 +210,13 @@ OrdemServico = function () {
     self.validProduto = function () {
         let valid = true;
 
+
         if (IsNullOrEmpty($("#Produto_id").val()) || $("#Produto_id").val() == "") {
             $("#Produto_id").blink({ msg: "Informe o produto" });
             $("#Produto_id").focus();
             valid = false;
         }
+
 
         else if (IsNullOrEmpty($("#qtProduto").val()) || $("#qtProduto").val() == "" || $("#qtProduto").val() == 0) {
             $("#qtProduto").blink({ msg: "Informe a quantidade" });
@@ -194,9 +224,11 @@ OrdemServico = function () {
             valid = false;
         }
 
-        else if (dtProdutos.exists("codProduto", $("#Produto_id").val())) {
-            $("#Produto_id").blink({ msg: "Produto já informado, verifique!" });
-            valid = false;
+        if (!dtProdutos.isEdit) {
+            if (dtProdutos.exists("codProduto", $("#Produto_id").val())) {
+                $("#Produto_id").blink({ msg: "Produto já informado, verifique!" });
+                valid = false;
+            }
         }
 
         return valid;
@@ -206,7 +238,8 @@ OrdemServico = function () {
         $("#Produto_id").val("");
         $("#Produto_text").val("");
         $("#Produto_vlVenda").val("");
-        $("#qtProduto").val("")
+        $("#qtProduto").val("");
+        $('input[name="Produto.id"]').prop('disabled', false)
     }
 
     self.addProduto = function () {
@@ -219,7 +252,8 @@ OrdemServico = function () {
                 qtProduto: model.qtProduto,
                 vlTotal: model.vlTotal
             }
-            dtProdutos.addItem(item);
+            //dtProdutos.addItem(item);
+            self.saveProduto(item);
             self.clearProduto();
             self.calcTotalProduto();
         }
@@ -235,6 +269,23 @@ OrdemServico = function () {
         }
         total = total.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
         $("#ftp").text("Total: " + total);
+    }
+
+    self.openEditProduto = function (e, data) {
+        let item = dtProdutos.dataSelected.item;
+        $("#Produto_id").val(item.codProduto);
+        $("#Produto_text").val(item.nomeProduto);
+        $("#Produto_vlVenda").val(item.vlUnitario);
+        $("#qtProduto").val(item.qtProduto);
+        $('input[name="Produto.id"]').prop('disabled', true)
+    }
+
+    self.saveProduto = function (data) {
+        if (dtProdutos.isEdit) {
+            dtProdutos.editItem(data);
+        } else {
+            dtProdutos.addItem(data)
+        }
     }
 
     //self.datatable.atualizarItens();

@@ -70,8 +70,8 @@ namespace Sistema.DAO
         {
             try
             {
-                var sql = string.Format("INSERT INTO tbprodutos ( situacao, nomeproduto, unidade, largura, codgrupo, codfornecedor, ncm, qtestoque, vlcusto, vlultcompra, vlvenda, observacao, dtcadastro, dtultalteracao )" +
-                    " VALUES ('{0}', '{1}', '{2}', '{3}', {4}, {5}, '{6}', {7}, {8}, {9}, {10}, '{11}', '{12}', '{13}' )",
+                var sql = string.Format("INSERT INTO tbprodutos ( situacao, nomeproduto, unidade, largura, codgrupo, codfornecedor, ncm, qtestoque, vlcusto, vlultcompra, vlvenda, observacao, cfop, dtcadastro, dtultalteracao )" +
+                    " VALUES ('{0}', '{1}', '{2}', '{3}', {4}, {5}, '{6}', {7}, {8}, {9}, {10}, '{11}', '{12}', '{13}', '{14}' )",
                     this.FormatString(produto.situacao),
                     this.FormatString(produto.nomeProduto),
                     produto.unidade,
@@ -84,6 +84,7 @@ namespace Sistema.DAO
                     produto.vlUltCompra != null ? produto.vlUltCompra : 0,
                     produto.vlVenda.ToString().Replace(",", "."),
                     !string.IsNullOrWhiteSpace(produto.observacao) ? this.FormatString(produto.observacao) : "",
+                    produto.cfop,
                     DateTime.Now.ToString("yyyy-MM-dd"),
                     DateTime.Now.ToString("yyyy-MM-dd")
                     );
@@ -126,6 +127,7 @@ namespace Sistema.DAO
                 " vlcusto = " + produto.vlCusto.ToString().Replace(",", ".") + ", " +
                 " vlvenda = " + produto.vlVenda.ToString().Replace(",", ".") + ", " +
                 " observacao = '" + this.FormatString(produto.observacao) + "', " +
+                " cfop = '" + produto.cfop + "', " +
                 " dtultalteracao = '" + DateTime.Now.ToString("yyyy-MM-dd") + "'" +
                 " WHERE codproduto = " + produto.codigo;
                 OpenConnection();
@@ -181,6 +183,7 @@ namespace Sistema.DAO
                             text = Convert.ToString(reader["Produto_Fornecedor_Nome"])
                         };
                         model.ncm = Convert.ToString(reader["Produto_NCM"]);
+                        model.cfop = Convert.ToString(reader["Produto_CFOP"]);
                         model.qtEstoque = Convert.ToDecimal(reader["Produto_QtEstoque"]);
                         model.vlCusto = Convert.ToDecimal(reader["Produto_VlCusto"]);
                         model.vlUltCompra = Convert.ToDecimal(reader["Produto_VlUltimaCompra"]);
@@ -299,6 +302,7 @@ namespace Sistema.DAO
                         tbprodutos.vlultcompra AS Produto_VlUltimaCompra,
                         tbprodutos.vlvenda AS Produto_VlVenda,
                         tbprodutos.observacao AS Produto_Observacao,
+                        tbprodutos.cfop AS Produto_CFOP,
                         tbprodutos.dtcadastro AS Produto_DataCadastro,
                         tbprodutos.dtultalteracao AS Produto_DataUltAlteracao
                     FROM tbprodutos

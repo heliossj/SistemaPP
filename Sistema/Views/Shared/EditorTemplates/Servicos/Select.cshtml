@@ -10,10 +10,11 @@
     string classForm = Convert.ToString(ViewData["classForm"] ?? Util.Input12);
     var Prefix = Html.ClientPrefixName().ToString();
     string action = Convert.ToString(ViewBag.Action);
+
+    var flValor = Convert.ToString(ViewData["flValor"]);
 }
 
 @Html.Hidden("isEdit")
-@Html.HiddenFor(model => model.vlServico)
 @Html.HiddenFor(k => action)
 <div class="@classForm">
     @Html.LabelFor(model => model.id, Label, new { @class = "required" })
@@ -26,6 +27,14 @@
     @Html.ValidationMessageFor(model => model.id, null, new { @class = "text-danger" })
 </div>
 
+@if (flValor == "S")
+{
+    <div class="@Util.Input2">
+        @Html.Label("Valor", new { @class = "no-required" })
+        @Html.TextBoxFor(model => model.vlServico, new { @class = "form-control", Disabled = true, placeholder = "0,00" })
+    </div>
+}
+
 <div id="@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)" class="modal fade" data-backdrop="static" data-keyboard="false" role="dialog">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -34,7 +43,7 @@
                     <div class="panel-heading" style="height: 41px; padding-left:2px;font-weight: bold;">
                         <h3 class="panel-title pull-right"><button type="button" style="opacity: inherit;color: #fff;" class="close" data-dismiss="modal">&times;</button></h3>
                         <ul class="nav panel-tabs" style="width:400px">
-                            <li class="active"><a data-event="true" style="margin-top:1px;color: black;" data-toggle="tab"><b><i class="fa fa-list" aria-hidden="true"></i> Países </b></a></li>
+                            <li class="active"><a data-event="true" style="margin-top:1px;color: black;" data-toggle="tab"><b><i class="fa fa-list" aria-hidden="true"></i> Serviços </b></a></li>
                         </ul>
                     </div>
 
@@ -159,9 +168,7 @@
                          if (!data) {
                              $.notify({ message: 'Nenhum registro encontrado para o código informado', icon: 'fa fa-exclamation' }, { type: 'danger', z_index: 2000 } );
                          }
-                         $("#@Sistema.Util.SelectFunctions.getInputId("id", Prefix)").val(data.id);
-                         $("#@Sistema.Util.SelectFunctions.getInputId("text", Prefix)").val(data.text);
-                         $("#@Sistema.Util.SelectFunctions.getInputId("vlServico", Prefix)").val(data.vlServico);
+                         SelectServicos(data);
                      },
                      error: function (err) {
                          alert(err);
@@ -314,7 +321,14 @@
                     }
                 },
                 { data: "id" },
-                { data: "text" }
+                { data: "text" },
+                {
+                    data: null,
+                    style: 'right',
+                    mRender: function (data) {
+                        return data.vlServico.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                    }
+                }
 
             ],
         });
@@ -343,7 +357,8 @@
                                 <th></th>
                                 <th></th>
                                 <th export="true" style="width:10%">Código</th>
-                                <th export="true" style="width:90%">Nome</th>
+                                <th export="true" style="width:65%">Nome</th>
+                                <th export="true" style="width:25%">Valor de venda </th>
                             </tr>
                         </thead>
                    </table>`;
@@ -376,7 +391,11 @@
         $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").modal("hide");
         $("#@Sistema.Util.SelectFunctions.getInputId("id", Prefix)").val(data.id);
         $("#@Sistema.Util.SelectFunctions.getInputId("text", Prefix)").val(data.text);
-        $("#@Sistema.Util.SelectFunctions.getInputId("vlServico", Prefix)").val(data.vlServico);
+        let valor = data.vlServico;
+        if (data) {
+            valor = valor.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+        $("#@Sistema.Util.SelectFunctions.getInputId("vlServico", Prefix)").val(valor);
 
         return false;
     };
