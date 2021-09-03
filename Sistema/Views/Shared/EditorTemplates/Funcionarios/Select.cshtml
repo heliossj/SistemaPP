@@ -311,7 +311,10 @@
                         return '<a class="btn btn-warning btn-sm" onclick="OpenEditFuncionario(' + data.id + ')" title="Alterar registro"><i class="fa fa-edit"></i> </a>';
                     }
                 },
-                { data: "id" },
+                {
+                    sClass: "right",
+                    data: "id"
+                },
                 { data: "text" }
 
             ],

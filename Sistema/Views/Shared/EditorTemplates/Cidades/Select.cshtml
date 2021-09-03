@@ -255,7 +255,6 @@
         var form = self.getFormCidade();
         var model = getModelCidade(form);
         if (self.isValidCidade(model)) {
-            console.log(model);
             $.ajax({
                 dataType: 'json',
                 type: 'POST',
@@ -323,7 +322,10 @@
                         return '<a class="btn btn-warning btn-sm" onclick="OpenEditCidade(' + data.id + ')" title="Alterar registro"><i class="fa fa-edit"></i> </a>';
                     }
                 },
-                { data: "id" },
+                {
+                    sClass: "right",
+                    data: "id"
+                },
                 { data: "text" }
 
             ],

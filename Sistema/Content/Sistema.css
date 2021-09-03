@@ -298,3 +298,7 @@
 #errmsg {
     color: red;
 }
+
+.right{
+    text-align:right;
+}

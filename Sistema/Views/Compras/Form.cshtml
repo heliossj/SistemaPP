@@ -67,6 +67,11 @@
         </div>
 
         <div class="@Util.Input2">
+            @Html.Label("vlCompra", "Valor de compra", new { @class = "required" })
+            @Html.TextBox("vlCompra", "", new { @class = "form-control money", placeholder = "0,00", style = "text-align: right" })
+        </div>
+
+        <div class="@Util.Input2">
             @Html.Label("vlDesconto", "Desconto (%)", new { @class = "required" })
             @Html.TextBox("vlDesconto", "", new { @class = "form-control money", placeholder = "0,00", style = "text-align: right" })
         </div>
@@ -74,7 +79,6 @@
         <div style="margin-block:-1px">
             <button id="addProduto" type="button" class="btn btn-success btn-lg" style="margin-top:35px; font-size:14px" title="Adicionar"><b>Adicionar </b> <i class="fa fa-plus"></i></button>
         </div>
-
     </div>
 
 

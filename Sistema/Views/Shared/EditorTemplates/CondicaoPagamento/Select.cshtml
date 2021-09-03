@@ -276,7 +276,6 @@
                 url: '@Url.Action("jsUpdate", "CondicaoPagamento")',
                 data: model,
                 success: function (data) {
-                    console.log(data)
                     self.clear();
                     InitModalCondicaoPagamento();
                     $("#@Sistema.Util.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("hide");
@@ -314,7 +313,10 @@
                         return '<a class="btn btn-warning btn-sm" onclick="OpenEdit(' + data.id + ')" title="Alterar registro"><i class="fa fa-edit"></i> </a>';
                     }
                 },
-                { data: "id" },
+                {
+                    sClass: "right",
+                    data: "id"
+                },
                 { data: "text" }
 
             ],

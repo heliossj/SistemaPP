@@ -65,23 +65,21 @@ CondicaoPagamento = function () {
         }
 
         //dias parcelas
-        if (!dtCondicao.isEdit) {
-            let maior = 0;
-            if (dtCondicao.data != null && dtCondicao.data.length) {
-                for (var i = 0; i < dtCondicao.data.length; i++) {
-                    //console.log(dtCondicao.data[i].qtDias)
-                    if (dtCondicao.data[i].qtDias > maior) {
-                        maior = dtCondicao.data[i].qtDias;
-                    }
-                }
-                //console.log(maior);
-                if ($("#qtDias").val() <= maior) {
-                    $("#qtDias").blink({ msg: "Não é permitido adicionar uma parcela menor ou igual, verifique!" });
-                    valid = false;
+        let maior = 0;
+        if (dtCondicao.data != null && dtCondicao.data.length) {
+            for (var i = 0; i < dtCondicao.data.length; i++) {
+                //console.log(dtCondicao.data[i].qtDias)
+                if (dtCondicao.data[i].qtDias > maior) {
+                    maior = dtCondicao.data[i].qtDias;
                 }
             }
+            //console.log(maior);
+            //console.log(dtCondicao.dataSelected)
+            if ($("#qtDias").val() <= maior) {//&& dtCondicao.dataSelected.item.nrParcela
+                $("#qtDias").blink({ msg: "Não é permitido adicionar uma parcela menor ou igual, verifique!" });
+                valid = false;
+            }
         }
-
 
         if (IsNullOrEmpty($("#txPercentual").val())) {
             $("#txPercentual").blink({ msg: "Informe o percentual" });
@@ -154,7 +152,7 @@ CondicaoPagamento = function () {
         $("#FormaPagamento_text").val('');
         $("#qtDias").val('');
         $("#txPercentual").val('');
-        $('input[name="qtDias"]').prop('disabled', false)
+        //$('input[name="qtDias"]').prop('disabled', false)
     }
 
     self.addItem = function () {
@@ -210,7 +208,7 @@ CondicaoPagamento = function () {
         $("#FormaPagamento_text").val(item.nomeFormaPagamento);
         $("#qtDias").val(item.qtDias);
         $("#txPercentual").val(item.txPercentual.toFixed(2).replace(".", ","));
-        $('input[name="qtDias"]').prop('disabled', true)
+        //$('input[name="qtDias"]').prop('disabled', true)
     };
 
     self.save = function (data) {

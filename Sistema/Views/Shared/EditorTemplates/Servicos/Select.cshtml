@@ -30,7 +30,7 @@
 @if (flValor == "S")
 {
     <div class="@Util.Input2">
-        @Html.Label("Valor", new { @class = "no-required" })
+        @Html.Label("Valor de venda", new { @class = "no-required" })
         @Html.TextBoxFor(model => model.vlServico, new { @class = "form-control", Disabled = true, placeholder = "0,00" })
     </div>
 }
@@ -320,11 +320,14 @@
                         return '<a class="btn btn-warning btn-sm" onclick="OpenEditServicos(' + data.id + ')" title="Alterar registro"><i class="fa fa-edit"></i> </a>';
                     }
                 },
-                { data: "id" },
+                {
+                    sClass: "right",
+                    data: "id"
+                },
                 { data: "text" },
                 {
                     data: null,
-                    style: 'right',
+                    sClass: 'right',
                     mRender: function (data) {
                         return data.vlServico.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
                     }
@@ -387,7 +390,6 @@
     };
 
     function SelectServicos(data) {
-        console.log(data)
         $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").modal("hide");
         $("#@Sistema.Util.SelectFunctions.getInputId("id", Prefix)").val(data.id);
         $("#@Sistema.Util.SelectFunctions.getInputId("text", Prefix)").val(data.text);
