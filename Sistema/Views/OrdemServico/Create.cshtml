@@ -29,14 +29,35 @@
         </div>
 
         <div style="text-align:center">
-            <button type="submit" class="btn btn-success"> <i class="fa fa-save"></i> Salvar</button>
+            <button id="btnSalvar" type="submit" class="btn btn-success"> <i class="fa fa-save"></i> Salvar</button>
             <a href="@Url.Action(@Html.ViewBag.Action)" class="btn btn-primary" role="button" aria-pressed="true"> <i class="fa fa-times"></i> Limpar</a>
             <a href="@Url.Action("Index")" class="btn btn-secondary" role="button" aria-pressed="true"> <i class="fa fa-arrow-left"></i> Voltar</a>
             <a href="@Url.Action(@Html.ViewBag.Action)" class="btn btn-dark" role="button" aria-pressed="true"> <i class="fa fa-shopping-cart"></i> Gerar ordem de compra</a>
         </div>
     </div>
 }
+<style>
+    .orcheck {
+        font-family: "Arial Black", Gadget, sans-serif;
+        font-size: 14px;
+        letter-spacing: 0px;
+        word-spacing: 2px;
+        font-weight: 400;
+        text-decoration: none solid rgb(68, 68, 68);
+        font-style: normal;
+        font-variant: normal;
+        text-transform: uppercase;
+    }
+</style>
+
 
 @section scripts{
+    <script type="text/javascript">
+        var Action = {
+            getParcelas: "@Url.Action("JsGetParcelas", "CondicaoPagamento")"
+        }
+    </script>
     @Scripts.Render("~/Scripts/OrdemServico/Create.js")
 }
+
+

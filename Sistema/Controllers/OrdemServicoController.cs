@@ -15,7 +15,7 @@ namespace Sistema.Controllers
 
         public ActionResult Create()
         {
-            var model = new Models.OrdemServico()
+            var model = new Sistema.Models.OrdemServico
             {
                 dtAbertura = DateTime.Now,
             };

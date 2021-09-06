@@ -68,14 +68,11 @@ CondicaoPagamento = function () {
         let maior = 0;
         if (dtCondicao.data != null && dtCondicao.data.length) {
             for (var i = 0; i < dtCondicao.data.length; i++) {
-                //console.log(dtCondicao.data[i].qtDias)
                 if (dtCondicao.data[i].qtDias > maior) {
                     maior = dtCondicao.data[i].qtDias;
                 }
             }
-            //console.log(maior);
-            //console.log(dtCondicao.dataSelected)
-            if ($("#qtDias").val() <= maior) {//&& dtCondicao.dataSelected.item.nrParcela
+            if ($("#qtDias").val() <= maior) {
                 $("#qtDias").blink({ msg: "Não é permitido adicionar uma parcela menor ou igual, verifique!" });
                 valid = false;
             }
@@ -97,6 +94,7 @@ CondicaoPagamento = function () {
 
         if (!IsNullOrEmpty(txPercentual)) {
             if (!IsNullOrEmpty(txTotal)) {
+                txTotal = txTotal.replace(",", ".");
                 txTotal = parseFloat(txTotal);
             }
             txPercentual = txPercentual.replace(",", ".");
@@ -105,9 +103,8 @@ CondicaoPagamento = function () {
 
             let total = 0;
 
-            //console.log(dtCondicao.data)
             if (dtCondicao.isEdit) {
-                total = txTotal - dtCondicao.dataSelected.item.txPercentual + txPercentual;
+                total = (txTotal - dtCondicao.dataSelected.item.txPercentual) + txPercentual;
                 if (total > 100) {
                     $("#txPercentualTotal").blink({ msg: "O valor total deve ser equivalente a 100%, verifique!" });
                     valid = false;

@@ -1,4 +1,8 @@
 ﻿$(function () {
+    vlTotalServicos = 0;
+    vlTotalProdutos = 0;
+    vlTotalOS = 0;
+
     var OS = new OrdemServico();
     OS.init();
 
@@ -19,12 +23,40 @@
     $(document).on("tblServicoOpenEdit", OS.openEditServico);
     $(document).on("tblServicoCancelEdit", OS.clearServico);
 
+
+    if (!$("#flFinalizar").is(":checked")) {
+        $("#divFinaliza").slideUp();
+        $("#vlTotal").val("");
+    } else {
+        $("#divFinaliza").slideDown();
+    }
+
+    $("#flFinalizar").click(function () {
+        if ($(this).is(":checked")) {
+            OS.calcTotalProduto;
+            OS.calcTotalServico;
+            $("#divParcelas").hide();
+            $("#divFinaliza").slideDown();
+            let total = vlTotalProdutos + vlTotalServicos;
+            vlTotalOS = total;
+            let totalFormat = total.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            $("#vlTotal").val(totalFormat)
+        } else {
+            $("#divFinaliza").slideUp();
+        }
+    });
+
+
+    $("#CondicaoPagamento_btnGerarParcela").click(function () {
+        OS.getparcelas();
+    });
 });
 
 OrdemServico = function () {
     self = this;
     dtServicos = null;
     dtProdutos = null;
+    dtParcelas = null;
 
     this.init = function () {
         dtServicos = new tDataTable({
@@ -75,6 +107,12 @@ OrdemServico = function () {
                     {
                         data: null,
                         mRender: function (data) {
+                            return data.unidade == "M" ? "METRO" : "UNIDADE"
+                        }
+                    },
+                    {
+                        data: null,
+                        mRender: function (data) {
                             return data.vlUnitario.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
                         }
                     },
@@ -94,11 +132,31 @@ OrdemServico = function () {
             },
         });
         self.calcTotalProduto();
+
+        dtParcelas = new tDataTable({
+            table: {
+                jsItem: "jsParcelas",
+                name: "tblParcelas",
+                order: [[1, "asc"]],
+                columns: [
+                    { data: "nrParcela" },
+                    {
+                        data: null,
+                        mRender: function (data) {
+                            return data.vlParcela.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                        }
+                    },
+                    { data: "dtVencimento" },
+                    { data: "nmFormaPagamento" },
+                ]
+            },
+        });
     }
 
     //Serviço
     self.getModelServico = function () {
-        let vlServicoAux = parseFloat($("#Servico_vlServico").val());
+        let vlServico = $("#Servico_vlServico").val().replace(".", "").replace(",", ".");
+        let vlServicoAux = parseFloat(vlServico);
         let qtServicoAux = $("#qtServico").val().replace(".", "").replace(",", ".");
         qtServicoAux = parseFloat(qtServicoAux);
         var model = {
@@ -132,8 +190,6 @@ OrdemServico = function () {
                 valid = false;
             }
         }
-
-
         return valid;
     }
 
@@ -170,13 +226,13 @@ OrdemServico = function () {
                 total += totalServico;
             }
         }
+        vlTotalServicos = total;
         total = total.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
         $("#fts").text("Total: " + total);
     }
 
     self.openEditServico = function (e, data) {
         let item = dtServicos.dataSelected.item;
-        console.log(item)
         $("#Servico_id").val(item.codServico);
         $("#Servico_text").val(item.nomeServico);
         $("#Servico_vlServico").val(item.vlUnitario);
@@ -194,12 +250,14 @@ OrdemServico = function () {
 
     //Produto
     self.getModelProduto = function () {
-        let vlProdutoAux = parseFloat($("#Produto_vlVenda").val());
+        let vlProduto = $("#Produto_vlVenda").val().replace(".", "").replace(",", ".");
+        let vlProdutoAux = parseFloat(vlProduto);
         let qtProdutoAux = $("#qtProduto").val().replace(".", "").replace(",", ".");
         qtProdutoAux = parseFloat(qtProdutoAux);
         var model = {
             codProduto: $("#Produto_id").val(),
             nomeProduto: $("#Produto_text").val(),
+            unidade: $("#unidade").val(),
             vlProduto: vlProdutoAux,
             qtProduto: qtProdutoAux,
             vlTotal: vlProdutoAux * qtProdutoAux
@@ -237,6 +295,7 @@ OrdemServico = function () {
     self.clearProduto = function () {
         $("#Produto_id").val("");
         $("#Produto_text").val("");
+        $("#unidade").val("M");
         $("#Produto_vlVenda").val("");
         $("#qtProduto").val("");
         $('input[name="Produto.id"]').prop('disabled', false)
@@ -248,6 +307,7 @@ OrdemServico = function () {
             let item = {
                 codProduto: model.codProduto,
                 nomeProduto: model.nomeProduto,
+                unidade: model.unidade,
                 vlUnitario: model.vlProduto,
                 qtProduto: model.qtProduto,
                 vlTotal: model.vlTotal
@@ -267,6 +327,7 @@ OrdemServico = function () {
                 total += totalProduto;
             }
         }
+        vlTotalProdutos = total;
         total = total.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
         $("#ftp").text("Total: " + total);
     }
@@ -275,6 +336,7 @@ OrdemServico = function () {
         let item = dtProdutos.dataSelected.item;
         $("#Produto_id").val(item.codProduto);
         $("#Produto_text").val(item.nomeProduto);
+        $("#unidade").val(item.unidade);
         $("#Produto_vlVenda").val(item.vlUnitario);
         $("#qtProduto").val(item.qtProduto);
         $('input[name="Produto.id"]').prop('disabled', true)
@@ -286,6 +348,41 @@ OrdemServico = function () {
         } else {
             dtProdutos.addItem(data)
         }
+    }
+
+    self.getparcelas = function (dtInicio) {
+        let totalF = vlTotalOS.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        $.ajax({
+            dataType: 'json',
+            type: 'GET',
+            url: Action.getParcelas,
+            data: { idCondicaoPagamento: $("#CondicaoPagamento_id").val(), vlTotal: totalF },
+            success: function (data) {
+                $.notify({ message: data.message, icon: 'fa fa-exclamation' }, { type: 'success', z_index: 2000 });
+                self.setParcelas(data);
+            },
+            error: function (request) {
+                alert("Erro ao buscar registro");
+            }
+        });
+    }
+
+    self.setParcelas = function (data) {
+        let itens = data.parcelas;
+        for (var i = 0; i < itens.length; i++) {
+            let dtParcela = JSONDate(itens[i].dtVencimento,)
+            let item = {
+                idFormaPagamento: itens[i].idFormaPagamento,
+                nmFormaPagamento: itens[i].nmFormaPagamento,
+                flSituacao: itens[i].flSituacao,
+                dtVencimento: dtParcela,
+                vlParcela: itens[i].vlParcela,
+                nrParcela: itens[i].nrParcela
+            }
+            dtParcelas.addItem(item);
+        }
+        $("#divParcelas").slideDown();
+
     }
 
     //self.datatable.atualizarItens();

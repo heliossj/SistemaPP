@@ -10,6 +10,7 @@
     string classLabel = Convert.ToString(ViewData["classLabel"] ?? Util.Input12);
     string classForm = Convert.ToString(ViewData["classForm"] ?? Util.Input12);
     var Prefix = Html.ClientPrefixName().ToString();
+    var flParcela = Convert.ToString(ViewData["flParcela"]);
 }
 
 @Html.Hidden("isEdit")
@@ -24,6 +25,14 @@
         @Html.HiddenFor(model => model.text)
     </div>
 </div>
+
+@if (flParcela == "S")
+{
+    @Html.Hidden("flParcela")
+    <div class="@Util.Input2">
+        <button id="@Sistema.Util.SelectFunctions.getInputId("btnGerarParcela", Prefix)" type="button" class="btn btn-dark btn-lg" style="margin-top:34px; font-size:14px; width:150px; height:38px" title="Gerar parcelas"><b> Gerar parcelas</b> <i class="fa fa-calendar-check-o"></i></button>
+    </div>
+}
 
 <div id="@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)" class="modal fade" data-backdrop="static" data-keyboard="false" role="dialog">
     <div class="modal-dialog modal-lg">
@@ -150,6 +159,8 @@
              if (id == "") {
                  $("#@Sistema.Util.SelectFunctions.getInputId("id", Prefix)").val("");
                  $("#@Sistema.Util.SelectFunctions.getInputId("text", Prefix)").val("");
+                 $("#@Sistema.Util.SelectFunctions.getInputId("btnGerarParcela", Prefix)").attr('disabled', true)
+
              } else {
                  $.ajax({
                      dataType: 'json',
@@ -158,10 +169,11 @@
                      data: { 'id': id },
                      success: function (data) {
                          if (!data) {
-                             $.notify({ message: 'Nenhum registro encontrado para o código informado', icon: 'fa fa-exclamation' }, { type: 'danger' } );
+                             $.notify({ message: 'Nenhum registro encontrado para o código informado', icon: 'fa fa-exclamation' }, { type: 'danger' });
+                             $("#@Sistema.Util.SelectFunctions.getInputId("btnGerarParcela", Prefix)").attr('disabled', true)
                          }
-                         $("#@Sistema.Util.SelectFunctions.getInputId("id", Prefix)").val(data.id);
-                         $("#@Sistema.Util.SelectFunctions.getInputId("text", Prefix)").val(data.text);
+                         SelectCondicaoPagamento(data);
+
                      },
                      error: function (err) {
                          alert(err);
@@ -170,6 +182,8 @@
                  });
              }
          });
+
+        $("#@Sistema.Util.SelectFunctions.getInputId("btnGerarParcela", Prefix)").attr('disabled', true)
 
      });
 
@@ -379,6 +393,7 @@
         $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").modal("hide");
         $("#@Sistema.Util.SelectFunctions.getInputId("id", Prefix)").val(data.id);
         $("#@Sistema.Util.SelectFunctions.getInputId("text", Prefix)").val(data.text);
+        $("#@Sistema.Util.SelectFunctions.getInputId("btnGerarParcela", Prefix)").attr('disabled', false);
         return false;
     };
 

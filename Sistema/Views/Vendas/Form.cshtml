@@ -8,7 +8,7 @@
 <div class="form-row">
     <div class="@Util.Input2">
         @Html.Label("Nº", new { @class = "no-required" })
-        @Html.TextBoxFor(model => model.codigo, new { @class = "form-control number", maxlength = "3" })
+        @Html.TextBoxFor(model => model.codigo, new { @class = "form-control number", maxlength = "3", Disabled = true })
         @Html.ValidationMessageFor(model => model.codigo, null, new { @class = "text-danger" })
     </div>
 </div>
@@ -30,6 +30,10 @@
 
 <div class="form-row">
     @Html.EditorFor(model => model.Funcionario, "Funcionarios/Select", new { Required = true, Disabled = false })
+</div>
+
+<div class="form-row">
+    @Html.EditorFor(model => model.Cliente, "Clientes/Select", new { Required = true, Disabled = false })
 </div>
 
 <div class="bs-callout bs-callout-primary">

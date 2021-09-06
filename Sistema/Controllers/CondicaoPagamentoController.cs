@@ -2,6 +2,7 @@
 using Sistema.DataTables;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -255,6 +256,39 @@ namespace Sistema.Controllers
                 field = "",
                 message = "Registro alterado com sucesso!",
                 model = model
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult JsGetParcelas(int idCondicaoPagamento, decimal? vlTotal)
+        {
+            var daoConPag = new DAOCondicaoPagamento();
+            var cond = daoConPag.GetCondicaoPagamento(idCondicaoPagamento);
+            var ListCondicao = cond.ListCondicao.OrderBy(k => k.nrParcela);
+
+            var ListParcelas = new List<Models.OrdemServico.ParcelasVM>();
+            var dtInicio = DateTime.Now;
+            foreach (var parcela in ListCondicao)
+            {
+                var itemParcela = new Models.OrdemServico.ParcelasVM
+                {
+                    nrParcela = parcela.nrParcela,
+                    dtVencimento = dtInicio.AddDays((double)parcela.qtDias),
+                    flSituacao = "P",
+                    idFormaPagamento = parcela.codFormaPagamento,
+                    nmFormaPagamento = parcela.nomeFormaPagamento,
+                    vlParcela = (parcela.txPercentual / 100 ) * vlTotal
+                };
+                ListParcelas.Add(itemParcela);
+            }
+
+            var ListResult = ListParcelas.OrderBy(k => k.nrParcela);
+
+            var result = new
+            {
+                type = "success",
+                message = "Parcelas geradas com sucesso!",
+                parcelas = ListResult
             };
             return Json(result, JsonRequestBehavior.AllowGet);
         }

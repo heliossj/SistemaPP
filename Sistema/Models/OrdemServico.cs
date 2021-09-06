@@ -19,16 +19,16 @@ namespace Sistema.Models
         [Display(Name = "Data de validade")]
         public DateTime? dtValidade { get; set; }
 
-        //Cliente
+        public string finalizar { get; set; }
 
         public Select.Funcionarios.Select Funcionario { get; set; }
+        public Select.Funcionarios.Select Executante { get; set; }
         public Select.Clientes.Select Cliente { get; set; }
         public Select.CondicaoPagamento.Select CondicaoPagamento { get; set; }
 
-        //Condição de pagamento
-
         public Select.Servicos.Select Servico { get; set; }
         public Select.Produtos.Select Produto { get; set; }
+        public decimal? vlTotal { get; set; }
 
         [Display(Name = "Observação")]
         public string observacao { get; set; }
@@ -64,6 +64,7 @@ namespace Sistema.Models
             public decimal? vlUnitario { get; set; }
             public decimal? qtProduto { get; set; }
             public decimal vlTotal { get; set; }
+            public string unidade { get; set; }
         }
 
         public string jsProdutos { get; set; }
@@ -81,6 +82,30 @@ namespace Sistema.Models
             }
         }
 
+        public class ParcelasVM
+        {
+            public int? idFormaPagamento { get; set; }
+            public string nmFormaPagamento { get; set; }
+            public string flSituacao { get; set; }
+            public DateTime? dtVencimento { get; set; }
+            public decimal? vlParcela { get; set; }
+            public double? nrParcela { get; set; }
+        }
+        public string jsParcelas { get; set; }
+        public List<ParcelasVM> ParcelasOS
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(jsParcelas))
+                    return new List<ParcelasVM>();
+                return JsonConvert.DeserializeObject<List<ParcelasVM>>(jsParcelas);
+            }
+            set
+            {
+                jsParcelas = JsonConvert.SerializeObject(value);
+            }
+        }
+
         public static SelectListItem[] Situacao
         {
             get
@@ -95,7 +120,16 @@ namespace Sistema.Models
             }
         }
 
-
-
+        public static SelectListItem[] Unidade
+        {
+            get
+            {
+                return new[]
+                {
+                    new SelectListItem { Value = "M", Text = "METRO" },
+                    new SelectListItem { Value = "U", Text = "UNIDADE" }
+                };
+            }
+        }
     }
 }

@@ -31,7 +31,7 @@
 {
     <div class="@Util.Input2">
         @Html.Label("Valor de venda", new { @class = "no-required" })
-        @Html.TextBoxFor(model => model.vlVenda, new { @class = "form-control", Disabled = true, placeholder = "0,00" })
+        @Html.TextBoxFor(model => model.vlVenda, new { @class = "form-control", Disabled = true, placeholder = "0,00", style = "text-align: right" })
     </div>
 }
 
