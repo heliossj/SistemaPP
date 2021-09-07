@@ -266,15 +266,14 @@ namespace Sistema.Controllers
             var cond = daoConPag.GetCondicaoPagamento(idCondicaoPagamento);
             var ListCondicao = cond.ListCondicao.OrderBy(k => k.nrParcela);
 
-            var ListParcelas = new List<Models.OrdemServico.ParcelasVM>();
+            var ListParcelas = new List<Models.Shared.ParcelasVM>();
             var dtInicio = DateTime.Now;
             foreach (var parcela in ListCondicao)
             {
-                var itemParcela = new Models.OrdemServico.ParcelasVM
+                var itemParcela = new Models.Shared.ParcelasVM
                 {
                     nrParcela = parcela.nrParcela,
                     dtVencimento = dtInicio.AddDays((double)parcela.qtDias),
-                    flSituacao = "P",
                     idFormaPagamento = parcela.codFormaPagamento,
                     nmFormaPagamento = parcela.nomeFormaPagamento,
                     vlParcela = (parcela.txPercentual / 100 ) * vlTotal

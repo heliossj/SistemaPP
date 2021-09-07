@@ -32,23 +32,82 @@
     }
 
     $("#flFinalizar").click(function () {
-        if ($(this).is(":checked")) {
-            OS.calcTotalProduto;
-            OS.calcTotalServico;
-            $("#divParcelas").hide();
-            $("#divFinaliza").slideDown();
-            let total = vlTotalProdutos + vlTotalServicos;
-            vlTotalOS = total;
-            let totalFormat = total.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
-            $("#vlTotal").val(totalFormat)
+        if (!dtServicos.length) {
+            $.notify({ message: "Informe ao menos um serviço para finalizar", icon: 'fa fa-exclamation' }, { type: 'danger', z_index: 2000 });
+            $("#flFinalizar").prop("checked", false)
         } else {
-            $("#divFinaliza").slideUp();
+            if ($(this).is(":checked")) {
+                OS.calcTotalProduto;
+                OS.calcTotalServico;
+                $("#divParcelas").hide();
+                $("#divFinaliza").slideDown();
+                let total = vlTotalProdutos + vlTotalServicos;
+                vlTotalOS = total;
+                let totalFormat = total.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                $("#vlTotal").val(totalFormat)
+                dtServicos.atualizarGrid();
+                dtProdutos.atualizarGrid();
+                $("#divAddServico").slideUp();
+                $("#divAddProduto").slideUp();
+            } else {
+                $("#divFinaliza").slideUp();
+                dtServicos.atualizarGrid();
+                dtProdutos.atualizarGrid();
+                dtParcelas.clear();
+                $("#divAddServico").slideDown();
+                $("#divAddProduto").slideDown();
+            }
         }
     });
 
-
     $("#CondicaoPagamento_btnGerarParcela").click(function () {
         OS.getparcelas();
+    });
+
+    $(document).on('tblServicoRowCallback', function (e, data) {
+        if ($("#flFinalizar").is(":checked")) {
+            let btn = $('td a[data-event=remove]', data.nRow);
+            btn.attr('title', "Indisponível para alteração!");
+            btn.attr('data-event', false);
+            btn.removeClass().addClass("btn btn-secondary btn-sm");
+            btn.find("i").removeClass().addClass("fa fa-info");
+            btn.on('click', function (e) {
+                e.preventDefault();
+            })
+
+            let btnEdit = $('td a[data-event=edit]', data.nRow);
+            btnEdit.attr('title', "Indisponível para alteração!");
+            btnEdit.attr('data-event', false);
+            btnEdit.removeClass().addClass("btn btn-secondary btn-sm").css("width", "29px");
+            btnEdit.find("i").removeClass().addClass("fa fa-info");
+            btnEdit.click(function (e) {
+                e.preventDefault();
+            });
+        }
+        return false;
+    });
+
+    $(document).on('tblProdutoRowCallback', function (e, data) {
+        if ($("#flFinalizar").is(":checked")) {
+            let btn = $('td a[data-event=remove]', data.nRow);
+            btn.attr('title', "Indisponível para alteração!");
+            btn.attr('data-event', false);
+            btn.removeClass().addClass("btn btn-secondary btn-sm");
+            btn.find("i").removeClass().addClass("fa fa-info");
+            btn.on('click', function (e) {
+                e.preventDefault();
+            })
+
+            let btnEdit = $('td a[data-event=edit]', data.nRow);
+            btnEdit.attr('title', "Indisponível para alteração!");
+            btnEdit.attr('data-event', false);
+            btnEdit.removeClass().addClass("btn btn-secondary btn-sm").css("width", "29px");
+            btnEdit.find("i").removeClass().addClass("fa fa-info");
+            btnEdit.click(function (e) {
+                e.preventDefault();
+            });
+        }
+        return false;
     });
 });
 
@@ -137,7 +196,7 @@ OrdemServico = function () {
             table: {
                 jsItem: "jsParcelas",
                 name: "tblParcelas",
-                order: [[1, "asc"]],
+                order: [[0, "asc"]],
                 columns: [
                     { data: "nrParcela" },
                     {
@@ -268,7 +327,6 @@ OrdemServico = function () {
     self.validProduto = function () {
         let valid = true;
 
-
         if (IsNullOrEmpty($("#Produto_id").val()) || $("#Produto_id").val() == "") {
             $("#Produto_id").blink({ msg: "Informe o produto" });
             $("#Produto_id").focus();
@@ -351,20 +409,24 @@ OrdemServico = function () {
     }
 
     self.getparcelas = function (dtInicio) {
-        let totalF = vlTotalOS.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
-        $.ajax({
-            dataType: 'json',
-            type: 'GET',
-            url: Action.getParcelas,
-            data: { idCondicaoPagamento: $("#CondicaoPagamento_id").val(), vlTotal: totalF },
-            success: function (data) {
-                $.notify({ message: data.message, icon: 'fa fa-exclamation' }, { type: 'success', z_index: 2000 });
-                self.setParcelas(data);
-            },
-            error: function (request) {
-                alert("Erro ao buscar registro");
-            }
-        });
+        if (!dtParcelas.length) {
+            let totalF = vlTotalOS.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            $.ajax({
+                dataType: 'json',
+                type: 'GET',
+                url: Action.getParcelas,
+                data: { idCondicaoPagamento: $("#CondicaoPagamento_id").val(), vlTotal: totalF },
+                success: function (data) {
+                    $.notify({ message: data.message, icon: 'fa fa-exclamation' }, { type: 'success', z_index: 2000 });
+                    self.setParcelas(data);
+                },
+                error: function (request) {
+                    alert("Erro ao buscar registro");
+                }
+            });
+        } else {
+            $.notify({ message: "Já foram geradas parcelas para esta Ordem de Serviço, verifique!", icon: 'fa fa-exclamation' }, { type: 'danger', z_index: 2000 });
+        }
     }
 
     self.setParcelas = function (data) {
@@ -384,6 +446,20 @@ OrdemServico = function () {
         $("#divParcelas").slideDown();
 
     }
+
+
+    //$(document).on('tblMovimentoRowCallback', function (e, data) {
+    //    if (data.aData.flSituacao == "C") {
+    //        var btn = $('td a[data-event=select]', data.nRow);
+    //        btn.attr('title', "Movimento cancelado!");
+    //        btn.attr('data-event', "");
+    //        btn.attr('disabled', "disabled");
+    //        $(data.nRow).css('text-decoration', "line-through");
+    //        $(data.nRow).css('color', "red");
+    //        $(data.nRow).css('font-style', "italic");
+    //    }
+    //    return false;
+    //});
 
     //self.datatable.atualizarItens();
     //self.datatable.atualizarGrid();

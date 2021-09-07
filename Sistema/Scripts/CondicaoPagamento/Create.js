@@ -28,7 +28,7 @@ CondicaoPagamento = function () {
                 name: "tblCondicao",
                 remove: false,
                 edit: true,
-                order: [[1, "asc"]],
+                order: [[0, "asc"]],
                 columns: [
                     { data: "nrParcela" },
                     { data: "qtDias" },

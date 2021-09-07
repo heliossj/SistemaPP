@@ -165,6 +165,7 @@
     <Compile Include="DataTables\IDataTablesRequest.cs" />
     <Compile Include="DataTables\NameValueCollectionExtensions.cs" />
     <Compile Include="DataTables\Search.cs" />
+    <Compile Include="Models\Shared.cs" />
     <Compile Include="Models\Vendas.cs" />
     <Compile Include="Models\Compras.cs" />
     <Compile Include="Models\Pessoas.cs" />

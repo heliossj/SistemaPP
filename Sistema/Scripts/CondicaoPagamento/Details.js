@@ -16,7 +16,7 @@ CondicaoPagamento = function () {
                 name: "tblCondicao",
                 remove: false,
                 edit: false,
-                order: [[1, "asc"]],
+                order: [[0, "asc"]],
                 columns: [
                     { data: "nrParcela" },
                     { data: "qtDias" },
@@ -28,7 +28,6 @@ CondicaoPagamento = function () {
                                 k = data.txPercentual.toFixed(2).replace(".", ",");
                             }
                             return k;
-                            //return data;
                         }
                     },
 

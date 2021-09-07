@@ -82,23 +82,14 @@ namespace Sistema.Models
             }
         }
 
-        public class ParcelasVM
-        {
-            public int? idFormaPagamento { get; set; }
-            public string nmFormaPagamento { get; set; }
-            public string flSituacao { get; set; }
-            public DateTime? dtVencimento { get; set; }
-            public decimal? vlParcela { get; set; }
-            public double? nrParcela { get; set; }
-        }
         public string jsParcelas { get; set; }
-        public List<ParcelasVM> ParcelasOS
+        public List<Models.Shared.ParcelasVM> ParcelasOS
         {
             get
             {
                 if (string.IsNullOrEmpty(jsParcelas))
-                    return new List<ParcelasVM>();
-                return JsonConvert.DeserializeObject<List<ParcelasVM>>(jsParcelas);
+                    return new List<Models.Shared.ParcelasVM>();
+                return JsonConvert.DeserializeObject<List<Models.Shared.ParcelasVM>>(jsParcelas);
             }
             set
             {
