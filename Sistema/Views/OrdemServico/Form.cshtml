@@ -46,7 +46,7 @@
 </div>
 
 <div class="form-row">
-    @Html.EditorFor(model => model.Executante, "Funcionarios/Select", new { Required = true, Disabled = false, Label = "Executante" })
+    @Html.EditorFor(model => model.Executante, "Executante/Select", new { Required = true, Disabled = false, Label = "Executante" })
 </div>
 
 <div class="form-row">
@@ -183,11 +183,6 @@
                     <th width="55%">Forma de pagamento</th>
                 </tr>
             </thead>
-            @*<tfoot>
-                <tr>
-                    <td id="fts" colspan="4" style="text-align:right"></td>
-                </tr>
-            </tfoot>*@
         </table>
     </div>
 </div>

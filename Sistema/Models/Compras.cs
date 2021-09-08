@@ -32,28 +32,22 @@ namespace Sistema.Models
         [Display(Name = "Observação")]
         public string observacao { get; set; }
 
+        public string finalizar { get; set; }
+        public decimal? vlTotal { get; set; }
+
         public class ProdutosVM
         {
             public int? codProduto { get; set; }
-            public string nomeServico { get; set; }
-            public string ncm { get; set; }
-            public string cfop { get; set; }
-            public decimal? vlUnitario { get; set; }
+            public string nomeProduto { get; set; }
+            public string unidade { get; set; }
             public decimal? qtProduto { get; set; }
-            public decimal vlTotal { get; set; }
+            public decimal? vlVenda { get; set; }
+            public decimal? vlCompra { get; set; }
+            public decimal? txDesconto { get; set; }
+            public decimal? vlTotal { get; set; }
         }
-
-        public class ParcelasVM
-        {
-            public int? idFormaPagamento { get; set; }
-            public string nmFormaPagamento { get; set; }
-            public string flSituacao { get; set; }
-            public DateTime? dtVencimento { get; set; }
-        }
-
         public string jsProdutos { get; set; }
-        public string jsParcelas { get; set; }
-
+        
         public List<ProdutosVM> ProdutosCompra
         {
             get
@@ -67,14 +61,14 @@ namespace Sistema.Models
                 jsProdutos = JsonConvert.SerializeObject(value);
             }
         }
-
-        public List<ParcelasVM> ParcelasCompra
+        public string jsParcelas { get; set; }
+        public List<Shared.ParcelasVM> ParcelasCompra
         {
             get
             {
                 if (string.IsNullOrEmpty(jsParcelas))
-                    return new List<ParcelasVM>();
-                return JsonConvert.DeserializeObject<List<ParcelasVM>>(jsParcelas);
+                    return new List<Shared.ParcelasVM>();
+                return JsonConvert.DeserializeObject<List<Shared.ParcelasVM>>(jsParcelas);
             }
             set
             {

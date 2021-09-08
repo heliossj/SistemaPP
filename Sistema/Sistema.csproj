@@ -509,6 +509,7 @@
     <Content Include="Views\Vendas\Edit.cshtml" />
     <Content Include="Views\Vendas\Form.cshtml" />
     <Content Include="Views\Vendas\Index.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Executante\Select.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

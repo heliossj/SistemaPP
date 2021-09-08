@@ -63,7 +63,7 @@ namespace Sistema.Models
             public string nomeServico { get; set; }
             public decimal? vlUnitario { get; set; }
             public decimal? qtProduto { get; set; }
-            public decimal vlTotal { get; set; }
+            public decimal? vlTotal { get; set; }
             public string unidade { get; set; }
         }
 

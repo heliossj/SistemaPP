@@ -260,7 +260,7 @@ namespace Sistema.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult JsGetParcelas(int idCondicaoPagamento, decimal? vlTotal)
+        public JsonResult JsGetParcelas(int idCondicaoPagamento, decimal? vlTotal, DateTime? dtIiniParcela)
         {
             var daoConPag = new DAOCondicaoPagamento();
             var cond = daoConPag.GetCondicaoPagamento(idCondicaoPagamento);
@@ -268,6 +268,10 @@ namespace Sistema.Controllers
 
             var ListParcelas = new List<Models.Shared.ParcelasVM>();
             var dtInicio = DateTime.Now;
+            if (dtIiniParcela != null)
+            {
+                dtInicio = dtIiniParcela.GetValueOrDefault();
+            }
             foreach (var parcela in ListCondicao)
             {
                 var itemParcela = new Models.Shared.ParcelasVM
@@ -281,13 +285,11 @@ namespace Sistema.Controllers
                 ListParcelas.Add(itemParcela);
             }
 
-            var ListResult = ListParcelas.OrderBy(k => k.nrParcela);
-
             var result = new
             {
                 type = "success",
                 message = "Parcelas geradas com sucesso!",
-                parcelas = ListResult
+                parcelas = ListParcelas
             };
             return Json(result, JsonRequestBehavior.AllowGet);
         }

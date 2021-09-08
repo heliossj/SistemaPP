@@ -28,7 +28,7 @@ CondicaoPagamento = function () {
                 name: "tblCondicao",
                 remove: false,
                 edit: true,
-                order: [[0, "asc"]],
+                order: [[1, "asc"]],
                 columns: [
                     { data: "nrParcela" },
                     { data: "qtDias" },
@@ -59,7 +59,11 @@ CondicaoPagamento = function () {
             valid = false;
         }
 
-        if ($("#qtDias").val() == 0 || $("#qtDias").val() == "") {
+        //if ($("#qtDias").val() == 0 || $("#qtDias").val() == "") {
+        //    $("#qtDias").blink({ msg: "Informe uma quantidade de dias válido" });
+        //    valid = false;
+        //}
+        if ($("#qtDias").val() == "") {
             $("#qtDias").blink({ msg: "Informe uma quantidade de dias válido" });
             valid = false;
         }

@@ -12,6 +12,7 @@ namespace Sistema.Models
 
     public class Shared
     {
+        //Parcelas da compra
         public class ParcelasVM
         {
             public int? idFormaPagamento { get; set; }
@@ -20,6 +21,16 @@ namespace Sistema.Models
             public DateTime? dtVencimento { get; set; }
             public decimal? vlParcela { get; set; }
             public double? nrParcela { get; set; }
+        }
+
+        //Produtos Compra
+        public class ProdutosVM
+        {
+            public int? idProduto { get; set; }
+            public string nmProduto { get; set; }
+            public string unidade { get; set; }
+            public decimal? vlUnitario { get; set; }
+            public decimal? qtProduto { get; set; }
         }
     }
 }

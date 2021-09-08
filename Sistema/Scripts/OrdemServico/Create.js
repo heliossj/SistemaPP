@@ -14,8 +14,14 @@
         OS.addServico();
     });
 
-    $(document).on("tblServicoAfterDelete", OS.calcTotalServico);
-    $(document).on("tblProdutoAfterDelete", OS.calcTotalProduto);
+    $(document).on("tblServicoAfterDelete", function () {
+        OS.calcTotalServico();
+        OS.clearProduto();
+    });
+    $(document).on("tblProdutoAfterDelete", function () {
+        OS.calcTotalProduto();
+        OS.clearProduto();
+    });
 
     $(document).on("tblProdutoOpenEdit", OS.openEditProduto);
     $(document).on("tblProdutoCancelEdit", OS.clearProduto);
@@ -56,6 +62,9 @@
                 dtParcelas.clear();
                 $("#divAddServico").slideDown();
                 $("#divAddProduto").slideDown();
+                $("#CondicaoPagamento_id").val("")
+                $("#CondicaoPagamento_text").val("")
+                $("#CondicaoPagamento_btnGerarParcela").attr('disabled', true);
             }
         }
     });
