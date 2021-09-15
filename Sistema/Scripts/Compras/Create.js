@@ -16,6 +16,14 @@
     $(document).on("tblProdutoOpenEdit", compra.openEditProduto);
     $(document).on("tblProdutoCancelEdit", compra.clearProduto);
 
+    if (IsNullOrEmpty($("#finalizar").val())) {
+        $("#divValida").hide();
+        $("#flFinalizar").prop("checked", true)
+    } else {
+        $("#flFinalizar").prop("checked", false);
+        $("#divValida").show();
+    }
+
 
     if (!$("#flFinalizar").is(":checked")) {
         $("#divFinaliza").slideUp();
@@ -38,6 +46,9 @@
         } else {
             if ($(this).is(":checked")) {
                 $('input[name="dtEmissao"]').prop('disabled', true)
+                let dtEmissao = $("#dtEmissao").val()
+                console.log(dtEmissao)
+                $("#dtEmissaoAux").val(dtEmissao)
                 compra.calcTotalProduto();
                 $("#divParcelas").hide();
                 $("#divFinaliza").slideDown();
@@ -95,13 +106,13 @@
         let year = dayArray[2];
         let dtTeste = new Date(year, month, day)
         date = new Date(year, month, day).toJSON();
-        console.log(date)
     });
 });
 
 Compra = function () {
     self = this;
     dtProdutos = null;
+    dtParcelas = null;
 
     this.init = function () {
 
@@ -171,11 +182,24 @@ Compra = function () {
                             return data.vlParcela.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
                         }
                     },
-                    { data: "dtVencimento" },
+                    {
+                        data: null,
+                        mRender: function (data) {
+                            return JSONDate(data.dtVencimento);
+                        }
+                    },
                     { data: "nmFormaPagamento" },
                 ]
             },
         });
+
+        if (dtParcelas.length > 0) {
+            $("#flFinalizar").prop("checked", true)
+            let total = vlTotalCompra;
+            let totalFormat = total.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            $("#vlTotal").val(totalFormat);
+        }
+
     }
 
     //Produto
@@ -219,7 +243,6 @@ Compra = function () {
             $("#Produto_id").focus();
             valid = false;
         }
-
 
         else if (IsNullOrEmpty($("#qtProduto").val()) || $("#qtProduto").val() == "" || $("#qtProduto").val() == 0) {
             $("#qtProduto").blink({ msg: "Informe a quantidade" });
@@ -332,13 +355,14 @@ Compra = function () {
 
     self.setParcelas = function (data) {
         let itens = data.parcelas;
+        console.log(itens)
         for (var i = 0; i < itens.length; i++) {
-            let dtParcela = JSONDate(itens[i].dtVencimento,)
+            //let dtParcela = JSONDate(itens[i].dtVencimento,)
             let item = {
                 idFormaPagamento: itens[i].idFormaPagamento,
                 nmFormaPagamento: itens[i].nmFormaPagamento,
-                flSituacao: itens[i].flSituacao,
-                dtVencimento: dtParcela,
+                //flSituacao: itens[i].flSituacao,
+                dtVencimento: itens[i].dtVencimento,
                 vlParcela: itens[i].vlParcela,
                 nrParcela: itens[i].nrParcela
             }

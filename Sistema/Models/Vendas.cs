@@ -16,6 +16,9 @@ namespace Sistema.Models
         [Display(Name = "Situação")]
         public string situacao { get; set; }
 
+        public string finalizar { get; set; }
+        public decimal? vlTotal { get; set; }
+
         public Select.Funcionarios.Select Funcionario { get; set; }
         public Select.Funcionarios.Select Cliente { get; set; }
         public Select.Produtos.Select Produto { get; set; }
@@ -25,9 +28,10 @@ namespace Sistema.Models
         {
             public int? codProduto { get; set; }
             public string nomeProduto { get; set; }
-            public decimal? vlUnitario { get; set; }
+            public decimal? vlVenda { get; set; }
             public decimal? qtProduto { get; set; }
-            public decimal? vlDesconto { get; set; }
+            public string unidade { get; set; }
+            public decimal? txDesconto { get; set; }
             public decimal vlTotal { get; set; }
         }
 

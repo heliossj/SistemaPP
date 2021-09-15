@@ -260,7 +260,7 @@ namespace Sistema.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult JsGetParcelas(int idCondicaoPagamento, decimal? vlTotal, DateTime? dtIiniParcela)
+        public JsonResult JsGetParcelas(int idCondicaoPagamento, decimal vlTotal, DateTime? dtIiniParcela)
         {
             var daoConPag = new DAOCondicaoPagamento();
             var cond = daoConPag.GetCondicaoPagamento(idCondicaoPagamento);
@@ -280,9 +280,27 @@ namespace Sistema.Controllers
                     dtVencimento = dtInicio.AddDays((double)parcela.qtDias),
                     idFormaPagamento = parcela.codFormaPagamento,
                     nmFormaPagamento = parcela.nomeFormaPagamento,
-                    vlParcela = (parcela.txPercentual / 100 ) * vlTotal
+                    vlParcela = decimal.Round(((parcela.txPercentual / 100 ) * vlTotal), 2)
                 };
                 ListParcelas.Add(itemParcela);
+            }
+            var totalParcelas = ListParcelas.Sum(k => k.vlParcela);
+            if (totalParcelas != vlTotal)
+            {
+                if (totalParcelas < vlTotal)
+                {
+                    var dif = vlTotal - totalParcelas;
+                    var list = ListParcelas.OrderBy(u => u.nrParcela);
+                    list.Last().vlParcela = list.Last().vlParcela + dif;
+                    ListParcelas = list.ToList();
+                } 
+                if (totalParcelas > vlTotal)
+                {
+                    var dif = totalParcelas - vlTotal;
+                    var list = ListParcelas.OrderBy(u => u.nrParcela);
+                    list.Last().vlParcela = list.Last().vlParcela - dif;
+                    ListParcelas = list.ToList();
+                }
             }
 
             var result = new

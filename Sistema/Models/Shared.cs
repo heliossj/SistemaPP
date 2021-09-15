@@ -9,7 +9,6 @@ using System.Web.Mvc;
 namespace Sistema.Models
 {
     //Classes compartilhadas com várias telas
-
     public class Shared
     {
         //Parcelas da compra
@@ -17,10 +16,11 @@ namespace Sistema.Models
         {
             public int? idFormaPagamento { get; set; }
             public string nmFormaPagamento { get; set; }
-            public string flSituacao { get; set; }
             public DateTime? dtVencimento { get; set; }
-            public decimal? vlParcela { get; set; }
+            public decimal vlParcela { get; set; }
             public double? nrParcela { get; set; }
+            public string situacao { get; set; }
+            public DateTime? dtPagamento { get; set; }
         }
 
         //Produtos Compra

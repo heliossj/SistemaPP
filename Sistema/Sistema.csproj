@@ -144,6 +144,7 @@
     <Compile Include="Controllers\CidadesController.cs" />
     <Compile Include="Controllers\EstadosController.cs" />
     <Compile Include="DAO\DAOCidades.cs" />
+    <Compile Include="DAO\DAOCompras.cs" />
     <Compile Include="DAO\DAOFornecedores.cs" />
     <Compile Include="DAO\DAOFuncionarios.cs" />
     <Compile Include="DAO\DAOClientes.cs" />
@@ -498,9 +499,7 @@
     <Content Include="Views\Shared\EditorTemplates\Clientes\Select.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Funcionarios\Select.cshtml" />
     <Content Include="Views\Compras\Create.cshtml" />
-    <Content Include="Views\Compras\Delete.cshtml" />
     <Content Include="Views\Compras\Details.cshtml" />
-    <Content Include="Views\Compras\Edit.cshtml" />
     <Content Include="Views\Compras\Form.cshtml" />
     <Content Include="Views\Compras\Index.cshtml" />
     <Content Include="Views\Vendas\Create.cshtml" />
@@ -510,6 +509,7 @@
     <Content Include="Views\Vendas\Form.cshtml" />
     <Content Include="Views\Vendas\Index.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Executante\Select.cshtml" />
+    <Content Include="Views\Compras\Cancelar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

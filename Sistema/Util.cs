@@ -100,6 +100,15 @@ namespace Sistema.Util
                 return "ATIVA";
             if (flSituacao == "I")
                 return "INATIVA";
+            if (flSituacao == "N")
+                return "NORMAL";
+            if (flSituacao == "C")
+                return "CANCELADA";
+            if (flSituacao == "P")
+                return "PENDENTE";
+            if (flSituacao == "G")
+                return "PAGA";
+
             return flSituacao;
         }
         public static string TipoPessoa(string flPessoa)

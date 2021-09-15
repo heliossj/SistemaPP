@@ -79,7 +79,7 @@ namespace Sistema.Models
             public int? codCondicaoPagamento { get; set; }
             public short? nrParcela { get; set; }
             public short? qtDias { get; set; }
-            public decimal? txPercentual { get; set; }
+            public decimal txPercentual { get; set; }
             public int? codFormaPagamento { get; set; }
             public string nomeFormaPagamento { get; set; }
         }

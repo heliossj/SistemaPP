@@ -25,26 +25,54 @@
         <thead>
             <tr>
                 <th width="5%">Nº</th>
-                <th width="10%">Data de abertura</th>
-                <th width="10%">Data de validade</th>
-                <th width="52%">Cliente</th>
+                <th width="45%">Fornecedor</th>
+                <th width="10%">Data da compra</th>
+                <th width="10%">Data da entrega</th>
+                <th width="10%">Data de entrada</th>
                 <th width="10%">Situação</th>
-                <th width="13%"></th>
+                <th width="10%"></th>
             </tr>
         </thead>
         <tbody>
+            @foreach (var item in Model)
+            {
             <tr>
-                <td>1</td>
-                <td>15/03/2021</td>
-                <td>15/08/2021</td>
-                <td>JOSUÉ PEREIRA JÚNIOR</td>
-                <td>ATIVA</td>
+                <td style="text-align:right">
+                    @Html.DisplayFor(modelItem => item.codigo)
+                </td>
                 <td>
-                    @Html.ActionLink(" ", "Details", new { }, new { @class = "btn btn-success btn-sm fa fa-eye", @title = "Visualizar registro" })
-                    @Html.ActionLink(" ", "Edit", new { }, new { @class = "btn btn-warning btn-sm fa fa-edit", @title = "Editar registro" })
-                    @Html.ActionLink(" ", "Delete", new { }, new { @class = "btn btn-danger btn-sm fa fa-trash-o", @title = "Excluir registro" })
+                    @Html.DisplayFor(modelItem => item.Fornecedor.text)
+                </td>
+                <td>
+                    @if (item.dtEmissao != null)
+                    {
+                        var dtEmiAux = item.dtEmissao.Value.ToString("dd/MM/yyyy");
+                        @Html.DisplayFor(modelItem => dtEmiAux)
+                    }
+                </td>
+                <td>
+                    @if (item.dtEntrega != null)
+                    {
+                        var dtEmiAux = item.dtEntrega.Value.ToString("dd/MM/yyyy");
+                        @Html.DisplayFor(modelItem => dtEmiAux)
+                    }
+                </td>
+                <td>
+                    @if (item.dtCadastro != null)
+                    {
+                        var dtEmiAux = item.dtCadastro.Value.ToString("dd/MM/yyyy");
+                        @Html.DisplayFor(modelItem => dtEmiAux)
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.situacao)
+                </td>
+                <td>
+                    @Html.ActionLink(" ", "Details", new { id = item.codigo }, new { @class = "btn btn-success btn-sm fa fa-eye", @title = "Visualizar registro" })
+                    @Html.ActionLink(" ", "Delete", new { id = item.codigo }, new { @class = "btn btn-danger btn-sm fa fa-ban", @title = "Cancelar registro" })
                 </td>
             </tr>
+            }
         </tbody>
     </table>
 </div>

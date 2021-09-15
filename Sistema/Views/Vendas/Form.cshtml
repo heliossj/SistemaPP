@@ -5,31 +5,33 @@
     string action = Convert.ToString(ViewBag.Action);
 }
 
-<div class="form-row">
-    <div class="@Util.Input2">
-        @Html.Label("Nº", new { @class = "no-required" })
-        @Html.TextBoxFor(model => model.codigo, new { @class = "form-control number", maxlength = "3", Disabled = true })
-        @Html.ValidationMessageFor(model => model.codigo, null, new { @class = "text-danger" })
-    </div>
-</div>
-
-<div class="form-row">
-    <div class="@Util.Input3">
-        @Html.LabelFor(model => model.dtVenda, new { @class = "required" })
-        <div class="input-group-append">
-            @Html.TextBoxFor(model => model.dtVenda, new { @class = "form-control datepicker date_time", disabled = true })
-            <span class="fa fa-calendar input-group-text" style="font-size:23px"></span>
+@if (action != "create")
+{
+    <div class="form-row">
+        <div class="@Util.Input2">
+            @Html.Label("Nº", new { @class = "no-required" })
+            @Html.TextBoxFor(model => model.codigo, new { @class = "form-control number", maxlength = "3", Disabled = true })
+            @Html.ValidationMessageFor(model => model.codigo, null, new { @class = "text-danger" })
         </div>
     </div>
-    <div class="@Util.Input3">
-        @Html.LabelFor(model => model.situacao, new { @class = "no-required" })
-        @Html.DropDownListFor(model => model.situacao, Sistema.Models.Vendas.Situacao, new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => model.situacao, null, new { @class = "text-danger" })
-    </div>
-</div>
 
+    <div class="form-row">
+        <div class="@Util.Input3">
+            @Html.LabelFor(model => model.dtVenda, new { @class = "required" })
+            <div class="input-group-append">
+                @Html.TextBoxFor(model => model.dtVenda, new { @class = "form-control datepicker date_time", disabled = true })
+                <span class="fa fa-calendar input-group-text" style="font-size:23px"></span>
+            </div>
+        </div>
+        <div class="@Util.Input3">
+            @Html.LabelFor(model => model.situacao, new { @class = "no-required" })
+            @Html.DropDownListFor(model => model.situacao, Sistema.Models.Vendas.Situacao, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.situacao, null, new { @class = "text-danger" })
+        </div>
+    </div>
+}
 <div class="form-row">
-    @Html.EditorFor(model => model.Funcionario, "Funcionarios/Select", new { Required = true, Disabled = false })
+    @Html.EditorFor(model => model.Funcionario, "Funcionarios/Select", new { Required = true, Disabled = false, Label = "Vendedor" })
 </div>
 
 <div class="form-row">
@@ -39,31 +41,33 @@
 <div class="bs-callout bs-callout-primary">
     <h4> Produtos</h4>
     <div class="separador"></div>
-    <div class="form-row">
-        @Html.EditorFor(model => model.Produto, "Produtos/Select", new { Disabled = false, Required = true, flValor = "S", classForm = Util.Input10 })
-    </div>
 
-    <div class="form-row">
-
-        <div class="@Util.Input2">
-            @Html.Label("Unidade", new { @class = "required" })
-            @Html.DropDownList("unidade", Sistema.Models.Produtos.Unidade, new { @class = "form-control" })
+    <div id="divAddProduto">
+        <div class="form-row">
+            @Html.EditorFor(model => model.Produto, "Produtos/Select", new { Disabled = false, Required = true, flValor = "S", classForm = Util.Input10 })
         </div>
 
-        <div class="@Util.Input2">
-            @Html.Label("qtProduto", "Quantidade", new { @class = "required" })
-            @Html.TextBox("qtProduto", "", new { @class = "form-control money", placeholder = "0,00", style = "text-align: right" })
-        </div>
+        <div class="form-row">
 
-        <div class="@Util.Input2">
-            @Html.Label("vlDesconto", "Desconto (%)", new { @class = "required" })
-            @Html.TextBox("vlDesconto", "", new { @class = "form-control money", placeholder = "0,00", style = "text-align: right" })
-        </div>
+            <div class="@Util.Input2">
+                @Html.Label("Unidade", new { @class = "required" })
+                @Html.DropDownList("unidade", Sistema.Models.Produtos.Unidade, new { @class = "form-control" })
+            </div>
 
-        <div style="margin-block:-1px">
-            <button id="addProduto" type="button" class="btn btn-success btn-lg" style="margin-top:35px; font-size:14px" title="Adicionar"><b>Adicionar </b> <i class="fa fa-plus"></i></button>
-        </div>
+            <div class="@Util.Input2">
+                @Html.Label("qtProduto", "Quantidade", new { @class = "required" })
+                @Html.TextBox("qtProduto", "", new { @class = "form-control money", placeholder = "0,00", style = "text-align: right" })
+            </div>
 
+            <div class="@Util.Input2">
+                @Html.Label("txDesconto", "Desconto (%)", new { @class = "required" })
+                @Html.TextBox("txDesconto", "", new { @class = "form-control money", placeholder = "0,00", style = "text-align: right" })
+            </div>
+
+            <div style="margin-block:-1px">
+                <button id="addProduto" type="button" class="btn btn-success btn-lg" style="margin-top:35px; font-size:14px" title="Adicionar"><b>Adicionar </b> <i class="fa fa-plus"></i></button>
+            </div>
+        </div>
     </div>
 
     @Html.HiddenFor(model => model.jsProdutos)
@@ -72,41 +76,58 @@
             <tr>
                 <th width="5%"></th>
                 <th width="5%">Cod</th>
-                <th width="50%">Produto</th>
+                <th width="40%">Produto</th>
                 <th width="10%">Vl. unit.</th>
                 <th width="10%">Quant.</th>
+                <th width="10%">Unidade</th>
                 <th width="10%">Desconto</th>
                 <th width="10%">Total</th>
             </tr>
         </thead>
         <tfoot>
             <tr>
-                <td id="ftp" colspan="7" style="text-align:right"></td>
+                <td id="ftp" colspan="8" style="text-align:right"></td>
             </tr>
         </tfoot>
     </table>
 </div>
 
+@Html.HiddenFor(k => k.finalizar)
 <div class="form-row">
-    @Html.EditorFor(model => model.CondicaoPagamento, "CondicaoPagamento/Select", new { Required = true, Disabled = false })
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="" id="flFinalizar" style="width: 16px; height: 16px; cursor: pointer;" required>
+        <label class="form-check-label orcheck text-primary" for="flFinalizar" style="cursor: pointer">
+            FINALIZAR VENDA
+        </label>
+    </div>
 </div>
 
-@Html.HiddenFor(model => model.jsParcelas)
-<table id="tblParcelas" class="table table-striped table-bordered" style="width:100%">
-    <thead>
-        <tr>
-            <th width="10%">Nº parcela</th>
-            <th width="15%">Valor Parcela</th>
-            <th width="10%">Vencimento</th>
-            <th width="55%">Forma de pagamento</th>
-        </tr>
-    </thead>
-    <tfoot>
-        <tr>
-            <td id="fts" colspan="4" style="text-align:right"></td>
-        </tr>
-    </tfoot>
-</table>
+<div id="divFinaliza">
+    <div class="form-row">
+        <div class="@Util.Input2">
+            @Html.Label("Valor total", new { @class = "no-required" })
+            @Html.TextBoxFor(model => model.vlTotal, new { @class = "form-control", Disabled = true, placeholder = "0,00", style = "text-align: right" })
+        </div>
+    </div>
+
+    <div class="form-row">
+        @Html.EditorFor(model => model.CondicaoPagamento, "CondicaoPagamento/Select", new { Required = true, Disabled = false, @classForm = Util.Input10, flParcela = "S" })
+    </div>
+
+    <div id="divParcelas">
+        @Html.HiddenFor(model => model.jsParcelas)
+        <table id="tblParcelas" class="table table-striped table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                    <th width="10%">Nº parcela</th>
+                    <th width="15%">Valor Parcela</th>
+                    <th width="10%">Vencimento</th>
+                    <th width="55%">Forma de pagamento</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
 
 @if (action != "create")
 {

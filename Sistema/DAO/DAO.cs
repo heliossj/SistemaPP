@@ -96,6 +96,26 @@ namespace Sistema.DAO
             return text;
         }
 
+        protected string FormatDecimal(decimal? valor)
+        {
+            var result = string.Empty;
+            if (valor != null)
+            {
+                result = valor.Value.ToString().Replace(",", ".");
+            }
+            return result;
+        }
+
+        protected string FormatDate(DateTime? data)
+        {
+            var result = string.Empty;
+            if (data != null)
+            {
+                result = "'" + data.Value.ToString("yyyy-MM-dd") + "'";
+            }
+            return result;
+        }
+
         protected bool ValidCPFCNPJ(string campoValor, string tabela, string coluna, string pessoaTipo)
         {
             try

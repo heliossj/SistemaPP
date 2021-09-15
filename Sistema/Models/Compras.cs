@@ -11,16 +11,20 @@ namespace Sistema.Models
     public class Compras : Pai
     {
         [Display(Name = "Modelo")]
-        public short modelo { get; set; }
+        public string modelo { get; set; }
+
+        [Display(Name = "Situação")]
+        public string situacao { get; set; }
         
         [Display(Name = "Série")]
-        public short serie { get; set; }
+        public string serie { get; set; }
 
         [Display(Name = "Número")]
-        public int nrNota { get; set; }
+        public int? nrNota { get; set; }
 
         [Display(Name = "Data de emissão")]
         public DateTime? dtEmissao { get; set; }
+        public string dtEmissaoAux { get; set; }
 
         [Display(Name = "Data de entrega")]
         public DateTime? dtEntrega { get; set; }
@@ -47,7 +51,6 @@ namespace Sistema.Models
             public decimal? vlTotal { get; set; }
         }
         public string jsProdutos { get; set; }
-        
         public List<ProdutosVM> ProdutosCompra
         {
             get
@@ -61,14 +64,15 @@ namespace Sistema.Models
                 jsProdutos = JsonConvert.SerializeObject(value);
             }
         }
+
         public string jsParcelas { get; set; }
-        public List<Shared.ParcelasVM> ParcelasCompra
+        public List<Models.Shared.ParcelasVM> ParcelasCompra
         {
             get
             {
                 if (string.IsNullOrEmpty(jsParcelas))
-                    return new List<Shared.ParcelasVM>();
-                return JsonConvert.DeserializeObject<List<Shared.ParcelasVM>>(jsParcelas);
+                    return new List<Models.Shared.ParcelasVM>();
+                return JsonConvert.DeserializeObject<List<Models.Shared.ParcelasVM>>(jsParcelas);
             }
             set
             {

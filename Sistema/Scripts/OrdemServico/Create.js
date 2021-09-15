@@ -303,7 +303,7 @@ OrdemServico = function () {
         let item = dtServicos.dataSelected.item;
         $("#Servico_id").val(item.codServico);
         $("#Servico_text").val(item.nomeServico);
-        $("#Servico_vlServico").val(item.vlUnitario);
+        $("#Servico_vlServico").val(item.vlUnitario.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 }));
         $("#qtServico").val(item.qtServico);
         $('input[name="Servico.id"]').prop('disabled', true)
     }
@@ -404,13 +404,14 @@ OrdemServico = function () {
         $("#Produto_id").val(item.codProduto);
         $("#Produto_text").val(item.nomeProduto);
         $("#unidade").val(item.unidade);
-        $("#Produto_vlVenda").val(item.vlUnitario);
+        $("#Produto_vlVenda").val(item.vlUnitario.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 }));
         $("#qtProduto").val(item.qtProduto);
         $('input[name="Produto.id"]').prop('disabled', true)
     }
 
     self.saveProduto = function (data) {
         if (dtProdutos.isEdit) {
+            //let vlItem = data.
             dtProdutos.editItem(data);
         } else {
             dtProdutos.addItem(data)
@@ -455,20 +456,6 @@ OrdemServico = function () {
         $("#divParcelas").slideDown();
 
     }
-
-
-    //$(document).on('tblMovimentoRowCallback', function (e, data) {
-    //    if (data.aData.flSituacao == "C") {
-    //        var btn = $('td a[data-event=select]', data.nRow);
-    //        btn.attr('title', "Movimento cancelado!");
-    //        btn.attr('data-event', "");
-    //        btn.attr('disabled', "disabled");
-    //        $(data.nRow).css('text-decoration', "line-through");
-    //        $(data.nRow).css('color', "red");
-    //        $(data.nRow).css('font-style', "italic");
-    //    }
-    //    return false;
-    //});
 
     //self.datatable.atualizarItens();
     //self.datatable.atualizarGrid();
