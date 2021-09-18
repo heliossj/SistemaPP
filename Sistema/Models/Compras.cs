@@ -12,15 +12,18 @@ namespace Sistema.Models
     {
         [Display(Name = "Modelo")]
         public string modelo { get; set; }
+        public string modeloAux { get; set; }
 
         [Display(Name = "Situação")]
         public string situacao { get; set; }
         
         [Display(Name = "Série")]
         public string serie { get; set; }
+        public string serieAux { get; set; }
 
         [Display(Name = "Número")]
         public int? nrNota { get; set; }
+        public int? nrNotaAux { get; set; }
 
         [Display(Name = "Data de emissão")]
         public DateTime? dtEmissao { get; set; }
@@ -30,6 +33,7 @@ namespace Sistema.Models
         public DateTime? dtEntrega { get; set; }
 
         public Select.Fornecedores.Select Fornecedor { get; set; }
+        public int? idFornecedor { get; set; }
         public Select.CondicaoPagamento.Select CondicaoPagamento { get; set; }
         public Select.Produtos.Select Produto { get; set; }
 

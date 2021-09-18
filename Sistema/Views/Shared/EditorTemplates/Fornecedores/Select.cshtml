@@ -9,17 +9,19 @@
     string classLabel = Convert.ToString(ViewData["classLabel"] ?? Util.Input12);
     string classForm = Convert.ToString(ViewData["classForm"] ?? Util.Input12);
     var Prefix = Html.ClientPrefixName().ToString();
+    string action = Convert.ToString(ViewBag.Action);
 }
 
 @Html.Hidden("isEdit")
-
+@Html.HiddenFor(k => action)
 <div class="@classForm">
-    @Html.Label("", Label, new { @class = "required" })
+    @Html.LabelFor(model => model.id, Label, new { @class = "required" })
     <div class="input-group">
         @Html.TextBoxFor(model => model.id, new { @style = "border-radius: 4px 0px 0px 4px; width: 15%;", @class = "form-control number", maxLength = "6" })
         @Html.TextBoxFor(model => model.text, new { @class = "form-control", @style = "width:70%", Disabled = true })
+        @Html.HiddenFor(k => k.text)
         <a style="border-radius:0px 3px 3px 0px" data-target="#@Sistema.Util.SelectFunctions.getInputId("Modal", Prefix)" id="@Sistema.Util.SelectFunctions.getInputId("btn-localizar", Prefix)" title="Abrir a busca de @Label" class="btn btn-success" data-toggle="modal"><i class="fa fa-search"></i></a>
-        @Html.HiddenFor(model => model.text)
+
     </div>
     @Html.ValidationMessageFor(model => model.id, null, new { @class = "text-danger" })
 </div>
@@ -32,23 +34,23 @@
                     <div class="panel-heading" style="height: 41px; padding-left:2px;font-weight: bold;">
                         <h3 class="panel-title pull-right"><button type="button" style="opacity: inherit;color: #fff;" class="close" data-dismiss="modal">&times;</button></h3>
                         <ul class="nav panel-tabs" style="width:400px">
-                            <li class="active"><a data-event="true" style="margin-top:1px;color: black;" data-toggle="tab"><b><i class="fa fa-list-alt" aria-hidden="true"></i> Fornecedores </b></a></li>
+                            <li class="active"><a data-event="true" style="margin-top:1px;color: black;" data-toggle="tab"><b><i class="fa fa-list" aria-hidden="true"></i> Países </b></a></li>
                         </ul>
                     </div>
 
-                    <div style="text-align:right">
-                        <button id="@Sistema.Util.SelectFunctions.getInputId("Create", Prefix)" onclick="OpenModalCreate()" type="button" class="btn btn-success"><i class="fa fa-plus"></i>  Adicionar</button>
+                    <div style="text-align:right; margin-right:15px">
+                        <button id="@Sistema.Util.SelectFunctions.getInputId("Create", Prefix)" onclick="OpenModalCreateFornecedor()" type="button" class="btn btn-success"><i class="fa fa-plus"></i>  Adicionar</button>
                     </div>
 
-                    <div id="body" class="modal-body" style="padding: 33px 0px 0px 0px;">
+                    <div id="body" class="modal-body" style="padding: 3px 0px 0px 0px;">
                         <div class="container-fluid">
-                            <div id="TableFornecedores"></div>
+                            <div id="TableFornecedor"></div>
                         </div>
                     </div>
 
                     <div class="modal-footer">
                         <div style="text-align:right">
-                            <button id="@Sistema.Util.SelectFunctions.getInputId("Fechar", Prefix)" onclick="FecharModal()" type="button" class="btn btn-outline-dark"><i class="fa fa-times"></i> Fechar</button>
+                            <button id="@Sistema.Util.SelectFunctions.getInputId("Fechar", Prefix)" onclick="FecharModalFornecedor()" type="button" class="btn btn-outline-dark"><i class="fa fa-times"></i> Fechar</button>
                         </div>
                     </div>
 
@@ -99,7 +101,7 @@
 
                             <div class="form-row isEdit">
                                 <div class="@Util.Input3">
-                                    @Html.Label("dtCadastro", "Data de cadastro", new { @class = "required" })
+                                    @Html.Label("dtCadastro", "Data de cadastro", new { @class = "no-required" })
                                     <div class="input-group-append">
                                         @Html.TextBox("dtCadastro", null, new { @class = "form-control", disabled = true })
                                         <span class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></span>
@@ -107,22 +109,20 @@
                                 </div>
 
                                 <div class="@Util.Input3 ">
-                                    @Html.Label("dtUltAlteracao", "Data de cadastro", new { @class = "required" })
+                                    @Html.Label("dtUltAlteracao", "Data de cadastro", new { @class = "no-required" })
                                     <div class="input-group">
                                         @Html.TextBox("dtUltAlteracao", null, new { @class = "form-control", disabled = true })
                                         <div class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></div>
                                     </div>
                                 </div>
                             </div>
-
-
                         </div>
                     </div>
 
                     <div class="modal-footer">
                         <div style="text-align:right">
                             <button id="@Sistema.Util.SelectFunctions.getInputId("btnSave", Prefix)" type="button" class="btn btn-success"><i class="fa fa-save"></i>  Salvar</button>
-                            <button id="@Sistema.Util.SelectFunctions.getInputId("FecharCreate", Prefix)" onclick="FecharModalCreate()" type="button" class="btn btn-danger"><i class="fa fa-ban"></i>  Cancelar</button>
+                            <button id="@Sistema.Util.SelectFunctions.getInputId("FecharCreate", Prefix)" onclick="FecharModalCreateFornecedor()" type="button" class="btn btn-danger"><i class="fa fa-ban"></i>  Cancelar</button>
                         </div>
                     </div>
                 </div>
@@ -137,11 +137,11 @@
     self = this;
     $(function () {
          $("#@Sistema.Util.SelectFunctions.getInputId("btn-localizar", Prefix)").on("click", function () {
-             InitModalFornecedores();
+             InitModalFornecedor();
          });
 
          $('#@Sistema.Util.SelectFunctions.getInputId("btnSave", Prefix)').on('click', function () {
-                self.save();
+                self.saveFornecedor();
          });
 
          $('#@Sistema.Util.SelectFunctions.getInputId("id", Prefix)').change(function (data, e) {
@@ -157,7 +157,7 @@
                      data: { 'id': id },
                      success: function (data) {
                          if (!data) {
-                             $.notify({ message: 'Nenhum registro encontrado para o código informado', icon: 'fa fa-exclamation' }, { type: 'danger' } );
+                             $.notify({ message: 'Nenhum registro encontrado para o código informado', icon: 'fa fa-exclamation' }, { type: 'danger', z_index: 2000 } );
                          }
                          $("#@Sistema.Util.SelectFunctions.getInputId("id", Prefix)").val(data.id);
                          $("#@Sistema.Util.SelectFunctions.getInputId("text", Prefix)").val(data.text);
@@ -172,7 +172,7 @@
 
      });
 
-    this.getForm = function() {
+    this.getFormFornecedor = function() {
         var form = {
                 codPais : $('#@Sistema.Util.SelectFunctions.getInputId("codPais", Prefix)'),
                 nomePais: $('#@Sistema.Util.SelectFunctions.getInputId("nomePais", Prefix)'),
@@ -184,8 +184,8 @@
         return form;
     };
 
-    this.clear = function () {
-        var form = self.getForm();
+    this.clearFornecedor = function () {
+        var form = self.getFormPais();
         form.codPais.val("");
         form.nomePais.val("");
         form.ddi.val("");
@@ -195,9 +195,9 @@
         form.nomePais.focus();
     };
 
-    this.isValid = function () {
+    this.isValidFornecedor = function () {
         var valid = true;
-        var form = self.getForm();
+        var form = self.getFormPais();
 
         if (IsNullOrEmpty(form.nomePais.val())) {
             form.nomePais.blink({ msg: "Campo país é obrigatório" });
@@ -219,9 +219,9 @@
         return valid;
     };
 
-    getModel = function (form) {
+    getModelFornecedor = function (form) {
         var model = {
-            codPais: form.codPais.val(),
+            codigo: form.codPais.val(),
             nomePais: form.nomePais.val(),
             ddi: form.ddi.val(),
             sigla: form.sigla.val(),
@@ -229,19 +229,19 @@
         return model;
     };
 
-    this.save = function () {
+    this.saveFornecedor = function () {
         if ($('#@Sistema.Util.SelectFunctions.getInputId("isEdit", Prefix)').val() == "S") {
-            this.update();
+            this.updateFornecedor();
         } else {
-            this.insert();
+            this.insertFornecedor();
         }
     }
 
-    this.insert = function () {
-        var form = self.getForm();
-        var model = getModel(form);
+    this.insertFornecedor = function () {
+        var form = self.getFormFornecedor();
+        var model = getModelFornecedor(form);
 
-        if (self.isValid(model)) {
+        if (self.isValidFornecedor(model)) {
 
             $.ajax({
                 dataType: 'json',
@@ -249,11 +249,11 @@
                 url: '@Url.Action("jsCreate", "Fornecedores")',
                 data: model,
                 success: function (data) {
-                    self.clear();
-                    InitModalFornecedores();
+                    self.clearFornecedor();
+                    InitModalFornecedor();
                     $("#@Sistema.Util.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("hide");
                     $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
-                    $.notify({ message: data.message, icon: 'fa fa-exclamation' }, { type: 'success', z_index: 2000, });
+                    $.notify({ message: data.message, icon: 'fa fa-exclamation' }, { type: 'success', z_index: 2000 });
 
                 },
                 error: function (request) {
@@ -263,11 +263,11 @@
         }
     };
 
-    this.update = function () {
-        var form = self.getForm();
-        var model = getModel(form);
-
-        if (self.isValid(model)) {
+    this.updateFornecedor = function () {
+        //debugger;
+        var form = self.getFormFornecedor();
+        var model = getModelFornecedor(form);
+        if (self.isValidFornecedor(model)) {
 
             $.ajax({
                 dataType: 'json',
@@ -275,24 +275,24 @@
                 url: '@Url.Action("jsUpdate", "Fornecedores")',
                 data: model,
                 success: function (data) {
-                    self.clear();
-                    InitModalFornecedores();
+                    self.clearFornecedor();
+                    InitModalFornecedor();
                     $("#@Sistema.Util.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("hide");
                     $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
-                    $.notify({ message: data.message, icon: 'fa fa-exclamation' }, { type: 'success', z_index: 2000, });
+                    $.notify({ message: data.message, icon: 'fa fa-exclamation' }, { type: 'success', z_index: 2000 });
                 },
             });
         }
     };
 
-    function InitModalFornecedores() {
-          $("#TableFornecedores").empty();
+    function InitModalFornecedor() {
+          $("#TableFornecedor").empty();
           let table = null
-          let lis = getTableFornecedores();
-          $("#TableFornecedores").append(lis);
+          let lis = getTableFornecedor();
+          $("#TableFornecedor").append(lis);
 
-        table = $('#lista').DataTable({
-                ajax: { url: $('#lista').attr('data-url') },
+        table = $('#@Sistema.Util.SelectFunctions.getInputId("list", Prefix)').DataTable({
+            ajax: { url: $('#@Sistema.Util.SelectFunctions.getInputId("list", Prefix)').attr('data-url') },
                 language: {
                     url: 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Portuguese-Brasil.json',
             },
@@ -309,7 +309,7 @@
                     sortable: false,
                     data: null,
                     mRender: function (data) {
-                        return '<a class="btn btn-warning btn-sm" onclick="OpenEdit(' + data.id + ')" title="Alterar registro"><i class="fa fa-edit"></i> </a>';
+                        return '<a class="btn btn-warning btn-sm" onclick="OpenEditFornecedor(' + data.id + ')" title="Alterar registro"><i class="fa fa-edit"></i> </a>';
                     }
                 },
                 {
@@ -322,7 +322,7 @@
         });
         $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").modal("show");
 
-        $('#lista tbody').on('click', 'td.details-control', function () {
+        $('#@Sistema.Util.SelectFunctions.getInputId("list", Prefix) tbody').on('click', 'td.details-control', function () {
             var tr = $(this).closest('tr');
             var row = table.row(tr);
             if (row.child.isShown()) {
@@ -332,14 +332,14 @@
                 });
             }
             else {
-                row.child(SelectFornecedores(row.data())).show();
+                row.child(SelectFornecedor(row.data())).show();
                 tr.addClass('shown');
                 $('div.slider', row.child()).slideDown();
             }
         });
       }
-    function getTableFornecedores() {
-        let tmp = `<table id="lista" class="table table-striped table-bordered" style="width:100%" data-url="@Url.Action("JsQuery", "Fornecedores")">
+    function getTableFornecedor() {
+        let tmp = `<table id="@Sistema.Util.SelectFunctions.getInputId("list", Prefix)" class="table table-striped table-bordered" style="width:100%" data-url="@Url.Action("JsQuery", "Fornecedores")">
                         <thead>
                             <tr>
                                 <th></th>
@@ -352,17 +352,17 @@
           return tmp;
     };
 
-    function FecharModal() {
+    function FecharModalFornecedor() {
         $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").modal("hide");
     };
-    function FecharModalCreate() {
+    function FecharModalCreateFornecedor() {
         $("#@Sistema.Util.SelectFunctions.getInputId("ModalCreate", Prefix)").css("overflow", "hidden");
         $("#@Sistema.Util.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("hide");
         $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
-        self.clear();
+        self.clearFornecedor();
     };
 
-    function OpenModalCreate() {
+    function OpenModalCreateFornecedor() {
         $("#@Sistema.Util.SelectFunctions.getInputId("btnUpdate", Prefix)").hide();
         $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "hidden");
         $("#@Sistema.Util.SelectFunctions.getInputId("ModalCreate", Prefix)").css("overflow", "auto");
@@ -371,31 +371,30 @@
         if ($("#@Sistema.Util.SelectFunctions.getInputId("isEdit", Prefix)").val() == "N") {
             $(".isEdit").hide();
         }
-
     };
 
-    function SelectFornecedores(data) {
+    function SelectFornecedor(data) {
         $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").modal("hide");
         $("#@Sistema.Util.SelectFunctions.getInputId("id", Prefix)").val(data.id);
         $("#@Sistema.Util.SelectFunctions.getInputId("text", Prefix)").val(data.text);
         return false;
     };
 
-    function OpenEdit(id) {
+    function OpenEditFornecedor(id) {
         $.ajax({
             dataType: 'json',
             type: 'GET',
             url: '@Url.Action("JsDetails", "Fornecedores")',
             data: { 'id': id },
             success: function (data) {
-                self.clear();
+                self.clearFornecedor();
                 $("#@Sistema.Util.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("show");
                 $("#@Sistema.Util.SelectFunctions.getInputId("isEdit", Prefix)").val("S");
                 if ($("#@Sistema.Util.SelectFunctions.getInputId("isEdit", Prefix)").val() == "S") {
                     $(".isEdit").show();
                 }
 
-                $("#@Sistema.Util.SelectFunctions.getInputId("codPais", Prefix)").val(data.id);
+                $("#@Sistema.Util.SelectFunctions.getInputId("codFornecedor", Prefix)").val(data.id);
                 $("#@Sistema.Util.SelectFunctions.getInputId("nomePais", Prefix)").val(data.text);
                 $("#@Sistema.Util.SelectFunctions.getInputId("ddi", Prefix)").val(data.ddi);
                 $("#@Sistema.Util.SelectFunctions.getInputId("sigla", Prefix)").val(data.sigla);

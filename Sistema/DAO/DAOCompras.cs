@@ -14,46 +14,77 @@ namespace Sistema.DAO
 
         public List<Compras> GetCompras()
         {
-            try
+            //try
+            //{
+            var list = new List<Compras>();
+            var sql = this.Search(null, null);
+
+            using (con)
             {
-                var sql = this.Search(null, null);
                 OpenConnection();
-                SqlQuery = new SqlCommand(sql, con);
-                reader = SqlQuery.ExecuteReader();
-                var list = new List<Compras>();
-
-                while (reader.Read())
+                SqlTransaction sqlTrans = con.BeginTransaction();
+                SqlCommand command = con.CreateCommand();
+                command.Transaction = sqlTrans;
+                try
                 {
-                    var compras = new Compras
+                    command.CommandText = sql;
+                    reader = command.ExecuteReader();
+                    while (reader.Read())
                     {
-                        codigo = Convert.ToInt32(reader["Compra_ID"]),
-                        situacao = Sistema.Util.FormatFlag.Situacao(Convert.ToString(reader["Compra_Situacao"])),
-                        Fornecedor = new Select.Fornecedores.Select
+                        var compra = new Compras
                         {
-                            id = Convert.ToInt32(reader["Fornecedor_ID"]),
-                            text = Convert.ToString(reader["Fornecedor_Nome"])
-                        },
-                        modelo = Convert.ToString(reader["Compra_Modelo"]),
-                        serie = Convert.ToString(reader["Compra_Serie"]),
-                        nrNota = Convert.ToInt32(reader["Compra_Numero"]),
-                        dtEmissao = Convert.ToDateTime(reader["Compra_DataEmissao"]),
-                        dtEntrega = Convert.ToDateTime(reader["Compra_DataEntrega"]),
-                        dtCadastro = Convert.ToDateTime(reader["Compra_DataEntrada"]),
-                    };
-
-                    list.Add(compras);
+                            codigo = Convert.ToInt32(reader["Compra_ID"]),
+                            situacao = Sistema.Util.FormatFlag.Situacao(Convert.ToString(reader["Compra_Situacao"])),
+                            Fornecedor = new Select.Fornecedores.Select
+                            {
+                                id = Convert.ToInt32(reader["Fornecedor_ID"]),
+                                text = Convert.ToString(reader["Fornecedor_Nome"])
+                            },
+                            modelo = Convert.ToString(reader["Compra_Modelo"]),
+                            serie = Convert.ToString(reader["Compra_Serie"]),
+                            nrNota = Convert.ToInt32(reader["Compra_Numero"]),
+                            dtEmissao = Convert.ToDateTime(reader["Compra_DataEmissao"]),
+                            dtEntrega = Convert.ToDateTime(reader["Compra_DataEntrega"]),
+                            dtCadastro = Convert.ToDateTime(reader["Compra_DataEntrada"]),
+                        };
+                        list.Add(compra);
+                    }
+                    con.Close();
+                    OpenConnection();
+                    foreach (var item in list)
+                    {
+                        var listComp = new List<Shared.ParcelasVM>();
+                        using (var details = new SqlCommand(this.SearchParcelas(item.codigo), con))
+                        {
+                            using (var detReader = details.ExecuteReader())
+                            {
+                                while (detReader.Read())
+                                {
+                                    var parcela = new Shared.ParcelasVM
+                                    {
+                                        idFormaPagamento = Convert.ToInt32(detReader["FormaPagamento_ID"]),
+                                        nmFormaPagamento = Convert.ToString(detReader["FormaPagamento_Nome"]),
+                                        nrParcela = Convert.ToDouble(detReader["ContaPagar_NrParcela"]),
+                
+                                        vlParcela = Convert.ToDecimal(detReader["ContaPagar_VlParcela"]),
+                                        dtVencimento = Convert.ToDateTime(detReader["ContaPagar_DataVencimento"]),
+                                        situacao = Convert.ToString(detReader["ContaPagar_Situacao"])
+                                    };
+                                    listComp.Add(parcela);
+                                }
+                            }
+                        }
+                        item.ParcelasCompra = listComp;
+                    }
+                    con.Close();
                 }
-
-                return list;
+                catch (Exception ex)
+                {
+                    sqlTrans.Rollback();
+                    throw new Exception(ex.Message);
+                }
             }
-            catch (Exception error)
-            {
-                throw new Exception(error.Message);
-            }
-            finally
-            {
-                CloseConnection();
-            }
+            return list;
         }
 
         public bool Insert(Models.Compras compra)
@@ -129,7 +160,7 @@ namespace Sistema.DAO
 
         public void CancelarCompra(int? codCompra)
         {
-            throw new Exception("Método ainda não implementado");
+            throw new Exception("Ainda não implementado");
         }
 
         public Compras GetCompra(int codCompra)
@@ -315,7 +346,7 @@ namespace Sistema.DAO
             }
             else
             {
-                throw new Exception("Já existe uma compra registrada com este número e fornecedor, verifique!");
+                return false;
             }
         }
     }

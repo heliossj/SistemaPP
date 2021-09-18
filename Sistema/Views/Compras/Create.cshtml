@@ -53,7 +53,8 @@
 @section scripts{
     <script type="text/javascript">
         var Action = {
-            getParcelas: "@Url.Action("JsGetParcelas", "CondicaoPagamento")"
+            getParcelas: "@Url.Action("JsGetParcelas", "CondicaoPagamento")",
+            verificaNF: "@Url.Action("JsVerificaNF", "Compras")"
         }
     </script>
     @Scripts.Render("~/Scripts/Compras/Create.js")

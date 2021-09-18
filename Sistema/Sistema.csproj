@@ -130,7 +130,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ComprasController.cs" />
     <Compile Include="Controllers\ContasReceber.cs" />
-    <Compile Include="Controllers\ContasPagar.cs" />
+    <Compile Include="Controllers\ContasPagarController.cs" />
     <Compile Include="Controllers\VendasController.cs" />
     <Compile Include="Controllers\OrdemServicoController.cs" />
     <Compile Include="Controllers\ServicosController.cs" />
@@ -152,6 +152,7 @@
     <Compile Include="DAO\DAOGrupos.cs" />
     <Compile Include="DAO\DAOFormaPagamento.cs" />
     <Compile Include="DAO\DAOCondicaoPagamento.cs" />
+    <Compile Include="DAO\DAOContasPagar.cs" />
     <Compile Include="DAO\DAOProdutos.cs" />
     <Compile Include="DAO\DAOServicos.cs" />
     <Compile Include="DAO\DAOPaises.cs" />
@@ -166,6 +167,7 @@
     <Compile Include="DataTables\IDataTablesRequest.cs" />
     <Compile Include="DataTables\NameValueCollectionExtensions.cs" />
     <Compile Include="DataTables\Search.cs" />
+    <Compile Include="Models\ContasPagar.cs" />
     <Compile Include="Models\Shared.cs" />
     <Compile Include="Models\Vendas.cs" />
     <Compile Include="Models\Compras.cs" />
@@ -239,6 +241,7 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\Clientes\Create.js" />
+    <Content Include="Scripts\ContasPagar\Index.js" />
     <Content Include="Scripts\Vendas\Create.js" />
     <Content Include="Scripts\Vendas\Details.js" />
     <Content Include="Scripts\Vendas\Index.js" />
@@ -510,6 +513,11 @@
     <Content Include="Views\Vendas\Index.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Executante\Select.cshtml" />
     <Content Include="Views\Compras\Cancelar.cshtml" />
+    <Content Include="Views\ContasPagar\Pagar.cshtml" />
+    <Content Include="Views\ContasPagar\Cancelar.cshtml" />
+    <Content Include="Views\ContasPagar\Details.cshtml" />
+    <Content Include="Views\ContasPagar\Form.cshtml" />
+    <Content Include="Views\ContasPagar\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

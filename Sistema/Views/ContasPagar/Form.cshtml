@@ -1,0 +1,52 @@
+﻿@model Sistema.Models.ContasPagar
+@using Sistema.Util
+@{
+    bool readOnly = Convert.ToBoolean(ViewBag.ReadOnly);
+    string action = Convert.ToString(ViewBag.Action);
+}
+
+
+@Html.HiddenFor(model => model.codigo)
+
+<div class="form-row" style="">
+    <div class="@Util.Input2">
+        @Html.LabelFor(model => model.nrParcela)
+        @Html.TextBoxFor(model => model.nrParcela, new { @class = "form-control", disabled = true })
+    </div>
+</div>
+
+<div class="form-row">
+    @Html.EditorFor(model => model.FormaPagamento, "FormaPagamento/Select", new { Disabled = false })
+</div>
+
+<div class="form-row">
+    @Html.EditorFor(model => model.Fornecedor, "Fornecedores/Select", new { Disabled = false })
+</div>
+
+<div class="form-row" style="">
+    <div class="@Util.Input2">
+        @Html.LabelFor(model => model.vlParcela)
+        @Html.TextBoxFor(model => model.vlParcela, new { @class = "form-control", disabled = true })
+    </div>
+
+    <div class="@Util.Input3">
+        @Html.LabelFor(model => model.dtVencimento)
+        <div class="input-group-append">
+            @Html.HiddenFor(model => model.dtVencimento)
+            @Html.TextBoxFor(model => model.dtVencimento, new { @class = "form-control datepicker date", disabled = true })
+            <span class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></span>
+        </div>
+    </div>
+
+    @if (Model.dtPagamento != null)
+    {
+        <div class="@Util.Input3">
+            @Html.LabelFor(model => model.dtPagamento)
+            <div class="input-group-append">
+                @Html.HiddenFor(model => model.dtPagamento)
+                @Html.TextBoxFor(model => model.dtPagamento, new { @class = "form-control datepicker date", disabled = true })
+                <span class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></span>
+            </div>
+        </div>
+    }
+</div>

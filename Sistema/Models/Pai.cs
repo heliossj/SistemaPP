@@ -16,6 +16,5 @@ namespace Sistema.Models
 
         [Display(Name = "Data da últ. alteração")]
         public DateTime? dtUltAlteracao { get; set; }
-
     }
 }

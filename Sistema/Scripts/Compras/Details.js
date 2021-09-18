@@ -42,9 +42,8 @@ Compra = function () {
                     {
                         data: null,
                         mRender: function (data) {
-                            let vlCompraDesconto = (data.txDesconto * data.vlCompra) / 100;
-                            vlCompraDesconto = data.vlCompra - vlCompraDesconto;
-                            return vlCompraDesconto.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                            let vlCompraDesconto = data.vlCompra.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                            return vlCompraDesconto;
                         }
                     },
                     {

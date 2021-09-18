@@ -35,6 +35,10 @@ namespace Sistema.Controllers
         public ActionResult Create(Sistema.Models.Compras model)
         {
             model.dtEmissao = !string.IsNullOrEmpty(model.dtEmissaoAux) ? Convert.ToDateTime(model.dtEmissaoAux) : model.dtEmissao;
+            model.modelo = !string.IsNullOrEmpty(model.modeloAux) ? model.modeloAux : model.modelo;
+            model.serie = !string.IsNullOrEmpty(model.serieAux) ? model.serieAux : model.serie;
+            model.nrNota = model.nrNotaAux != null ? model.nrNotaAux : model.nrNota;
+            model.Fornecedor.id = model.idFornecedor != null ? model.idFornecedor : model.Fornecedor.id;
 
             if (string.IsNullOrWhiteSpace(model.modelo))
             {
@@ -60,17 +64,23 @@ namespace Sistema.Controllers
             {
                 ModelState.AddModelError("dtEntrega", "Informe a data de entrega");
             }
-
+            if (model.finalizar == "S" && model.CondicaoPagamento.id == null)
+            {
+                ModelState.AddModelError("CondicaoPagamento.id", "Informa uma condição de pagamento");
+            }
+            if (model.finalizar == "S" && model.CondicaoPagamento.id != null && !model.ParcelasCompra.Any())
+            {
+                ModelState.AddModelError("CondicaoPagamento.id", "É necessário gerar as parcelas para continuar");
+            }
             if (ModelState.IsValid)
             {
                 try
                 {
-                    daoCompra = new DAOCompras();
-                    //var validNF = daoCompra.validNota(model.modelo, model.serie, model.nrNota.GetValueOrDefault(), model.Fornecedor.id.GetValueOrDefault());
                     if (model.finalizar != "S")
                     {
-                        throw new Exception("É preciso verificar antes de continuar");
+                        throw new Exception("É preciso validar antes de continuar");
                     }
+                    daoCompra = new DAOCompras();
                     daoCompra.Insert(model);
                     this.AddFlashMessage(Util.AlertMessage.INSERT_SUCESS);
                     return RedirectToAction("Index");
@@ -137,9 +147,29 @@ namespace Sistema.Controllers
             }
         }
 
-
-
-
+        public JsonResult JsVerificaNF(string modelo, string serie, int numero, int codFornecedor)
+        {
+            daoCompra = new DAOCompras();
+            var validNF = daoCompra.validNota(modelo, serie, numero, codFornecedor);
+            var type = string.Empty;
+            var msg = string.Empty;
+            if (validNF)
+            {
+                type = "success";
+                msg = "Nota Fiscal válida!";
+            }
+            else
+            {
+                type = "danger";
+                msg = "Já existe uma Nota Fiscal registrada com este número e fornecedor, verifique!";
+            }
+            var result = new
+            {
+                type = type,
+                message = msg,
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
 
 
 

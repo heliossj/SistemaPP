@@ -16,20 +16,30 @@
     $(document).on("tblProdutoOpenEdit", compra.openEditProduto);
     $(document).on("tblProdutoCancelEdit", compra.clearProduto);
 
-    if (IsNullOrEmpty($("#finalizar").val())) {
+    if ($("#finalizar").val() != "S") {
         $("#divValida").hide();
         $("#flFinalizar").prop("checked", true)
     } else {
         $("#flFinalizar").prop("checked", false);
         $("#divValida").show();
+        $('input[name="modelo"]').prop('disabled', true)
+        $('input[name="serie"]').prop('disabled', true)
+        $('input[name="nrNota"]').prop('disabled', true)
+        $('input[name="Fornecedor.id"]').prop('disabled', true)
+        $("#divAddProduto").slideUp();
+        $("#Fornecedor_btn-localizar").hide()
     }
 
+    if ($("#finalizar").val() == "S" && dtParcelas.length > 0) {
+        $("#flFinalizar").prop("checked", true)
+    } else if ($("#finalizar").val() == "S" && !dtParcelas.length) {
+        $("#flFinalizar").prop("checked", true)
+        $("#divParcelas").hide();
+        compra.calcTotalProduto();
+        let total = vlTotalCompra;
+        let totalFormat = total.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        $("#vlTotal").val(totalFormat);
 
-    if (!$("#flFinalizar").is(":checked")) {
-        $("#divFinaliza").slideUp();
-        $("#vlTotal").val("");
-    } else {
-        $("#divFinaliza").slideDown();
     }
 
     $("#flFinalizar").click(function () {
@@ -47,7 +57,6 @@
             if ($(this).is(":checked")) {
                 $('input[name="dtEmissao"]').prop('disabled', true)
                 let dtEmissao = $("#dtEmissao").val()
-                console.log(dtEmissao)
                 $("#dtEmissaoAux").val(dtEmissao)
                 compra.calcTotalProduto();
                 $("#divParcelas").hide();
@@ -65,18 +74,17 @@
                 $("#divAddProduto").slideDown();
                 $("#CondicaoPagamento_id").val("")
                 $("#CondicaoPagamento_text").val("")
-                $("#CondicaoPagamento_btnGerarParcela").attr('disabled', true);
-                $('input[name="dtEmissao"]').prop('disabled', false)
             }
         }
     });
 
     $("#CondicaoPagamento_btnGerarParcela").click(function () {
         compra.getparcelas();
+        return false;
     });
 
     $(document).on('tblProdutoRowCallback', function (e, data) {
-        if ($("#flFinalizar").is(":checked")) {
+        if ($("#flFinalizar").is(":checked") && $("#finalizar").val() == "S") {
             let btn = $('td a[data-event=remove]', data.nRow);
             btn.attr('title', "Indisponível para alteração!");
             btn.attr('data-event', false);
@@ -107,6 +115,11 @@
         let dtTeste = new Date(year, month, day)
         date = new Date(year, month, day).toJSON();
     });
+
+    $("#btnVerificaNF").click(function () {
+        compra.verificaNF();
+        return false;
+    })
 });
 
 Compra = function () {
@@ -145,9 +158,8 @@ Compra = function () {
                     {
                         data: null,
                         mRender: function (data) {
-                            let vlCompraDesconto = (data.txDesconto * data.vlCompra) / 100;
-                            vlCompraDesconto = data.vlCompra - vlCompraDesconto;
-                            return vlCompraDesconto.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                            let vlCompra = data.vlCompra.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                            return vlCompra;
                         }
                     },
                     {
@@ -354,21 +366,107 @@ Compra = function () {
     }
 
     self.setParcelas = function (data) {
-        let itens = data.parcelas;
-        console.log(itens)
-        for (var i = 0; i < itens.length; i++) {
-            //let dtParcela = JSONDate(itens[i].dtVencimento,)
-            let item = {
-                idFormaPagamento: itens[i].idFormaPagamento,
-                nmFormaPagamento: itens[i].nmFormaPagamento,
-                //flSituacao: itens[i].flSituacao,
-                dtVencimento: itens[i].dtVencimento,
-                vlParcela: itens[i].vlParcela,
-                nrParcela: itens[i].nrParcela
+            let itens = data.parcelas;
+            for (var i = 0; i < itens.length; i++) {
+                //let dtParcela = JSONDate(itens[i].dtVencimento,)
+                let item = {
+                    idFormaPagamento: itens[i].idFormaPagamento,
+                    nmFormaPagamento: itens[i].nmFormaPagamento,
+                    //flSituacao: itens[i].flSituacao,
+                    dtVencimento: itens[i].dtVencimento,
+                    vlParcela: itens[i].vlParcela,
+                    nrParcela: itens[i].nrParcela
+                }
+                dtParcelas.addItem(item);
             }
-            dtParcelas.addItem(item);
+            $("#divParcelas").slideDown();
+    }
+
+    self.verificaNF = function () {
+        let modelo = $("#modelo");
+        let serie = $("#serie");
+        let numero = $("#nrNota");
+        let codFornecedor = $("#Fornecedor_id");
+        let valid = true;
+
+        let msg = "";
+        if (IsNullOrEmpty(modelo.val())) {
+            msg += "Informe o modelo</br>";
+            valid = false;
         }
-        $("#divParcelas").slideDown();
+        if (IsNullOrEmpty(serie.val())) {
+            msg += "Informe a série</br>";
+            valid = false;
+        }
+        if (IsNullOrEmpty(numero.val())) {
+            msg += "Informe o número</br>";
+            valid = false;
+        }
+        if (IsNullOrEmpty(codFornecedor.val())) {
+            msg += "Informe o Fornecedor</br>";
+            valid = false;
+        }
+        if (!valid) {
+            $.notify({ message: msg, icon: 'fa fa-exclamation' }, { type: 'danger', z_index: 2000 });
+        } else {
+            $.ajax({
+                dataType: 'json',
+                type: 'GET',
+                url: Action.verificaNF,
+                data: { modelo: modelo.val(), serie: serie.val(), numero: numero.val(), codFornecedor: codFornecedor.val() },
+                success: function (data) {
+                    $.notify({ message: data.message, icon: 'fa fa-exclamation' }, { type: data.type, z_index: 2000 });
+                    if (data.type == "success") {
+                        $("#finalizar").val("S");
+                        $("#divValida").slideDown();
+                        $("#flFinalizar").prop("checked", false);
+
+                        if (!$("#flFinalizar").is(":checked")) {
+                            $("#divFinaliza").slideUp();
+                            $("#vlTotal").val("");
+                        } else {
+                            $("#divFinaliza").slideDown();
+                        }
+                        $('input[name="modelo"]').prop('disabled', true)
+                        $('input[name="serie"]').prop('disabled', true)
+                        $('input[name="nrNota"]').prop('disabled', true)
+                        $('input[name="Fornecedor.id"]').prop('disabled', true)
+                        //$("#Fornecedor_btn").removeAttr('disabled', true)
+                        let modelo = $("#modelo").val()
+                        $("#modeloAux").val(modelo)
+                        let serie = $("#serie").val()
+                        $("#serieAux").val(serie)
+                        let numero = $("#nrNota").val()
+                        $("#nrNotaAux").val(numero)
+                        let idFornecedor = $("#Fornecedor_id").val()
+                        $("#idFornecedor").val(idFornecedor)
+
+                        $("#finalizar").val("S");
+
+
+                        //$("#Fornecedor_btn-localizar").attr("disabled", false)
+                        //$("#Fornecedor_btn-localizar").removeAttr('data-target');
+                        //$("#Fornecedor_btn-localizar").attr('disabled', true)
+                        $("#Fornecedor_btn-localizar").hide()
+                    } else {
+                        $("#flFinalizar").prop("checked", true);
+                        $("#divValida").slideUp();
+                    }
+                },
+                error: function (request) {
+                    alert("Erro ao buscar registro");
+                    $("#divValida").slideDown();
+                }
+            });
+
+
+
+        }
+
+
+
+
+
     }
 
 

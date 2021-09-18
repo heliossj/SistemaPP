@@ -8,17 +8,18 @@
 
 @Html.HiddenFor(k => k.dtEmissaoAux)
 @Html.HiddenFor(k => k.finalizar)
+@Html.HiddenFor(k => k.modeloAux)
+@Html.HiddenFor(k => k.serieAux)
+@Html.HiddenFor(k => k.nrNotaAux)
+@Html.HiddenFor(k => k.idFornecedor)
+
 @if (action != "create")
 {
+    @Html.HiddenFor(u => u.codigo)
     <div class="form-row">
         <div class="@Util.Input2">
-            @Html.LabelFor(model => model.codigo)
-            @Html.TextBoxFor(model => model.codigo, new { @class = "form-control", disabled = false })
-        </div>
-
-        <div class="@Util.Input3">
             @Html.LabelFor(model => model.situacao, new { @class = "required" })
-            @Html.ValidationMessageFor(model => model.situacao, null, new { @class = "text-danger" })
+            @Html.TextBoxFor(model => model.situacao, new { @class = "form-control", disabled = true })
         </div>
     </div>
 }
@@ -45,7 +46,7 @@
     <div class="@Util.Input3">
         @Html.LabelFor(model => model.dtEmissao, new { @class = "required" })
         <div class="input-group-append">
-            @Html.TextBoxFor(model => model.dtEmissao, new { @class = "form-control datepicker" + (action == "create" ? "" : " date") })
+            @Html.TextBoxFor(model => model.dtEmissao, new { @class = "form-control datepicker date" })
             <span class="fa fa-calendar input-group-text" style="font-size:23px"></span>
         </div>
         @Html.ValidationMessageFor(model => model.dtEmissao, null, new { @class = "text-danger" })
@@ -55,7 +56,7 @@
     <div class="@Util.Input3">
         @Html.LabelFor(model => model.dtEntrega, new { @class = "required" })
         <div class="input-group-append">
-            @Html.TextBoxFor(model => model.dtEntrega, new { @class = "form-control datepicker" + (action == "create" ? "" : " date") })
+            @Html.TextBoxFor(model => model.dtEntrega, new { @class = "form-control datepicker date" })
             <span class="fa fa-calendar input-group-text" style="font-size:23px"></span>
         </div>
         @Html.ValidationMessageFor(model => model.dtEntrega, null, new { @class = "text-danger" })
@@ -64,7 +65,12 @@
 </div>
 
 <div class="form-row">
-    @Html.EditorFor(model => model.Fornecedor, "Fornecedores/Select", new { Required = true, Disabled = false })
+    @Html.EditorFor(model => model.Fornecedor, "Fornecedores/Select", new { Required = true, Disabled = false, classForm = Util.Input10 })
+
+    <div class="@Util.Input2">
+        <button id="btnVerificaNF" type="button" class="btn btn-info btn-lg" style="margin-top:34px; font-size:14px; width:150px; height:38px" title="Gerar parcelas"><b> Validar</b> <i class="fa fa-check"></i></button>
+    </div>
+
 </div>
 
 <div class="bs-callout bs-callout-primary">
@@ -146,40 +152,41 @@
             </label>
         </div>
     </div>
-</div>
 
-<div id="divFinaliza">
-    <div class="form-row">
-        <div class="@Util.Input2">
-            @Html.Label("Valor total", new { @class = "no-required" })
-            @Html.TextBoxFor(model => model.vlTotal, new { @class = "form-control", Disabled = true, placeholder = "0,00", style = "text-align: right" })
+
+    <div id="divFinaliza">
+        <div class="form-row">
+            <div class="@Util.Input2">
+                @Html.Label("Valor total", new { @class = "no-required" })
+                @Html.TextBoxFor(model => model.vlTotal, new { @class = "form-control", Disabled = true, placeholder = "0,00", style = "text-align: right" })
+            </div>
         </div>
-    </div>
 
-    <div class="form-row">
-        @Html.EditorFor(model => model.CondicaoPagamento, "CondicaoPagamento/Select", new { Required = true, Disabled = false, @classForm = Util.Input10, flParcela = "S" })
-    </div>
+        <div class="form-row">
+            @Html.EditorFor(model => model.CondicaoPagamento, "CondicaoPagamento/Select", new { Required = true, Disabled = false, @classForm = Util.Input10, flParcela = "S" })
+        </div>
 
-    <div id="divParcelas">
-        @Html.HiddenFor(model => model.jsParcelas)
-        <table id="tblParcelas" class="table table-striped table-bordered" style="width:100%">
-            <thead>
-                <tr>
-                    <th width="10%">Nº parcela</th>
-                    <th width="15%">Valor Parcela</th>
-                    <th width="10%">Vencimento</th>
-                    @if (action == "create")
-                    {
-                        <th width="55%">Forma de pagamento</th>
-                    }
-                    else
-                    {
-                        <th width="45%">Forma de pagamento</th>
-                        <th width="10%">Situação</th>
-                    }
-                </tr>
-            </thead>
-        </table>
+        <div id="divParcelas">
+            @Html.HiddenFor(model => model.jsParcelas)
+            <table id="tblParcelas" class="table table-striped table-bordered" style="width:100%">
+                <thead>
+                    <tr>
+                        <th width="10%">Nº parcela</th>
+                        <th width="15%">Valor Parcela</th>
+                        <th width="10%">Vencimento</th>
+                        @if (action == "create")
+                        {
+                            <th width="55%">Forma de pagamento</th>
+                        }
+                        else
+                        {
+                            <th width="45%">Forma de pagamento</th>
+                            <th width="10%">Situação</th>
+                        }
+                    </tr>
+                </thead>
+            </table>
+        </div>
     </div>
 </div>
 
