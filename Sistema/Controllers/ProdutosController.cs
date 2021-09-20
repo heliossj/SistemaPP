@@ -191,8 +191,6 @@ namespace Sistema.Controllers
                 var result = select.OrderBy(requestModel.Columns, requestModel.Start, requestModel.Length).ToList();
 
                 return Json(new DataTablesResponse(requestModel.Draw, result, totalResult, result.Count), JsonRequestBehavior.AllowGet);
-
-
             }
             catch (Exception ex)
             {
@@ -240,7 +238,8 @@ namespace Sistema.Controllers
             {
                 id = u.id,
                 text = u.text,
-                vlVenda = u.vlVenda
+                vlVenda = u.vlVenda,
+                unidade = u.unidade
             }).OrderBy(u => u.text).ToList();
             return select.AsQueryable();
         }

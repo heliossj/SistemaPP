@@ -12,6 +12,11 @@
     string action = Convert.ToString(ViewBag.Action);
 
     var flValor = Convert.ToString(ViewData["flValor"]);
+    var flUnidade = Convert.ToString(ViewData["flUnidade"]);
+    var flQuantidae = Convert.ToString(ViewData["flQuantidade"]);
+    var flValorCompra = Convert.ToString(ViewData["flQuantidade"]);
+    var flDesconto = Convert.ToString(ViewData["flQuantidade"]);
+    var flTotalItem = Convert.ToString(ViewData["flTotalItem"]);
 }
 
 @Html.Hidden("isEdit")
@@ -27,11 +32,51 @@
     @Html.ValidationMessageFor(model => model.id, null, new { @class = "text-danger" })
 </div>
 
+@if (flUnidade == "S")
+{
+    <div class="@Util.Input2">
+        @Html.Label("Unidade", new { @class = "no-required" })
+        @Html.DropDownListFor(model => model.unidade, Sistema.Select.Produtos.Select.Unidade, new { @class = "form-control", Disabled = true })
+    </div>
+}
+
+@if (flQuantidae == "S")
+{
+    <div class="@Util.Input2">
+        @Html.Label("qtProduto", "Quantidade", new { @class = "required" })
+        @Html.TextBox("qtProduto", "", new { @class = "form-control money", placeholder = "0,00", style = "text-align: right" })
+    </div>
+}
+
 @if (flValor == "S")
 {
     <div class="@Util.Input2">
         @Html.Label("Valor de venda", new { @class = "no-required" })
         @Html.TextBoxFor(model => model.vlVenda, new { @class = "form-control", Disabled = true, placeholder = "0,00", style = "text-align: right" })
+    </div>
+}
+
+@if (flValorCompra == "S")
+{
+    <div class="@Util.Input2">
+        @Html.Label("vlCompra", "Valor de compra", new { @class = "required" })
+        @Html.TextBox("vlCompra", "", new { @class = "form-control money", placeholder = "0,00", style = "text-align: right" })
+    </div>
+}
+
+@if (flDesconto == "S")
+{
+    <div class="@Util.Input2">
+        @Html.Label("txDesconto", "Desconto (%)", new { @class = "required" })
+        @Html.TextBox("txDesconto", "", new { @class = "form-control money", placeholder = "0,00", style = "text-align: right" })
+    </div>
+}
+
+@if (flTotalItem == "S")
+{
+    <div class="@Util.Input2">
+        @Html.Label("vlTotal", "Total do Item", new { @class = "no-required" })
+        @Html.TextBox("vlTotal", "", new { @class = "form-control money", placeholder = "0,00", style = "text-align: right", disabled = true })
     </div>
 }
 
@@ -159,6 +204,7 @@
                  $("#@Sistema.Util.SelectFunctions.getInputId("id", Prefix)").val("");
                  $("#@Sistema.Util.SelectFunctions.getInputId("text", Prefix)").val("");
                  $("#@Sistema.Util.SelectFunctions.getInputId("vlVenda", Prefix)").val("");
+                 $("#@Sistema.Util.SelectFunctions.getInputId("unidade", Prefix)").val("");
              } else {
                  $.ajax({
                      dataType: 'json',
@@ -398,6 +444,7 @@
             valor = valor.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
         }
         $("#@Sistema.Util.SelectFunctions.getInputId("vlVenda", Prefix)").val(valor);
+        $("#@Sistema.Util.SelectFunctions.getInputId("unidade", Prefix)").val(data.unidade)
         return false;
     };
 

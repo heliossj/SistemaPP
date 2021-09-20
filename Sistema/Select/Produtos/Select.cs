@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace Sistema.Select.Produtos
 {
@@ -11,5 +12,19 @@ namespace Sistema.Select.Produtos
         public string text { get; set; }
 
         public decimal? vlVenda { get; set; }
+        public string unidade { get; set; }
+
+        public static SelectListItem[] Unidade
+        {
+            get
+            {
+                return new[]
+                {
+                    new SelectListItem { Value = "", Text = " " },
+                    new SelectListItem { Value = "M", Text = "METRO" },
+                    new SelectListItem { Value = "U", Text = "UNIDADE" },
+                };
+            }
+        }
     }
 }

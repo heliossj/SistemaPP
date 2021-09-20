@@ -29,7 +29,7 @@
         </div>
 
         <div style="text-align:center">
-            <button type="submit" class="btn btn-success"> <i class="fa fa-save"></i> Salvar</button>
+            <button type="submit" class="btn btn-success" id="btnSalvar"> <i class="fa fa-save"></i> Salvar</button>
             <a href="@Url.Action(@Html.ViewBag.Action)" class="btn btn-primary" role="button" aria-pressed="true"> <i class="fa fa-times"></i> Limpar</a>
             <a href="@Url.Action("Index")" class="btn btn-secondary" role="button" aria-pressed="true"> <i class="fa fa-arrow-left"></i> Voltar</a>
         </div>
@@ -48,7 +48,6 @@
         text-transform: uppercase;
     }
 </style>
-
 
 @section scripts{
     <script type="text/javascript">

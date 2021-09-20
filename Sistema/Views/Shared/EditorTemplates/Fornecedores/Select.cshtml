@@ -136,7 +136,8 @@
 
     self = this;
     $(function () {
-         $("#@Sistema.Util.SelectFunctions.getInputId("btn-localizar", Prefix)").on("click", function () {
+
+        $("#@Sistema.Util.SelectFunctions.getInputId("btn-localizar", Prefix)").on("click", function () {
              InitModalFornecedor();
          });
 
@@ -159,8 +160,7 @@
                          if (!data) {
                              $.notify({ message: 'Nenhum registro encontrado para o código informado', icon: 'fa fa-exclamation' }, { type: 'danger', z_index: 2000 } );
                          }
-                         $("#@Sistema.Util.SelectFunctions.getInputId("id", Prefix)").val(data.id);
-                         $("#@Sistema.Util.SelectFunctions.getInputId("text", Prefix)").val(data.text);
+                         SelectFornecedor(data)
                      },
                      error: function (err) {
                          alert(err);
@@ -371,9 +371,14 @@
         if ($("#@Sistema.Util.SelectFunctions.getInputId("isEdit", Prefix)").val() == "N") {
             $(".isEdit").hide();
         }
+    };    
+
+    function load(data) {
+        $(document).trigger('AfterLoad_Fornecedor', data);     
     };
 
     function SelectFornecedor(data) {
+        load(data)
         $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").modal("hide");
         $("#@Sistema.Util.SelectFunctions.getInputId("id", Prefix)").val(data.id);
         $("#@Sistema.Util.SelectFunctions.getInputId("text", Prefix)").val(data.text);

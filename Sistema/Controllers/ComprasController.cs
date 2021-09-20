@@ -76,10 +76,6 @@ namespace Sistema.Controllers
             {
                 try
                 {
-                    if (model.finalizar != "S")
-                    {
-                        throw new Exception("É preciso validar antes de continuar");
-                    }
                     daoCompra = new DAOCompras();
                     daoCompra.Insert(model);
                     this.AddFlashMessage(Util.AlertMessage.INSERT_SUCESS);
