@@ -386,10 +386,15 @@
         if ($("#@Sistema.Util.SelectFunctions.getInputId("isEdit", Prefix)").val() == "N") {
             $(".isEdit").hide();
         }
-
     };
 
+    function loadCondicaoPagamento(data) {
+        $(document).trigger('@Sistema.Util.SelectFunctions.getInputId(Prefix, "AfterLoad")', data);
+    };
+
+
     function SelectCondicaoPagamento(data) {
+        loadCondicaoPagamento(data)
         $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").modal("hide");
         $("#@Sistema.Util.SelectFunctions.getInputId("id", Prefix)").val(data.id);
         $("#@Sistema.Util.SelectFunctions.getInputId("text", Prefix)").val(data.text);

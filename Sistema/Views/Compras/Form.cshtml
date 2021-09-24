@@ -12,6 +12,7 @@
 @Html.HiddenFor(k => k.serieAux)
 @Html.HiddenFor(k => k.nrNotaAux)
 @Html.HiddenFor(k => k.idFornecedor)
+@Html.Hidden("flTblProdutos")
 
 @if (action != "create")
 {
@@ -73,7 +74,7 @@
 
     <div id="divAddProduto">
         <div class="form-row">
-            @Html.EditorFor(model => model.Produto, "Produtos/Select", new { Disabled = false, Required = true, flValor = "S", flUnidade = "S", flQuantidade = "S", flValorCompra = "S", flDesconto = "S", flTotalItem = "S", classForm = Util.Input10 })
+            @Html.EditorFor(model => model.Produto, "Produtos/Select", new { Disabled = false, Required = true, flValor = "S", flUnidade = "S", flQuantidade = "S", flValorCompra = "S", flDesconto = "S", flTotalItem = "S", classForm = Util.Input10, @idFornecedor = Html.ClientIdFor(u => Model.Fornecedor.id) })
 
             <div style="margin-block:-1px">
                 <button id="addProduto" type="button" class="btn btn-success btn-lg" style="margin-top:35px; font-size:14px" title="Adicionar"><b>Adicionar </b> <i class="fa fa-plus"></i></button>

@@ -16,7 +16,7 @@ namespace Sistema.DAO
         {
             try
             {
-                var sql = this.Search(null, null);
+                var sql = this.Search(null, null, null);
                 OpenConnection();
                 SqlQuery = new SqlCommand(sql, con);
                 reader = SqlQuery.ExecuteReader();
@@ -162,7 +162,7 @@ namespace Sistema.DAO
                 if (codProduto != null)
                 {
                     OpenConnection();
-                    var sql = this.Search(codProduto, null);
+                    var sql = this.Search(codProduto, null, null);
                     SqlQuery = new SqlCommand(sql, con);
                     reader = SqlQuery.ExecuteReader();
                     while (reader.Read())
@@ -234,12 +234,12 @@ namespace Sistema.DAO
             }
         }
 
-        public List<Select.Produtos.Select> GetProdutoSelect(int? id, string filter)
+        public List<Select.Produtos.Select> GetProdutoSelect(int? id, string filter, int? idFornecedor)
         {
             try
             {
 
-                var sql = this.Search(id, filter);
+                var sql = this.Search(id, filter, idFornecedor);
                 OpenConnection();
                 SqlQuery = new SqlCommand(sql, con);
                 reader = SqlQuery.ExecuteReader();
@@ -269,13 +269,13 @@ namespace Sistema.DAO
             }
         }
 
-        private string Search(int? id, string filter)
+        private string Search(int? id, string filter, int? idFornecedor)
         {
             var sql = string.Empty;
             var swhere = string.Empty;
             if (id != null)
             {
-                swhere = " WHERE codproduto = " + id;
+                swhere += " AND codproduto = " + id;
             }
             if (!string.IsNullOrEmpty(filter))
             {
@@ -284,8 +284,13 @@ namespace Sistema.DAO
                 {
                     swhere += " OR tbprodutos.nomeproduto LIKE'%" + word + "%'";
                 }
-                swhere = " WHERE " + swhere.Remove(0, 3);
             }
+            if (idFornecedor != null)
+            {
+                swhere += " AND tbfornecedores.codfornecedor = " + idFornecedor; 
+            }
+            if (!string.IsNullOrEmpty(swhere))
+                swhere = " WHERE " + swhere.Remove(0, 4);
             sql = @"
                     SELECT
                         tbprodutos.codproduto AS Produto_ID,

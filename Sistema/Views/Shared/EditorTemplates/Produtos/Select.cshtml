@@ -13,10 +13,12 @@
 
     var flValor = Convert.ToString(ViewData["flValor"]);
     var flUnidade = Convert.ToString(ViewData["flUnidade"]);
-    var flQuantidae = Convert.ToString(ViewData["flQuantidade"]);
-    var flValorCompra = Convert.ToString(ViewData["flQuantidade"]);
-    var flDesconto = Convert.ToString(ViewData["flQuantidade"]);
+    var flQuantidade = Convert.ToString(ViewData["flQuantidade"]);
+    var flValorCompra = Convert.ToString(ViewData["flValorCompra"]);
+    var flDesconto = Convert.ToString(ViewData["flDesconto"]);
     var flTotalItem = Convert.ToString(ViewData["flTotalItem"]);
+
+    var idFornecedor = Convert.ToString(ViewData["idFornecedor"] ?? "");
 }
 
 @Html.Hidden("isEdit")
@@ -40,7 +42,7 @@
     </div>
 }
 
-@if (flQuantidae == "S")
+@if (flQuantidade == "S")
 {
     <div class="@Util.Input2">
         @Html.Label("qtProduto", "Quantidade", new { @class = "required" })
@@ -75,7 +77,7 @@
 @if (flTotalItem == "S")
 {
     <div class="@Util.Input2">
-        @Html.Label("vlTotal", "Total do Item", new { @class = "no-required" })
+        @Html.Label("vlTotal", "Total do Produto", new { @class = "no-required" })
         @Html.TextBox("vlTotal", "", new { @class = "form-control money", placeholder = "0,00", style = "text-align: right", disabled = true })
     </div>
 }
@@ -206,11 +208,13 @@
                  $("#@Sistema.Util.SelectFunctions.getInputId("vlVenda", Prefix)").val("");
                  $("#@Sistema.Util.SelectFunctions.getInputId("unidade", Prefix)").val("");
              } else {
+                 let idFornecedor = !IsNullOrEmpty($('#@idFornecedor').val())?$('#@idFornecedor').val() : null;
+
                  $.ajax({
                      dataType: 'json',
                      type: 'GET',
                      url: '@Url.Action("JsDetails", "Produtos")',
-                     data: { 'id': id },
+                     data: { 'id': id, idFornecedor: idFornecedor},
                      success: function (data) {
                          if (!data) {
                              $.notify({ message: 'Nenhum registro encontrado para o código informado', icon: 'fa fa-exclamation' }, { type: 'danger', z_index: 2000 } );
@@ -342,7 +346,10 @@
     function InitModalProduto() {
         $("#TableProduto").empty();
         let table = null
-        let lis = getTableProduto();
+        let idFornecedorAux = !IsNullOrEmpty(@idFornecedor)? $('#@idFornecedor').val(): null;
+        let lis = getTableProduto(idFornecedorAux);
+
+        console.log(idFornecedorAux);
         $("#TableProduto").append(lis);
 
         table = $('#@Sistema.Util.SelectFunctions.getInputId("list", Prefix)').DataTable({
@@ -399,8 +406,8 @@
             }
         });
       }
-    function getTableProduto() {
-        let tmp = `<table id="@Sistema.Util.SelectFunctions.getInputId("list", Prefix)" class="table table-striped table-bordered" style="width:100%" data-url="@Url.Action("JsQuery", "Produtos")">
+    function getTableProduto(idFornecedor) {
+        let tmp = `<table id="@Sistema.Util.SelectFunctions.getInputId("list", Prefix)" class="table table-striped table-bordered" style="width:100%" data-url="@Url.Action("JsQuery", "Produtos")?idFornecedor=`+idFornecedor+`">
                         <thead>
                             <tr>
                                 <th></th>
@@ -435,7 +442,12 @@
         }
     };
 
+    function loadProduto(data) {
+        $(document).trigger('@Sistema.Util.SelectFunctions.getInputId(Prefix, "AfterLoad")', data);
+    };
+
     function SelectProduto(data) {
+        loadProduto(data)
         $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").modal("hide");
         $("#@Sistema.Util.SelectFunctions.getInputId("id", Prefix)").val(data.id);
         $("#@Sistema.Util.SelectFunctions.getInputId("text", Prefix)").val(data.text);
@@ -453,7 +465,7 @@
             dataType: 'json',
             type: 'GET',
             url: '@Url.Action("JsDetails", "Produtos")',
-            data: { 'id': id },
+            data: { id: id },
             success: function (data) {
                 self.clearProduto();
                 $("#@Sistema.Util.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("show");

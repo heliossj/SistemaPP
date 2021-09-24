@@ -67,6 +67,7 @@ namespace Sistema.Models
                 return new[]
                 {
                     new SelectListItem { Value = "M", Text = "METRO" },
+                    new SelectListItem { Value = "U", Text = "UNIDADE" },
                 };
             }
         }
@@ -77,6 +78,7 @@ namespace Sistema.Models
             {
                 return new[]
                 {
+                    new SelectListItem { Value = " ", Text = " " },
                     new SelectListItem { Value = "7", Text = "7" },
                     new SelectListItem { Value = "10", Text = "10" },
                     new SelectListItem { Value = "15", Text = "15" },

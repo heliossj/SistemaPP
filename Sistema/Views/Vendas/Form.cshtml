@@ -5,6 +5,7 @@
     string action = Convert.ToString(ViewBag.Action);
 }
 
+@Html.Hidden("flTblProdutos")
 @if (action != "create")
 {
     <div class="form-row">
@@ -44,26 +45,8 @@
 
     <div id="divAddProduto">
         <div class="form-row">
-            @Html.EditorFor(model => model.Produto, "Produtos/Select", new { Disabled = false, Required = true, flValor = "S", classForm = Util.Input10 })
-        </div>
-
-        <div class="form-row">
-
-            <div class="@Util.Input2">
-                @Html.Label("Unidade", new { @class = "required" })
-                @Html.DropDownList("unidade", Sistema.Models.Produtos.Unidade, new { @class = "form-control" })
-            </div>
-
-            <div class="@Util.Input2">
-                @Html.Label("qtProduto", "Quantidade", new { @class = "required" })
-                @Html.TextBox("qtProduto", "", new { @class = "form-control money", placeholder = "0,00", style = "text-align: right" })
-            </div>
-
-            <div class="@Util.Input2">
-                @Html.Label("txDesconto", "Desconto (%)", new { @class = "required" })
-                @Html.TextBox("txDesconto", "", new { @class = "form-control money", placeholder = "0,00", style = "text-align: right" })
-            </div>
-
+            @Html.EditorFor(model => model.Produto, "Produtos/Select", new { Disabled = false, Required = true, flValor = "S", flUnidade = "S", flQuantidade = "S", flDesconto = "S", flTotalItem = "S", classForm = Util.Input10 })
+            
             <div style="margin-block:-1px">
                 <button id="addProduto" type="button" class="btn btn-success btn-lg" style="margin-top:35px; font-size:14px" title="Adicionar"><b>Adicionar </b> <i class="fa fa-plus"></i></button>
             </div>
@@ -76,8 +59,8 @@
             <tr>
                 <th width="5%"></th>
                 <th width="5%">Cod</th>
-                <th width="40%">Produto</th>
-                <th width="10%">Vl. unit.</th>
+                <th width="35%">Produto</th>
+                <th width="15%">Vl. venda.</th>
                 <th width="10%">Quant.</th>
                 <th width="10%">Unidade</th>
                 <th width="10%">Desconto</th>
@@ -92,15 +75,15 @@
     </table>
 </div>
 
-@Html.HiddenFor(k => k.finalizar)
-<div class="form-row">
-    <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="" id="flFinalizar" style="width: 16px; height: 16px; cursor: pointer;" required>
-        <label class="form-check-label orcheck text-primary" for="flFinalizar" style="cursor: pointer">
-            FINALIZAR VENDA
-        </label>
-    </div>
-</div>
+@*@Html.HiddenFor(k => k.finalizar)
+    <div class="form-row">
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="flFinalizar" style="width: 16px; height: 16px; cursor: pointer;" required>
+            <label class="form-check-label orcheck text-primary" for="flFinalizar" style="cursor: pointer">
+                FINALIZAR VENDA
+            </label>
+        </div>
+    </div>*@
 
 <div id="divFinaliza">
     <div class="form-row">

@@ -24,6 +24,12 @@
     </div>
 
     <div class="@Util.Input3">
+        @Html.LabelFor(model => model.unidade, new { @class = "required" })
+        @Html.DropDownListFor(model => model.unidade, Sistema.Models.Servicos.Unidade, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.unidade, null, new { @class = "text-danger" })
+    </div>
+
+    <div class="@Util.Input3">
         @Html.LabelFor(model => model.vlServico, new { @class = "required" })
         @Html.TextBoxFor(model => model.vlServico, new { @class = "form-control money", placeholder = "0,00", style = "text-align: right" })
         @Html.ValidationMessageFor(model => model.vlServico, null, new { @class = "text-danger" })

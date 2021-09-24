@@ -299,7 +299,7 @@ namespace Sistema.DAO
                     var fornecedor = new Select.Fornecedores.Select
                     {
                         id = Convert.ToInt32(reader["Fornecedor_ID"]),
-                        text = Convert.ToString(reader["Fornecedor_NomeFantasia_ApelidoFornecedor"]),
+                        text = Convert.ToString(reader["Fornecedor_RazaoSocial_NomeFornecedor"]),
                     };
 
                     list.Add(fornecedor);

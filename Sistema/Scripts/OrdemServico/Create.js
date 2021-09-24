@@ -30,51 +30,52 @@
     $(document).on("tblServicoCancelEdit", OS.clearServico);
 
 
-    if (!$("#flFinalizar").is(":checked")) {
-        $("#divFinaliza").slideUp();
-        $("#vlTotal").val("");
-    } else {
-        $("#divFinaliza").slideDown();
-    }
+    //if (!$("#flFinalizar").is(":checked")) {
+    //    $("#divFinaliza").slideUp();
+    //    $("#vlTotal").val("");
+    //} else {
+    //    $("#divFinaliza").slideDown();
+    //}
 
-    $("#flFinalizar").click(function () {
-        if (!dtServicos.length) {
-            $.notify({ message: "Informe ao menos um serviço para finalizar", icon: 'fa fa-exclamation' }, { type: 'danger', z_index: 2000 });
-            $("#flFinalizar").prop("checked", false)
-        } else {
-            if ($(this).is(":checked")) {
-                OS.calcTotalProduto;
-                OS.calcTotalServico;
-                $("#divParcelas").hide();
-                $("#divFinaliza").slideDown();
-                let total = vlTotalProdutos + vlTotalServicos;
-                vlTotalOS = total;
-                let totalFormat = total.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                $("#vlTotal").val(totalFormat)
-                dtServicos.atualizarGrid();
-                dtProdutos.atualizarGrid();
-                $("#divAddServico").slideUp();
-                $("#divAddProduto").slideUp();
-            } else {
-                $("#divFinaliza").slideUp();
-                dtServicos.atualizarGrid();
-                dtProdutos.atualizarGrid();
-                dtParcelas.clear();
-                $("#divAddServico").slideDown();
-                $("#divAddProduto").slideDown();
-                $("#CondicaoPagamento_id").val("")
-                $("#CondicaoPagamento_text").val("")
-                $("#CondicaoPagamento_btnGerarParcela").attr('disabled', true);
-            }
-        }
-    });
+    //$("#flFinalizar").click(function () {
+    //    if (!dtServicos.length) {
+    //        $.notify({ message: "Informe ao menos um serviço para finalizar", icon: 'fa fa-exclamation' }, { type: 'danger', z_index: 2000 });
+    //        $("#flFinalizar").prop("checked", false)
+    //    } else {
+    //        if ($(this).is(":checked")) {
+    //            OS.calcTotalProduto;
+    //            OS.calcTotalServico;
+    //            $("#divParcelas").hide();
+    //            $("#divFinaliza").slideDown();
+    //            let total = vlTotalProdutos + vlTotalServicos;
+    //            vlTotalOS = total;
+    //            let totalFormat = total.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    //            $("#vlTotal").val(totalFormat)
+    //            dtServicos.atualizarGrid();
+    //            dtProdutos.atualizarGrid();
+    //            $("#divAddServico").slideUp();
+    //            $("#divAddProduto").slideUp();
+    //        } else {
+    //            $("#divFinaliza").slideUp();
+    //            dtServicos.atualizarGrid();
+    //            dtProdutos.atualizarGrid();
+    //            dtParcelas.clear();
+    //            $("#divAddServico").slideDown();
+    //            $("#divAddProduto").slideDown();
+    //            $("#CondicaoPagamento_id").val("")
+    //            $("#CondicaoPagamento_text").val("")
+    //            $("#CondicaoPagamento_btnGerarParcela").attr('disabled', true);
+    //        }
+    //    }
+    //});
 
     $("#CondicaoPagamento_btnGerarParcela").click(function () {
         OS.getparcelas();
     });
 
     $(document).on('tblServicoRowCallback', function (e, data) {
-        if ($("#flFinalizar").is(":checked")) {
+        let flTblServicos = $("#flTblServicos").val()
+        if (flTblServicos == "S") {
             let btn = $('td a[data-event=remove]', data.nRow);
             btn.attr('title', "Indisponível para alteração!");
             btn.attr('data-event', false);
@@ -97,7 +98,8 @@
     });
 
     $(document).on('tblProdutoRowCallback', function (e, data) {
-        if ($("#flFinalizar").is(":checked")) {
+        let flTblServicos = $("#flTblServicos").val()
+        if (flTblServicos == "S") {
             let btn = $('td a[data-event=remove]', data.nRow);
             btn.attr('title', "Indisponível para alteração!");
             btn.attr('data-event', false);
@@ -118,6 +120,69 @@
         }
         return false;
     });
+
+    $("#Servico_qtServico").change(function () {
+        let vlServico = $("#Servico_vlServico").val()
+        if (!IsNullOrEmpty(vlServico)) {
+            vlServico = vlServico.replace(".", "").replace(",", ".");
+            vlServico = parseFloat(vlServico);
+            OS.calcTotalItemServico(vlServico);
+        }
+    })
+
+    $(document).on('AfterLoad_Servico', function (e, data) {
+        OS.calcTotalItemServico(data.vlServico);
+    })
+
+    $("#Produto_qtProduto").change(function () {
+        let vlProduto = $("#Produto_vlVenda").val()
+        if (!IsNullOrEmpty(vlProduto)) {
+            vlProduto = vlProduto.replace(".", "").replace(",", ".");
+            vlProduto = parseFloat(vlProduto);
+            OS.calcTotalItemProduto(vlProduto)
+        }
+    })
+
+    $(document).on('AfterLoad_Produto', function (e, data) {
+        OS.calcTotalItemProduto(data.vlVenda)
+    })
+
+    $('#btnSalvar').prop('disabled', true)
+    $('input[name="CondicaoPagamento.id"]').prop('disabled', true)
+    $("#CondicaoPagamento_btn-localizar").hide();
+
+    $(document).on('AfterLoad_CondicaoPagamento', function (e, data) {
+        alert();
+        $("#divAddServico").hide();
+        $("#divAddProduto").hide();
+        $("#flTblServicos").val("S");
+        dtServicos.atualizarItens();
+        dtServicos.atualizarGrid();
+        dtProdutos.atualizarItens();
+        dtProdutos.atualizarGrid();
+    })
+
+    $("#CondicaoPagamento_id").change(function () {
+        if (IsNullOrEmpty($(this).val())) {
+            $("#flTblServicos").val("");
+            $("#divAddServico").show();
+            $("#divAddProduto").show();
+            dtServicos.atualizarItens();
+            dtServicos.atualizarGrid();
+            dtProdutos.atualizarItens();
+            dtProdutos.atualizarGrid();
+        }
+    })
+
+    //load
+    if (dtServicos.length > 0) {
+        $('#btnSalvar').prop('disabled', false)
+        $('input[name="CondicaoPagamento.id"]').prop('disabled', false)
+        $("#CondicaoPagamento_btn-localizar").show();
+    }
+
+
+
 });
 
 OrdemServico = function () {
@@ -135,7 +200,7 @@ OrdemServico = function () {
                 edit: true,
                 order: [[1, "asc"]],
                 columns: [
-                    { data: "codServico" },
+                    { data: "nomeExecutante" },
                     { data: "nomeServico" },
                     {
                         data: null,
@@ -225,36 +290,45 @@ OrdemServico = function () {
     self.getModelServico = function () {
         let vlServico = $("#Servico_vlServico").val().replace(".", "").replace(",", ".");
         let vlServicoAux = parseFloat(vlServico);
-        let qtServicoAux = $("#qtServico").val().replace(".", "").replace(",", ".");
+        let qtServicoAux = $("#Servico_qtServico").val().replace(".", "").replace(",", ".");
         qtServicoAux = parseFloat(qtServicoAux);
         var model = {
+            codExecutante: $("#Executante_id").val(),
+            nomeExecutante: $("#Executante_text").val(),
             codServico: $("#Servico_id").val(),
             nomeServico: $("#Servico_text").val(),
+            unidade: $("#Servico_unidade").val(),
             vlServico: vlServicoAux,
             qtServico: qtServicoAux,
             vlTotal: vlServicoAux * qtServicoAux
         }
-        return model;
+        return model; 
     }
 
     self.validServico = function () {
         let valid = true;
 
-        if (IsNullOrEmpty($("#Servico_id").val()) || $("#Servico_id").val() == "") {
+        if (IsNullOrEmpty($("#Executante_id").val()) || $("#Executante_id").val() == "") {
+            $("#Executante_id").blink({ msg: "Informe o executante" });
+            $("#Executante_id").focus();
+            valid = false;
+        }
+
+        else if (IsNullOrEmpty($("#Servico_id").val()) || $("#Servico_id").val() == "") {
             $("#Servico_id").blink({ msg: "Informe o serviço" });
             $("#Servico_id").focus();
             valid = false;
         }
 
-        else if (IsNullOrEmpty($("#qtServico").val()) || $("#qtServico").val() == "" || $("#qtServico").val() == 0) {
-            $("#qtServico").blink({ msg: "Informe a quantidade" });
-            $("#qtServico").focus();
+        else if (IsNullOrEmpty($("#Servico_qtServico").val()) || $("#Servico_qtServico").val() == "" || $("#Servico_qtServico").val() == 0) {
+            $("#Servico_qtServico").blink({ msg: "Informe a quantidade" });
+            $("#Servico_qtServico").focus();
             valid = false;
         }
 
         if (!dtServicos.isEdit) {
-            if (dtServicos.exists("codServico", $("#Servico_id").val())) {
-                $("#Servico_id").blink({ msg: "Serviço já informado, verifique!" });
+            if (dtServicos.exists("codServico", $("#Servico_id").val()) && dtServicos.exists("codExecutante", $("#Executante_id").val())) {
+                $("#Servico_id").blink({ msg: "Já existe um servico com este executante informado, verifique!" });
                 valid = false;
             }
         }
@@ -265,21 +339,29 @@ OrdemServico = function () {
         $("#Servico_id").val("");
         $("#Servico_text").val("");
         $("#Servico_vlServico").val("");
-        $("#qtServico").val("");
+        $("#Servico_unidade").val("");
+        $("#Executante_id").val("");
+        $("#Executante_text").val("");
+        $("#Servico_qtServico").val("");
+        $("#Servico_vlTotal").val("");
         $('input[name="Servico.id"]').prop('disabled', false)
+        $('input[name="Executante.id"]').prop('disabled', false)
     }
 
     self.addServico = function () {
         if (self.validServico()) {
             let model = self.getModelServico();
             let item = {
+                codExecutante: model.codExecutante,
+                nomeExecutante: model.nomeExecutante,
                 codServico: model.codServico,
                 nomeServico: model.nomeServico,
                 vlUnitario: model.vlServico,
                 qtServico: model.qtServico,
+                unidade: model.unidade,
                 vlTotal: model.vlTotal
             }
-            //dtServicos.addItem(item);
+            console.log(item)
             self.saveServico(item);
             self.clearServico();
             self.calcTotalServico();
@@ -293,10 +375,16 @@ OrdemServico = function () {
                 let totalServico = dtServicos.data[i].vlTotal;
                 total += totalServico;
             }
+            $('input[name="CondicaoPagamento.id"]').prop('disabled', false)
+            $("#CondicaoPagamento_btn-localizar").show();
+        } else {
+            $('input[name="CondicaoPagamento.id"]').prop('disabled', true)
+            $("#CondicaoPagamento_btn-localizar").hide();
         }
         vlTotalServicos = total;
         total = total.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
         $("#fts").text("Total: " + total);
+        self.calcTotal();
     }
 
     self.openEditServico = function (e, data) {
@@ -304,8 +392,13 @@ OrdemServico = function () {
         $("#Servico_id").val(item.codServico);
         $("#Servico_text").val(item.nomeServico);
         $("#Servico_vlServico").val(item.vlUnitario.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-        $("#qtServico").val(item.qtServico);
+        $("#Servico_unidade").val(item.unidade);
+        $("#Servico_qtServico").val(item.qtServico.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+        $("#Executante_id").val(item.codExecutante);
+        $("#Executante_text").val(item.nomeExecutante);
         $('input[name="Servico.id"]').prop('disabled', true)
+        $('input[name="Executante.id"]').prop('disabled', true)
+        self.calcTotalItemServico(item.vlUnitario)
     }
 
     self.saveServico = function (data) {
@@ -320,12 +413,12 @@ OrdemServico = function () {
     self.getModelProduto = function () {
         let vlProduto = $("#Produto_vlVenda").val().replace(".", "").replace(",", ".");
         let vlProdutoAux = parseFloat(vlProduto);
-        let qtProdutoAux = $("#qtProduto").val().replace(".", "").replace(",", ".");
+        let qtProdutoAux = $("#Produto_qtProduto").val().replace(".", "").replace(",", ".");
         qtProdutoAux = parseFloat(qtProdutoAux);
         var model = {
             codProduto: $("#Produto_id").val(),
             nomeProduto: $("#Produto_text").val(),
-            unidade: $("#unidade").val(),
+            unidade: $("#Produto_unidade").val(),
             vlProduto: vlProdutoAux,
             qtProduto: qtProdutoAux,
             vlTotal: vlProdutoAux * qtProdutoAux
@@ -342,10 +435,9 @@ OrdemServico = function () {
             valid = false;
         }
 
-
-        else if (IsNullOrEmpty($("#qtProduto").val()) || $("#qtProduto").val() == "" || $("#qtProduto").val() == 0) {
-            $("#qtProduto").blink({ msg: "Informe a quantidade" });
-            $("#qtProduto").focus();
+        else if (IsNullOrEmpty($("#Produto_qtProduto").val()) || $("#Produto_qtProduto").val() == "" || $("#Produto_qtProduto").val() == 0) {
+            $("#Produto_qtProduto").blink({ msg: "Informe a quantidade" });
+            $("#Produto_qtProduto").focus();
             valid = false;
         }
 
@@ -355,16 +447,16 @@ OrdemServico = function () {
                 valid = false;
             }
         }
-
         return valid;
     }
 
     self.clearProduto = function () {
         $("#Produto_id").val("");
         $("#Produto_text").val("");
-        $("#unidade").val("M");
+        $("#Produto_unidade").val("");
         $("#Produto_vlVenda").val("");
-        $("#qtProduto").val("");
+        $("#Produto_qtProduto").val("");
+        $("#Produto_vlTotal").val("");
         $('input[name="Produto.id"]').prop('disabled', false)
     }
 
@@ -379,7 +471,6 @@ OrdemServico = function () {
                 qtProduto: model.qtProduto,
                 vlTotal: model.vlTotal
             }
-            //dtProdutos.addItem(item);
             self.saveProduto(item);
             self.clearProduto();
             self.calcTotalProduto();
@@ -397,21 +488,22 @@ OrdemServico = function () {
         vlTotalProdutos = total;
         total = total.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
         $("#ftp").text("Total: " + total);
+        self.calcTotal();
     }
 
     self.openEditProduto = function (e, data) {
         let item = dtProdutos.dataSelected.item;
         $("#Produto_id").val(item.codProduto);
         $("#Produto_text").val(item.nomeProduto);
-        $("#unidade").val(item.unidade);
+        $("#Produto_unidade").val(item.unidade);
         $("#Produto_vlVenda").val(item.vlUnitario.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-        $("#qtProduto").val(item.qtProduto);
+        $("#Produto_qtProduto").val(item.qtProduto.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 }));
         $('input[name="Produto.id"]').prop('disabled', true)
+        self.calcTotalItemProduto(item.vlUnitario)
     }
 
     self.saveProduto = function (data) {
         if (dtProdutos.isEdit) {
-            //let vlItem = data.
             dtProdutos.editItem(data);
         } else {
             dtProdutos.addItem(data)
@@ -429,6 +521,7 @@ OrdemServico = function () {
                 success: function (data) {
                     $.notify({ message: data.message, icon: 'fa fa-exclamation' }, { type: 'success', z_index: 2000 });
                     self.setParcelas(data);
+                    $('#btnSalvar').prop('disabled', false)
                 },
                 error: function (request) {
                     alert("Erro ao buscar registro");
@@ -457,7 +550,37 @@ OrdemServico = function () {
 
     }
 
-    //self.datatable.atualizarItens();
-    //self.datatable.atualizarGrid();
+    self.calcTotalItemServico = function (vlServico) {
+        let qtServico = $("#Servico_qtServico").val()
+        if (!IsNullOrEmpty(qtServico)) {
+            let qt = qtServico.replace(".", "").replace(",", ".");
+            let vl = vlServico;
+            qt = parseFloat(qt);
+            let total = qt * vl;
+            total = total.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            $("#Servico_vlTotal").val(total)
+        } else {
+            $("#Servico_vlTotal").val("")
+        }
+    }
 
+    self.calcTotalItemProduto = function (vlProduto) {
+        let qtProduto = $("#Produto_qtProduto").val()
+        if (!IsNullOrEmpty(qtProduto)) {
+            let qt = qtProduto.replace(".", "").replace(",", ".");
+            let vl = vlProduto;
+            qt = parseFloat(qt);
+            let total = qt * vl;
+            total = total.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            $("#Produto_vlTotal").val(total)
+        } else {
+            $("#Produto_vlTotal").val("")
+        }
+    }
+
+    self.calcTotal = function () {
+        vlTotalOS = vlTotalServicos + vlTotalProdutos;
+        vlTotalOS = vlTotalOS.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        $("#vlTotal").val(vlTotalOS)
+    }
 }

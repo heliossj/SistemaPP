@@ -64,6 +64,13 @@ namespace Sistema.Controllers
             {
                 ModelState.AddModelError("dtEntrega", "Informe a data de entrega");
             }
+            if (model.dtEntrega != null && model.dtEmissao != null)
+            {
+                if (model.dtEntrega < model.dtEmissao)
+                {
+                    ModelState.AddModelError("dtEntrega", "A data de entrega não pode ser menor que a data de emissão");
+                }
+            }
             if (model.finalizar == "S" && model.CondicaoPagamento.id == null)
             {
                 ModelState.AddModelError("CondicaoPagamento.id", "Informa uma condição de pagamento");
@@ -107,23 +114,17 @@ namespace Sistema.Controllers
         [ActionName("Cancelar")]
         public ActionResult CancelarCompra(int id, Models.Compras model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    daoCompra = new DAOCompras();
-                    daoCompra.CancelarCompra(id);
-                    this.AddFlashMessage("Registro cancelado com sucesso!");
-                    return RedirectToAction("Index");
-                }
-                catch (Exception ex)
-                {
-                    this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
-                    return View(model);
-                }
+                daoCompra = new DAOCompras();
+                daoCompra.CancelarCompra(id);
+                this.AddFlashMessage("Registro cancelado com sucesso!");
+                return RedirectToAction("Index");
             }
-            else
+            catch (Exception ex)
             {
+                this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                model = daoCompra.GetCompra(id);
                 return View(model);
             }
         }

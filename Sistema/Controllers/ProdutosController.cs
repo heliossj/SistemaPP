@@ -64,6 +64,10 @@ namespace Sistema.Controllers
             {
                 ModelState.AddModelError("vlVenda", "Informe o valor de venda");
             }
+            if (model.unidade == "M" && string.IsNullOrWhiteSpace(model.largura))
+            {
+                ModelState.AddModelError("largura", "Informe a largura");
+            }
             if (ModelState.IsValid)
             {
                 try
@@ -120,6 +124,10 @@ namespace Sistema.Controllers
             if (model.vlVenda == null || model.vlVenda <= 0)
             {
                 ModelState.AddModelError("vlVenda", "Informe o valor de venda");
+            }
+            if (model.unidade == "M" && string.IsNullOrWhiteSpace(model.largura))
+            {
+                ModelState.AddModelError("largura", "Informe a largura");
             }
             if (ModelState.IsValid)
             {
@@ -180,11 +188,12 @@ namespace Sistema.Controllers
             }
         }
 
-        public JsonResult JsQuery([ModelBinder(typeof(DataTablesBinder))] IDataTablesRequest requestModel)
+        public JsonResult JsQuery([ModelBinder(typeof(DataTablesBinder))] IDataTablesRequest requestModel, int? idFornecedor)
         {
             try
             {
-                var select = this.Find(null, requestModel.Search.Value);
+                idFornecedor = idFornecedor == 0 ? null : idFornecedor;
+                var select = this.Find(null, requestModel.Search.Value, idFornecedor);
 
                 var totalResult = select.Count();
 
@@ -204,7 +213,7 @@ namespace Sistema.Controllers
         {
             try
             {
-                var select = this.Find(null, q);
+                var select = this.Find(null, q, null);
                 return Json(new JsonSelect<object>(select, page, pageSize), JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -214,11 +223,11 @@ namespace Sistema.Controllers
             }
         }
 
-        public JsonResult JsDetails(int? id, string q)
+        public JsonResult JsDetails(int? id, string q, int? idFornecedor)
         {
             try
             {
-                var result = this.Find(id, q).FirstOrDefault();
+                var result = this.Find(id, q, idFornecedor).FirstOrDefault();
                 if (result != null)
                     return Json(result, JsonRequestBehavior.AllowGet);
                 return Json(string.Empty, JsonRequestBehavior.AllowGet);
@@ -230,10 +239,10 @@ namespace Sistema.Controllers
             }
         }
 
-        private IQueryable<dynamic> Find(int? id, string q)
+        private IQueryable<dynamic> Find(int? id, string q, int? idFornecedor)
         {
             var daoProdutos = new DAOProdutos();
-            var list = daoProdutos.GetProdutoSelect(id, q);
+            var list = daoProdutos.GetProdutoSelect(id, q, idFornecedor);
             var select = list.Select(u => new
             {
                 id = u.id,

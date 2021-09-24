@@ -21,6 +21,9 @@ namespace Sistema.Models
         [Display(Name = "Valor")]
         public decimal? vlServico { get; set; }
 
+        [Display(Name = "Unidade")]
+        public string unidade { get; set; }
+
         public static SelectListItem[] Situacao
         {
             get
@@ -29,6 +32,18 @@ namespace Sistema.Models
                 {
                     new SelectListItem { Value = "A", Text = "ATIVA" },
                     new SelectListItem { Value = "I", Text = "INATIVA" }
+                };
+            }
+        }
+
+        public static SelectListItem[] Unidade
+        {
+            get
+            {
+                return new[]
+                {
+                    new SelectListItem { Value = "M", Text = "METRO" },
+                    new SelectListItem { Value = "U", Text = "UNIDADE" },
                 };
             }
         }

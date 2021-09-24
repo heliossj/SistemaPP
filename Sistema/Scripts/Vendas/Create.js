@@ -15,48 +15,109 @@
     $(document).on("tblProdutoOpenEdit", venda.openEditProduto);
     $(document).on("tblProdutoCancelEdit", venda.clearProduto);
 
-    if (!$("#flFinalizar").is(":checked")) {
-        $("#divFinaliza").slideUp();
-        $("#vlTotal").val("");
-    } else {
-        $("#divFinaliza").slideDown();
-    }
+    $("#btnSalvar").attr("disabled", true);
+    $('input[name="CondicaoPagamento.id"]').prop('disabled', true)
+    $("#CondicaoPagamento_btn-localizar").hide();
+    //$("#divAddProduto").hide();
 
-    $("#flFinalizar").click(function () {
-        if (!dtProdutos.length) {
-            $.notify({ message: "Informe ao menos um produto para finalizar", icon: 'fa fa-exclamation' }, { type: 'danger', z_index: 2000 });
-            $("#flFinalizar").prop("checked", false)
+    $("#CondicaoPagamento_id").change(function () {
+        dtParcelas.clear();
+        let idCondicao = $("#CondicaoPagamento_id").val()
+        if (IsNullOrEmpty(idCondicao)) {
+            $("#divAddProduto").show();
+            $('input[name="dtEmissao"]').prop('disabled', false);
+            $("#flTblProdutos").val("");
+            $("#btnSalvar").attr("disabled", true);
         } else {
-            if ($(this).is(":checked")) {
-                $('input[name="dtEmissao"]').prop('disabled', true)
-                venda.calcTotalProduto();
-                $("#divParcelas").hide();
-                $("#divFinaliza").slideDown();
-                let total = vlTotalVenda;
-                let totalFormat = total.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                $("#vlTotal").val(totalFormat);
-                dtProdutos.atualizarGrid();
-                $("#divAddProduto").slideUp();
-            } else {
-                $("#divFinaliza").slideUp();
-
-                dtProdutos.atualizarGrid();
-                dtParcelas.clear();
-                $("#divAddProduto").slideDown();
-                $("#CondicaoPagamento_id").val("")
-                $("#CondicaoPagamento_text").val("")
-                $("#CondicaoPagamento_btnGerarParcela").attr('disabled', true);
-                $('input[name="dtEmissao"]').prop('disabled', false)
-            }
+            $("#divAddProduto").hide();
         }
+        dtProdutos.atualizarItens();
+        dtProdutos.atualizarGrid();
+    })
+
+    $(document).on('AfterLoad_CondicaoPagamento', function (e, data) {
+        $("#flTblProdutos").val("S")
+        $("#divAddProduto").hide();
+        console.log("CarregaCondicao");
+        dtParcelas.clear();
+        dtProdutos.atualizarItens();
+        dtProdutos.atualizarGrid();
     });
+
+    $("#Produto_qtProduto").change(function () {
+        let vlVenda = $("#Produto_vlVenda").val()
+        if (!IsNullOrEmpty(vlVenda)) {
+            vlVenda = vlVenda.replace(".", "").replace(",", ".");
+            vlVenda = parseFloat(vlVenda);
+            console.log(vlVenda)
+            venda.calcTotalItem(vlVenda);
+        } else {
+            $("#Produto_vlTotal").val("")
+        }
+    })
+
+    $("#Produto_txDesconto").change(function () {
+        let vlVenda = $("#Produto_vlVenda").val()
+        if (!IsNullOrEmpty(vlVenda)) {
+            vlVenda = vlVenda.replace(".", "").replace(",", ".");
+            vlVenda = parseFloat(vlVenda);
+            console.log(vlVenda)
+            venda.calcTotalItem(vlVenda);
+        } else {
+            $("#Produto_vlTotal").val("")
+        }
+    })
+
+    $(document).on('AfterLoad_Produto', function (e, data) {
+        venda.calcTotalItem(data.vlVenda);
+    })
+
+    //calcTotalItem
+
+    //if (!$("#flFinalizar").is(":checked")) {
+    //    $("#divFinaliza").slideUp();
+    //    $("#vlTotal").val("");
+    //} else {
+    //    $("#divFinaliza").slideDown();
+    //}
+
+    //$("#flFinalizar").click(function () {
+    //    if (!dtProdutos.length) {
+    //        $.notify({ message: "Informe ao menos um produto para finalizar", icon: 'fa fa-exclamation' }, { type: 'danger', z_index: 2000 });
+    //        $("#flFinalizar").prop("checked", false)
+    //    } else {
+    //        if ($(this).is(":checked")) {
+    //            $('input[name="dtEmissao"]').prop('disabled', true)
+    //            venda.calcTotalProduto();
+    //            $("#divParcelas").hide();
+    //            $("#divFinaliza").slideDown();
+    //            let total = vlTotalVenda;
+    //            let totalFormat = total.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    //            $("#vlTotal").val(totalFormat);
+    //            dtProdutos.atualizarGrid();
+    //            $("#divAddProduto").slideUp();
+    //        } else {
+    //            $("#divFinaliza").slideUp();
+
+    //            dtProdutos.atualizarGrid();
+    //            dtParcelas.clear();
+    //            $("#divAddProduto").slideDown();
+    //            $("#CondicaoPagamento_id").val("")
+    //            $("#CondicaoPagamento_text").val("")
+    //            $("#CondicaoPagamento_btnGerarParcela").attr('disabled', true);
+    //            $('input[name="dtEmissao"]').prop('disabled', false)
+    //        }
+    //    }
+    //});
 
     $("#CondicaoPagamento_btnGerarParcela").click(function () {
         venda.getparcelas();
     });
 
     $(document).on('tblProdutoRowCallback', function (e, data) {
-        if ($("#flFinalizar").is(":checked")) {
+        let flTblProdutos = $("#flTblProdutos").val()
+        console.log(flTblProdutos)
+        if (flTblProdutos == "S") {
             let btn = $('td a[data-event=remove]', data.nRow);
             btn.attr('title', "Indisponível para alteração!");
             btn.attr('data-event', false);
@@ -77,6 +138,30 @@
         }
         return false;
     });
+
+    if (dtProdutos.length > 0) {
+        $('input[name="CondicaoPagamento.id"]').prop('disabled', false)
+        $("#CondicaoPagamento_btn-localizar").show();
+    }
+
+    //load
+    let idCond = $("#CondicaoPagamento_id").val()
+    if (!IsNullOrEmpty(idCond)) {
+        $("#flTblProdutos").val("S");
+        $('input[name="dtEmissao"]').prop('disabled', true)
+        $('input[name="CondicaoPagamento.id"]').prop('disabled', false)
+        $("#CondicaoPagamento_btn-localizar").show();
+        $("#CondicaoPagamento_btnGerarParcela").attr('disabled', false)
+
+        let dtString = $("#dtEmissao").val();
+        let dayArray = dtString.split("/");
+        let day = dayArray[0];
+        let month = (parseFloat(dayArray[1]) - 1);
+        let year = dayArray[2];
+        date = new Date(year, month, day).toJSON();
+        dtProdutos.atualizarItens();
+        dtProdutos.atualizarGrid();
+    }
 });
 
 Venda = function () {
@@ -160,10 +245,10 @@ Venda = function () {
         let vlVendaProduto = $("#Produto_vlVenda").val().replace(".", "").replace(",", ".");
         let vlVendaProdutoAux = parseFloat(vlVendaProduto);
 
-        let qtProdutoAux = $("#qtProduto").val().replace(".", "").replace(",", ".");
+        let qtProdutoAux = $("#Produto_qtProduto").val().replace(".", "").replace(",", ".");
         qtProdutoAux = parseFloat(qtProdutoAux);
 
-        let txDesconto = $("#txDesconto").val().replace(".", "").replace(",", ".");
+        let txDesconto = $("#Produto_txDesconto").val().replace(".", "").replace(",", ".");
         let txDescontoAux = 0;
 
         if (!IsNullOrEmpty(txDesconto)) {
@@ -172,7 +257,7 @@ Venda = function () {
         var model = {
             codProduto: $("#Produto_id").val(),
             nomeProduto: $("#Produto_text").val(),
-            unidade: $("#unidade").val(),
+            unidade: $("#Produto_unidade").val(),
             vlVenda: vlVendaProdutoAux,
             qtProduto: qtProdutoAux,
             vlTotal: vlVendaProdutoAux * qtProdutoAux,
@@ -191,9 +276,9 @@ Venda = function () {
         }
 
 
-        else if (IsNullOrEmpty($("#qtProduto").val()) || $("#qtProduto").val() == "" || $("#qtProduto").val() == 0) {
-            $("#qtProduto").blink({ msg: "Informe a quantidade" });
-            $("#qtProduto").focus();
+        else if (IsNullOrEmpty($("#Produto_qtProduto").val()) || $("#Produto_qtProduto").val() == "" || $("#Produto_qtProduto").val() == 0) {
+            $("#Produto_qtProduto").blink({ msg: "Informe a quantidade" });
+            $("#Produto_qtProduto").focus();
             valid = false;
         }
 
@@ -211,9 +296,10 @@ Venda = function () {
         $("#Produto_id").val("");
         $("#Produto_text").val("");
         $("#Produto_vlVenda").val("");
-        $("#unidade").val("M");
-        $("#qtProduto").val("");
-        $("#txDesconto").val("");
+        $("#Produto_unidade").val("M");
+        $("#Produto_qtProduto").val("");
+        $("#Produto_txDesconto").val("");
+        $("#Produto_vlTotal").val("");
         $('input[name="Produto.id"]').prop('disabled', false)
     }
 
@@ -229,6 +315,7 @@ Venda = function () {
                 txDesconto: model.txDesconto,
                 vlTotal: model.vlTotal
             }
+            console.log(item)
             self.saveProduto(item);
             self.clearProduto();
             self.calcTotalProduto();
@@ -244,10 +331,17 @@ Venda = function () {
                 let totalProduto = vlVendaDesconto * dtProdutos.data[i].qtProduto;
                 total += totalProduto;
             }
+            $('input[name="CondicaoPagamento.id"]').prop('disabled', false)
+            $("#CondicaoPagamento_btn-localizar").show();
+        } else {
+            $('input[name="CondicaoPagamento.id"]').prop('disabled', true)
+            $("#CondicaoPagamento_btn-localizar").hide();
+            $("#CondicaoPagamento_btnGerarParcela").attr('disabled', true)
         }
         vlTotalVenda = total;
         total = total.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
         $("#ftp").text("Total: " + total);
+        $("#vlTotal").val(total)
     }
 
     self.openEditProduto = function (e, data) {
@@ -255,10 +349,11 @@ Venda = function () {
         $("#Produto_id").val(item.codProduto);
         $("#Produto_text").val(item.nomeProduto);
         $("#Produto_vlVenda").val(item.vlVenda.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-        $("#unidade").val(item.unidade);
-        $("#qtProduto").val(item.qtProduto.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-        $("#txDesconto").val(item.txDesconto.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+        $("#Produto_unidade").val(item.unidade);
+        $("#Produto_qtProduto").val(item.qtProduto.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+        $("#Produto_txDesconto").val(item.txDesconto.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 }));
         $('input[name="Produto.id"]').prop('disabled', true)
+        self.calcTotalItem(item.vlVenda);
     }
 
     self.saveProduto = function (data) {
@@ -280,13 +375,14 @@ Venda = function () {
                 success: function (data) {
                     $.notify({ message: data.message, icon: 'fa fa-exclamation' }, { type: 'success', z_index: 2000 });
                     self.setParcelas(data);
+                    $("#btnSalvar").attr("disabled", false);
                 },
                 error: function (request) {
                     alert("Erro ao buscar registro");
                 }
             });
         } else {
-            $.notify({ message: "Já foram geradas parcelas para esta Compra, verifique!", icon: 'fa fa-exclamation' }, { type: 'danger', z_index: 2000 });
+            $.notify({ message: "Já foram geradas parcelas para esta Venda, verifique!", icon: 'fa fa-exclamation' }, { type: 'danger', z_index: 2000 });
         }
     }
 
@@ -305,6 +401,30 @@ Venda = function () {
             dtParcelas.addItem(item);
         }
         $("#divParcelas").slideDown();
+    }
+
+    self.calcTotalItem = function (vlVenda) {
+        
+        let qtProduto = $("#Produto_qtProduto").val();
+        let txDesconto = $("#Produto_txDesconto").val()
+
+        if (!IsNullOrEmpty(qtProduto)) {
+            qtProduto = qtProduto.replace(".", "").replace(",", ".");
+            qtProduto = parseFloat(qtProduto)
+            let total = 0;
+
+            //qtProdutoAux = parseFloat(qtProdutoAux);
+            if (!IsNullOrEmpty(txDesconto)) {
+                txDesconto = txDesconto.replace(".", "").replace(",", ".");
+                let desc = parseFloat(txDesconto);
+                let txDesc = (desc * vlVenda) / 100
+                vlVenda = vlVenda - txDesc;
+            }
+            total = vlVenda * qtProduto;
+            $("#Produto_vlTotal").val(total.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 }))
+        } else {
+            $("#Produto_vlTotal").val("");
+        }
     }
 
     //self.datatable.atualizarItens();

@@ -160,7 +160,7 @@ namespace Sistema.DAO
 
         public void CancelarCompra(int? codCompra)
         {
-            throw new Exception("Ainda não implementado");
+            throw new Exception("Não implementado");
         }
 
         public Compras GetCompra(int codCompra)

@@ -33,11 +33,11 @@
 
     <div class="@Util.Input2">
         @Html.LabelFor(model => model.unidade, new { @class = "required" })
-        @Html.DropDownListFor(model => model.situacao, Sistema.Models.Produtos.Unidade, new { @class = "form-control" })
+        @Html.DropDownListFor(model => model.unidade, Sistema.Models.Produtos.Unidade, new { @class = "form-control" })
         @Html.ValidationMessageFor(model => model.unidade, null, new { @class = "text-danger" })
     </div>
 
-    <div class="@Util.Input2">
+    <div class="@Util.Input2" id="divLargura">
         @Html.LabelFor(model => model.largura, new { @class = "required" })
         @Html.DropDownListFor(model => model.largura, Sistema.Models.Produtos.Largura, new { @class = "form-control" })
         @Html.ValidationMessageFor(model => model.largura, null, new { @class = "text-danger" })

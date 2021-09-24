@@ -1,7 +1,4 @@
 ﻿$(function () {
-    $("#divAddProduto").hide();
-    $("#divFinaliza").show();
-    $("#flFinalizar").prop("checked", true)
 
     var compra = new Compra();
     compra.init();
@@ -12,7 +9,6 @@ Compra = function () {
     self = this;
     dtProdutos = null;
     dtParcelas = null;
-
 
     this.init = function () {
         dtProdutos = new tDataTable({

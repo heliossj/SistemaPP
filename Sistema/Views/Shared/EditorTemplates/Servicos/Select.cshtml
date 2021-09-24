@@ -12,6 +12,9 @@
     string action = Convert.ToString(ViewBag.Action);
 
     var flValor = Convert.ToString(ViewData["flValor"]);
+    var flUnidade = Convert.ToString(ViewData["flUnidade"]);
+    var flQuantidade = Convert.ToString(ViewData["flQuantidade"]);
+    var flTotalServico = Convert.ToString(ViewData["flTotalServico"]);
 }
 
 @Html.Hidden("isEdit")
@@ -27,11 +30,35 @@
     @Html.ValidationMessageFor(model => model.id, null, new { @class = "text-danger" })
 </div>
 
+@if (flUnidade == "S")
+{
+    <div class="@Util.Input2">
+        @Html.Label("Unidade", new { @class = "no-required" })
+        @Html.DropDownListFor(model => model.unidade, Sistema.Select.Servicos.Select.Unidade, new { @class = "form-control", Disabled = true })
+    </div>
+}
+
+@if (flQuantidade == "S")
+{
+    <div class="@Util.Input2">
+        @Html.Label("qtServico", "Quantidade", new { @class = "required" })
+        @Html.TextBox("qtServico", "", new { @class = "form-control money", placeholder = "0,00", style = "text-align: right" })
+    </div>
+}
+
 @if (flValor == "S")
 {
     <div class="@Util.Input2">
         @Html.Label("Valor de venda", new { @class = "no-required" })
         @Html.TextBoxFor(model => model.vlServico, new { @class = "form-control", Disabled = true, placeholder = "0,00", style = "text-align: right" })
+    </div>
+}
+
+@if (flTotalServico == "S")
+{
+    <div class="@Util.Input2">
+        @Html.Label("vlTotal", "Total do Serviço", new { @class = "no-required" })
+        @Html.TextBox("vlTotal", "", new { @class = "form-control money", placeholder = "0,00", style = "text-align: right", disabled = true })
     </div>
 }
 
@@ -158,6 +185,8 @@
              if (id == "") {
                  $("#@Sistema.Util.SelectFunctions.getInputId("id", Prefix)").val("");
                  $("#@Sistema.Util.SelectFunctions.getInputId("text", Prefix)").val("");
+                 $("#@Sistema.Util.SelectFunctions.getInputId("vlServico", Prefix)").val("");
+                 $("#@Sistema.Util.SelectFunctions.getInputId("unidade", Prefix)").val("");
              } else {
                  $.ajax({
                      dataType: 'json',
@@ -389,10 +418,16 @@
         }
     };
 
+    function loadServico(data) {
+        $(document).trigger('@Sistema.Util.SelectFunctions.getInputId(Prefix, "AfterLoad")', data);
+    };
+
     function SelectServicos(data) {
+        loadServico(data)
         $("#@Sistema.Util.SelectFunctions.getInputId("ModalLista", Prefix)").modal("hide");
         $("#@Sistema.Util.SelectFunctions.getInputId("id", Prefix)").val(data.id);
         $("#@Sistema.Util.SelectFunctions.getInputId("text", Prefix)").val(data.text);
+        $("#@Sistema.Util.SelectFunctions.getInputId("unidade", Prefix)").val(data.unidade);
         let valor = data.vlServico;
         if (data) {
             valor = valor.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });

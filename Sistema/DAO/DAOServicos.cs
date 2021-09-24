@@ -31,7 +31,7 @@ namespace Sistema.DAO
                         situacao = Sistema.Util.FormatFlag.Situacao(Convert.ToString(reader["Servico_Situacao"])),
                         vlServico = Convert.ToDecimal(reader["Servico_Valor"]),
                         dtCadastro = Convert.ToDateTime(reader["Servico_DataCadastro"]),
-                        dtUltAlteracao = Convert.ToDateTime(reader["Servicos_DataUltAlteracao"]),
+                        dtUltAlteracao = Convert.ToDateTime(reader["Servico_DataUltAlteracao"]),
                     };
 
                     list.Add(servico);
@@ -53,13 +53,14 @@ namespace Sistema.DAO
         {
             try
             {
-                var sql = string.Format("INSERT INTO tbservicos ( nomeservico, descricao, vlservico, dtcadastro, dtultalteracao, situacao) VALUES ('{0}', '{1}', {2}, '{3}', '{4}', '{5}')",
+                var sql = string.Format("INSERT INTO tbservicos ( nomeservico, descricao, vlservico, dtcadastro, dtultalteracao, situacao, unidade) VALUES ('{0}', '{1}', {2}, '{3}', '{4}', '{5}', '{6}')",
                     this.FormatString(servico.nomeServico),
                     !string.IsNullOrEmpty(servico.descricao) ? this.FormatString(servico.descricao) : "",
                     servico.vlServico.ToString().Replace(",", "."),
                     DateTime.Now.ToString("yyyy-MM-dd"),
                     DateTime.Now.ToString("yyyy-MM-dd"),
-                    this.FormatString(servico.situacao)
+                    this.FormatString(servico.situacao),
+                    this.FormatString(servico.unidade)
                     );
                 OpenConnection();
                 SqlQuery = new SqlCommand(sql, con);
@@ -91,10 +92,11 @@ namespace Sistema.DAO
                 string sql = "UPDATE tbservicos SET nomeservico = '"
                     + this.FormatString(servicos.nomeServico) + "'," +
                     " descricao = '" + (!string.IsNullOrEmpty(servicos.descricao) ? this.FormatString(servicos.descricao) : "") + "'," +
-                    " vlservico = " + servicos.vlServico.ToString().Replace(",", ".") + ", " +
-                    " situacao = '" + servicos.situacao.ToUpper().Trim() + "'," +
-                    " dtultalteracao = '" + DateTime.Now.ToString("yyyy-MM-dd")
-                    + "' WHERE codservico = " + servicos.codigo;
+                    " vlservico = " + this.FormatDecimal(servicos.vlServico) + ", " +
+                    " situacao = '" + this.FormatString(servicos.situacao) + "'," +
+                    " dtultalteracao = '" + DateTime.Now.ToString("yyyy-MM-dd") + "', " +
+                    " unidade = '" + this.FormatString(servicos.unidade)+ "'" 
+                    + " WHERE codservico = " + servicos.codigo;
                 OpenConnection();
                 SqlQuery = new SqlCommand(sql, con);
 
@@ -137,8 +139,9 @@ namespace Sistema.DAO
                         model.descricao = Convert.ToString(reader["Servico_Descricao"]);
                         model.vlServico = Convert.ToDecimal(reader["Servico_Valor"]);
                         model.dtCadastro = Convert.ToDateTime(reader["Servico_DataCadastro"]);
-                        model.dtUltAlteracao = Convert.ToDateTime(reader["Servicos_DataUltAlteracao"]);
+                        model.dtUltAlteracao = Convert.ToDateTime(reader["Servico_DataUltAlteracao"]);
                         model.situacao = Convert.ToString(reader["Servico_Situacao"]);
+                        model.unidade = Convert.ToString(reader["Servico_Unidade"]);
                     }
                 }
                 return model;
@@ -199,7 +202,8 @@ namespace Sistema.DAO
                     {
                         id = Convert.ToInt32(reader["Servico_ID"]),
                         text = Convert.ToString(reader["Servico_Nome"]),
-                        vlServico = Convert.ToDecimal(reader["Servico_Valor"])
+                        vlServico = Convert.ToDecimal(reader["Servico_Valor"]),
+                        unidade = Convert.ToString(reader["Servico_Unidade"])
                     };
                     list.Add(servico);
                 }
@@ -240,7 +244,8 @@ namespace Sistema.DAO
                         tbservicos.vlservico AS Servico_Valor,
                         tbservicos.descricao AS Servico_Descricao,
                         tbservicos.dtcadastro AS Servico_DataCadastro,
-                        tbservicos.dtultalteracao AS Servicos_DataUltAlteracao
+                        tbservicos.dtultalteracao AS Servico_DataUltAlteracao,
+                        tbservicos.unidade AS Servico_Unidade
                     FROM tbservicos" + swhere;
             return sql;
         }

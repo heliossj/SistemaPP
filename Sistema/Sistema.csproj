@@ -242,6 +242,8 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\Clientes\Create.js" />
     <Content Include="Scripts\ContasPagar\Index.js" />
+    <Content Include="Scripts\Produtos\Details.js" />
+    <Content Include="Scripts\Produtos\Create.js" />
     <Content Include="Scripts\Vendas\Create.js" />
     <Content Include="Scripts\Vendas\Details.js" />
     <Content Include="Scripts\Vendas\Index.js" />

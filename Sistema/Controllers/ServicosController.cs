@@ -48,6 +48,10 @@ namespace Sistema.Controllers
             {
                 ModelState.AddModelError("situacao", "Informe a situação");
             }
+            if (string.IsNullOrWhiteSpace(model.unidade))
+            {
+                ModelState.AddModelError("unidade", "Informe a unidade");
+            }
             if (ModelState.IsValid)
             {
                 try
@@ -88,6 +92,10 @@ namespace Sistema.Controllers
             if (string.IsNullOrWhiteSpace(model.situacao))
             {
                 ModelState.AddModelError("situacao", "Informe a situação");
+            }
+            if (string.IsNullOrWhiteSpace(model.unidade))
+            {
+                ModelState.AddModelError("unidade", "Informe a unidade");
             }
             if (ModelState.IsValid)
             {
@@ -209,6 +217,7 @@ namespace Sistema.Controllers
                 id = u.id,
                 text = u.text,
                 vlServico = u.vlServico,
+                unidade = u.unidade
             }).OrderBy(u => u.text).ToList();
             return select.AsQueryable();
         }
