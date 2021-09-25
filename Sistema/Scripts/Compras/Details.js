@@ -2,6 +2,8 @@
 
     var compra = new Compra();
     compra.init();
+
+    $("#divAddProduto").hide()
 });
 
 

@@ -208,7 +208,8 @@
                  $("#@Sistema.Util.SelectFunctions.getInputId("vlVenda", Prefix)").val("");
                  $("#@Sistema.Util.SelectFunctions.getInputId("unidade", Prefix)").val("");
              } else {
-                 let idFornecedor = !IsNullOrEmpty($('#@idFornecedor').val())?$('#@idFornecedor').val() : null;
+                 //let idFornecedor = (!IsNullOrEmpty($('#@idFornecedor').val()) ? $('#@idFornecedor').val() : null);
+                 let idFornecedor = null;
 
                  $.ajax({
                      dataType: 'json',
@@ -348,8 +349,6 @@
         let table = null
         let idFornecedorAux = !IsNullOrEmpty(@idFornecedor)? $('#@idFornecedor').val(): null;
         let lis = getTableProduto(idFornecedorAux);
-
-        console.log(idFornecedorAux);
         $("#TableProduto").append(lis);
 
 

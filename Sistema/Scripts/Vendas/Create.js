@@ -38,7 +38,6 @@
     $(document).on('AfterLoad_CondicaoPagamento', function (e, data) {
         $("#flTblProdutos").val("S")
         $("#divAddProduto").hide();
-        console.log("CarregaCondicao");
         dtParcelas.clear();
         dtProdutos.atualizarItens();
         dtProdutos.atualizarGrid();
@@ -49,7 +48,6 @@
         if (!IsNullOrEmpty(vlVenda)) {
             vlVenda = vlVenda.replace(".", "").replace(",", ".");
             vlVenda = parseFloat(vlVenda);
-            console.log(vlVenda)
             venda.calcTotalItem(vlVenda);
         } else {
             $("#Produto_vlTotal").val("")
@@ -61,7 +59,6 @@
         if (!IsNullOrEmpty(vlVenda)) {
             vlVenda = vlVenda.replace(".", "").replace(",", ".");
             vlVenda = parseFloat(vlVenda);
-            console.log(vlVenda)
             venda.calcTotalItem(vlVenda);
         } else {
             $("#Produto_vlTotal").val("")
@@ -72,51 +69,12 @@
         venda.calcTotalItem(data.vlVenda);
     })
 
-    //calcTotalItem
-
-    //if (!$("#flFinalizar").is(":checked")) {
-    //    $("#divFinaliza").slideUp();
-    //    $("#vlTotal").val("");
-    //} else {
-    //    $("#divFinaliza").slideDown();
-    //}
-
-    //$("#flFinalizar").click(function () {
-    //    if (!dtProdutos.length) {
-    //        $.notify({ message: "Informe ao menos um produto para finalizar", icon: 'fa fa-exclamation' }, { type: 'danger', z_index: 2000 });
-    //        $("#flFinalizar").prop("checked", false)
-    //    } else {
-    //        if ($(this).is(":checked")) {
-    //            $('input[name="dtEmissao"]').prop('disabled', true)
-    //            venda.calcTotalProduto();
-    //            $("#divParcelas").hide();
-    //            $("#divFinaliza").slideDown();
-    //            let total = vlTotalVenda;
-    //            let totalFormat = total.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    //            $("#vlTotal").val(totalFormat);
-    //            dtProdutos.atualizarGrid();
-    //            $("#divAddProduto").slideUp();
-    //        } else {
-    //            $("#divFinaliza").slideUp();
-
-    //            dtProdutos.atualizarGrid();
-    //            dtParcelas.clear();
-    //            $("#divAddProduto").slideDown();
-    //            $("#CondicaoPagamento_id").val("")
-    //            $("#CondicaoPagamento_text").val("")
-    //            $("#CondicaoPagamento_btnGerarParcela").attr('disabled', true);
-    //            $('input[name="dtEmissao"]').prop('disabled', false)
-    //        }
-    //    }
-    //});
-
     $("#CondicaoPagamento_btnGerarParcela").click(function () {
         venda.getparcelas();
     });
 
     $(document).on('tblProdutoRowCallback', function (e, data) {
         let flTblProdutos = $("#flTblProdutos").val()
-        console.log(flTblProdutos)
         if (flTblProdutos == "S") {
             let btn = $('td a[data-event=remove]', data.nRow);
             btn.attr('title', "Indisponível para alteração!");
@@ -183,7 +141,12 @@ Venda = function () {
                     {
                         data: null,
                         mRender: function (data) {
-                            return data.vlVenda.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                            let result = "";
+                            if (data.unidade == "M")
+                                result = "METRO";
+                            if (data.unidade == "U")
+                                result = "UNIDADE"
+                            return result;
                         }
                     },
                     {
@@ -195,10 +158,7 @@ Venda = function () {
                     {
                         data: null,
                         mRender: function (data) {
-                            let result = "";
-                            if (data.unidade == "M")
-                                result = "METRO";
-                            return result;
+                            return data.vlVenda.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
                         }
                     },
                     {
@@ -315,7 +275,6 @@ Venda = function () {
                 txDesconto: model.txDesconto,
                 vlTotal: model.vlTotal
             }
-            console.log(item)
             self.saveProduto(item);
             self.clearProduto();
             self.calcTotalProduto();
@@ -412,8 +371,6 @@ Venda = function () {
             qtProduto = qtProduto.replace(".", "").replace(",", ".");
             qtProduto = parseFloat(qtProduto)
             let total = 0;
-
-            //qtProdutoAux = parseFloat(qtProdutoAux);
             if (!IsNullOrEmpty(txDesconto)) {
                 txDesconto = txDesconto.replace(".", "").replace(",", ".");
                 let desc = parseFloat(txDesconto);

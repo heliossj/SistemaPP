@@ -31,6 +31,7 @@ namespace Sistema.Models
 
         [Display(Name = "Data de entrega")]
         public DateTime? dtEntrega { get; set; }
+        public string dtEntregaAux { get; set; }
 
         public Select.Fornecedores.Select Fornecedor { get; set; }
         public int? idFornecedor { get; set; }

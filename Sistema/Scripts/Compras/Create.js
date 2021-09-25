@@ -1,6 +1,7 @@
 ﻿$(function () {
     vlTotalCompra = 0;
     date = null;
+    dateEntrega = null;
     var compra = new Compra();
     compra.init();
 
@@ -23,7 +24,6 @@
 
     $(document).on('tblProdutoRowCallback', function (e, data) {
         let flTblProdutos = $("#flTblProdutos").val()
-        console.log(flTblProdutos)
         if (flTblProdutos == "S") {
             let btn = $('td a[data-event=remove]', data.nRow);
             btn.attr('title', "Indisponível para alteração!");
@@ -57,6 +57,17 @@
         $("#dtEmissaoAux").val(dtAux.val())
     });
 
+    let dtEnt = $("#dtEntrega")
+    dtEnt.change(function () {
+        let dtString = dtEnt.val();
+        let dayArray = dtString.split("/");
+        let day = dayArray[0];
+        let month = (parseFloat(dayArray[1]) - 1);
+        let year = dayArray[2];
+        dateEntrega = new Date(year, month, day).toJSON();
+        $("#dtEntregaAux").val(dtEnt.val())
+    });
+
     $("#btnSalvar").attr("disabled", true);
     $('input[name="CondicaoPagamento.id"]').prop('disabled', true)
     $("#CondicaoPagamento_btn-localizar").hide();
@@ -87,12 +98,19 @@
         compra.verificaNF(data.id);
     });
 
+    $("#Fornecedor_id").change(function () {
+        if (IsNullOrEmpty($(this).val())) {
+            $("#divAddProduto").hide();
+        }
+    })
+
     $("#CondicaoPagamento_id").change(function () {
         dtParcelas.clear();
         let idCondicao = $("#CondicaoPagamento_id").val()
         if (IsNullOrEmpty(idCondicao)) {
             $("#divAddProduto").show();
             $('input[name="dtEmissao"]').prop('disabled', false);
+            $('input[name="dtEntrega"]').prop('disabled', false)
             $("#flTblProdutos").val("")
         } else {
             $("#divAddProduto").hide();
@@ -104,7 +122,6 @@
     $(document).on('AfterLoad_CondicaoPagamento', function (e, data) {
         $("#flTblProdutos").val("S")
         $("#divAddProduto").hide();
-        console.log("CarregaCondicao");
         dtParcelas.clear();
         dtProdutos.atualizarItens();
         dtProdutos.atualizarGrid();
@@ -127,6 +144,7 @@
     if (!IsNullOrEmpty(idCond)) {
         $("#flTblProdutos").val("S");
         $('input[name="dtEmissao"]').prop('disabled', true)
+        $('input[name="dtEntrega"]').prop('disabled', true)
         $('input[name="CondicaoPagamento.id"]').prop('disabled', false)
         $("#CondicaoPagamento_btn-localizar").show();
         $("#CondicaoPagamento_btnGerarParcela").attr('disabled', false)
@@ -179,6 +197,8 @@ Compra = function () {
                             let resut = "";
                             if (data.unidade == "M")
                                 result = "METRO";
+                            if (data.unidade == "U")
+                                result = "UNIDADE";
 
                             return result;
                         }
@@ -410,13 +430,19 @@ Compra = function () {
     }
 
     self.getparcelas = function () {
-        console.log(date)
+        let valid = true;
         if (IsNullOrEmpty(date)) {
             //$("#dtEmissao").blink({msg: "Informe a data de emissão"})
             $.notify({ message: "Informe a data de emissão!", icon: 'fa fa-exclamation' }, { type: 'danger', z_index: 2000 });
+            valid = false;
+        } else if (IsNullOrEmpty(dateEntrega)) {
+            $.notify({ message: "Informe a data de entrega!", icon: 'fa fa-exclamation' }, { type: 'danger', z_index: 2000 });
+            valid = false;
+        } else if (dateEntrega < date) {
+            $.notify({ message: "A data de entrega não pode ser menor que a data de Emissão!", icon: 'fa fa-exclamation' }, { type: 'danger', z_index: 2000 });
+            valid = false;
         }
-
-        if (!dtParcelas.length && date != null) {
+        if (!dtParcelas.length && valid ) {
             let totalF = vlTotalCompra.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
             $.ajax({
                 dataType: 'json',
@@ -428,6 +454,7 @@ Compra = function () {
                     self.setParcelas(data);
                     $("#btnSalvar").attr("disabled", false);
                     $('input[name="dtEmissao"]').prop('disabled', true)
+                    $('input[name="dtEntrega"]').prop('disabled', true)
                 },
                 error: function (request) {
                     alert("Erro ao buscar registro");

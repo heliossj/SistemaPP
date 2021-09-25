@@ -34,6 +34,7 @@ namespace Sistema.Controllers
         [HttpPost]
         public ActionResult Create(Sistema.Models.Compras model)
         {
+            model.dtEntrega = !string.IsNullOrEmpty(model.dtEntregaAux) ? Convert.ToDateTime(model.dtEntregaAux) : model.dtEntrega;
             model.dtEmissao = !string.IsNullOrEmpty(model.dtEmissaoAux) ? Convert.ToDateTime(model.dtEmissaoAux) : model.dtEmissao;
             model.modelo = !string.IsNullOrEmpty(model.modeloAux) ? model.modeloAux : model.modelo;
             model.serie = !string.IsNullOrEmpty(model.serieAux) ? model.serieAux : model.serie;
