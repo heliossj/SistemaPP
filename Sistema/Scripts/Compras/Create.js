@@ -445,7 +445,7 @@ Compra = function () {
         if (!dtParcelas.length && valid ) {
             let totalF = vlTotalCompra.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
             $.ajax({
-                dataType: 'json',
+                dataType: 'json', 
                 type: 'GET',
                 url: Action.getParcelas,
                 data: { idCondicaoPagamento: $("#CondicaoPagamento_id").val(), vlTotal: totalF, dtIiniParcela: date },

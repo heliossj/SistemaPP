@@ -211,7 +211,7 @@ OrdemServico = function () {
                     {
                         data: null,
                         mRender: function (data) {
-                            return data.vlUnitario.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                            return data.vlServico.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
                         }
                     },
                     {
@@ -252,7 +252,7 @@ OrdemServico = function () {
                     {
                         data: null,
                         mRender: function (data) {
-                            return data.vlUnitario.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                            return data.vlProduto.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
                         }
                     },
                     {
@@ -356,7 +356,7 @@ OrdemServico = function () {
                 nomeExecutante: model.nomeExecutante,
                 codServico: model.codServico,
                 nomeServico: model.nomeServico,
-                vlUnitario: model.vlServico,
+                vlServico: model.vlServico,
                 qtServico: model.qtServico,
                 unidade: model.unidade,
                 vlTotal: model.vlTotal
@@ -391,14 +391,14 @@ OrdemServico = function () {
         let item = dtServicos.dataSelected.item;
         $("#Servico_id").val(item.codServico);
         $("#Servico_text").val(item.nomeServico);
-        $("#Servico_vlServico").val(item.vlUnitario.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+        $("#Servico_vlServico").val(item.vlServico.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 }));
         $("#Servico_unidade").val(item.unidade);
         $("#Servico_qtServico").val(item.qtServico.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 }));
         $("#Executante_id").val(item.codExecutante);
         $("#Executante_text").val(item.nomeExecutante);
         $('input[name="Servico.id"]').prop('disabled', true)
         $('input[name="Executante.id"]').prop('disabled', true)
-        self.calcTotalItemServico(item.vlUnitario)
+        self.calcTotalItemServico(item.vlServico)
     }
 
     self.saveServico = function (data) {
@@ -467,7 +467,7 @@ OrdemServico = function () {
                 codProduto: model.codProduto,
                 nomeProduto: model.nomeProduto,
                 unidade: model.unidade,
-                vlUnitario: model.vlProduto,
+                vlProduto: model.vlProduto,
                 qtProduto: model.qtProduto,
                 vlTotal: model.vlTotal
             }
@@ -496,10 +496,10 @@ OrdemServico = function () {
         $("#Produto_id").val(item.codProduto);
         $("#Produto_text").val(item.nomeProduto);
         $("#Produto_unidade").val(item.unidade);
-        $("#Produto_vlVenda").val(item.vlUnitario.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+        $("#Produto_vlVenda").val(item.vlProduto.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 }));
         $("#Produto_qtProduto").val(item.qtProduto.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 }));
         $('input[name="Produto.id"]').prop('disabled', true)
-        self.calcTotalItemProduto(item.vlUnitario)
+        self.calcTotalItemProduto(item.vlProduto)
     }
 
     self.saveProduto = function (data) {

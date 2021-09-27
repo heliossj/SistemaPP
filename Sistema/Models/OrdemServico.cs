@@ -37,9 +37,9 @@ namespace Sistema.Models
         {
             public int? codServico { get; set; }
             public string nomeServico { get; set; }
-            public decimal? vlUnitario { get; set; }
+            public string unidade { get; set; }
             public decimal? qtServico { get; set; }
-            public decimal? vlTotal { get; set; }
+            public decimal? vlServico { get; set; }            
         }
         
         public string jsServicos { get; set; }
@@ -61,10 +61,11 @@ namespace Sistema.Models
         {
             public int? codProduto { get; set; }
             public string nomeServico { get; set; }
-            public decimal? vlUnitario { get; set; }
-            public decimal? qtProduto { get; set; }
-            public decimal? vlTotal { get; set; }
             public string unidade { get; set; }
+            public decimal? vlProduto { get; set; }
+            public decimal? qtProduto { get; set; }
+            public int? codExecutante { get; set; }
+            public string nomeExecutante { get; set; }
         }
 
         public string jsProdutos { get; set; }
