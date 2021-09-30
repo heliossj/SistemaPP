@@ -10,6 +10,8 @@ namespace Sistema.Models
 {
     public class Vendas : Pai
     {
+        public int? codOrdemServico { get; set; }
+
         [Display(Name = "Data")]
         public DateTime? dtVenda { get; set; }
 
@@ -20,7 +22,7 @@ namespace Sistema.Models
         public decimal? vlTotal { get; set; }
 
         public Select.Funcionarios.Select Funcionario { get; set; }
-        public Select.Funcionarios.Select Cliente { get; set; }
+        public Select.Clientes.Select Cliente { get; set; }
         public Select.Produtos.Select Produto { get; set; }
         public Select.CondicaoPagamento.Select CondicaoPagamento { get; set; }
 
@@ -28,25 +30,17 @@ namespace Sistema.Models
         {
             public int? codProduto { get; set; }
             public string nomeProduto { get; set; }
-            public decimal? vlVenda { get; set; }
-            public decimal? qtProduto { get; set; }
             public string unidade { get; set; }
+            public decimal qtProduto { get; set; }
+            public decimal vlVenda { get; set; }
             public decimal? txDesconto { get; set; }
             public decimal vlTotal { get; set; }
-        }
-
-        public class ParcelasVM
-        {
-            public int? idFormaPagamento { get; set; }
-            public string nmFormaPagamento { get; set; }
-            public string flSituacao { get; set; }
-            public DateTime? dtVencimento { get; set; }
         }
 
         public string jsProdutos { get; set; }
         public string jsParcelas { get; set; }
 
-        public List<ProdutosVM> ProdutosCompra
+        public List<ProdutosVM> ProdutosVenda
         {
             get
             {
@@ -60,13 +54,13 @@ namespace Sistema.Models
             }
         }
 
-        public List<ParcelasVM> ParcelasCompra
+        public List<Shared.ParcelasVM> ParcelasVenda
         {
             get
             {
                 if (string.IsNullOrEmpty(jsParcelas))
-                    return new List<ParcelasVM>();
-                return JsonConvert.DeserializeObject<List<ParcelasVM>>(jsParcelas);
+                    return new List<Shared.ParcelasVM>();
+                return JsonConvert.DeserializeObject<List<Shared.ParcelasVM>>(jsParcelas);
             }
             set
             {

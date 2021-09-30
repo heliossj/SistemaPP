@@ -144,6 +144,9 @@
     <Compile Include="Controllers\CidadesController.cs" />
     <Compile Include="Controllers\EstadosController.cs" />
     <Compile Include="DAO\DAOCidades.cs" />
+    <Compile Include="DAO\DAOContasReceber.cs" />
+    <Compile Include="DAO\DAOVendas.cs" />
+    <Compile Include="DAO\DAOOrdemServico.cs" />
     <Compile Include="DAO\DAOCompras.cs" />
     <Compile Include="DAO\DAOFornecedores.cs" />
     <Compile Include="DAO\DAOFuncionarios.cs" />
@@ -167,6 +170,7 @@
     <Compile Include="DataTables\IDataTablesRequest.cs" />
     <Compile Include="DataTables\NameValueCollectionExtensions.cs" />
     <Compile Include="DataTables\Search.cs" />
+    <Compile Include="Models\ContasReceber.cs" />
     <Compile Include="Models\ContasPagar.cs" />
     <Compile Include="Models\Shared.cs" />
     <Compile Include="Models\Vendas.cs" />

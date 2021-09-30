@@ -105,7 +105,7 @@ namespace Sistema.DAO
                     );
                 string sqlProduto = "INSERT INTO tbprodutoscompra ( codcompra, codproduto, unidade, qtproduto, vlcompra, txdesconto, vlvenda) VALUES ({0}, {1}, '{2}', {3}, {4}, {5}, {6})";
                 string sqlParcela = "INSERT INTO tbcontaspagar (codfornecedor, codforma, nrparcela, vlparcela, dtvencimento, situacao, codcompra) VALUES ({0}, {1}, {2}, {3}, {4}, '{5}', {6} )";
-                string sqlUpdateProduto = "UPDATE tbprodutos set qtestoque += {0}, vlultcompra += {1}, unidade = '{2}'";
+                string sqlUpdateProduto = "UPDATE tbprodutos set qtestoque += {0}, vlultcompra += {1} WHERE codproduto = {2}";
                 using (con)
                 {
                     OpenConnection();
@@ -123,7 +123,7 @@ namespace Sistema.DAO
                             command.CommandText = Item;
                             command.ExecuteNonQuery();
 
-                            //var upProd = string.Format(sqlUpdateProduto, item.qtProduto, item.vlCompra, item.unidade);
+                            //var upProd = string.Format(sqlUpdateProduto, this.FormatDecimal(item.qtProduto), this.FormatDecimal(item.vlCompra), item.codProduto);
                             //command.CommandText = upProd;
                             //command.ExecuteNonQuery();
                         }

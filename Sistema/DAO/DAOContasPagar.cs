@@ -106,7 +106,7 @@ namespace Sistema.DAO
             var swhere = string.Empty;
             if (id != null)
             {
-                swhere = " WHERE codcontapagar = " + id;
+                swhere = " WHERE tbcontaspagar.codcontapagar = " + id;
             }
             if (!string.IsNullOrEmpty(filter))
             {

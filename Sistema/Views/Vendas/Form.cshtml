@@ -5,6 +5,7 @@
     string action = Convert.ToString(ViewBag.Action);
 }
 
+@Html.HiddenFor(u => Model.codOrdemServico)
 @Html.Hidden("flTblProdutos")
 @if (action != "create")
 {
