@@ -19,7 +19,7 @@
     @Html.Label("", Label, new { @class = "required" })
     <div class="input-group">
         @Html.TextBoxFor(model => model.id, new { @style = "border-radius: 4px 0px 0px 4px; width: 15%;", @class = "form-control number", maxLength = "6" })
-        @Html.TextBoxFor(model => model.text, new { @class = "form-control", @style = "width:70%", Disabled = true })
+        @Html.TextBoxFor(model => model.text, new { @class = "form-control", @style = "width:70%" })
         <a style="border-radius:0px 3px 3px 0px" data-target="#@Sistema.Util.SelectFunctions.getInputId("Modal", Prefix)" id="@Sistema.Util.SelectFunctions.getInputId("btn-localizar", Prefix)" title="Abrir a busca de @Label" class="btn btn-success" data-toggle="modal"><i class="fa fa-search"></i></a>
         @Html.HiddenFor(model => model.text)
     </div>
@@ -146,6 +146,9 @@
 
     self = this;
     $(function () {
+
+         document.getElementById("@Sistema.Util.SelectFunctions.getInputId("text", Prefix)").readOnly = true;
+
          $("#@Sistema.Util.SelectFunctions.getInputId("btn-localizar", Prefix)").on("click", function () {
              InitModalCondicaoPagamento();
          });

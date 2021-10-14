@@ -39,6 +39,30 @@ namespace Sistema.Controllers
             return this.GetView(id);
         }
 
+        [HttpPost]
+        public ActionResult Pagar(int id, Sistema.Models.ContasPagar model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var daoContasPagar = new DAOContasPagar();
+                    daoContasPagar.Pagar(id);
+                    this.AddFlashMessage("Parcela paga com sucesso!");
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                    return View(model);
+                }
+            }
+            else
+            {
+                return View(model);
+            }
+        }
+
         public ActionResult Cancelar(int? id)
         {
             return this.GetView(id);

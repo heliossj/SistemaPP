@@ -29,7 +29,7 @@
     $(document).on("tblServicoOpenEdit", OS.openEditServico);
     $(document).on("tblServicoCancelEdit", OS.clearServico);
 
-
+    //document.getElementById('Funcionario_nmFuncionario').readOnly = true;
     //if (!$("#flFinalizar").is(":checked")) {
     //    $("#divFinaliza").slideUp();
     //    $("#vlTotal").val("");
@@ -152,7 +152,6 @@
     $("#CondicaoPagamento_btn-localizar").hide();
 
     $(document).on('AfterLoad_CondicaoPagamento', function (e, data) {
-        alert();
         $("#divAddServico").hide();
         $("#divAddProduto").hide();
         $("#flTblServicos").val("S");

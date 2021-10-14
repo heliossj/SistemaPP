@@ -17,7 +17,7 @@ namespace Sistema.DAO
             //try
             //{
             var list = new List<Compras>();
-            var sql = this.Search(null, null);
+            var sql = this.Search(null, null, null, null, null);
 
             using (con)
             {
@@ -33,7 +33,6 @@ namespace Sistema.DAO
                     {
                         var compra = new Compras
                         {
-                            codigo = Convert.ToInt32(reader["Compra_ID"]),
                             situacao = Sistema.Util.FormatFlag.Situacao(Convert.ToString(reader["Compra_Situacao"])),
                             Fornecedor = new Select.Fornecedores.Select
                             {
@@ -54,7 +53,7 @@ namespace Sistema.DAO
                     foreach (var item in list)
                     {
                         var listComp = new List<Shared.ParcelasVM>();
-                        using (var details = new SqlCommand(this.SearchParcelas(item.codigo), con))
+                        using (var details = new SqlCommand(this.SearchParcelas(item.modelo, item.serie, item.nrNota, item.Fornecedor.id), con))
                         {
                             using (var detReader = details.ExecuteReader())
                             {
@@ -65,7 +64,6 @@ namespace Sistema.DAO
                                         idFormaPagamento = Convert.ToInt32(detReader["FormaPagamento_ID"]),
                                         nmFormaPagamento = Convert.ToString(detReader["FormaPagamento_Nome"]),
                                         nrParcela = Convert.ToDouble(detReader["ContaPagar_NrParcela"]),
-                
                                         vlParcela = Convert.ToDecimal(detReader["ContaPagar_VlParcela"]),
                                         dtVencimento = Convert.ToDateTime(detReader["ContaPagar_DataVencimento"]),
                                         situacao = Convert.ToString(detReader["ContaPagar_Situacao"])
@@ -91,11 +89,11 @@ namespace Sistema.DAO
         {
             try
             {
-                var sql = string.Format("INSERT INTO tbcompras ( modelo, serie, numero, dtemissao, dtentrega, codfornecedor, observacao, dtcadastro, situacao, codcondicao ) VALUES ('{0}', '{1}', {2}, {3}, {4}, {5}, '{6}', {7}, '{8}', {9}); SELECT SCOPE_IDENTITY()",
+                var sql = string.Format("INSERT INTO tbcompras ( modelo, serie, numero, dtemissao, dtentrega, codfornecedor, observacao, dtcadastro, situacao, codcondicao ) VALUES ('{0}', '{1}', {2}, {3}, {4}, {5}, '{6}', {7}, '{8}', {9}); ",
                     compra.modelo,
                     compra.serie,
                     compra.nrNota,
-                    compra.dtEmissao != null ? this.FormatDate(compra.dtEmissao) : null,
+                    compra.dtEmissao != null ? this.FormatDate(compra.dtEmissao.Value) : null,
                     compra.dtEntrega != null ? this.FormatDate(compra.dtEntrega) : null,
                     compra.Fornecedor.id,
                     this.FormatString(compra.observacao),
@@ -103,8 +101,8 @@ namespace Sistema.DAO
                     "N",
                     compra.CondicaoPagamento.id
                     );
-                string sqlProduto = "INSERT INTO tbprodutoscompra ( codcompra, codproduto, unidade, qtproduto, vlcompra, txdesconto, vlvenda) VALUES ({0}, {1}, '{2}', {3}, {4}, {5}, {6})";
-                string sqlParcela = "INSERT INTO tbcontaspagar (codfornecedor, codforma, nrparcela, vlparcela, dtvencimento, situacao, codcompra) VALUES ({0}, {1}, {2}, {3}, {4}, '{5}', {6} )";
+                string sqlProduto = "INSERT INTO tbprodutoscompra ( codproduto, unidade, qtproduto, vlcompra, txdesconto, vlvenda, modelo, serie, numero, codfornecedor) VALUES ( {0}, '{1}', {2}, {3}, {4}, {5}, '{6}', '{7}', {8}, {9})";
+                string sqlParcela = "INSERT INTO tbcontaspagar (codfornecedor, codforma, nrparcela, vlparcela, dtvencimento, situacao, modelo, serie, numero) VALUES ({0}, {1}, {2}, {3}, {4}, '{5}', '{6}', '{7}', {8})";
                 string sqlUpdateProduto = "UPDATE tbprodutos set qtestoque += {0}, vlultcompra += {1} WHERE codproduto = {2}";
                 using (con)
                 {
@@ -116,21 +114,23 @@ namespace Sistema.DAO
                     try
                     {
                         command.CommandText = sql;
-                        var codCompra = Convert.ToInt32(command.ExecuteScalar());
+                        command.ExecuteNonQuery();
+                        //var codCompra = Convert.ToInt32(command.ExecuteScalar());
                         foreach (var item in compra.ProdutosCompra)
                         {
-                            var Item = string.Format(sqlProduto, codCompra, item.codProduto, item.unidade, this.FormatDecimal(item.qtProduto), this.FormatDecimal(item.vlCompra), this.FormatDecimal(item.txDesconto), this.FormatDecimal(item.vlVenda));
+                            var Item = string.Format(sqlProduto, item.codProduto, item.unidade, this.FormatDecimal(item.qtProduto), this.FormatDecimal(item.vlCompra), this.FormatDecimal(item.txDesconto), this.FormatDecimal(item.vlVenda), compra.modelo, compra.serie, compra.nrNota, compra.Fornecedor.id);
+                            var test = Item;
                             command.CommandText = Item;
                             command.ExecuteNonQuery();
 
-                            //var upProd = string.Format(sqlUpdateProduto, this.FormatDecimal(item.qtProduto), this.FormatDecimal(item.vlCompra), item.codProduto);
-                            //command.CommandText = upProd;
-                            //command.ExecuteNonQuery();
+                            var upProd = string.Format(sqlUpdateProduto, this.FormatDecimal(item.qtProduto), this.FormatDecimal(item.vlCompra), item.codProduto);
+                            command.CommandText = upProd;
+                            command.ExecuteNonQuery();
                         }
 
                         foreach (var item in compra.ParcelasCompra)
                         {
-                            var parcela = string.Format(sqlParcela, compra.Fornecedor.id, item.idFormaPagamento, item.nrParcela, this.FormatDecimal(item.vlParcela), this.FormatDate(item.dtVencimento), "P", codCompra);
+                            var parcela = string.Format(sqlParcela, compra.Fornecedor.id, item.idFormaPagamento, item.nrParcela, this.FormatDecimal(item.vlParcela), this.FormatDate(item.dtVencimento), "P", compra.modelo, compra.serie, compra.nrNota);
                             command.CommandText = parcela;
                             command.ExecuteNonQuery();
                         }
@@ -158,20 +158,20 @@ namespace Sistema.DAO
             }
         }
 
-        public void CancelarCompra(int? codCompra)
+        public void CancelarCompra(string modelo, string serie, int numero, int codFornecedor)
         {
             throw new Exception("Não implementado");
         }
 
-        public Compras GetCompra(int codCompra)
+        public Compras GetCompra(string filter, string modelo, string serie, int numero, int codFornecedor)
         {
             try
             {
                 var model = new Models.Compras();
                 OpenConnection();
-                var sql = this.Search(codCompra, null);
-                var sqlProdutos = this.SearchProdutos(codCompra);
-                var sqlParcelas = this.SearchParcelas(codCompra);
+                var sql = this.Search(filter, modelo, serie, numero, codFornecedor);
+                var sqlProdutos = this.SearchProdutos(modelo, serie, numero, codFornecedor);
+                var sqlParcelas = this.SearchParcelas(modelo, serie, numero, codFornecedor);
                 var listProdutos = new List<Compras.ProdutosVM>();
                 var listParcelas = new List<Shared.ParcelasVM>();
 
@@ -179,7 +179,6 @@ namespace Sistema.DAO
                 reader = SqlQuery.ExecuteReader();
                 while (reader.Read())
                 {
-                    model.codigo = Convert.ToInt32(reader["Compra_ID"]);
                     model.situacao = Sistema.Util.FormatFlag.Situacao(Convert.ToString(reader["Compra_Situacao"]));
                     model.Fornecedor = new Select.Fornecedores.Select
                     {
@@ -251,14 +250,27 @@ namespace Sistema.DAO
             }
         }
 
-        private string Search(int? id, string filter)
+        private string Search(string filter, string modelo, string serie, int? numero, int? codFornecedor)
         {
             var sql = string.Empty;
             var swhere = string.Empty;
-            if (id != null)
+            if (!string.IsNullOrEmpty(modelo))
             {
-                swhere = " WHERE tbcompras.codcompra = " + id;
+                swhere += " AND tbcompras.modelo = '" + modelo + "'";
             }
+            if (!string.IsNullOrEmpty(serie))
+            {
+                swhere += " AND tbcompras.serie = '" + serie + "'";
+            }
+            if (numero != null)
+            {
+                swhere += " AND tbcompras.numero = " + numero;
+            }
+            if (numero != null)
+            {
+                swhere += " AND tbcompras.codfornecedor = " + codFornecedor;
+            }
+
             if (!string.IsNullOrEmpty(filter))
             {
                 var filterQ = filter.Split(' ');
@@ -266,11 +278,12 @@ namespace Sistema.DAO
                 {
                     swhere += " OR tbfornecedores.nomerazaosocial LIKE'%" + word + "%'";
                 }
-                swhere = " WHERE " + swhere.Remove(0, 3);
             }
+
+            if (!string.IsNullOrEmpty(swhere))
+                swhere = " WHERE " + swhere.Remove(0, 4);
             sql = @"
             SELECT
-	            tbcompras.codcompra AS Compra_ID,
 	            tbcompras.situacao AS Compra_Situacao,
 	            tbcompras.modelo AS Compra_Modelo,
 	            tbcompras.serie AS Compra_Serie,
@@ -290,13 +303,16 @@ namespace Sistema.DAO
             return sql;
         }
 
-        private string SearchProdutos(int? id)
+        private string SearchProdutos(string modelo, string serie, int numero, int codFornecedor)
         {
             var sql = string.Empty;
 
             sql = @"
                     SELECT
-	                    tbprodutoscompra.codcompra AS ProdutosCompra_Compra_ID,
+	                    tbprodutoscompra.modelo AS Compra_Modelo,
+	                    tbprodutoscompra.serie AS Compra_Serie,
+	                    tbprodutoscompra.numero AS Compra_Numero,
+	                    tbprodutoscompra.codfornecedor AS Compra_Fornecedor_ID,
 	                    tbprodutoscompra.codproduto AS ProdutoCompra_Produto_ID,
 	                    tbprodutos.nomeproduto AS ProdutoCompra_Produto_Nome,
 	                    tbprodutoscompra.unidade AS ProdutoCompra_Unidade,
@@ -306,12 +322,12 @@ namespace Sistema.DAO
 	                    tbprodutoscompra.vlvenda AS ProdutoCompra_VlVenda
                     FROM tbprodutoscompra
                     INNER JOIN tbprodutos on tbprodutoscompra.codproduto = tbprodutos.codproduto
-                    WHERE tbprodutoscompra.codcompra = " + id + ";"
+                    WHERE tbprodutoscompra.modelo = '" + modelo + "' AND tbprodutoscompra.serie = '" + serie + "' AND tbprodutoscompra.numero = " + numero + " AND tbprodutoscompra.codfornecedor = " + codFornecedor + ";"
             ;
             return sql;
         }
 
-        private string SearchParcelas(int? id)
+        private string SearchParcelas(string modelo, string serie, int? numero, int? codFornecedor)
         {
             var sql = string.Empty;
 
@@ -324,12 +340,14 @@ namespace Sistema.DAO
 	                    tbcontaspagar.nrparcela AS ContaPagar_NrParcela,
 	                    tbcontaspagar.vlparcela AS ContaPagar_VlParcela,
 	                    tbcontaspagar.dtvencimento AS ContaPagar_DataVencimento,
-                        tbcontaspagar.codcompra AS ContaPagar_Compra_ID,
-                        tbcontaspagar.situacao AS ContaPagar_Situacao
+                        tbcontaspagar.situacao AS ContaPagar_Situacao,
+	                    tbcontaspagar.modelo AS Compra_Modelo,
+	                    tbcontaspagar.serie AS Compra_Serie,
+	                    tbcontaspagar.numero AS Compra_Numero,
+	                    tbcontaspagar.codfornecedor AS Compra_Fornecedor_ID
                     FROM tbcontaspagar
                     INNER JOIN tbformapagamento on tbcontaspagar.codforma = tbformapagamento.codforma
-                    WHERE tbcontaspagar.codcompra = " + id
-            ;
+                    WHERE tbcontaspagar.modelo = '" + modelo + "' AND tbcontaspagar.serie = '" + serie + "' AND tbcontaspagar.numero = " + numero + " AND tbcontaspagar.codfornecedor = "+ codFornecedor;
             return sql;
         }
 

@@ -79,7 +79,7 @@ namespace Sistema.Controllers
             }
             if (string.IsNullOrWhiteSpace(model.ddd))
             {
-                ModelState.AddModelError("ddd", "Informe um ddd válido");
+                ModelState.AddModelError("ddd", "Informe um ddd válido"); 
             }
             if (string.IsNullOrWhiteSpace(model.sigla))
             {

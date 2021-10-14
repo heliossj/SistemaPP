@@ -101,41 +101,41 @@ namespace Sistema.Controllers
             }
         }
 
-        public ActionResult Details(int id)
+        public ActionResult Details(string modelo, string serie, int numero, int codFornecedor)
         {
-            return this.GetView(id);
+            return this.GetView(modelo, serie,numero, codFornecedor);
         }
 
-        public ActionResult Cancelar(int id)
+        public ActionResult Cancelar(string modelo, string serie, int numero, int codFornecedor)
         {
-            return this.GetView(id);
+            return this.GetView(modelo, serie, numero, codFornecedor);
         }
 
         [HttpPost]
         [ActionName("Cancelar")]
-        public ActionResult CancelarCompra(int id, Models.Compras model)
+        public ActionResult CancelarCompra(string modelo, string serie, int numero, int codFornecedor, Models.Compras model)
         {
             try
             {
                 daoCompra = new DAOCompras();
-                daoCompra.CancelarCompra(id);
+                daoCompra.CancelarCompra(modelo, serie, numero, codFornecedor);
                 this.AddFlashMessage("Registro cancelado com sucesso!");
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
                 this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
-                model = daoCompra.GetCompra(id);
+                model = daoCompra.GetCompra(null, modelo, serie, numero, codFornecedor);
                 return View(model);
             }
         }
 
-        private ActionResult GetView(int id)
+        private ActionResult GetView(string modelo, string serie, int numero, int codFornecedor)
         {
             try
             {
                 var daoCompra = new DAOCompras();
-                var model = daoCompra.GetCompra(id);
+                var model = daoCompra.GetCompra(null, modelo, serie, numero, codFornecedor);
                 return View(model);
             }
             catch (Exception ex)

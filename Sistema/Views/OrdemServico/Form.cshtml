@@ -3,6 +3,8 @@
 @{
     bool readOnly = Convert.ToBoolean(ViewBag.ReadOnly);
     string action = Convert.ToString(ViewBag.Action);
+    int tamServicos = action == "create" || action == "edit" ? 6 : 5;
+    int tamProdutos = action == "create" || action == "edit" ? 7 : 6;
 }
 
 @Html.Hidden("flTblServicos")
@@ -21,6 +23,7 @@
                 @Html.TextBoxFor(model => model.dtAbertura, new { @class = "form-control datepicker date", disabled = true })
                 <span class="fa fa-calendar input-group-text" style="font-size:23px"></span>
             </div>
+            @Html.ValidationMessageFor(model => model.dtAbertura, null, new { @class = "text-danger" })
         </div>
     </div>
 }
@@ -36,9 +39,19 @@
     <div class="@Util.Input3">
         @Html.LabelFor(model => model.dtValidade, new { @class = "required" })
         <div class="input-group-append">
-            @Html.TextBoxFor(model => model.dtValidade, new { @class = "form-control datepicker" })
+            @Html.TextBoxFor(model => model.dtValidade, new { @class = "form-control datepicker date" })
             <span class="fa fa-calendar input-group-text" style="font-size:23px"></span>
         </div>
+        @Html.ValidationMessageFor(model => model.dtValidade, null, new { @class = "text-danger" })
+    </div>
+
+    <div class="@Util.Input3">
+        @Html.LabelFor(model => model.dtExecucao, new { @class = "required" })
+        <div class="input-group-append">
+            @Html.TextBoxFor(model => model.dtExecucao, new { @class = "form-control datepicker date"})
+            <span class="fa fa-calendar input-group-text" style="font-size:23px"></span>
+        </div>
+        @Html.ValidationMessageFor(model => model.dtExecucao, null, new { @class = "text-danger" })
     </div>
 </div>
 
@@ -73,7 +86,10 @@
     <table id="tblServico" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
-                <th></th>
+                @if (action == "create" || action == "edit")
+                {
+                    <th></th>
+                }
                 <th width="30%">Executante</th>
                 <th width="25%">Servico</th>
                 <th width="10%">Quant.</th>
@@ -83,7 +99,7 @@
         </thead>
         <tfoot>
             <tr>
-                <td id="fts" colspan="6" style="text-align:right"></td>
+                <td id="fts" colspan="@tamServicos" style="text-align:right"></td>
             </tr>
         </tfoot>
     </table>
@@ -96,7 +112,6 @@
     <div id="divAddProduto">
         <div class="form-row">
             @Html.EditorFor(model => model.Produto, "Produtos/Select", new { Disabled = false, Required = true, classForm = Util.Input10, @flValor = "S", flUnidade = "S", flQuantidade = "S", flTotalItem = "S" })
-
             <div style="margin-block:-1px">
                 <button id="addProduto" type="button" class="btn btn-success btn-lg" style="margin-top:35px; font-size:14px" title="Adicionar"><b>Adicionar </b> <i class="fa fa-plus"></i></button>
             </div>
@@ -107,7 +122,10 @@
     <table id="tblProduto" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
-                <th width="5%"></th>
+                @if (action == "create" || action == "edit")
+                {
+                    <th></th>
+                }
                 <th width="5%">Cod</th>
                 <th width="45%">Produto</th>
                 <th width="10%">Unidade</th>
@@ -116,11 +134,11 @@
                 <th width="10%">Total</th>
             </tr>
         </thead>
-        <tfoot>
+        @*<tfoot>
             <tr>
-                <td id="ftp" colspan="7" style="text-align:right"></td>
+                <td id="ftp" colspan="8" style="text-align:right"></td>
             </tr>
-        </tfoot>
+        </tfoot>*@
     </table>
 </div>
 
@@ -164,15 +182,6 @@
 @if (action != "create")
 {
     <div class="form-row">
-        <div class="@Util.Input3">
-            @Html.LabelFor(model => model.dtCadastro)
-            <div class="input-group-append">
-                @Html.HiddenFor(model => model.dtCadastro)
-                @Html.TextBoxFor(model => model.dtCadastro, new { @class = "form-control datepicker date", disabled = true })
-                <span class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></span>
-            </div>
-        </div>
-
         <div class="@Util.Input3 ">
             @Html.LabelFor(model => model.dtUltAlteracao)
             <div class="input-group">

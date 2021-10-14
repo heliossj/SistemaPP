@@ -112,6 +112,7 @@
             $('input[name="dtEmissao"]').prop('disabled', false);
             $('input[name="dtEntrega"]').prop('disabled', false)
             $("#flTblProdutos").val("")
+            $("#btnSalvar").attr("disabled", true);
         } else {
             $("#divAddProduto").hide();
         }

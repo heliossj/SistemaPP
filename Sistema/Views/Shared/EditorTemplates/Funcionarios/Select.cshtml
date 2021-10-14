@@ -18,7 +18,7 @@
     @Html.LabelFor(model => model.id, Label, new { @class = "required" })
     <div class="input-group">
         @Html.TextBoxFor(model => model.id, new { @style = "border-radius: 4px 0px 0px 4px; width: 15%;", @class = "form-control number", maxLength = "6" })
-        @Html.TextBoxFor(model => model.text, new { @class = "form-control", @style = "width:70%", Disabled = true })
+        @Html.TextBoxFor(model => model.text, new { @class = "form-control", @style = "width:70%" })
         <a style="border-radius:0px 3px 3px 0px" data-target="#@Sistema.Util.SelectFunctions.getInputId("Modal", Prefix)" id="@Sistema.Util.SelectFunctions.getInputId("btn-localizar", Prefix)" title="Abrir a busca de @Label" class="btn btn-success" data-toggle="modal"><i class="fa fa-search"></i></a>
         @Html.HiddenFor(k => k.text)
     </div>
@@ -33,7 +33,7 @@
                     <div class="panel-heading" style="height: 41px; padding-left:2px;font-weight: bold;">
                         <h3 class="panel-title pull-right"><button type="button" style="opacity: inherit;color: #fff;" class="close" data-dismiss="modal">&times;</button></h3>
                         <ul class="nav panel-tabs" style="width:400px">
-                            <li class="active"><a data-event="true" style="margin-top:1px;color: black;" data-toggle="tab"><b><i class="fa fa-list" aria-hidden="true"></i> Funcionários </b></a></li>
+                            <li class="active"><a data-event="true" style="margin-top:1px;color: black;" data-toggle="tab"><b><i class="fa fa-list" aria-hidden="true"></i> Países </b></a></li>
                         </ul>
                     </div>
 
@@ -129,12 +129,20 @@
         </div>
     </div>
 </div>
+@*<style>
+        .dsb {
+            display: none;
+        }
+    </style>*@
 @Scripts.Render("~/Scripts/bootstrap-notify.js")
 @Html.AddScriptBlock(
 @<script type="text/javascript">
-
     self = this;
+
     $(function () {
+
+         document.getElementById("@Sistema.Util.SelectFunctions.getInputId("text", Prefix)").readOnly = true;
+
          $("#@Sistema.Util.SelectFunctions.getInputId("btn-localizar", Prefix)").on("click", function () {
              InitModalFuncionario();
          });
@@ -155,6 +163,7 @@
                      url: '@Url.Action("JsDetails", "Funcionarios")',
                      data: { 'id': id },
                      success: function (data) {
+                         console.log(data)
                          if (!data) {
                              $.notify({ message: 'Nenhum registro encontrado para o código informado', icon: 'fa fa-exclamation' }, { type: 'danger', z_index: 2000 } );
                          }
@@ -184,7 +193,7 @@
     };
 
     this.clearFuncionario = function () {
-        var form = self.getFormFuncionario();
+        var form = self.getFormPais();
         form.codPais.val("");
         form.nomePais.val("");
         form.ddi.val("");
@@ -196,7 +205,7 @@
 
     this.isValidFuncionario = function () {
         var valid = true;
-        var form = self.getFormFuncionario();
+        var form = self.getFormPais();
 
         if (IsNullOrEmpty(form.nomePais.val())) {
             form.nomePais.blink({ msg: "Campo país é obrigatório" });

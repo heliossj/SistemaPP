@@ -76,11 +76,11 @@
                         @Html.DisplayFor(modelItem => item.situacao)
                     </td>
                     <td>
-                        @Html.ActionLink(" ", "Details", new { id = item.codigo }, new { @class = "btn btn-success btn-sm fa fa-eye", @title = "Visualizar registro" })
+                        @Html.ActionLink(" ", "Details", new { modelo = item.modelo, serie = item.serie, numero = item.nrNota, codFornecedor = item.Fornecedor.id }, new { @class = "btn btn-success btn-sm fa fa-eye", @title = "Visualizar registro" })
 
                         @if (item.ParcelasCompra.Any(u => u.situacao != "G"))
                         {
-                            @Html.ActionLink(" ", "Cancelar", new { id = item.codigo }, new { @class = "btn btn-danger btn-sm fa fa-ban", @title = "Cancelar registro" })
+                            @Html.ActionLink(" ", "Cancelar", new { modelo = item.modelo, serie = item.serie, numero = item.nrNota, codFornecedor = item.Fornecedor.id }, new { @class = "btn btn-danger btn-sm fa fa-ban", @title = "Cancelar registro" })
                         }
                         else
                         {

@@ -116,6 +116,16 @@ namespace Sistema.DAO
             return result;
         }
 
+        protected string FormatDateTime(DateTime? data)
+        {
+            var result = string.Empty;
+            if (data != null)
+            {
+                result = "'" + data.Value.ToString("yyyy-MM-dd hh:mm:ss") + "'";
+            }
+            return result;
+        }
+
         protected bool ValidCPFCNPJ(string campoValor, string tabela, string coluna, string pessoaTipo)
         {
             try

@@ -63,6 +63,37 @@ $(function () {
         }
     });
 
+    //valid input select_text
+    $(".sotexto").keypress(function (e) {
+        e = e || window.event;
+        var charCode = (typeof e.which == "undefined") ? e.keyCode : e.which;
+        var charStr = String.fromCharCode(charCode);
+        if (/\d/.test(charStr)) {
+            return false;
+        }
+    });
+
+    //block write
+    $(".blockwrite").keypress(function (e) {
+        if ((e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57))) {
+            return false;
+        }
+
+
+
+        //e = e || window.event;
+        //var charCode = (typeof e.which == "undefined") ? e.keyCode : e.which;
+        //var charStr = String.fromCharCode(charCode);
+        //if (/\d/.test(charStr)) {
+        //    return false;
+        //} else {
+        //    return false;
+        //}
+
+
+    });
+
+
     //Formata JSONDate
     window.JSONDate = function (dateStr) {
         var m, day;

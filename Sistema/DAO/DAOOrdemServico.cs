@@ -27,7 +27,7 @@ namespace Sistema.DAO
                     var OS = new OrdemServico
                     {
                         codigo = Convert.ToInt32(reader["OrdemServico_ID"]),
-                        situacao = Util.FormatFlag.Situacao(Convert.ToString(reader["OrdemServico_Situacao"])),
+                        situacao = Convert.ToString(reader["OrdemServico_Situacao"]),
                         dtAbertura = Convert.ToDateTime(reader["OrdemServico_DataAbertura"]),
                         dtValidade = Convert.ToDateTime(reader["OrdemServico_DataValidade"]),
                         observacao = Convert.ToString(reader["OrdemServco_Observacao"]),
@@ -60,15 +60,16 @@ namespace Sistema.DAO
         {
             try
             {
-                var sql = string.Format("INSERT INTO tbordemservicos ( situacao, dtabertura, dtvalidade, codcliente, codcondicaopagamento, observacao, codfuncionario, dtultalteracao ) VALUES ('{0}', '{1}', '{2}', {3}, {4}, '{5}', {6}, '{7}' ); SELECT SCOPE_IDENTITY()",
+                var sql = string.Format("INSERT INTO tbordemservicos ( situacao, dtabertura, dtvalidade, codcliente, codcondpagamento, observacao, codfuncionario, dtultalteracao, dtexecucao ) VALUES ('{0}', {1}, {2}, {3}, {4}, '{5}', {6}, {7}, {8} ); SELECT SCOPE_IDENTITY()",
                     OS.situacao,
-                    this.FormatDate(OS.dtAbertura),
+                    this.FormatDateTime(DateTime.Now),
                     this.FormatDate(OS.dtValidade),
                     OS.Cliente.id,
                     OS.CondicaoPagamento.id,
                     this.FormatString(OS.observacao),
                     OS.Funcionario.id,
-                    this.FormatDate(DateTime.Now)
+                    this.FormatDate(DateTime.Now),
+                    this.FormatDate(OS.dtExecucao)
                     );
                 string sqlServico = "INSERT INTO tbservicosos ( codordemservico, codservico, unidade, qtservico, vlservico, codexecutante) VALUES ({0}, {1}, '{2}', {3}, {4}, {5})";
                 string sqlProduto = "INSERT INTO tbprodutosos ( codordemservico, codproduto, unidade, qtproduto, vlproduto) VALUES ({0}, {1}, '{2}', {3}, {4})";
@@ -98,12 +99,21 @@ namespace Sistema.DAO
                             command.ExecuteNonQuery();
                         }
 
+                        //if (OS.situacao == "T")
+
+
+
+
+
+
+
                         //foreach (var item in OS.ParcelasOS)
                         //{
                         //    var parcela = string.Format(sqlParcela, compra.Fornecedor.id, item.idFormaPagamento, item.nrParcela, this.FormatDecimal(item.vlParcela), this.FormatDate(item.dtVencimento), "P", codCompra);
                         //    command.CommandText = parcela;
                         //    command.ExecuteNonQuery();
                         //}
+
                         sqlTrans.Commit();
                     }
                     catch (Exception ex)
@@ -148,7 +158,8 @@ namespace Sistema.DAO
                 var listProdutos = new List<OrdemServico.ProdutosVM>();
                 var listParcelas = new List<Shared.ParcelasVM>();
 
-                SqlQuery = new SqlCommand(sql + sqlProdutos + sqlParcelas, con);
+                //SqlQuery = new SqlCommand(sql + sqlProdutos + sqlParcelas, con);
+                SqlQuery = new SqlCommand(sql + sqlServicos + sqlProdutos, con);
                 reader = SqlQuery.ExecuteReader();
                 while (reader.Read())
                 {
@@ -158,6 +169,7 @@ namespace Sistema.DAO
                     model.dtValidade = Convert.ToDateTime(reader["OrdemServico_DataValidade"]);
                     model.observacao = Convert.ToString(reader["OrdemServco_Observacao"]);
                     model.dtUltAlteracao = Convert.ToDateTime(reader["OrdemServico_DataUltAlteracao"]);
+                    model.dtExecucao = Convert.ToDateTime(reader["OrdemServico_DataExecucao"]);
                     model.Cliente = new Select.Clientes.Select
                     {
                         id = Convert.ToInt32(reader["Cliente_ID"]),
@@ -261,12 +273,13 @@ namespace Sistema.DAO
                 tbordemservicos.dtvalidade AS OrdemServico_DataValidade,
                 tbordemservicos.observacao AS OrdemServco_Observacao,
                 tbordemservicos.dtultalteracao AS OrdemServico_DataUltAlteracao,
+                tbordemservicos.dtexecucao AS OrdemServico_DataExecucao,
                 tbordemservicos.codcliente AS Cliente_ID,
                 tbclientes.nomerazaosocial AS Cliente_Nome,
                 tbordemservicos.codfuncionario AS Funcionario_ID,
                 tbfuncionarios.nomefuncionario AS Funcionario_Nome
                 FROM tbordemservicos
-            INNER JOIN tbclientes ON tbordemservicos.codcliente = tbclientes.codcidade
+            INNER JOIN tbclientes ON tbordemservicos.codcliente = tbclientes.codcliente
             INNER JOIN tbfuncionarios ON tbordemservicos.codfuncionario = tbfuncionarios.codfuncionario
             " + swhere + ";";
             return sql;
@@ -325,7 +338,6 @@ namespace Sistema.DAO
 	                    tbcontaspagar.nrparcela AS ContaPagar_NrParcela,
 	                    tbcontaspagar.vlparcela AS ContaPagar_VlParcela,
 	                    tbcontaspagar.dtvencimento AS ContaPagar_DataVencimento,
-                        tbcontaspagar.codcompra AS ContaPagar_Compra_ID,
                         tbcontaspagar.situacao AS ContaPagar_Situacao
                     FROM tbcontaspagar
                     INNER JOIN tbformapagamento on tbcontaspagar.codforma = tbformapagamento.codforma

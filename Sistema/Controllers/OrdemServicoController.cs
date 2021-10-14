@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Sistema.DAO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -10,7 +11,17 @@ namespace Sistema.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            try
+            {
+                var daoOS = new DAOOrdemServico();
+                List<Models.OrdemServico> list = daoOS.GetOrdemServicos();
+                return View(list);
+            }
+            catch (Exception ex)
+            {
+                this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                return View();
+            }
         }
 
         public ActionResult Create()
@@ -18,19 +29,72 @@ namespace Sistema.Controllers
             return View();
         }
 
-        public ActionResult Details()
+        [HttpPost]
+        public ActionResult Create(Models.OrdemServico model)
         {
-            return View();
+            if (model.dtValidade == null)
+            {
+                ModelState.AddModelError("dtValidade", "Informe a data de validade");
+            }
+            if (model.dtExecucao == null)
+            {
+                ModelState.AddModelError("dtExecucao", "Informe a data de execução");
+            }
+            if (model.Cliente.id == null)
+            {
+                ModelState.AddModelError("Cliente.id", "Informe o cliente");
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var daoOS = new DAOOrdemServico();
+                    daoOS.Insert(model);
+                    this.AddFlashMessage(Util.AlertMessage.INSERT_SUCESS);
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                    return View(model);
+                }
+            }
+            else
+            {
+                return View(model);
+            }
         }
 
-        public ActionResult Edit()
+
+        public ActionResult Details(int id)
         {
-            return View();
+            return this.GetView(id);
         }
 
-        public ActionResult Delete()
+        public ActionResult Edit(int id)
         {
-            return View();
+            return this.GetView(id);
+        }
+
+        public ActionResult Cancelar(int id)
+        {
+            return this.GetView(id);
+        }
+
+        private ActionResult GetView(int id)
+        {
+            try
+            {
+                var daoOS = new DAOOrdemServico();
+                var model = daoOS.GetOrdemServico(id);
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                return View();
+            }
         }
     }
 }

@@ -19,6 +19,9 @@ namespace Sistema.Models
         [Display(Name = "Data de validade")]
         public DateTime? dtValidade { get; set; }
 
+        [Display(Name = "Data de execução")]
+        public DateTime? dtExecucao { get; set; }
+
         public string finalizar { get; set; }
 
         public Select.Funcionarios.Select Funcionario { get; set; }
@@ -105,9 +108,12 @@ namespace Sistema.Models
                 return new[]
                 {
                     new SelectListItem { Value = "A", Text = "ABERTA" },
-                    new SelectListItem { Value = "E", Text = "EM ANDAMENTO" },
-                    new SelectListItem { Value = "F", Text = "FINALIZADA" },
-                    new SelectListItem { Value = "C", Text = "CANCELADA" }
+                    //new SelectListItem { Value = "E", Text = "EM ANDAMENTO" }, NÃO USAR
+                    new SelectListItem { Value = "T", Text = "AUTORIZADA"},
+                    //new SelectListItem { Value = "R", Text = "REALIZADA" },
+                    //new SelectListItem { Value = "F", Text = "FINALIZADA" },
+                    //new SelectListItem { Value = "C", Text = "CANCELADA"},
+                    
                 };
             }
         }

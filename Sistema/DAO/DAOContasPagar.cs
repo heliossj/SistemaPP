@@ -100,6 +100,40 @@ namespace Sistema.DAO
             }
         }
 
+        public void Pagar(int codContaPagar)
+        {
+            var sql = "UPDATE tbcontaspagar set dtpagamento = " + this.FormatDate(DateTime.Now) + ", situacao = 'G' WHERE codcontapagar = " + codContaPagar;
+            OpenConnection();
+            SqlQuery = new SqlCommand(sql, con);
+            SqlQuery.ExecuteNonQuery();
+        }
+
+        public void Cancelar(int codContaPagar)
+        {
+            var sql = "UPDATE tbcontaspagar set dtpagamento = null, situacao = 'P' WHERE codcontapagar = " + codContaPagar;
+            using (con)
+            {
+                OpenConnection();
+                SqlTransaction trans = con.BeginTransaction();
+                SqlCommand command = con.CreateCommand();
+
+                try
+                {
+                    command.CommandText = sql;
+                    //trans.Commit();
+                }
+                catch (Exception ex)
+                {
+                    trans.Rollback();
+                    throw new Exception(ex.Message);
+                }
+                finally
+                {
+                    con.Close();
+                }
+            }
+        }
+
         private string Search(int? id, string filter)
         {
             var sql = string.Empty;
