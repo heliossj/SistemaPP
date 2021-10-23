@@ -38,15 +38,12 @@
         </div>
     </div>
 
-    @if (Model.dtPagamento != null)
-    {
-        <div class="@Util.Input3">
-            @Html.LabelFor(model => model.dtPagamento)
-            <div class="input-group-append">
-                @Html.HiddenFor(model => model.dtPagamento)
-                @Html.TextBoxFor(model => model.dtPagamento, new { @class = "form-control datepicker date", disabled = true })
-                <span class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></span>
-            </div>
+    <div class="@Util.Input3">
+        @Html.LabelFor(model => model.dtPagamento)
+        <div class="input-group-append">
+            @Html.HiddenFor(model => model.dtPagamento)
+            @Html.TextBoxFor(model => model.dtPagamento, new { @class = "form-control datepicker date", disabled = true })
+            <span class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></span>
         </div>
-    }
+    </div>
 </div>

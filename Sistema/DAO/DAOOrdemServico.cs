@@ -99,13 +99,8 @@ namespace Sistema.DAO
                             command.ExecuteNonQuery();
                         }
 
+                        //se a situação for autorizada, aí gera as vendas e insere...
                         //if (OS.situacao == "T")
-
-
-
-
-
-
 
                         //foreach (var item in OS.ParcelasOS)
                         //{
@@ -179,6 +174,11 @@ namespace Sistema.DAO
                     {
                         id = Convert.ToInt32(reader["Funcionario_ID"]),
                         text = Convert.ToString(reader["Funcionario_Nome"])
+                    };
+                    model.CondicaoPagamento = new Select.CondicaoPagamento.Select
+                    {
+                        id = Convert.ToInt32(reader["CondicaoPagamento_ID"]),
+                        text = Convert.ToString(reader["CondicaoPagamento_Nome"])
                     };
                 };
 
@@ -277,10 +277,13 @@ namespace Sistema.DAO
                 tbordemservicos.codcliente AS Cliente_ID,
                 tbclientes.nomerazaosocial AS Cliente_Nome,
                 tbordemservicos.codfuncionario AS Funcionario_ID,
-                tbfuncionarios.nomefuncionario AS Funcionario_Nome
+                tbfuncionarios.nomefuncionario AS Funcionario_Nome,
+                tbordemservicos.codcondpagamento AS CondicaoPagamento_ID,
+                tbcondpagamentos.nomecondicao AS CondicaoPagamento_Nome
                 FROM tbordemservicos
             INNER JOIN tbclientes ON tbordemservicos.codcliente = tbclientes.codcliente
             INNER JOIN tbfuncionarios ON tbordemservicos.codfuncionario = tbfuncionarios.codfuncionario
+            INNER JOIN tbcondpagamentos ON tbordemservicos.codcondpagamento = tbcondpagamentos.codcondicao
             " + swhere + ";";
             return sql;
         }

@@ -29,25 +29,25 @@ namespace Sistema.Controllers
             }
         }
 
-        public ActionResult Details(int? id)
+        public ActionResult Details(string modelo, string serie, int numero, int codFornecedor, short nrparcela)
         {
-            return this.GetView(id);
+            return this.GetView(modelo, serie, numero, codFornecedor, nrparcela);
         }
 
-        public ActionResult Pagar(int? id)
+        public ActionResult Pagar(string modelo, string serie, int numero, int codFornecedor, short nrparcela)
         {
-            return this.GetView(id);
+            return this.GetView(modelo, serie, numero, codFornecedor, nrparcela);
         }
 
         [HttpPost]
-        public ActionResult Pagar(int id, Sistema.Models.ContasPagar model)
+        public ActionResult Pagar(string modelo, string serie, int numero, int codFornecedor, short nrparcela, Sistema.Models.ContasPagar model)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
                     var daoContasPagar = new DAOContasPagar();
-                    daoContasPagar.Pagar(id);
+                    daoContasPagar.Pagar(modelo, serie, numero, codFornecedor, nrparcela);
                     this.AddFlashMessage("Parcela paga com sucesso!");
                     return RedirectToAction("Index");
                 }
@@ -63,17 +63,12 @@ namespace Sistema.Controllers
             }
         }
 
-        public ActionResult Cancelar(int? id)
-        {
-            return this.GetView(id);
-        }
-
-        private ActionResult GetView(int? codContaPagar)
+        private ActionResult GetView(string modelo, string serie, int numero, int codFornecedor, short nrparcela)
         {
             try
             {
                 var daoContasPagar = new DAOContasPagar();
-                var model = daoContasPagar.GetContaPagar(codContaPagar);
+                var model = daoContasPagar.GetContaPagar(nrparcela, modelo, serie, numero, codFornecedor);
                 return View(model);
             }
             catch (Exception ex)

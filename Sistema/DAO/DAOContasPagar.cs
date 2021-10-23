@@ -16,17 +16,16 @@ namespace Sistema.DAO
         {
             try
             {
-                var sql = this.Search(null, null);
+                var sql = this.Search(null, null, null, null, null, null);
                 OpenConnection();
                 SqlQuery = new SqlCommand(sql, con);
                 reader = SqlQuery.ExecuteReader();
-                var list = new List<ContasPagar>();
+                var list = new List<ContasPagar>(); 
 
                 while (reader.Read())
                 {
                     var contaPagar = new ContasPagar
                     {
-                        codigo = Convert.ToInt32(reader["ContaPagar_ID"]),
                         Fornecedor = new Select.Fornecedores.Select
                         {
                             id = Convert.ToInt32(reader["ContaPagar_Fornecedor_ID"]),
@@ -41,7 +40,10 @@ namespace Sistema.DAO
                         vlParcela = Convert.ToDecimal(reader["ContaPagar_vlParcela"]),
                         dtVencimento = Convert.ToDateTime(reader["ContaPagar_DataVencimento"]),
                         dtPagamento = !string.IsNullOrEmpty(reader["ContaPagar_DataPagamento"].ToString()) ? Convert.ToDateTime(reader["ContaPagar_DataPagamento"]) : (DateTime?)null,
-                        situacao = Convert.ToString(reader["ContaPagar_Situacao"])
+                        situacao = Convert.ToString(reader["ContaPagar_Situacao"]),
+                        modelo = Convert.ToString(reader["ContaPagar_Modelo"]),
+                        serie = Convert.ToString(reader["ContaPagar_Serie"]),
+                        numero = Convert.ToInt32(reader["ContaPagar_Numero"])
                     };
                     list.Add(contaPagar);
                 }
@@ -57,20 +59,17 @@ namespace Sistema.DAO
             }
         }
 
-        public ContasPagar GetContaPagar(int? codContaPagar)
+        public ContasPagar GetContaPagar(short nrParcela, string modelo, string serie, int numero, int codFornecedor)
         {
             try
             {
                 var model = new Models.ContasPagar();
-                if (codContaPagar != null)
-                {
                     OpenConnection();
-                    var sql = this.Search(codContaPagar, null);
+                    var sql = this.Search(null, modelo, serie, numero, codFornecedor, nrParcela);
                     SqlQuery = new SqlCommand(sql, con);
                     reader = SqlQuery.ExecuteReader();
                     while (reader.Read())
                     {
-                        model.codigo = Convert.ToInt32(reader["ContaPagar_ID"]);
                         model.Fornecedor = new Select.Fornecedores.Select
                         {
                             id = Convert.ToInt32(reader["ContaPagar_Fornecedor_ID"]),
@@ -87,7 +86,6 @@ namespace Sistema.DAO
                         model.dtPagamento = !string.IsNullOrEmpty(reader["ContaPagar_DataPagamento"].ToString()) ? Convert.ToDateTime(reader["ContaPagar_DataPagamento"]) : (DateTime?)null;
                         model.situacao = Convert.ToString(reader["ContaPagar_Situacao"]);
                     }
-                }
                 return model;
             }
             catch (Exception error)
@@ -100,9 +98,10 @@ namespace Sistema.DAO
             }
         }
 
-        public void Pagar(int codContaPagar)
+        public void Pagar(string modelo, string serie, int numero, int codfornecedor, short nrparcela)
         {
-            var sql = "UPDATE tbcontaspagar set dtpagamento = " + this.FormatDate(DateTime.Now) + ", situacao = 'G' WHERE codcontapagar = " + codContaPagar;
+            var swhere = " WHERE tbcontaspagar.modelo = '" + modelo + "' AND tbcontaspagar.serie = '" + serie + "' AND tbcontaspagar.numero = " + numero + " AND tbcontaspagar.codfornecedor = " + codfornecedor + " AND tbcontaspagar.nrparcela = " + nrparcela;
+            var sql = "UPDATE tbcontaspagar set dtpagamento = " + this.FormatDate(DateTime.Now) + ", situacao = 'G'" + swhere;
             OpenConnection();
             SqlQuery = new SqlCommand(sql, con);
             SqlQuery.ExecuteNonQuery();
@@ -116,11 +115,12 @@ namespace Sistema.DAO
                 OpenConnection();
                 SqlTransaction trans = con.BeginTransaction();
                 SqlCommand command = con.CreateCommand();
-
                 try
                 {
                     command.CommandText = sql;
-                    //trans.Commit();
+                    command.Transaction = trans;
+                    command.ExecuteNonQuery();
+                    trans.Commit();
                 }
                 catch (Exception ex)
                 {
@@ -134,13 +134,26 @@ namespace Sistema.DAO
             }
         }
 
-        private string Search(int? id, string filter)
+        private string Search(string filter, string modelo, string serie, int? numero, int? codFornecedor, short? nrParcela)
         {
             var sql = string.Empty;
             var swhere = string.Empty;
-            if (id != null)
+
+            if (!string.IsNullOrEmpty(modelo))
             {
-                swhere = " WHERE tbcontaspagar.codcontapagar = " + id;
+                swhere += " AND tbcontaspagar.modelo = '" + modelo + "'";
+            }
+            if (!string.IsNullOrEmpty(serie))
+            {
+                swhere += " AND tbcontaspagar.serie = '" + serie + "'";
+            }
+            if (numero != null)
+            {
+                swhere += " AND tbcontaspagar.codfornecedor = " + codFornecedor;
+            }
+            if (nrParcela != null)
+            {
+                swhere += " AND tbcontaspagar.nrparcela = " + nrParcela;
             }
             if (!string.IsNullOrEmpty(filter))
             {
@@ -149,11 +162,13 @@ namespace Sistema.DAO
                 {
                     swhere += " OR tbfornecedores.nomerazaosocial LIKE'%" + word + "%'";
                 }
-                swhere = " WHERE " + swhere.Remove(0, 3);
             }
+
+            if (!string.IsNullOrEmpty(swhere))
+                swhere = " WHERE " + swhere.Remove(0, 4);
+
             sql = @"
                 SELECT
-	                tbcontaspagar.codcontapagar AS ContaPagar_ID,
 	                tbcontaspagar.codfornecedor AS ContaPagar_Fornecedor_ID,
 	                tbfornecedores.nomerazaosocial AS ContaPagar_Fornecedor_Nome,
 	                tbcontaspagar.codforma AS ContaPagar_FormaPagamento_ID,
@@ -162,7 +177,10 @@ namespace Sistema.DAO
 	                tbcontaspagar.vlparcela AS ContaPagar_vlParcela,
 	                tbcontaspagar.dtvencimento AS ContaPagar_DataVencimento,
 	                tbcontaspagar.dtpagamento AS ContaPagar_DataPagamento,
-	                tbcontaspagar.situacao AS ContaPagar_Situacao
+	                tbcontaspagar.situacao AS ContaPagar_Situacao,
+	                tbcontaspagar.modelo AS ContaPagar_Modelo,
+	                tbcontaspagar.serie AS ContaPagar_Serie,
+	                tbcontaspagar.numero AS ContaPagar_Numero
                 FROM tbcontaspagar
                 INNER JOIN tbfornecedores ON tbcontaspagar.codfornecedor = tbfornecedores.codfornecedor
                 INNER JOIN tbformapagamento ON tbcontaspagar.codforma = tbformapagamento.codforma"

@@ -69,14 +69,10 @@
                         }
                     </td>
                     <td>
-                        @Html.ActionLink(" ", "Details", new { id = item.codigo }, new { @class = "btn btn-success btn-sm fa fa-eye", @title = "Visualizar registro" })
-                        @if (item.situacao == "G")
+                        @Html.ActionLink(" ", "Details", new { modelo = item.modelo, serie = item.serie, numero = item.numero, codFornecedor = item.Fornecedor.id, nrparcela = item.nrParcela }, new { @class = "btn btn-success btn-sm fa fa-eye", @title = "Visualizar registro" })
+                        @if (item.situacao == "P")
                         {
-                            @Html.ActionLink(" ", "Cancelar", new { id = item.codigo }, new { @class = "btn btn-danger btn-sm fa fa-ban", @title = "Cancelar registro" })
-                        }
-                        else if (item.situacao == "P")
-                        {
-                            @Html.ActionLink(" ", "Pagar", new { id = item.codigo }, new { @class = "btn btn-dark btn-sm fa fa-money", @title = "Pagar conta" })
+                            @Html.ActionLink(" ", "Pagar", new { modelo = item.modelo, serie = item.serie, numero = item.numero, codFornecedor = item.Fornecedor.id, nrparcela = item.nrParcela }, new { @class = "btn btn-dark btn-sm fa fa-money", @title = "Pagar conta" })
                         }
                         else
                         {

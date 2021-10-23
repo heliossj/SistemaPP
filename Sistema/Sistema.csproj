@@ -131,6 +131,7 @@
     <Compile Include="Controllers\ComprasController.cs" />
     <Compile Include="Controllers\ContasReceber.cs" />
     <Compile Include="Controllers\ContasPagarController.cs" />
+    <Compile Include="Controllers\ContasContabeisController.cs" />
     <Compile Include="Controllers\VendasController.cs" />
     <Compile Include="Controllers\OrdemServicoController.cs" />
     <Compile Include="Controllers\ServicosController.cs" />
@@ -145,6 +146,7 @@
     <Compile Include="Controllers\EstadosController.cs" />
     <Compile Include="DAO\DAOCidades.cs" />
     <Compile Include="DAO\DAOContasReceber.cs" />
+    <Compile Include="DAO\DAOContasContabeis.cs" />
     <Compile Include="DAO\DAOVendas.cs" />
     <Compile Include="DAO\DAOOrdemServico.cs" />
     <Compile Include="DAO\DAOCompras.cs" />
@@ -172,6 +174,7 @@
     <Compile Include="DataTables\Search.cs" />
     <Compile Include="Models\ContasReceber.cs" />
     <Compile Include="Models\ContasPagar.cs" />
+    <Compile Include="Models\ContasContabeis.cs" />
     <Compile Include="Models\Shared.cs" />
     <Compile Include="Models\Vendas.cs" />
     <Compile Include="Models\Compras.cs" />
@@ -195,6 +198,7 @@
     <Compile Include="Select\CondicaoPagamento\Select.cs" />
     <Compile Include="Select\FormaPagamento\Select.cs" />
     <Compile Include="Select\Produtos\Select.cs" />
+    <Compile Include="Select\ContasContabeis\Select.cs" />
     <Compile Include="Select\Servicos\Select.cs" />
     <Compile Include="Select\Grupos\Select.cs" />
     <Compile Include="Select\Cidades\Select.cs" />
@@ -246,8 +250,10 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\Clientes\Create.js" />
     <Content Include="Scripts\ContasPagar\Index.js" />
+    <Content Include="Scripts\OrdemServico\Edit.js" />
     <Content Include="Scripts\Produtos\Details.js" />
     <Content Include="Scripts\Produtos\Create.js" />
+    <Content Include="Scripts\ContasContabeis\Index.js" />
     <Content Include="Scripts\Vendas\Create.js" />
     <Content Include="Scripts\Vendas\Details.js" />
     <Content Include="Scripts\Vendas\Index.js" />
@@ -479,7 +485,6 @@
     <Content Include="Views\Fornecedores\Form.cshtml" />
     <Content Include="Views\Fornecedores\Index.cshtml" />
     <Content Include="Views\OrdemServico\Create.cshtml" />
-    <Content Include="Views\OrdemServico\Delete.cshtml" />
     <Content Include="Views\OrdemServico\Details.cshtml" />
     <Content Include="Views\OrdemServico\Edit.cshtml" />
     <Content Include="Views\OrdemServico\Form.cshtml" />
@@ -524,6 +529,12 @@
     <Content Include="Views\ContasPagar\Details.cshtml" />
     <Content Include="Views\ContasPagar\Form.cshtml" />
     <Content Include="Views\ContasPagar\Index.cshtml" />
+    <Content Include="Views\ContasContabeis\Create.cshtml" />
+    <Content Include="Views\ContasContabeis\Delete.cshtml" />
+    <Content Include="Views\ContasContabeis\Details.cshtml" />
+    <Content Include="Views\ContasContabeis\Edit.cshtml" />
+    <Content Include="Views\ContasContabeis\Form.cshtml" />
+    <Content Include="Views\ContasContabeis\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

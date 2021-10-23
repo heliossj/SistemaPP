@@ -41,7 +41,8 @@ namespace Sistema.DAO
                         vlParcela = Convert.ToDecimal(reader["ContaReceber_Valor"]),
                         dtVencimento = Convert.ToDateTime(reader["ContaReceber_DataVencimento"]),
                         dtPagamento = !string.IsNullOrEmpty(reader["ContaReceber_DataPagamento"].ToString()) ? Convert.ToDateTime(reader["ContaReceber_DataPagamento"]) : (DateTime?)null,
-                        situacao = Convert.ToString(reader["ContaReceber_Situacao"])
+                        situacao = Convert.ToString(reader["ContaReceber_Situacao"]),
+                        
                     };
                     list.Add(contaReceber);
                 }
@@ -106,7 +107,7 @@ namespace Sistema.DAO
             var swhere = string.Empty;
             if (id != null)
             {
-                swhere = " WHERE codcontapagar = " + id;
+                swhere = " WHERE codcontareceber = " + id;
             }
             if (!string.IsNullOrEmpty(filter))
             {

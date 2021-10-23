@@ -14,8 +14,6 @@ namespace Sistema.DAO
 
         public List<Compras> GetCompras()
         {
-            //try
-            //{
             var list = new List<Compras>();
             var sql = this.Search(null, null, null, null, null);
 
@@ -282,24 +280,24 @@ namespace Sistema.DAO
 
             if (!string.IsNullOrEmpty(swhere))
                 swhere = " WHERE " + swhere.Remove(0, 4);
-            sql = @"
-            SELECT
-	            tbcompras.situacao AS Compra_Situacao,
-	            tbcompras.modelo AS Compra_Modelo,
-	            tbcompras.serie AS Compra_Serie,
-	            tbcompras.numero AS Compra_Numero,
-	            tbcompras.dtemissao AS Compra_DataEmissao,
-	            tbcompras.dtentrega AS Compra_DataEntrega,
-	            tbcompras.observacao AS Compra_Observacao,
-	            tbcompras.dtcadastro AS Compra_DataEntrada,
-	            tbcompras.codfornecedor AS Fornecedor_ID,
-	            tbfornecedores.nomerazaosocial AS Fornecedor_Nome,
-	            tbcompras.codcondicao AS CondicaoPagamento_ID,
-	            tbcondpagamentos.nomecondicao AS CondicaoPagamento_Nome
-            FROM tbcompras
-            INNER JOIN tbfornecedores on tbcompras.codfornecedor = tbfornecedores.codfornecedor
-            INNER JOIN tbcondpagamentos on tbcompras.codcondicao = tbcondpagamentos.codcondicao
-            " + swhere + ";";
+                sql = @"
+                    SELECT
+	                    tbcompras.situacao AS Compra_Situacao,
+	                    tbcompras.modelo AS Compra_Modelo,
+	                    tbcompras.serie AS Compra_Serie,
+	                    tbcompras.numero AS Compra_Numero,
+	                    tbcompras.dtemissao AS Compra_DataEmissao,
+	                    tbcompras.dtentrega AS Compra_DataEntrega,
+	                    tbcompras.observacao AS Compra_Observacao,
+	                    tbcompras.dtcadastro AS Compra_DataEntrada,
+	                    tbcompras.codfornecedor AS Fornecedor_ID,
+	                    tbfornecedores.nomerazaosocial AS Fornecedor_Nome,
+	                    tbcompras.codcondicao AS CondicaoPagamento_ID,
+	                    tbcondpagamentos.nomecondicao AS CondicaoPagamento_Nome
+                    FROM tbcompras
+                    INNER JOIN tbfornecedores on tbcompras.codfornecedor = tbfornecedores.codfornecedor
+                    INNER JOIN tbcondpagamentos on tbcompras.codcondicao = tbcondpagamentos.codcondicao
+                " + swhere + ";";
             return sql;
         }
 
@@ -330,10 +328,8 @@ namespace Sistema.DAO
         private string SearchParcelas(string modelo, string serie, int? numero, int? codFornecedor)
         {
             var sql = string.Empty;
-
             sql = @"
                     SELECT
-	                    tbcontaspagar.codcontapagar AS ContaPagar_ID,
                         tbcontaspagar.codfornecedor AS ContaPagar_Fornecedor_ID,
 	                    tbcontaspagar.codforma AS FormaPagamento_ID,
 	                    tbformapagamento.nomeforma AS FormaPagamento_Nome,

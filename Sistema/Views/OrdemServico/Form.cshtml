@@ -30,11 +30,22 @@
 @Html.HiddenFor(k => k.dtAbertura)
 
 <div class="form-row">
-    <div class="@Util.Input3">
-        @Html.LabelFor(model => model.situacao, new { @class = "required" })
-        @Html.DropDownListFor(model => model.situacao, Sistema.Models.OrdemServico.Situacao, new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => model.situacao, null, new { @class = "text-danger" })
-    </div>
+    @if (action == "create")
+    {
+        <div class="@Util.Input3">
+            @Html.LabelFor(model => model.situacao, new { @class = "required" })
+            @Html.DropDownListFor(model => model.situacao, Sistema.Models.OrdemServico.Situacao, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.situacao, null, new { @class = "text-danger" })
+        </div>
+    }
+    else
+    {
+        <div class="@Util.Input3">
+            @Html.LabelFor(model => model.situacao, new { @class = "required" })
+            @Html.DropDownListFor(model => model.situacao, Sistema.Models.OrdemServico.SituacaoEdit, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.situacao, null, new { @class = "text-danger" })
+        </div>
+    }
 
     <div class="@Util.Input3">
         @Html.LabelFor(model => model.dtValidade, new { @class = "required" })
@@ -48,7 +59,7 @@
     <div class="@Util.Input3">
         @Html.LabelFor(model => model.dtExecucao, new { @class = "required" })
         <div class="input-group-append">
-            @Html.TextBoxFor(model => model.dtExecucao, new { @class = "form-control datepicker date"})
+            @Html.TextBoxFor(model => model.dtExecucao, new { @class = "form-control datepicker date" })
             <span class="fa fa-calendar input-group-text" style="font-size:23px"></span>
         </div>
         @Html.ValidationMessageFor(model => model.dtExecucao, null, new { @class = "text-danger" })
@@ -135,10 +146,10 @@
             </tr>
         </thead>
         @*<tfoot>
-            <tr>
-                <td id="ftp" colspan="8" style="text-align:right"></td>
-            </tr>
-        </tfoot>*@
+                <tr>
+                    <td id="ftp" colspan="8" style="text-align:right"></td>
+                </tr>
+            </tfoot>*@
     </table>
 </div>
 

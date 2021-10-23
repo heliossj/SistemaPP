@@ -108,12 +108,21 @@ namespace Sistema.Models
                 return new[]
                 {
                     new SelectListItem { Value = "A", Text = "ABERTA" },
-                    //new SelectListItem { Value = "E", Text = "EM ANDAMENTO" }, NÃO USAR
                     new SelectListItem { Value = "T", Text = "AUTORIZADA"},
-                    //new SelectListItem { Value = "R", Text = "REALIZADA" },
-                    //new SelectListItem { Value = "F", Text = "FINALIZADA" },
-                    //new SelectListItem { Value = "C", Text = "CANCELADA"},
-                    
+                };
+            }
+        }
+
+        public static SelectListItem[] SituacaoEdit
+        {
+            get
+            {
+                return new[]
+                {
+                    new SelectListItem { Value = "A", Text = "ABERTA" },
+                    new SelectListItem { Value = "T", Text = "AUTORIZADA"},
+                    new SelectListItem { Value = "C", Text = "CANCELADA" },
+                    new SelectListItem { Value = "F", Text = "FINALIZADA" },
                 };
             }
         }

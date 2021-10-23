@@ -25,5 +25,9 @@ namespace Sistema.Models
 
         [Display(Name = "Data de pagamento")]
         public DateTime? dtPagamento { get; set; }
+
+        public string modelo { get; set; }
+        public string serie { get; set; }
+        public int numero { get; set; }
     }
 }

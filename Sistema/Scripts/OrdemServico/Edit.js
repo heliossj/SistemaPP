@@ -6,6 +6,12 @@
     var OS = new OrdemServico();
     OS.init();
 
+    $("#flTblServicos").val("S");
+    $("#divAddServico").hide();
+    $("#divAddProduto").hide();
+    $("#CondicaoPagamento_btnGerarParcela").prop('disabled', false)
+
+
     $("#addProduto").click(function () {
         OS.addProduto();
     });

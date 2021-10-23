@@ -40,11 +40,21 @@ namespace Sistema.Controllers
             {
                 ModelState.AddModelError("dtExecucao", "Informe a data de execução");
             }
+            if (model.dtValidade != null && model.dtExecucao != null)
+            {
+                if (model.dtExecucao < model.dtValidade)
+                {
+                    ModelState.AddModelError("dtExecucao", "A data de execução não pode ser inferior a data de validade ");
+                }
+            }
             if (model.Cliente.id == null)
             {
                 ModelState.AddModelError("Cliente.id", "Informe o cliente");
             }
-
+            if (model.Funcionario.id == null)
+            {
+                ModelState.AddModelError("Funcionario.id", "Informe o funcionário");
+            }
             if (ModelState.IsValid)
             {
                 try

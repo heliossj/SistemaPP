@@ -1,0 +1,69 @@
+﻿@model Sistema.Models.ContasContabeis
+
+@using Sistema.Util
+@{
+    bool readOnly = Convert.ToBoolean(ViewBag.ReadOnly);
+    string action = Convert.ToString(ViewBag.Action);
+}
+
+@if (action != "create")
+{
+    @Html.HiddenFor(model => model.codigo)
+    <div class="form-row">
+        <div class="@Util.Input2">
+            @Html.LabelFor(model => model.codigo)
+            @Html.TextBoxFor(model => model.codigo, new { @class = "form-control", disabled = false })
+        </div>
+    </div>
+}
+
+<div class="form-row">
+    <div class="@Util.Input3">
+        @Html.LabelFor(model => model.situacao, new { @class = "required" })
+        @Html.DropDownListFor(model => model.situacao, Sistema.Models.ContasContabeis.Situacao, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.situacao, null, new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-row">
+    <div class="@Util.Input12">
+        @Html.LabelFor(model => model.nomeConta, new { @class = "required" })
+        @Html.TextBoxFor(model => model.nomeConta, new { @class = "form-control", maxlength = "50", style = "text-transform:uppercase", minlength = "3" })
+        @Html.ValidationMessageFor(model => model.nomeConta, null, new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-row">
+    <div class="@Util.Input3">
+        @Html.LabelFor(model => model.classificacao)
+        @Html.TextBoxFor(model => model.classificacao, new { @class = "form-control", style = "text-transform:uppercase", maxlength = "10" })
+        @Html.ValidationMessageFor(model => model.classificacao, null, new { @class = "text-danger" })
+    </div>
+    <div class="@Util.Input3">
+        @Html.LabelFor(model => model.vlSaldo, new { @class = "required" })
+        @Html.TextBoxFor(model => model.vlSaldo, new { @class = "form-control money", placeholder = "0,00", style = "text-align: right", disabled = true })
+    </div>
+</div>
+
+@if (action != "create")
+{
+    <div class="form-row">
+        <div class="@Util.Input3">
+            @Html.LabelFor(model => model.dtCadastro)
+            <div class="input-group-append">
+                @Html.HiddenFor(model => model.dtCadastro)
+                @Html.TextBoxFor(model => model.dtCadastro, new { @class = "form-control datepicker date", disabled = true })
+                <span class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></span>
+            </div>
+        </div>
+
+        <div class="@Util.Input3 ">
+            @Html.LabelFor(model => model.dtUltAlteracao)
+            <div class="input-group">
+                @Html.HiddenFor(model => model.dtUltAlteracao)
+                @Html.TextBoxFor(model => model.dtUltAlteracao, new { @class = "form-control datepicker date", disabled = true })
+                <div class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></div>
+            </div>
+        </div>
+    </div>
+}
