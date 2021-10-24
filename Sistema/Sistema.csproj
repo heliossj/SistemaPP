@@ -249,6 +249,7 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\Clientes\Create.js" />
+    <Content Include="Scripts\ContasContabeis\Details.js" />
     <Content Include="Scripts\ContasPagar\Index.js" />
     <Content Include="Scripts\OrdemServico\Edit.js" />
     <Content Include="Scripts\Produtos\Details.js" />
@@ -535,6 +536,7 @@
     <Content Include="Views\ContasContabeis\Edit.cshtml" />
     <Content Include="Views\ContasContabeis\Form.cshtml" />
     <Content Include="Views\ContasContabeis\Index.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\ContaContabil\Select.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

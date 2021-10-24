@@ -5,28 +5,47 @@
     string action = Convert.ToString(ViewBag.Action);
 }
 
-
-@Html.HiddenFor(model => model.codigo)
-
-<div class="form-row" style="">
-    <div class="@Util.Input2">
-        @Html.LabelFor(model => model.nrParcela)
-        @Html.TextBoxFor(model => model.nrParcela, new { @class = "form-control", disabled = true })
+@Html.HiddenFor(u => u.situacao)
+<div class="form-row">
+    <div class="@Util.Input3">
+        @Html.LabelFor(model => model.situacao)
+        @Html.TextBoxFor(model => model.situacao, new { @class = "form-control", disabled = true })
     </div>
 </div>
 
 <div class="form-row">
-    @Html.EditorFor(model => model.FormaPagamento, "FormaPagamento/Select", new { Disabled = false })
+    <div class="@Util.Input3">
+        @Html.LabelFor(model => model.nrParcela)
+        @Html.TextBoxFor(model => model.nrParcela, new { @class = "form-control", disabled = true })
+    </div>
+    <div class="@Util.Input3">
+        @Html.LabelFor(model => model.modelo)
+        @Html.TextBoxFor(model => model.nrParcela, new { @class = "form-control", disabled = true })
+    </div>
+    <div class="@Util.Input3">
+        @Html.LabelFor(model => model.serie)
+        @Html.TextBoxFor(model => model.serie, new { @class = "form-control", disabled = true })
+    </div>
+    <div class="@Util.Input3">
+        @Html.LabelFor(model => model.numero)
+        @Html.TextBoxFor(model => model.numero, new { @class = "form-control", disabled = true })
+    </div>
+
 </div>
 
 <div class="form-row">
     @Html.EditorFor(model => model.Fornecedor, "Fornecedores/Select", new { Disabled = false })
 </div>
 
+<div class="form-row">
+    @Html.EditorFor(model => model.FormaPagamento, "FormaPagamento/Select", new { Disabled = false })
+</div>
+
 <div class="form-row" style="">
-    <div class="@Util.Input2">
+    @Html.HiddenFor(u => u.vlParcela)
+    <div class="@Util.Input3">
         @Html.LabelFor(model => model.vlParcela)
-        @Html.TextBoxFor(model => model.vlParcela, new { @class = "form-control", disabled = true })
+        @Html.TextBoxFor(model => model.vlParcela, new { @class = "form-control money", disabled = true })
     </div>
 
     <div class="@Util.Input3">
@@ -38,12 +57,31 @@
         </div>
     </div>
 
-    <div class="@Util.Input3">
-        @Html.LabelFor(model => model.dtPagamento)
-        <div class="input-group-append">
-            @Html.HiddenFor(model => model.dtPagamento)
-            @Html.TextBoxFor(model => model.dtPagamento, new { @class = "form-control datepicker date", disabled = true })
-            <span class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></span>
+    @if (Model.situacao == "PAGA")
+    {
+        <div class="@Util.Input3">
+            @Html.LabelFor(model => model.dtPagamento)
+            <div class="input-group-append">
+                @Html.HiddenFor(model => model.dtPagamento)
+                @Html.TextBoxFor(model => model.dtPagamento, new { @class = "form-control datepicker date", disabled = true })
+                <span class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></span>
+            </div>
         </div>
-    </div>
+    }
 </div>
+
+<script type="text/javascript">
+    let input = $('input');
+    //console.log(input.length)
+    for (var i = 0; i < input.length; i++) {
+        let id = $(input[i]).attr("id");
+        document.getElementById(id).readOnly = true
+    }
+
+    $("#Fornecedor_btn-localizar").hide()
+    $("#FormaPagamento_btn-localizar").hide()
+
+
+</script>
+
+

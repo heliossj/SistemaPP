@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -30,6 +31,30 @@ namespace Sistema.Models
                     new SelectListItem { Value = "A", Text = "ATIVA" },
                     new SelectListItem { Value = "I", Text = "INATIVA" }
                 };
+            }
+        }
+
+        public class LancamentoVM
+        {
+            public int? codLancamento { get; set; }
+            public string descricao { get; set; }
+            public DateTime? dtMovimento { get; set; }
+            public decimal? vlLancamento { get; set; }
+            public string tipo { get; set; }
+        }
+
+        public string jsLancamentos { get; set; }
+        public List<LancamentoVM> Lancamentos
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(jsLancamentos))
+                    return new List<LancamentoVM>();
+                return JsonConvert.DeserializeObject<List<LancamentoVM>>(jsLancamentos);
+            }
+            set
+            {
+                jsLancamentos = JsonConvert.SerializeObject(value);
             }
         }
     }

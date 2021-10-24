@@ -20,7 +20,7 @@ namespace Sistema.DAO
                 OpenConnection();
                 SqlQuery = new SqlCommand(sql, con);
                 reader = SqlQuery.ExecuteReader();
-                var list = new List<ContasPagar>(); 
+                var list = new List<ContasPagar>();
 
                 while (reader.Read())
                 {
@@ -64,28 +64,36 @@ namespace Sistema.DAO
             try
             {
                 var model = new Models.ContasPagar();
-                    OpenConnection();
-                    var sql = this.Search(null, modelo, serie, numero, codFornecedor, nrParcela);
-                    SqlQuery = new SqlCommand(sql, con);
-                    reader = SqlQuery.ExecuteReader();
-                    while (reader.Read())
+                OpenConnection();
+                var sql = this.Search(null, modelo, serie, numero, codFornecedor, nrParcela);
+                SqlQuery = new SqlCommand(sql, con);
+                reader = SqlQuery.ExecuteReader();
+                while (reader.Read())
+                {
+                    model.Fornecedor = new Select.Fornecedores.Select
                     {
-                        model.Fornecedor = new Select.Fornecedores.Select
-                        {
-                            id = Convert.ToInt32(reader["ContaPagar_Fornecedor_ID"]),
-                            text = Convert.ToString(reader["ContaPagar_Fornecedor_Nome"])
-                        };
-                        model.FormaPagamento = new Select.FormaPagamento.Select
-                        {
-                            id = Convert.ToInt32(reader["ContaPagar_FormaPagamento_ID"]),
-                            text = Convert.ToString(reader["ContaPagar_FormaPagamento_Nome"])
-                        };
-                        model.nrParcela = Convert.ToInt16(reader["ContaPagar_NrParcela"]);
-                        model.vlParcela = Convert.ToDecimal(reader["ContaPagar_vlParcela"]);
-                        model.dtVencimento = Convert.ToDateTime(reader["ContaPagar_DataVencimento"]);
-                        model.dtPagamento = !string.IsNullOrEmpty(reader["ContaPagar_DataPagamento"].ToString()) ? Convert.ToDateTime(reader["ContaPagar_DataPagamento"]) : (DateTime?)null;
-                        model.situacao = Convert.ToString(reader["ContaPagar_Situacao"]);
-                    }
+                        id = Convert.ToInt32(reader["ContaPagar_Fornecedor_ID"]),
+                        text = Convert.ToString(reader["ContaPagar_Fornecedor_Nome"])
+                    };
+                    model.FormaPagamento = new Select.FormaPagamento.Select
+                    {
+                        id = Convert.ToInt32(reader["ContaPagar_FormaPagamento_ID"]),
+                        text = Convert.ToString(reader["ContaPagar_FormaPagamento_Nome"])
+                    };
+                    model.nrParcela = Convert.ToInt16(reader["ContaPagar_NrParcela"]);
+                    model.vlParcela = Convert.ToDecimal(reader["ContaPagar_vlParcela"]);
+                    model.dtVencimento = Convert.ToDateTime(reader["ContaPagar_DataVencimento"]);
+                    model.dtPagamento = !string.IsNullOrEmpty(reader["ContaPagar_DataPagamento"].ToString()) ? Convert.ToDateTime(reader["ContaPagar_DataPagamento"]) : (DateTime?)null;
+                    model.situacao = Convert.ToString(reader["ContaPagar_Situacao"]) == "P" ? "PENDENTE" : "PAGA";
+                    model.modelo = Convert.ToString(reader["ContaPagar_Modelo"]);
+                    model.serie = Convert.ToString(reader["ContaPagar_Serie"]);
+                    model.numero = Convert.ToInt32(reader["ContaPagar_Numero"]);
+                    model.ContaContabil = new Select.ContasContabeis.Select
+                    {
+                        id = !string.IsNullOrEmpty(reader["ContaContabil_ID"].ToString()) ? Convert.ToInt32(reader["ContaContabil_ID"]) : (int?)null,
+                        text = !string.IsNullOrEmpty(reader["ContaContabil_Nome"].ToString()) ? Convert.ToString(reader["ContaContabil_Nome"]) : string.Empty
+                    };
+                }
                 return model;
             }
             catch (Exception error)
@@ -98,13 +106,52 @@ namespace Sistema.DAO
             }
         }
 
-        public void Pagar(string modelo, string serie, int numero, int codfornecedor, short nrparcela)
+        public void Pagar(string modelo, string serie, int numero, int codfornecedor, short nrparcela, Models.ContasPagar model)
         {
             var swhere = " WHERE tbcontaspagar.modelo = '" + modelo + "' AND tbcontaspagar.serie = '" + serie + "' AND tbcontaspagar.numero = " + numero + " AND tbcontaspagar.codfornecedor = " + codfornecedor + " AND tbcontaspagar.nrparcela = " + nrparcela;
-            var sql = "UPDATE tbcontaspagar set dtpagamento = " + this.FormatDate(DateTime.Now) + ", situacao = 'G'" + swhere;
-            OpenConnection();
-            SqlQuery = new SqlCommand(sql, con);
-            SqlQuery.ExecuteNonQuery();
+            var sql = "UPDATE tbcontaspagar set dtpagamento = " + this.FormatDate(DateTime.Now) + ", situacao = 'G', codconta = " + model.ContaContabil.id + swhere;
+
+            string lancamento = "PAGAMENTO DO FORNECEDOR " + model.Fornecedor.id + " - " + this.FormatString(model.Fornecedor.text) + ", NOTA FISCAL Nº " + model.numero + ", PARCELA Nº " + model.nrParcela + ".";
+
+            var sqlLancamento = string.Format("INSERT INTO tblancamentos (codconta, dtmovimento, vllancamento, tipo, descricao) VALUES ({0}, {1}, {2}, '{3}', '{4}')",
+                                model.ContaContabil.id,
+                                this.FormatDate(DateTime.Now),
+                                this.FormatDecimal(model.vlParcela),
+                                "D",
+                                this.FormatString(lancamento)
+                );
+
+            var sqlSaldoConta = "UPDATE tbcontascontabeis set vlsaldo -= " + this.FormatDecimal(model.vlParcela) + " WHERE tbcontascontabeis.codconta = " + model.ContaContabil.id;
+            using (con)
+            {
+                OpenConnection();
+                SqlTransaction trans = con.BeginTransaction();
+                SqlCommand command = con.CreateCommand();
+                try
+                {
+                    command.Transaction = trans;
+
+                    command.CommandText = sql;
+                    command.ExecuteNonQuery();
+
+                    command.CommandText = sqlLancamento;
+                    command.ExecuteNonQuery();
+
+                    command.CommandText = sqlSaldoConta;
+                    command.ExecuteNonQuery();
+
+                    trans.Commit();
+                }
+                catch (Exception ex)
+                {
+                    trans.Rollback();
+                    throw new Exception(ex.Message);
+                }
+                finally
+                {
+                    con.Close();
+                }
+            }
         }
 
         public void Cancelar(int codContaPagar)
@@ -180,10 +227,13 @@ namespace Sistema.DAO
 	                tbcontaspagar.situacao AS ContaPagar_Situacao,
 	                tbcontaspagar.modelo AS ContaPagar_Modelo,
 	                tbcontaspagar.serie AS ContaPagar_Serie,
-	                tbcontaspagar.numero AS ContaPagar_Numero
+	                tbcontaspagar.numero AS ContaPagar_Numero,
+	                tbcontaspagar.codconta AS ContaContabil_ID,
+	                tbcontascontabeis.nomeconta AS ContaContabil_Nome
                 FROM tbcontaspagar
                 INNER JOIN tbfornecedores ON tbcontaspagar.codfornecedor = tbfornecedores.codfornecedor
-                INNER JOIN tbformapagamento ON tbcontaspagar.codforma = tbformapagamento.codforma"
+                INNER JOIN tbformapagamento ON tbcontaspagar.codforma = tbformapagamento.codforma
+                LEFT JOIN tbcontascontabeis ON tbcontaspagar.codconta = tbcontascontabeis.codconta"
                 + swhere;
             return sql;
         }

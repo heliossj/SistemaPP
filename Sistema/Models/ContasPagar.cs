@@ -10,6 +10,7 @@ namespace Sistema.Models
     {
         public Select.Fornecedores.Select Fornecedor { get; set; }
         public Select.FormaPagamento.Select FormaPagamento { get; set; }
+        public Select.ContasContabeis.Select ContaContabil { get; set; }
 
         [Display(Name = "Nº parcela")]
         public short nrParcela { get; set; }
@@ -26,8 +27,13 @@ namespace Sistema.Models
         [Display(Name = "Data de pagamento")]
         public DateTime? dtPagamento { get; set; }
 
+        [Display(Name = "Modelo")]
         public string modelo { get; set; }
+
+        [Display(Name = "Série")]
         public string serie { get; set; }
+
+        [Display(Name = "Número")]
         public int numero { get; set; }
     }
 }

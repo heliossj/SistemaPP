@@ -27,6 +27,13 @@
             @Html.CustomValidationSummary(true, true, Sistema.Util.AlertMessage.ERROR_MESSAGE, new { @class = "alert alert-danger", role = "alert" })
             <fieldset disabled>
                 @Html.Partial("Form", Model)
+
+                @if (Model.situacao == "PAGA")
+                {
+                    <div class="form-row">
+                        @Html.EditorFor(model => model.ContaContabil, "ContaContabil/Select", new { Disabled = false })
+                    </div>
+                }
             </fieldset>
         </div>
         <div style="text-align:center">
@@ -34,3 +41,7 @@
         </div>
     </div>
 }
+<script type="text/javascript">
+    $("#ContaContabil_btn-localizar").hide()
+
+</script>

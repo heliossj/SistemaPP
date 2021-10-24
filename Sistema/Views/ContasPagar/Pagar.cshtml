@@ -25,14 +25,17 @@
         <div class="pull-left col-lg-12 col-md-12 col-sm-10 col-xs-10">
             @Html.RenderFlashMessage()
             @Html.CustomValidationSummary(true, true, Sistema.Util.AlertMessage.VALIDATION_MESSAGE, new { @class = "alert alert-danger", role = "alert" })
-            <fieldset disabled>
+            @*<fieldset disabled>*@
                 @Html.Partial("Form", Model)
-            </fieldset>
+            @*</fieldset>*@
+            <div class="form-row">
+                @Html.EditorFor(model => model.ContaContabil, "ContaContabil/Select", new { Disabled = false })
+            </div>
         </div>
 
         <div style="text-align:center">
             <button type="submit" class="btn btn-dark"> <i class="fa fa-money"></i> Pagar</button>
-            @*<a href="@Url.Action(@Html.ViewBag.Action)" class="btn btn-primary" role="button" aria-pressed="true"> <i class="fa fa-times"></i> Limpar</a>*@
+            <a href="@Url.Action(@Html.ViewBag.Action, new { modelo = Model.modelo, serie = Model.serie, numero = Model.numero, codFornecedor = Model.Fornecedor.id, nrparcela = Model.nrParcela })" class="btn btn-primary" role="button" aria-pressed="true"> <i class="fa fa-times"></i> Limpar</a>
             <a href="@Url.Action("Index")" class="btn btn-secondary" role="button" aria-pressed="true"> <i class="fa fa-arrow-left"></i> Voltar</a>
         </div>
     </div>

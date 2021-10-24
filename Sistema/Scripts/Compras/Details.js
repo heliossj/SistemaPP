@@ -79,7 +79,12 @@ Compra = function () {
                     {
                         data: null,
                         mRender: function (data) {
-                            return JSONDate(data.dtVencimento);
+                            var dt = new Date(data.dtVencimento);
+                            var day = dt.getDate();
+                            var month = dt.getMonth() + 1;
+                            var year = dt.getFullYear();
+                            var dtCompleta = day + "/" + month + "/" + year;
+                            return dtCompleta;
                         }
                     },
                     { data: "nmFormaPagamento" },

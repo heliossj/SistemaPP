@@ -42,12 +42,16 @@ namespace Sistema.Controllers
         [HttpPost]
         public ActionResult Pagar(string modelo, string serie, int numero, int codFornecedor, short nrparcela, Sistema.Models.ContasPagar model)
         {
+            if (model.ContaContabil.id == null)
+            {
+                ModelState.AddModelError("ContaContabil.id", "Informe a conta");
+            }
             if (ModelState.IsValid)
             {
                 try
                 {
                     var daoContasPagar = new DAOContasPagar();
-                    daoContasPagar.Pagar(modelo, serie, numero, codFornecedor, nrparcela);
+                    daoContasPagar.Pagar(modelo, serie, numero, codFornecedor, nrparcela, model);
                     this.AddFlashMessage("Parcela paga com sucesso!");
                     return RedirectToAction("Index");
                 }

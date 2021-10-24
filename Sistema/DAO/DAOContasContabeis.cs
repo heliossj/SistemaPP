@@ -116,29 +116,44 @@ namespace Sistema.DAO
             }
         }
 
-        public ContasContabeis GetContaContabil(int? codConta)
+        public ContasContabeis GetContaContabil(int codConta)
         {
             try
             {
                 var model = new Models.ContasContabeis();
-                if (codConta != null)
+                var listLanc = new List<Models.ContasContabeis.LancamentoVM>();
+                OpenConnection();
+                var sql = this.Search(codConta, null);
+                var sqlLancamentos = this.SearchLancamentos(codConta);
+                SqlQuery = new SqlCommand(sql + sqlLancamentos, con);
+                reader = SqlQuery.ExecuteReader();
+                while (reader.Read())
                 {
-                    OpenConnection();
-                    var sql = this.Search(codConta, null);
-                    SqlQuery = new SqlCommand(sql, con);
-                    reader = SqlQuery.ExecuteReader();
+                    model.codigo = Convert.ToInt32(reader["ContasContabeis_ID"]);
+                    model.nomeConta = Convert.ToString(reader["ContasContabeis_Nome"]);
+                    model.classificacao = Convert.ToString(reader["ContasContabeis_Classificacao"]);
+                    model.vlSaldo = Convert.ToDecimal(reader["ContasContabeis_Saldo"]);
+                    model.situacao = Convert.ToString(reader["ContasContabeis_Situacao"]);
+                    model.dtCadastro = Convert.ToDateTime(reader["ContasContabeis_DataCadastro"]);
+                    model.dtUltAlteracao = Convert.ToDateTime(reader["ContasContabeis_DataUltAlteracao"]);
+                }
+
+                if (reader.NextResult())
+                {
                     while (reader.Read())
                     {
-                        model.codigo = Convert.ToInt32(reader["ContasContabeis_ID"]);
-                        model.nomeConta = Convert.ToString(reader["ContasContabeis_Nome"]);
-                        model.classificacao = Convert.ToString(reader["ContasContabeis_Classificacao"]);
-                        model.vlSaldo = Convert.ToDecimal(reader["ContasContabeis_Saldo"]);
-                        model.situacao = Convert.ToString(reader["ContasContabeis_Situacao"]);
-                        model.dtCadastro = Convert.ToDateTime(reader["ContasContabeis_DataCadastro"]);
-                        model.dtUltAlteracao = Convert.ToDateTime(reader["ContasContabeis_DataUltAlteracao"]);
-                        
+                        var lancamento = new ContasContabeis.LancamentoVM
+                        {
+                            codLancamento = Convert.ToInt32(reader["Lancamento_ID"]),
+                            dtMovimento = !string.IsNullOrEmpty(reader["Lancamento_Data"].ToString()) ? Convert.ToDateTime(reader["Lancamento_Data"]) : (DateTime?)null,
+                            vlLancamento = !string.IsNullOrEmpty(reader["Lancamento_Valor"].ToString()) ? Convert.ToDecimal(reader["Lancamento_Valor"]) : (decimal?)null,
+                            tipo = !string.IsNullOrEmpty(reader["Lancamento_Tipo"].ToString()) ? Convert.ToString(reader["Lancamento_Tipo"]) : string.Empty,
+                            descricao = !string.IsNullOrEmpty(reader["Lancamento_Descricao"].ToString()) ? Convert.ToString(reader["Lancamento_Descricao"]) : string.Empty
+                        };
+                        listLanc.Add(lancamento);
                     }
                 }
+                model.Lancamentos = listLanc;
                 return model;
             }
             catch (Exception error)
@@ -243,7 +258,23 @@ namespace Sistema.DAO
 	                    tbcontascontabeis.situacao AS ContasContabeis_Situacao,
 	                    tbcontascontabeis.dtcadastro AS ContasContabeis_DataCadastro,
 	                    tbcontascontabeis.dtultalteracao AS ContasContabeis_DataUltAlteracao
-                    FROM tbcontascontabeis" + swhere;
+                    FROM tbcontascontabeis" + swhere + ";";
+            return sql;
+        }
+
+        private string SearchLancamentos(int id)
+        {
+            var sql = string.Empty;
+            var swhere = " WHERE codconta = " + id;
+            sql = @"
+                    SELECT
+	                    tblancamentos.codlancamento AS Lancamento_ID,
+	                    tblancamentos.dtmovimento AS Lancamento_Data,
+	                    tblancamentos.vllancamento AS Lancamento_Valor,
+	                    tblancamentos.tipo AS Lancamento_Tipo,
+	                    tblancamentos.descricao AS Lancamento_Descricao
+                    FROM tblancamentos
+                " + swhere;
             return sql;
         }
 
