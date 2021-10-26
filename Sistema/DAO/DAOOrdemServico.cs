@@ -99,6 +99,7 @@ namespace Sistema.DAO
                             command.ExecuteNonQuery();
                         }
 
+                        //if (OS.situacao == "T")
                         //se a situação for autorizada, aí gera as vendas e insere...
                         //if (OS.situacao == "T")
 

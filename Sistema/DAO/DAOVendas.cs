@@ -12,11 +12,11 @@ namespace Sistema.DAO
     public class DAOVendas : Sistema.DAO.DAO
     {
 
-        public List<Vendas> GetVendas()
+        public List<Vendas> GetVendas(string modelo)
         {
             try
             {
-                var sql = this.Search(null, null);
+                var sql = this.Search(null, null, modelo);
                 OpenConnection();
                 SqlQuery = new SqlCommand(sql, con);
                 reader = SqlQuery.ExecuteReader();
@@ -29,7 +29,6 @@ namespace Sistema.DAO
                         codigo = Convert.ToInt32(reader["Venda_ID"]),
                         situacao = Util.FormatFlag.Situacao(Convert.ToString(reader["Venda_Situacao"])),
                         dtVenda = Convert.ToDateTime(reader["Venda_Data"]),
-                        dtUltAlteracao = Convert.ToDateTime(reader["Venda_DataUltAlteracao"]),
                         Funcionario = new Select.Funcionarios.Select
                         {
                             id  = Convert.ToInt32(reader["Vendedor_ID"]),
@@ -60,21 +59,21 @@ namespace Sistema.DAO
             }
         }
 
-        public bool Insert(Models.Vendas venda)
+        public bool InsertProduto(Models.Vendas venda)
         {
             try
             {
-                var sql = string.Format("INSERT INTO tbvendasprodutos ( codordemservico, situacao, dtvenda, codvendedor, codcliente, codcondicao, dtultalteracao ) VALUES ( {0}, '{1}', '{2}', {3}, {4}, {5}, '{6}' ); SELECT SCOPE_IDENTITY()",
-                    venda.codOrdemServico,
-                    venda.situacao,
-                    this.FormatDate(DateTime.Now),
+                var sql = string.Format("INSERT INTO tbvendas ( situacao, dtvenda, codvendedor, codcliente, codcondicao, codordemservico, modelo) VALUES ( '{0}', {1}, {2}, {3}, {4}, {5}, '{6}' ); SELECT SCOPE_IDENTITY()",
+                    "N",
+                    this.FormatDateTime(DateTime.Now),
                     venda.Funcionario.id,
                     venda.Cliente.id,
                     venda.CondicaoPagamento.id,
-                    this.FormatDate(DateTime.Now)
+                    venda.codOrdemServico != null ? venda.codOrdemServico.ToString() : "null",
+                    venda.modelo
                     );
-                string sqlProduto = "INSERT INTO tbvendasprodutos ( codvendaproduto, codproduto, unidade, qtproduto, vlproduto, txdesconto ) VALUES ( {0}, {1}, '{2}', {3}, {4}, {5} )";
-                string sqlParcela = "INSERT INTO tbcontasreceber ( codvendaproduto, codforma, nrparcela, vlparcela, dtvencimento, situacao, codcliente ) VALUES ({0}, {1}, {2}, {3}, {4}, '{5}', {6} )";
+                string sqlProduto = "INSERT INTO tbprodutosvenda ( codvenda, codproduto, unidade, qtproduto, vlproduto, txdesconto ) VALUES ( {0}, {1}, '{2}', {3}, {4}, {5} )";
+                string sqlParcela = "INSERT INTO tbcontasreceber ( codvenda, codforma, nrparcela, vlparcela, dtvencimento, situacao, codcliente ) VALUES ({0}, {1}, {2}, {3}, {4}, '{5}', {6} )";
                 using (con)
                 {
                     OpenConnection();
@@ -130,13 +129,13 @@ namespace Sistema.DAO
             throw new Exception("Não implementado");
         }
 
-        public Vendas GetVenda(int codVenda)
+        public Vendas GetVenda(int codVenda, string modelo)
         {
             try
             {
                 var model = new Models.Vendas();
                 OpenConnection();
-                var sql = this.Search(codVenda, null);
+                var sql = this.Search(codVenda, null, modelo);
                 var sqlProdutos = this.SearchProdutos(codVenda);
                 var sqlParcelas = this.SearchParcelas(codVenda);
                 var listProdutos = new List<Vendas.ProdutosVM>();
@@ -149,7 +148,6 @@ namespace Sistema.DAO
                     model.codigo = Convert.ToInt32(reader["Venda_ID"]);
                     model.situacao = Convert.ToString(reader["Venda_Situacao"]);
                     model.dtVenda = Convert.ToDateTime(reader["Venda_Data"]);
-                    model.dtUltAlteracao = Convert.ToDateTime(reader["Venda_DataUltAlteracao"]);
                     model.CondicaoPagamento = new Select.CondicaoPagamento.Select
                     {
                         id = Convert.ToInt32(reader["CondicaoPagamento_ID"]),
@@ -219,13 +217,17 @@ namespace Sistema.DAO
             }
         }
 
-        private string Search(int? id, string filter)
+        private string Search(int? id, string filter, string modelo)
         {
             var sql = string.Empty;
             var swhere = string.Empty;
             if (id != null)
             {
-                swhere = " WHERE tbvendasprodutos.codvendaproduto= " + id;
+                swhere = " AND (tbvendas.codvenda = " + id + ") ";
+            }
+            if (!string.IsNullOrEmpty(modelo))
+            {
+                swhere += " AND (tbvendas.modelo = '" + modelo + "') ";
             }
             if (!string.IsNullOrEmpty(filter))
             {
@@ -234,25 +236,25 @@ namespace Sistema.DAO
                 {
                     swhere += " OR tbclientes.nomerazaosocial LIKE'%" + word + "%'";
                 }
-                swhere = " WHERE " + swhere.Remove(0, 3);
             }
+            if (!string.IsNullOrEmpty(swhere))
+                swhere = " WHERE " + swhere.Remove(0, 4);
             sql = @"
-                SELECT
-	                tbvendasprodutos.codvendaproduto AS Venda_ID,
-	                tbvendasprodutos.codordemservico AS OrdemServico_ID,
-	                tbvendasprodutos.situacao AS Venda_Situacao,
-	                tbvendasprodutos.dtvenda AS Venda_Data,
-	                tbvendasprodutos.dtultalteracao AS Venda_DataUltAlteracao,
-	                tbvendasprodutos.codvendedor AS Vendedor_ID,
-	                tbfuncionarios.nomefuncionario AS Vendedor_Nome,
-	                tbvendasprodutos.codcliente AS Cliente_ID,
-	                tbclientes.nomerazaosocial AS Cliente_Nome,
-	                tbvendasprodutos.codcondicao AS CondicaoPagamento_ID,
-	                tbcondpagamentos.nomecondicao AS CondicaoPagamento_Nome
-                FROM tbvendasprodutos
-                INNER JOIN tbfuncionarios ON tbvendasprodutos.codvendedor = tbfuncionarios.codfuncionario
-                INNER JOIN tbclientes ON tbvendasprodutos.codcliente = tbclientes.codcliente
-                INNER JOIN tbcondpagamentos ON tbvendasprodutos.codcondicao = tbcondpagamentos.codcondicao
+                    SELECT
+	                    tbvendas.codvenda AS Venda_ID,
+	                    tbvendas.situacao AS Venda_Situacao,
+	                    tbvendas.dtvenda AS Venda_Data,
+	                    tbvendas.modelo AS Venda_Modelo,
+	                    tbvendas.codvendedor AS Vendedor_ID,
+	                    tbfuncionarios.nomefuncionario AS Vendedor_Nome,
+	                    tbvendas.codcliente AS Cliente_ID,
+	                    tbclientes.nomerazaosocial AS Cliente_Nome,
+	                    tbvendas.codcondicao AS CondicaoPagamento_ID,
+	                    tbcondpagamentos.nomecondicao AS CondicaoPagamento_Nome
+                    FROM tbvendas
+                    INNER JOIN tbfuncionarios ON tbvendas.codvendedor = tbfuncionarios.codfuncionario
+                    INNER JOIN tbclientes ON tbvendas.codcliente = tbclientes.codcliente
+                    INNER JOIN tbcondpagamentos ON tbvendas.codcondicao = tbcondpagamentos.codcondicao
             " + swhere + ";";
             return sql;
         }
@@ -263,7 +265,7 @@ namespace Sistema.DAO
 
             sql = @"
                     SELECT
-	                    tbprodutosvenda.codvendaproduto AS Venda_ID,
+	                    tbprodutosvenda.codvenda AS Venda_ID,
 	                    tbprodutosvenda.codproduto AS Produto_ID,
 	                    tbprodutos.nomeproduto AS Produto_Nome,
 	                    tbprodutosvenda.unidade AS Produto_Unidade,
@@ -291,11 +293,10 @@ namespace Sistema.DAO
 	                    tbcontasreceber.dtpagamento AS ContaReceber_DataPagamento,
 	                    tbcontasreceber.codforma AS FormaPagamento_ID,
 	                    tbformapagamento.nomeforma AS FormaPagamento_Nome,
-	                    tbcontasreceber.codvendaproduto AS ContaReceber_VendaProduto_ID,
-	                    tbcontasreceber.codvendaservico AS ContaReceber_VendaServico_ID
+	                    tbcontasreceber.codvenda AS ContaReceber_Venda_ID
                     FROM tbcontasreceber
                     INNER JOIN tbformapagamento ON tbcontasreceber.codforma = tbformapagamento.codforma
-                    WHERE tbcontasreceber.codvendaproduto = " + id
+                    WHERE tbcontasreceber.codvenda = " + id
             ;
             return sql;
         }

@@ -142,8 +142,8 @@ namespace Sistema.DAO
         {
             try
             {
-                if (this.ValidCPFCNPJ(this.FormatCPF(cliente.cpf), "tbclientes", "cpfcnpj", this.FormatString(cliente.tipo)))
-                {
+                //if (this.ValidCPFCNPJ(this.FormatCPF(cliente.cpf), "tbclientes", "cpfcnpj", this.FormatString(cliente.tipo)))
+                //{
                     string sql = "UPDATE tbclientes SET tipo = '" +
                     this.FormatString(cliente.tipo) + "', " +
                     " nomerazaosocial = '" + (cliente.tipo == "F" ? this.FormatString(cliente.nomePessoa) : this.FormatString(cliente.razaoSocial)) + "', " +
@@ -157,8 +157,8 @@ namespace Sistema.DAO
                     " email = '" + this.FormatString(cliente.email) + "', " +
                     " codcidade = " + cliente.Cidade.id + ", " +
                     " cep = '" + this.FormatCEP(cliente.cep) + "', " +
-                    " cpfcnpj = '" + (cliente.tipo == "F" ? this.FormatCPF(cliente.cpf) : this.FormatCNPJ(cliente.cnpj)) + "', " +
-                    " rgie = '" + (cliente.tipo == "F" ? this.FormatRG(cliente.rg) : cliente.ie) + "'," +
+                    //" cpfcnpj = '" + (cliente.tipo == "F" ? this.FormatCPF(cliente.cpf) : this.FormatCNPJ(cliente.cnpj)) + "', " +
+                    " rgie = '" + (cliente.tipo == "F" ? this.FormatRG(cliente.rg) : cliente.ie) + "', " +
                     " dtnascimentofundacao = '" + (cliente.tipo == "F" ? (cliente.dtNascimento != null ? cliente.dtNascimento.Value.ToString("yyyy-MM-dd") : "") : (cliente.dtFundacao != null ? cliente.dtFundacao.Value.ToString("yyyy-MM-dd") : "")) + "', " +
                     " situacao = '" + this.FormatString(cliente.situacao) + "', " +
                     " codcondicao = " + cliente.CondicaoPagamento.id + ", " +
@@ -178,8 +178,8 @@ namespace Sistema.DAO
                     {
                         return false;
                     }
-                }
-                return false;
+                //}
+                //return false;
             }
             catch (Exception error)
             {

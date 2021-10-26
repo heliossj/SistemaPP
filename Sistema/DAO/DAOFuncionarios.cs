@@ -136,7 +136,7 @@ namespace Sistema.DAO
                     " email = '" + this.FormatString(funcionario.email) + "', " +
                     " codcidade = " + funcionario.Cidade.id + ", " +
                     " cep = '" + this.FormatCEP(funcionario.cep) + "', " +
-                    " cpf = '" + this.FormatCPF(funcionario.cpf) + "', " +
+                    //" cpf = '" + this.FormatCPF(funcionario.cpf) + "', " +
                     " rg = '" + this.FormatRG(funcionario.rg) + "', " +
                     " dtnascimento = '" + funcionario.dtNascimento.Value.ToString("yyyy-MM-dd") + "', " +
                     " dtadmissao = '" + funcionario.dtAdmissao.Value.ToString("yyyy-MM-dd") + "', " +

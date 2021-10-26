@@ -129,7 +129,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ComprasController.cs" />
-    <Compile Include="Controllers\ContasReceber.cs" />
+    <Compile Include="Controllers\ContasReceberController.cs" />
     <Compile Include="Controllers\ContasPagarController.cs" />
     <Compile Include="Controllers\ContasContabeisController.cs" />
     <Compile Include="Controllers\VendasController.cs" />
@@ -248,9 +248,12 @@
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\Clientes\Edit.js" />
     <Content Include="Scripts\Clientes\Create.js" />
     <Content Include="Scripts\ContasContabeis\Details.js" />
     <Content Include="Scripts\ContasPagar\Index.js" />
+    <Content Include="Scripts\Fornecedores\Edit.js" />
+    <Content Include="Scripts\Funcionarios\Edit.js" />
     <Content Include="Scripts\OrdemServico\Edit.js" />
     <Content Include="Scripts\Produtos\Details.js" />
     <Content Include="Scripts\Produtos\Create.js" />
@@ -518,7 +521,7 @@
     <Content Include="Views\Compras\Form.cshtml" />
     <Content Include="Views\Compras\Index.cshtml" />
     <Content Include="Views\Vendas\Create.cshtml" />
-    <Content Include="Views\Vendas\Delete.cshtml" />
+    <Content Include="Views\Vendas\Cancelar.cshtml" />
     <Content Include="Views\Vendas\Details.cshtml" />
     <Content Include="Views\Vendas\Edit.cshtml" />
     <Content Include="Views\Vendas\Form.cshtml" />
@@ -537,6 +540,11 @@
     <Content Include="Views\ContasContabeis\Form.cshtml" />
     <Content Include="Views\ContasContabeis\Index.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\ContaContabil\Select.cshtml" />
+    <Content Include="Views\ContasReceber\Cancelar.cshtml" />
+    <Content Include="Views\ContasReceber\Details.cshtml" />
+    <Content Include="Views\ContasReceber\Form.cshtml" />
+    <Content Include="Views\ContasReceber\Index.cshtml" />
+    <Content Include="Views\ContasReceber\Receber.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

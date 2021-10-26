@@ -36,6 +36,10 @@ namespace Sistema.Controllers
             {
                 ModelState.AddModelError("dtValidade", "Informe a data de validade");
             }
+            if (model.dtValidade != null && model.dtValidade < DateTime.Now.AddDays(-1))
+            {
+                ModelState.AddModelError("dtValidade", "A data de validade não pode ser menor que o dia de hoje");
+            }
             if (model.dtExecucao == null)
             {
                 ModelState.AddModelError("dtExecucao", "Informe a data de execução");
@@ -44,7 +48,7 @@ namespace Sistema.Controllers
             {
                 if (model.dtExecucao < model.dtValidade)
                 {
-                    ModelState.AddModelError("dtExecucao", "A data de execução não pode ser inferior a data de validade ");
+                    ModelState.AddModelError("dtExecucao", "A data de execução não pode ser menor a data de validade ");
                 }
             }
             if (model.Cliente.id == null)
@@ -61,6 +65,10 @@ namespace Sistema.Controllers
                 {
                     var daoOS = new DAOOrdemServico();
                     daoOS.Insert(model);
+                    //if (model.situacao == "T")
+                    //{
+                    //    RedirectToAction("Index", "Compras");
+                    //}
                     this.AddFlashMessage(Util.AlertMessage.INSERT_SUCESS);
                     return RedirectToAction("Index");
                 }
@@ -85,6 +93,57 @@ namespace Sistema.Controllers
         public ActionResult Edit(int id)
         {
             return this.GetView(id);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(int id, Models.OrdemServico model)
+        {
+            if (model.dtValidade == null)
+            {
+                ModelState.AddModelError("dtValidade", "Informe a data de validade");
+            }
+            //if (model.dtValidade != null && model.dtValidade < DateTime.Now.AddDays(-1))
+            //{
+            //    ModelState.AddModelError("dtValidade", "A data de validade não pode ser menor que o dia de hoje");
+            //}
+            if (model.dtExecucao == null)
+            {
+                ModelState.AddModelError("dtExecucao", "Informe a data de execução");
+            }
+            if (model.dtValidade != null && model.dtExecucao != null)
+            {
+                if (model.dtExecucao < model.dtValidade)
+                {
+                    ModelState.AddModelError("dtExecucao", "A data de execução não pode ser menor a data de validade ");
+                }
+            }
+            if (model.Cliente.id == null)
+            {
+                ModelState.AddModelError("Cliente.id", "Informe o cliente");
+            }
+            if (model.Funcionario.id == null)
+            {
+                ModelState.AddModelError("Funcionario.id", "Informe o funcionário");
+            }
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var daoOS = new DAOOrdemServico();
+                    //daoOS.Insert(model);
+                    this.AddFlashMessage(Util.AlertMessage.EDIT_SUCESS);
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                    return View(model);
+                }
+            }
+            else
+            {
+                return View(model);
+            }
         }
 
         public ActionResult Cancelar(int id)

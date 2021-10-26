@@ -12,7 +12,7 @@ namespace Sistema.Models
     {
         public int? codOrdemServico { get; set; }
 
-        [Display(Name = "Data")]
+        [Display(Name = "Data da venda")]
         public DateTime? dtVenda { get; set; }
 
         [Display(Name = "Situação")]
@@ -20,6 +20,7 @@ namespace Sistema.Models
 
         public string finalizar { get; set; }
         public decimal? vlTotal { get; set; }
+        public string modelo { get; set; }
 
         public Select.Funcionarios.Select Funcionario { get; set; }
         public Select.Clientes.Select Cliente { get; set; }

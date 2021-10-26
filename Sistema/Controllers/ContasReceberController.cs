@@ -1,56 +1,54 @@
 ﻿using Sistema.DAO;
 using Sistema.DataTables;
+using Sistema.Models;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
 namespace Sistema.Controllers
 {
-    public class VendasController : Controller
+    public class ContasReceberController : Controller
     {
         public ActionResult Index()
         {
             try
             {
-                // modelo - 56 serviço / 65 consumidor
-                var DAOVendas = new DAOVendas();
-                List<Models.Vendas> list = DAOVendas.GetVendas("65");
+                var DAOContaReceber = new DAOContasReceber();
+                List<Models.ContasReceber> list = DAOContaReceber.GetContasPagar();
                 return View(list);
-            }
-            catch (Exception ex)
+            } catch (Exception ex)
             {
                 this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
                 return View();
             }
         }
 
-        public ActionResult Create()
+        public ActionResult Receber(int id)
         {
-            return View();
+            return this.GetView(id);
+        }
+
+        public ActionResult Details(int id)
+        {
+            return this.GetView(id);
         }
 
         [HttpPost]
-        public ActionResult Create(Sistema.Models.Vendas model)
+        public ActionResult Receber(int id, Sistema.Models.ContasReceber model)
         {
-            if (model.Funcionario.id == null)
+            if (model.ContaContabil.id == null)
             {
-                ModelState.AddModelError("Funcionario.id", "Informe o funcionário");
+                ModelState.AddModelError("ContaContabil.id", "Informe a conta");
             }
-            if (model.Cliente.id == null)
-            {
-                ModelState.AddModelError("Cliente.id", "Informe o cliente");
-            }
-            model.modelo = "65";
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var DAOVendas = new DAOVendas();
-                    DAOVendas.InsertProduto(model);
-                    this.AddFlashMessage(Util.AlertMessage.INSERT_SUCESS);
+                    var DAOContasReceber = new DAOContasReceber();
+                    DAOContasReceber.Receber(id, model);
+                    this.AddFlashMessage("Parcela paga com sucesso!");
                     return RedirectToAction("Index");
                 }
                 catch (Exception ex)
@@ -65,22 +63,12 @@ namespace Sistema.Controllers
             }
         }
 
-        public ActionResult Details(int id)
-        {
-            return this.GetView(id);
-        }
-
-        public ActionResult Cancelar(int id)
-        {
-            return this.GetView(id);
-        }
-
         private ActionResult GetView(int id)
         {
             try
             {
-                var DAOVendas = new DAOVendas();
-                var model = DAOVendas.GetVenda(id, "65");
+                var DAOContaReceber = new DAOContasReceber();
+                var model = DAOContaReceber.GetContaPagar(id);
                 return View(model);
             }
             catch (Exception ex)

@@ -16,31 +16,36 @@
     $(document).on("tblProdutoCancelEdit", venda.clearProduto);
 
     $("#btnSalvar").attr("disabled", true);
-    $('input[name="CondicaoPagamento.id"]').prop('disabled', true)
+    $('input[name="CondicaoPagamento.id"]').prop('disabled', true);
     $("#CondicaoPagamento_btn-localizar").hide();
     //$("#divAddProduto").hide();
 
+
     $("#CondicaoPagamento_id").change(function () {
         dtParcelas.clear();
-        let idCondicao = $("#CondicaoPagamento_id").val()
-        if (IsNullOrEmpty(idCondicao)) {
-            $("#divAddProduto").show();
-            $('input[name="dtEmissao"]').prop('disabled', false);
-            $("#flTblProdutos").val("");
-            $("#btnSalvar").attr("disabled", true);
-        } else {
-            $("#divAddProduto").hide();
-        }
+        $("#flTblProdutos").val("");
         dtProdutos.atualizarItens();
         dtProdutos.atualizarGrid();
+        $("#divAddProduto").show();  
+        $("#btnSalvar").attr("disabled", true);
+        $("#CondicaoPagamento_btnGerarParcela").attr('disabled', true);
+        alert();
     })
 
     $(document).on('AfterLoad_CondicaoPagamento', function (e, data) {
-        $("#flTblProdutos").val("S")
-        $("#divAddProduto").hide();
-        dtParcelas.clear();
-        dtProdutos.atualizarItens();
-        dtProdutos.atualizarGrid();
+        
+        if (!IsNullOrEmpty(data)) {
+            console.log("entrou")
+            $("#flTblProdutos").val("S");
+            $("#divAddProduto").hide();
+            dtParcelas.clear();
+            dtProdutos.atualizarItens();
+            dtProdutos.atualizarGrid();
+        } else {
+            alert("ppp");
+            //disBtn();
+            //$("#CondicaoPagamento_btnGerarParcela").attr('disabled', true);
+        }
     });
 
     $("#Produto_qtProduto").change(function () {
@@ -106,19 +111,20 @@
     let idCond = $("#CondicaoPagamento_id").val()
     if (!IsNullOrEmpty(idCond)) {
         $("#flTblProdutos").val("S");
-        $('input[name="dtEmissao"]').prop('disabled', true)
-        $('input[name="CondicaoPagamento.id"]').prop('disabled', false)
-        $("#CondicaoPagamento_btn-localizar").show();
+        $("#divAddProduto").hide();
         $("#CondicaoPagamento_btnGerarParcela").attr('disabled', false)
 
-        let dtString = $("#dtEmissao").val();
-        let dayArray = dtString.split("/");
-        let day = dayArray[0];
-        let month = (parseFloat(dayArray[1]) - 1);
-        let year = dayArray[2];
-        date = new Date(year, month, day).toJSON();
         dtProdutos.atualizarItens();
         dtProdutos.atualizarGrid();
+    }
+
+    if (dtProdutos.length > 0) {
+        $('input[name="CondicaoPagamento.id"]').prop('disabled', false)
+        $("#CondicaoPagamento_btn-localizar").show();
+    }
+
+    if (!IsNullOrEmpty(idCond) && dtParcelas.length > 0) {
+        $("#btnSalvar").attr("disabled", false);
     }
 });
 
@@ -193,7 +199,14 @@ Venda = function () {
                             return data.vlParcela.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
                         }
                     },
-                    { data: "dtVencimento" },
+                    {
+                        data: null,
+                        mRender: function (data) {
+                            var dtVencimento = data.dtVencimento;
+                            dtVencimento = JSONDate(dtVencimento);
+                            return dtVencimento;
+                        }
+                    },
                     { data: "nmFormaPagamento" },
                 ]
             },
@@ -348,12 +361,12 @@ Venda = function () {
     self.setParcelas = function (data) {
         let itens = data.parcelas;
         for (var i = 0; i < itens.length; i++) {
-            let dtParcela = JSONDate(itens[i].dtVencimento,)
+            //let dtParcela = JSONDate(itens[i].dtVencimento,)
             let item = {
                 idFormaPagamento: itens[i].idFormaPagamento,
                 nmFormaPagamento: itens[i].nmFormaPagamento,
                 flSituacao: itens[i].flSituacao,
-                dtVencimento: dtParcela,
+                dtVencimento: itens[i].dtVencimento,
                 vlParcela: itens[i].vlParcela,
                 nrParcela: itens[i].nrParcela
             }

@@ -8,8 +8,10 @@ namespace Sistema.Models
 {
     public class ContasReceber : Pai
     {
+        public int codVenda { get; set; }
         public Select.Clientes.Select Cliente { get; set; }
         public Select.FormaPagamento.Select FormaPagamento { get; set; }
+        public Select.ContasContabeis.Select ContaContabil { get; set; }
 
         [Display(Name = "Nº parcela")]
         public short nrParcela { get; set; }

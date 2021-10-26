@@ -162,8 +162,7 @@
              if (id == "") {
                  $("#@Sistema.Util.SelectFunctions.getInputId("id", Prefix)").val("");
                  $("#@Sistema.Util.SelectFunctions.getInputId("text", Prefix)").val("");
-                 $("#@Sistema.Util.SelectFunctions.getInputId("btnGerarParcela", Prefix)").attr('disabled', true)
-
+                 $("#@Sistema.Util.SelectFunctions.getInputId("btnGerarParcela", Prefix)").attr('disabled', true);
              } else {
                  $.ajax({
                      dataType: 'json',
@@ -173,10 +172,9 @@
                      success: function (data) {
                          if (!data) {
                              $.notify({ message: 'Nenhum registro encontrado para o código informado', icon: 'fa fa-exclamation' }, { type: 'danger' });
-                             $("#@Sistema.Util.SelectFunctions.getInputId("btnGerarParcela", Prefix)").attr('disabled', true)
+                             $("#@Sistema.Util.SelectFunctions.getInputId("btnGerarParcela", Prefix)").attr('disabled', true);
                          }
                          SelectCondicaoPagamento(data);
-
                      },
                      error: function (err) {
                          alert(err);

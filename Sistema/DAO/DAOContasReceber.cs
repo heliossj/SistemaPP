@@ -72,6 +72,7 @@ namespace Sistema.DAO
                     while (reader.Read())
                     {
                         model.codigo = Convert.ToInt32(reader["ContaReceber_ID"]);
+                        model.codVenda = Convert.ToInt32(reader["Venda_ID"]);
                         model.Cliente = new Select.Clientes.Select
                         {
                             id = Convert.ToInt32(reader["Cliente_ID"]),
@@ -81,6 +82,11 @@ namespace Sistema.DAO
                         {
                             id = Convert.ToInt32(reader["FormaPagamento_ID"]),
                             text = Convert.ToString(reader["FormaPagamento_Nome"])
+                        };
+                        model.ContaContabil = new Select.ContasContabeis.Select
+                        {
+                            id = !string.IsNullOrEmpty(reader["ContaContabil_ID"].ToString()) ? Convert.ToInt32(reader["ContaContabil_ID"]) : (int?)null,
+                            text = !string.IsNullOrEmpty(reader["ContaContabil_Nome"].ToString()) ? Convert.ToString(reader["ContaContabil_Nome"]) : string.Empty
                         };
                         model.nrParcela = Convert.ToInt16(reader["ContaReceber_NrParcela"]);
                         model.vlParcela = Convert.ToDecimal(reader["ContaReceber_Valor"]);
@@ -98,6 +104,53 @@ namespace Sistema.DAO
             finally
             {
                 CloseConnection();
+            }
+        }
+
+        public void Receber(int id, Models.ContasReceber model)
+        {
+            var sql = "UPDATE tbcontasreceber set dtpagamento = " + this.FormatDate(DateTime.Now) + ", situacao = 'G', codconta = " + model.ContaContabil.id + " WHERE tbcontasreceber.codcontareceber = " + model.codigo;
+
+            string lancamento = "O CLIENTE " + model.Cliente.id + " - " + this.FormatString(model.Cliente.text) + " REALIZOU O PAGAMENTO DA PARCELA Nº" + model.nrParcela + " REFERENTE A VENDA Nº " + model.codVenda + ".";
+
+            var sqlLancamento = string.Format("INSERT INTO tblancamentos (codconta, dtmovimento, vllancamento, tipo, descricao) VALUES ({0}, {1}, {2}, '{3}', '{4}')",
+                                model.ContaContabil.id,
+                                this.FormatDate(DateTime.Now),
+                                this.FormatDecimal(model.vlParcela),
+                                "D",
+                                this.FormatString(lancamento)
+                );
+
+            var sqlSaldoConta = "UPDATE tbcontascontabeis set vlsaldo += " + this.FormatDecimal(model.vlParcela) + " WHERE tbcontascontabeis.codconta = " + model.ContaContabil.id;
+            using (con)
+            {
+                OpenConnection();
+                SqlTransaction trans = con.BeginTransaction();
+                SqlCommand command = con.CreateCommand();
+                try
+                {
+                    command.Transaction = trans;
+
+                    command.CommandText = sql;
+                    command.ExecuteNonQuery();
+
+                    command.CommandText = sqlLancamento;
+                    command.ExecuteNonQuery();
+
+                    command.CommandText = sqlSaldoConta;
+                    command.ExecuteNonQuery();
+
+                    trans.Commit();
+                }
+                catch (Exception ex)
+                {
+                    trans.Rollback();
+                    throw new Exception(ex.Message);
+                }
+                finally
+                {
+                    con.Close();
+                }
             }
         }
 
@@ -121,6 +174,7 @@ namespace Sistema.DAO
             sql = @"
                 SELECT
 	                tbcontasreceber.codcontareceber AS ContaReceber_ID,
+                    tbcontasreceber.codvenda AS Venda_ID,
 	                tbcontasreceber.nrparcela AS ContaReceber_NrParcela,
 	                tbcontasreceber.vlparcela AS ContaReceber_Valor,
 	                tbcontasreceber.dtvencimento AS ContaReceber_DataVencimento,
@@ -128,13 +182,15 @@ namespace Sistema.DAO
 	                tbcontasreceber.dtpagamento AS ContaReceber_DataPagamento,
 	                tbcontasreceber.codforma AS FormaPagamento_ID,
 	                tbformapagamento.nomeforma AS FormaPagamento_Nome,
-	                tbcontasreceber.codvendaproduto AS ContaReceber_VendaProduto_ID,
-	                tbcontasreceber.codvendaservico AS ContaReceber_VendaServico_ID,
+	                tbcontasreceber.codvenda AS ContaReceber_Venda_ID,
 	                tbcontasreceber.codcliente AS Cliente_ID,
-	                tbclientes.nomerazaosocial AS Cliente_Nome
+	                tbclientes.nomerazaosocial AS Cliente_Nome,
+                    tbcontasreceber.codconta AS ContaContabil_ID,
+                    tbcontascontabeis.nomeconta AS ContaContabil_Nome
                 FROM tbcontasreceber
                 INNER JOIN tbformapagamento ON tbcontasreceber.codforma = tbformapagamento.codforma
-                INNER JOIN tbclientes ON tbcontasreceber.codcliente = tbclientes.codcliente"
+                INNER JOIN tbclientes ON tbcontasreceber.codcliente = tbclientes.codcliente
+                LEFT JOIN tbcontascontabeis ON tbcontasreceber.codconta = tbcontascontabeis.codconta"
                 + swhere;
             return sql;
         }

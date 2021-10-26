@@ -24,27 +24,44 @@
     <table id="Compras" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
-                <th width="5%">Nº</th>
-                <th width="10%">Data de abertura</th>
-                <th width="10%">Data de validade</th>
-                <th width="52%">Cliente</th>
+                <th width="5%">Código</th>
+                <th width="15%">Data</th>
+                <th width="50%">Cliente</th>
+                <th width="10%">Valor</th>
                 <th width="10%">Situação</th>
-                <th width="13%"></th>
+                <th width="10%"></th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>1</td>
-                <td>15/03/2021</td>
-                <td>15/08/2021</td>
-                <td>JOSUÉ PEREIRA JÚNIOR</td>
-                <td>ATIVA</td>
-                <td>
-                    @Html.ActionLink(" ", "Details", new { }, new { @class = "btn btn-success btn-sm fa fa-eye", @title = "Visualizar registro" })
-                    @Html.ActionLink(" ", "Edit", new { }, new { @class = "btn btn-warning btn-sm fa fa-edit", @title = "Editar registro" })
-                    @Html.ActionLink(" ", "Delete", new { }, new { @class = "btn btn-danger btn-sm fa fa-trash-o", @title = "Excluir registro" })
-                </td>
-            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td style="text-align:right">
+                        @Html.DisplayFor(modelItem => item.codigo)
+                    </td>
+                    <td>
+                        @if (item.dtVenda != null)
+                        {
+                            var dt = item.dtVenda.Value.ToString("dd/MM/yyyy HH:mm");
+                            @Html.DisplayFor(modelItem => dt)
+                        }
+
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Cliente.text)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Cliente.id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.situacao)
+                    </td>
+                    <td>
+                        @Html.ActionLink(" ", "Details", new { id = item.codigo }, new { @class = "btn btn-success btn-sm fa fa-eye", @title = "Visualizar registro" })
+                        @Html.ActionLink(" ", "Cancelar", new { id = item.codigo }, new { @class = "btn btn-danger btn-sm fa fa-ban", @title = "Cancelar registro" })
+                    </td>
+                </tr>
+            }
         </tbody>
     </table>
 </div>

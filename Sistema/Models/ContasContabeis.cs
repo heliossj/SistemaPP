@@ -16,7 +16,7 @@ namespace Sistema.Models
         [Display(Name = "Situação")]
         public string situacao { get; set; }
 
-        [Display(Name = "Saldo")]
+        [Display(Name = "Saldo atual")]
         public decimal? vlSaldo { get; set; }
 
         [Display(Name = "Classificação")]

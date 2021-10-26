@@ -117,7 +117,7 @@ OrdemServico = function () {
         let total = 0;
         if (dtServicos.length && dtServicos.length > 0) {
             for (var i = 0; i < dtServicos.length; i++) {
-                let totalServico = dtServicos.data[i].vlTotal;
+                let totalServico = dtServicos.data[i].vlServico * dtServicos.data[i].qtServico;
                 total += totalServico;
             }
             $('input[name="CondicaoPagamento.id"]').prop('disabled', false)
@@ -136,7 +136,7 @@ OrdemServico = function () {
         let total = 0;
         if (dtProdutos.length && dtProdutos.length > 0) {
             for (var i = 0; i < dtProdutos.length; i++) {
-                let totalProduto = dtProdutos.data[i].vlTotal;
+                let totalProduto = dtProdutos.data[i].vlProduto * dtProdutos.data[i].qtProduto;
                 total += totalProduto;
             }
         }
@@ -149,6 +149,8 @@ OrdemServico = function () {
     self.calcTotal = function () {
         vlTotalOS = vlTotalServicos + vlTotalProdutos;
         vlTotalOS = vlTotalOS.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+
         $("#vlTotal").val(vlTotalOS)
     }
 }

@@ -151,7 +151,7 @@ namespace Sistema.DAO
                     " email = '" + this.FormatString(fornecedor.email) + "', " +
                     " codcidade = " + fornecedor.Cidade.id + ", " +
                     " cep = '" + this.FormatCEP(fornecedor.cep) + "', " +
-                    " cpfcnpj = '" + ( fornecedor.tipo == "F" ? this.FormatCPF(fornecedor.cpf) : this.FormatCNPJ(fornecedor.cnpj) ) + "', " +
+                    //" cpfcnpj = '" + ( fornecedor.tipo == "F" ? this.FormatCPF(fornecedor.cpf) : this.FormatCNPJ(fornecedor.cnpj) ) + "', " +
                     " rgie = '" + ( fornecedor.tipo == "F" ? this.FormatRG(fornecedor.rg) : fornecedor.ie )+ "', " +
                     " dtnascimentofundacao = '" + ( fornecedor.tipo == "F" ? ( fornecedor.dtNascimento != null ?  fornecedor.dtNascimento.Value.ToString("yyyy-MM-dd") : "" ) : ( fornecedor.dtFundacao != null ?  fornecedor.dtFundacao.Value.ToString("yyyy-MM-dd") : "") ) + "', " +
                     " situacao = '" + fornecedor.situacao.ToUpper().ToString() + "', " +

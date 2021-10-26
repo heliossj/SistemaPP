@@ -1,9 +1,9 @@
-﻿@model Sistema.Models.Funcionarios
+﻿@model Sistema.Models.ContasReceber
 @{
-    ViewBag.Title = "Editar registro";
+    ViewBag.Title = "Cancelar registro";
     ViewBag.Layout = "~/_Styles/Style.css";
     bool readOnly = Convert.ToBoolean(ViewBag.ReadOnly);
-    ViewBag.readOnly = false;
+    ViewBag.readOnly = true;
     ViewBag.action = ViewContext.Controller.ValueProvider.GetValue("action").RawValue.ToString().ToLower();
 }
 
@@ -15,7 +15,7 @@
                 <div class="verticals ten offset-by-one">
                     <ol class="breadcrumb breadcrumb-fill2">
                         <li class="active"><a href="@Url.Action("Index")"><i class="fa fa-home"></i></a> </li>
-                        <li style="margin-left:15px; margin-right:-12px; font-weight:500 " class="active"><a href="@Url.Action("Index")"> Funcionários </a></li>
+                        <li style="margin-left:15px; margin-right:-12px; font-weight:500 " class="active"><a href="@Url.Action("Index")"> Contas a receber </a></li>
                         <li style="margin-right:-5px; font-weight:500"> / @ViewBag.Title </li>
                     </ol>
                 </div>
@@ -24,17 +24,16 @@
 
         <div class="pull-left col-lg-12 col-md-12 col-sm-10 col-xs-10">
             @Html.RenderFlashMessage()
-            @Html.CustomValidationSummary(true, true, Sistema.Util.AlertMessage.VALIDATION_MESSAGE, new { @class = "alert alert-danger", role = "alert" })
-            <p style="text-align: right; color: red; font-size:16px; font-weight: bold;">* Campos obrigatórios</p>
-            @Html.Partial("Form", Model)
+            @Html.CustomValidationSummary(true, true, Sistema.Util.AlertMessage.ERROR_MESSAGE, new { @class = "alert alert-danger", role = "alert" })
+            <fieldset disabled>
+                @Html.Partial("Form", Model)
+            </fieldset>
+
         </div>
         <div style="text-align:center">
-            <button type="submit" class="btn btn-success"> <i class="fa fa-save"></i> Salvar</button>
-            <a href="@Url.Action(@Html.ViewBag.Action)" class="btn btn-primary" role="button" aria-pressed="true"> <i class="fa fa-times"></i> Limpar</a>
+            <button type="submit" class="btn btn-danger"> <i class="fa fa-ban"></i> Cancelar</button>
             <a href="@Url.Action("Index")" class="btn btn-secondary" role="button" aria-pressed="true"> <i class="fa fa-arrow-left"></i> Voltar</a>
         </div>
     </div>
 }
-@section scripts{
-    @Scripts.Render("~/Scripts/Funcionarios/Edit.js")
-}
+
