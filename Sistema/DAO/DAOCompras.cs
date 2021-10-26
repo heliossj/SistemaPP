@@ -87,7 +87,7 @@ namespace Sistema.DAO
         {
             try
             {
-                var sql = string.Format("INSERT INTO tbcompras ( modelo, serie, numero, dtemissao, dtentrega, codfornecedor, observacao, dtcadastro, situacao, codcondicao ) VALUES ('{0}', '{1}', {2}, {3}, {4}, {5}, '{6}', {7}, '{8}', {9}); ",
+                var sql = string.Format("INSERT INTO tbcompras ( modelo, serie, numero, dtemissao, dtentrega, codfornecedor, observacao, dtcadastro, situacao, codcondicao, vlfrete, vlseguro, vldespesas ) VALUES ('{0}', '{1}', {2}, {3}, {4}, {5}, '{6}', {7}, '{8}', {9}, {10}, {11}, {12} ); ",
                     compra.modelo,
                     compra.serie,
                     compra.nrNota,
@@ -97,7 +97,10 @@ namespace Sistema.DAO
                     this.FormatString(compra.observacao),
                     this.FormatDate(DateTime.Now),
                     "N",
-                    compra.CondicaoPagamento.id
+                    compra.CondicaoPagamento.id,
+                    compra.vlFrete != null ? this.FormatDecimal(compra.vlFrete).ToString() : "null",
+                    compra.vlSeguro != null ? this.FormatDecimal(compra.vlSeguro).ToString() : "null",
+                    compra.vlDespesas != null ? this.FormatDecimal(compra.vlDespesas).ToString() : "null"
                     );
                 string sqlProduto = "INSERT INTO tbprodutoscompra ( codproduto, unidade, qtproduto, vlcompra, txdesconto, vlvenda, modelo, serie, numero, codfornecedor) VALUES ( {0}, '{1}', {2}, {3}, {4}, {5}, '{6}', '{7}', {8}, {9})";
                 string sqlParcela = "INSERT INTO tbcontaspagar (codfornecedor, codforma, nrparcela, vlparcela, dtvencimento, situacao, modelo, serie, numero) VALUES ({0}, {1}, {2}, {3}, {4}, '{5}', '{6}', '{7}', {8})";
@@ -190,6 +193,10 @@ namespace Sistema.DAO
                     model.dtEntrega = Convert.ToDateTime(reader["Compra_DataEntrega"]);
                     model.dtCadastro = Convert.ToDateTime(reader["Compra_DataEntrada"]);
                     model.observacao = Convert.ToString(reader["Compra_Observacao"]);
+                    model.vlFrete = !string.IsNullOrEmpty(reader["Compra_Frete"].ToString()) ? Convert.ToDecimal(reader["Compra_Frete"]) : (decimal?)null;
+                    model.vlSeguro = !string.IsNullOrEmpty(reader["Compra_Seguro"].ToString()) ? Convert.ToDecimal(reader["Compra_Seguro"]) : (decimal?)null;
+                    model.vlDespesas = !string.IsNullOrEmpty(reader["Compra_Despesas"].ToString()) ? Convert.ToDecimal(reader["Compra_Despesas"]) : (decimal?)null;
+
                     model.CondicaoPagamento = new Select.CondicaoPagamento.Select
                     {
                         id = Convert.ToInt32(reader["CondicaoPagamento_ID"]),
@@ -290,6 +297,9 @@ namespace Sistema.DAO
 	                    tbcompras.dtentrega AS Compra_DataEntrega,
 	                    tbcompras.observacao AS Compra_Observacao,
 	                    tbcompras.dtcadastro AS Compra_DataEntrada,
+	                    tbcompras.vlfrete AS Compra_Frete,
+	                    tbcompras.vlseguro AS Compra_Seguro,
+	                    tbcompras.vldespesas AS Compra_Despesas,
 	                    tbcompras.codfornecedor AS Fornecedor_ID,
 	                    tbfornecedores.nomerazaosocial AS Fornecedor_Nome,
 	                    tbcompras.codcondicao AS CondicaoPagamento_ID,

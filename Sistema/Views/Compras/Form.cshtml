@@ -118,7 +118,22 @@
 
 <div id="divFinaliza">
     <div class="form-row">
-        <div class="@Util.Input2">
+        <div class="@Util.Input3">
+            @Html.LabelFor(model => model.vlFrete, new { @class = "no-required" })
+            @Html.TextBoxFor(model => model.vlFrete, new { @class = "form-control money", placeholder = "0,00", style = "text-align: right" })
+        </div>
+
+        <div class="@Util.Input3">
+            @Html.LabelFor(model => model.vlSeguro, new { @class = "no-required" })
+            @Html.TextBoxFor(model => model.vlSeguro, new { @class = "form-control money", placeholder = "0,00", style = "text-align: right" })
+        </div>
+
+        <div class="@Util.Input3">
+            @Html.LabelFor(model => model.vlDespesas, new { @class = "no-required" })
+            @Html.TextBoxFor(model => model.vlDespesas, new { @class = "form-control money", placeholder = "0,00", style = "text-align: right" })
+        </div>
+
+        <div class="@Util.Input3">
             @Html.Label("Valor total da compra", new { @class = "no-required" })
             @Html.TextBoxFor(model => model.vlTotal, new { @class = "form-control", Disabled = true, placeholder = "0,00", style = "text-align: right" })
         </div>

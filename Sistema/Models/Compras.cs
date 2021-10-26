@@ -44,6 +44,15 @@ namespace Sistema.Models
         public string finalizar { get; set; }
         public decimal? vlTotal { get; set; }
 
+        [Display(Name = "Valor da frete")]
+        public decimal? vlFrete { get; set; }
+
+        [Display(Name = "Valor do seguro")]
+        public decimal? vlSeguro { get; set; }
+
+        [Display(Name = "Outras despesas")]
+        public decimal? vlDespesas { get; set; }
+
         public class ProdutosVM
         {
             public int? codProduto { get; set; }
