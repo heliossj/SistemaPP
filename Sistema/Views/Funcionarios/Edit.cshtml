@@ -36,5 +36,10 @@
     </div>
 }
 @section scripts{
+    <script type="text/javascript">
+        $("#dtAdmissao").prop('disabled', true);
+        let dtAdmissao = $("#dtAdmissao").val()
+        $("#dtAdmissaoAux").val(dtAdmissao)
+    </script>
     @Scripts.Render("~/Scripts/Funcionarios/Edit.js")
 }

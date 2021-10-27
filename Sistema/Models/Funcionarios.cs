@@ -14,6 +14,7 @@ namespace Sistema.Models
 
         [Display(Name = "Data de admissão")]
         public DateTime? dtAdmissao { get; set; }
+        public DateTime? dtAdmissaoAux { get; set; }
 
         [Display(Name = "Data de demissão")]
         public DateTime? dtDemissao { get; set; }

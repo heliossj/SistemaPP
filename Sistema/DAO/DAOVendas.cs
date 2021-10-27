@@ -74,6 +74,7 @@ namespace Sistema.DAO
                     );
                 string sqlProduto = "INSERT INTO tbprodutosvenda ( codvenda, codproduto, unidade, qtproduto, vlproduto, txdesconto ) VALUES ( {0}, {1}, '{2}', {3}, {4}, {5} )";
                 string sqlParcela = "INSERT INTO tbcontasreceber ( codvenda, codforma, nrparcela, vlparcela, dtvencimento, situacao, codcliente ) VALUES ({0}, {1}, {2}, {3}, {4}, '{5}', {6} )";
+                string sqlProdutoEstoque = "UPDATE tbprodutos set qtestoque -= {0} WHERE tbprodutos.codproduto = {1}";
                 using (con)
                 {
                     OpenConnection();
@@ -93,6 +94,10 @@ namespace Sistema.DAO
                             command.ExecuteNonQuery();
 
                             //VERIFICAR SE EXISTE A QUANTIDADE DO ITEM EM ESTOQUE ANTES DE VENDER
+
+                            var prodEstoque = string.Format(sqlProdutoEstoque, this.FormatDecimal(item.vlVenda), item.codProduto);
+                            command.CommandText = prodEstoque;
+                            command.ExecuteNonQuery();
                         }
                         foreach (var item in venda.ParcelasVenda)
                         {

@@ -139,7 +139,7 @@ namespace Sistema.DAO
                     //" cpf = '" + this.FormatCPF(funcionario.cpf) + "', " +
                     " rg = '" + this.FormatRG(funcionario.rg) + "', " +
                     " dtnascimento = '" + funcionario.dtNascimento.Value.ToString("yyyy-MM-dd") + "', " +
-                    " dtadmissao = '" + funcionario.dtAdmissao.Value.ToString("yyyy-MM-dd") + "', " +
+                    //" dtadmissao = '" + funcionario.dtAdmissao.Value.ToString("yyyy-MM-dd") + "', " +
                     " vlsalario = " + funcionario.vlSalario.ToString().Replace(",", ".") + ", " +
                     " dtdemissao = '" + ( funcionario.dtDemissao != null ? funcionario.dtDemissao.Value.ToString("yyyy-MM-dd") : "" )+ "', " +
                     " dtultalteracao = '" + DateTime.Now.ToString("yyyy-MM-dd") + "'," +

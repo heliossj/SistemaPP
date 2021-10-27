@@ -126,6 +126,7 @@
 </div>
 
 <div class="form-row">
+    @Html.HiddenFor(u => u.dtAdmissaoAux)
     <div class="@Util.Input3">
         @Html.LabelFor(model => model.dtAdmissao, new { @class = "required" })
         <div class="input-group-append">

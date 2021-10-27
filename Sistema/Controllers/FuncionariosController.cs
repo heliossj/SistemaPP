@@ -36,6 +36,10 @@ namespace Sistema.Controllers
         public ActionResult Create(Sistema.Models.Funcionarios model)
         {
             this.validForm(model);
+            if (model.dtAdmissao != null && model.dtAdmissao > DateTime.Now)
+            {
+                ModelState.AddModelError("dtAdmissao", "A data de admissão não pode ser maior que o dia de hoje");
+            }
             if (ModelState.IsValid)
             {
                 try
@@ -64,6 +68,7 @@ namespace Sistema.Controllers
         [HttpPost]
         public ActionResult Edit(Sistema.Models.Funcionarios model)
         {
+            model.dtAdmissao = model.dtAdmissaoAux != null ? model.dtAdmissaoAux : model.dtAdmissao;
             this.validForm(model);
             if (ModelState.IsValid)
             {

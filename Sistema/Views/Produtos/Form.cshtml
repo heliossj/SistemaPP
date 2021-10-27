@@ -75,13 +75,13 @@
 <div class="form-row">
     <div class="@Util.Input3">
         @Html.LabelFor(model => model.vlCusto, new { @class = "required" })
-        @Html.TextBoxFor(model => model.vlCusto, new { @class = "form-control money", placeholder = "0,00" })
+        @Html.TextBoxFor(model => model.vlCusto, new { @class = "form-control money", placeholder = "0,00", disabled = true })
         @Html.ValidationMessageFor(model => model.vlCusto, null, new { @class = "text-danger" })
     </div>
 
     <div class="@Util.Input3">
         @Html.LabelFor(model => model.vlUltCompra)
-        @Html.TextBoxFor(model => model.vlUltCompra, new { @class = "form-control money", type = "number", min = "0.01", step = ".01", placeholder = "0,00", oninput = "this.value = Math.abs(this.value)", disabled = true })
+        @Html.TextBoxFor(model => model.vlUltCompra, new { @class = "form-control money", placeholder = "0,00", disabled = true })
         @Html.ValidationMessageFor(model => model.vlUltCompra, null, new { @class = "text-danger" })
     </div>
 
