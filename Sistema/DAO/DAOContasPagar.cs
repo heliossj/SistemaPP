@@ -43,8 +43,24 @@ namespace Sistema.DAO
                         situacao = Convert.ToString(reader["ContaPagar_Situacao"]),
                         modelo = Convert.ToString(reader["ContaPagar_Modelo"]),
                         serie = Convert.ToString(reader["ContaPagar_Serie"]),
-                        numero = Convert.ToInt32(reader["ContaPagar_Numero"])
+                        numero = Convert.ToInt32(reader["ContaPagar_Numero"]),
+                        txJuros = Convert.ToDecimal(reader["ContaPagar_Juros"]),
+                        multa = Convert.ToDecimal(reader["ContaPagar_Multa"]),
+                        desconto = Convert.ToDecimal(reader["ContaPagar_Desconto"])
                     };
+
+                    if (DateTime.Now.Date > contaPagar.dtVencimento.Date)
+                    {
+                        var dtBase = (DateTime.Now - contaPagar.dtVencimento).Days;
+                        decimal txJusto = decimal.Round((contaPagar.txJuros * contaPagar.vlParcela) / 100, 2);
+                        decimal multaDiaria = decimal.Round(((contaPagar.multa * contaPagar.vlParcela) / 100) * dtBase, 2);
+                        contaPagar.vlParcela = contaPagar.vlParcela + multaDiaria + txJusto;
+                    }
+                    else
+                    {
+                        var txDesconto = decimal.Round((contaPagar.desconto * contaPagar.vlParcela) / 100, 2);
+                        contaPagar.vlParcela = contaPagar.vlParcela - txDesconto;
+                    }
                     list.Add(contaPagar);
                 }
                 return list;
@@ -93,6 +109,22 @@ namespace Sistema.DAO
                         id = !string.IsNullOrEmpty(reader["ContaContabil_ID"].ToString()) ? Convert.ToInt32(reader["ContaContabil_ID"]) : (int?)null,
                         text = !string.IsNullOrEmpty(reader["ContaContabil_Nome"].ToString()) ? Convert.ToString(reader["ContaContabil_Nome"]) : string.Empty
                     };
+                    model.txJuros = Convert.ToDecimal(reader["ContaPagar_Juros"]);
+                    model.multa = Convert.ToDecimal(reader["ContaPagar_Multa"]);
+                    model.desconto = Convert.ToDecimal(reader["ContaPagar_Desconto"]);
+
+                    if (DateTime.Now.Date > model.dtVencimento.Date)
+                    {
+                        var dtBase = (DateTime.Now - model.dtVencimento).Days;
+                        decimal txJusto = decimal.Round((model.txJuros * model.vlParcela) / 100, 2);
+                        decimal multaDiaria = decimal.Round(((model.multa * model.vlParcela) / 100) * dtBase, 2);
+                        model.vlParcela = model.vlParcela + multaDiaria + txJusto;
+                    }
+                    else
+                    {
+                        var txDesconto = decimal.Round((model.desconto * model.vlParcela) / 100, 2);
+                        model.vlParcela = model.vlParcela - txDesconto;
+                    }
                 }
                 return model;
             }
@@ -229,7 +261,10 @@ namespace Sistema.DAO
 	                tbcontaspagar.serie AS ContaPagar_Serie,
 	                tbcontaspagar.numero AS ContaPagar_Numero,
 	                tbcontaspagar.codconta AS ContaContabil_ID,
-	                tbcontascontabeis.nomeconta AS ContaContabil_Nome
+	                tbcontascontabeis.nomeconta AS ContaContabil_Nome,
+	                tbcontaspagar.juros AS ContaPagar_Juros,
+	                tbcontaspagar.multa AS ContaPagar_Multa,
+	                tbcontaspagar.desconto AS ContaPagar_Desconto
                 FROM tbcontaspagar
                 INNER JOIN tbfornecedores ON tbcontaspagar.codfornecedor = tbfornecedores.codfornecedor
                 INNER JOIN tbformapagamento ON tbcontaspagar.codforma = tbformapagamento.codforma

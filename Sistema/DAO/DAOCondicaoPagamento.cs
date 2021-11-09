@@ -52,9 +52,9 @@ namespace Sistema.DAO
             {
                 var sql = string.Format("INSERT INTO tbcondpagamentos ( nomecondicao, txjuros, multa, desconto, situacao, dtcadastro, dtultalteracao) VALUES ('{0}', {1}, {2}, {3}, '{4}', '{5}', '{6}'); SELECT SCOPE_IDENTITY()",
                     this.FormatString(condicaPagamento.nomeCondicao),
-                    condicaPagamento.txJuros != null ? condicaPagamento.txJuros : 0,
-                    condicaPagamento.multa != null ? condicaPagamento.multa : 0,
-                    condicaPagamento.desconto != null ? condicaPagamento.desconto : 0,
+                    condicaPagamento.txJuros != null ? this.FormatDecimal(condicaPagamento.txJuros) : "0",
+                    condicaPagamento.multa != null ? this.FormatDecimal(condicaPagamento.multa) : "0",
+                    condicaPagamento.desconto != null ? this.FormatDecimal(condicaPagamento.desconto) : "0",
                     this.FormatString(condicaPagamento.situacao),
                     DateTime.Now.ToString("yyyy-MM-dd"),
                     DateTime.Now.ToString("yyyy-MM-dd")
@@ -110,9 +110,9 @@ namespace Sistema.DAO
 
                 string sql = "UPDATE tbcondpagamentos SET nomecondicao = '"
                     + this.FormatString(condicaoPagamento.nomeCondicao) + "', "
-                    + " txjuros = " + ( condicaoPagamento.txJuros != null ? condicaoPagamento.txJuros.ToString().Replace(",", ".") : "0" ) + ", "
-                    + " multa = " + ( condicaoPagamento.multa != null ? condicaoPagamento.multa.ToString().Replace(",", ".") : "0" ) + ", "
-                    + " desconto = " + ( condicaoPagamento.desconto != null ? condicaoPagamento.desconto.ToString().Replace(",", ".") : "0" ) + ", "
+                    + " txjuros = " + ( condicaoPagamento.txJuros != null ? this.FormatDecimal(condicaoPagamento.txJuros) : "0" ) + ", "
+                    + " multa = " + ( condicaoPagamento.multa != null ? this.FormatDecimal(condicaoPagamento.multa) : "0" ) + ", "
+                    + " desconto = " + ( condicaoPagamento.desconto != null ? this.FormatDecimal(condicaoPagamento.desconto) : "0" ) + ", "
                     + " situacao = '" + this.FormatString(condicaoPagamento.situacao) + "', "
                     + " dtultalteracao = '" + ( DateTime.Now.ToString("yyyy-MM-dd") )+ "' "
                     + " WHERE codcondicao = " + condicaoPagamento.codigo;
@@ -266,6 +266,9 @@ namespace Sistema.DAO
                     {
                         id = Convert.ToInt32(reader["CondicaoPagamento_ID"]),
                         text = Convert.ToString(reader["CondicaoPagamento_Nome"]),
+                        txJuros = Convert.ToDecimal(reader["CondicaoPagamento_TaxaJuros"]),
+                        multa = Convert.ToDecimal(reader["CondicaoPagamento_Multa"]),
+                        desconto = Convert.ToDecimal(reader["CondicaoPagamento_Desconto"])
                     };
 
                     list.Add(condicaoPagamento);

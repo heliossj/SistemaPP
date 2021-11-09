@@ -103,7 +103,7 @@ namespace Sistema.DAO
                     compra.vlDespesas != null ? this.FormatDecimal(compra.vlDespesas).ToString() : "null"
                     );
                 string sqlProduto = "INSERT INTO tbprodutoscompra ( codproduto, unidade, qtproduto, vlcompra, txdesconto, vlvenda, modelo, serie, numero, codfornecedor) VALUES ( {0}, '{1}', {2}, {3}, {4}, {5}, '{6}', '{7}', {8}, {9})";
-                string sqlParcela = "INSERT INTO tbcontaspagar (codfornecedor, codforma, nrparcela, vlparcela, dtvencimento, situacao, modelo, serie, numero) VALUES ({0}, {1}, {2}, {3}, {4}, '{5}', '{6}', '{7}', {8})";
+                string sqlParcela = "INSERT INTO tbcontaspagar (codfornecedor, codforma, nrparcela, vlparcela, dtvencimento, situacao, modelo, serie, numero, juros, multa, desconto) VALUES ({0}, {1}, {2}, {3}, {4}, '{5}', '{6}', '{7}', {8}, {9}, {10}, {11})";
                 string sqlUpdateProduto = "UPDATE tbprodutos set qtestoque += {0}, vlultcompra += {1} WHERE codproduto = {2}";
                 using (con)
                 {
@@ -131,7 +131,7 @@ namespace Sistema.DAO
 
                         foreach (var item in compra.ParcelasCompra)
                         {
-                            var parcela = string.Format(sqlParcela, compra.Fornecedor.id, item.idFormaPagamento, item.nrParcela, this.FormatDecimal(item.vlParcela), this.FormatDate(item.dtVencimento), "P", compra.modelo, compra.serie, compra.nrNota);
+                            var parcela = string.Format(sqlParcela, compra.Fornecedor.id, item.idFormaPagamento, item.nrParcela, this.FormatDecimal(item.vlParcela), this.FormatDate(item.dtVencimento), "P", compra.modelo, compra.serie, compra.nrNota, this.FormatDecimal(compra.CondicaoPagamento.txJuros), this.FormatDecimal(compra.CondicaoPagamento.multa), this.FormatDecimal(compra.CondicaoPagamento.desconto));
                             command.CommandText = parcela;
                             command.ExecuteNonQuery();
                         }

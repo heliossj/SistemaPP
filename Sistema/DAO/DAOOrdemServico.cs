@@ -134,6 +134,82 @@ namespace Sistema.DAO
             }
         }
 
+        public bool Update(Models.OrdemServico OS)
+        {
+            try
+            {
+                var sql = "UPDATE tbordemservicos set situacao = '" + this.FormatString(OS.situacao) + "', " +
+                    "observacao = '" + this.FormatString(OS.observacao) + "', " +
+                    "dtultalteracao = " +this.FormatDate(DateTime.Now);
+
+                string sqlServico = "INSERT INTO tbservicosos ( codordemservico, codservico, unidade, qtservico, vlservico, codexecutante) VALUES ({0}, {1}, '{2}', {3}, {4}, {5})";
+                string sqlProduto = "INSERT INTO tbprodutosos ( codordemservico, codproduto, unidade, qtproduto, vlproduto) VALUES ({0}, {1}, '{2}', {3}, {4})";
+                string sqlParcela = "INSERT INTO tbcontasreceber (codfornecedor, codforma, nrparcela, vlparcela, dtvencimento, situacao, codcompra) VALUES ({0}, {1}, {2}, {3}, {4}, '{5}', {6} )";
+                using (con)
+                {
+                    OpenConnection();
+
+                    SqlTransaction sqlTrans = con.BeginTransaction();
+                    SqlCommand command = con.CreateCommand();
+                    command.Transaction = sqlTrans;
+                    try
+                    {
+                        command.CommandText = sql;
+                        var removeServicos = "DELETE FROM tbservicosos WHERE codordemservico = " + OS.codigo;
+                        command.CommandText = removeServicos;
+                        command.ExecuteNonQuery();
+                        foreach (var item in OS.ServicosOS)
+                        {
+                            var Servico = string.Format(sqlServico, OS.codigo, item.codServico, this.FormatString(item.unidade), this.FormatDecimal(item.qtServico), this.FormatDecimal(item.vlServico), item.codExecutante);
+                            command.CommandText = Servico;
+                            command.ExecuteNonQuery();
+                        }
+
+                        var removeProdutos = "DELETE FROM tbprodutosos WHERE codordemservico = " + OS.codigo;
+                        command.CommandText = removeProdutos;
+                        command.ExecuteNonQuery();
+                        foreach (var item in OS.ProdutosOS)
+                        {
+                            var produto = string.Format(sqlProduto, OS.codigo, item.codProduto, this.FormatString(item.unidade), this.FormatDecimal(item.qtProduto), this.FormatDecimal(item.vlProduto));
+                            command.CommandText = produto;
+                            command.ExecuteNonQuery();
+                        }
+
+                        //if (OS.situacao == "T")
+                        //se a situação for autorizada, aí gera as vendas e insere...
+                        //if (OS.situacao == "T")
+
+                        //foreach (var item in OS.ParcelasOS)
+                        //{
+                        //    var parcela = string.Format(sqlParcela, compra.Fornecedor.id, item.idFormaPagamento, item.nrParcela, this.FormatDecimal(item.vlParcela), this.FormatDate(item.dtVencimento), "P", codCompra);
+                        //    command.CommandText = parcela;
+                        //    command.ExecuteNonQuery();
+                        //}
+
+                        sqlTrans.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        sqlTrans.Rollback();
+                        throw new Exception(ex.Message);
+                    }
+                    finally
+                    {
+                        con.Close();
+                    }
+                }
+                return true;
+            }
+            catch (Exception error)
+            {
+                throw new Exception(error.Message);
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
+
         public void CancelarCompra(int? codCompra)
         {
             throw new Exception("Não implementado");

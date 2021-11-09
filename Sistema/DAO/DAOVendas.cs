@@ -73,7 +73,7 @@ namespace Sistema.DAO
                     venda.modelo
                     );
                 string sqlProduto = "INSERT INTO tbprodutosvenda ( codvenda, codproduto, unidade, qtproduto, vlproduto, txdesconto ) VALUES ( {0}, {1}, '{2}', {3}, {4}, {5} )";
-                string sqlParcela = "INSERT INTO tbcontasreceber ( codvenda, codforma, nrparcela, vlparcela, dtvencimento, situacao, codcliente ) VALUES ({0}, {1}, {2}, {3}, {4}, '{5}', {6} )";
+                string sqlParcela = "INSERT INTO tbcontasreceber ( codvenda, codforma, nrparcela, vlparcela, dtvencimento, situacao, codcliente, juros, multa, desconto ) VALUES ({0}, {1}, {2}, {3}, {4}, '{5}', {6}, {7}, {8}, {9} )";
                 string sqlProdutoEstoque = "UPDATE tbprodutos set qtestoque -= {0} WHERE tbprodutos.codproduto = {1}";
                 using (con)
                 {
@@ -101,7 +101,7 @@ namespace Sistema.DAO
                         }
                         foreach (var item in venda.ParcelasVenda)
                         {
-                            var parcela = string.Format(sqlParcela, codVenda, item.idFormaPagamento, item.nrParcela, this.FormatDecimal(item.vlParcela), this.FormatDate(item.dtVencimento), "P", venda.Cliente.id);
+                            var parcela = string.Format(sqlParcela, codVenda, item.idFormaPagamento, item.nrParcela, this.FormatDecimal(item.vlParcela), this.FormatDate(item.dtVencimento), "P", venda.Cliente.id, this.FormatDecimal(venda.CondicaoPagamento.txJuros), this.FormatDecimal(venda.CondicaoPagamento.multa), this.FormatDecimal(venda.CondicaoPagamento.desconto));
                             command.CommandText = parcela;
                             command.ExecuteNonQuery();
                         }

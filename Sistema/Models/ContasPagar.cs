@@ -35,5 +35,9 @@ namespace Sistema.Models
 
         [Display(Name = "Número")]
         public int numero { get; set; }
+
+        public decimal txJuros { get; set; }
+        public decimal multa { get; set; }
+        public decimal desconto { get; set; }
     }
 }

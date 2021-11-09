@@ -226,7 +226,9 @@ namespace Sistema.Controllers
             {
                 id = u.id,
                 text = u.text,
-
+                txJuros = u.txJuros,
+                multa = u.multa,
+                desconto = u.desconto
             }).OrderBy(u => u.text).ToList();
             return select.AsQueryable();
         }

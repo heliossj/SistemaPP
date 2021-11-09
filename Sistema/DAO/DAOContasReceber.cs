@@ -42,8 +42,22 @@ namespace Sistema.DAO
                         dtVencimento = Convert.ToDateTime(reader["ContaReceber_DataVencimento"]),
                         dtPagamento = !string.IsNullOrEmpty(reader["ContaReceber_DataPagamento"].ToString()) ? Convert.ToDateTime(reader["ContaReceber_DataPagamento"]) : (DateTime?)null,
                         situacao = Convert.ToString(reader["ContaReceber_Situacao"]),
-                        
+                        txJuros = Convert.ToDecimal(reader["ContaReceber_Juros"]),
+                        multa = Convert.ToDecimal(reader["ContaReceber_Multa"]),
+                        desconto = Convert.ToDecimal(reader["ContaReceber_Desconto"]),
                     };
+                    if (DateTime.Now.Date > contaReceber.dtVencimento.Date)
+                    {
+                        var dtBase = (DateTime.Now - contaReceber.dtVencimento).Days;
+                        decimal txJusto = decimal.Round((contaReceber.txJuros * contaReceber.vlParcela) / 100, 2);
+                        decimal multaDiaria = decimal.Round(((contaReceber.multa * contaReceber.vlParcela) / 100) * dtBase, 2);
+                        contaReceber.vlParcela = contaReceber.vlParcela + multaDiaria + txJusto;
+                    }
+                    else
+                    {
+                        var txDesconto = decimal.Round((contaReceber.desconto * contaReceber.vlParcela) / 100, 2);
+                        contaReceber.vlParcela = contaReceber.vlParcela - txDesconto;
+                    }
                     list.Add(contaReceber);
                 }
                 return list;
@@ -92,7 +106,23 @@ namespace Sistema.DAO
                         model.vlParcela = Convert.ToDecimal(reader["ContaReceber_Valor"]);
                         model.dtVencimento = Convert.ToDateTime(reader["ContaReceber_DataVencimento"]);
                         model.dtPagamento = !string.IsNullOrEmpty(reader["ContaReceber_DataPagamento"].ToString()) ? Convert.ToDateTime(reader["ContaReceber_DataPagamento"]) : (DateTime?)null;
-                        model.situacao = Convert.ToString(reader["ContaReceber_Situacao"]);
+                        model.situacao = (reader["ContaReceber_Situacao"].ToString() == "P" ? "PENDENTE" : "PAGA");
+                        model.txJuros = Convert.ToDecimal(reader["ContaReceber_Juros"]);
+                        model.multa = Convert.ToDecimal(reader["ContaReceber_Multa"]);
+                        model.desconto = Convert.ToDecimal(reader["ContaReceber_Desconto"]);
+
+                        if (DateTime.Now.Date > model.dtVencimento.Date)
+                        {
+                            var dtBase = (DateTime.Now - model.dtVencimento).Days;
+                            decimal txJusto = decimal.Round((model.txJuros * model.vlParcela) / 100, 2);
+                            decimal multaDiaria = decimal.Round(((model.multa * model.vlParcela) / 100) * dtBase, 2);
+                            model.vlParcela = model.vlParcela + multaDiaria + txJusto;
+                        }
+                        else
+                        {
+                            var txDesconto = decimal.Round((model.desconto * model.vlParcela) / 100, 2);
+                            model.vlParcela = model.vlParcela - txDesconto;
+                        }
                     }
                 }
                 return model;
@@ -186,7 +216,10 @@ namespace Sistema.DAO
 	                tbcontasreceber.codcliente AS Cliente_ID,
 	                tbclientes.nomerazaosocial AS Cliente_Nome,
                     tbcontasreceber.codconta AS ContaContabil_ID,
-                    tbcontascontabeis.nomeconta AS ContaContabil_Nome
+                    tbcontascontabeis.nomeconta AS ContaContabil_Nome,
+					tbcontasreceber.juros AS ContaReceber_Juros,
+					tbcontasreceber.multa AS ContaReceber_Multa,
+					tbcontasreceber.desconto AS ContaReceber_Desconto
                 FROM tbcontasreceber
                 INNER JOIN tbformapagamento ON tbcontasreceber.codforma = tbformapagamento.codforma
                 INNER JOIN tbclientes ON tbcontasreceber.codcliente = tbclientes.codcliente

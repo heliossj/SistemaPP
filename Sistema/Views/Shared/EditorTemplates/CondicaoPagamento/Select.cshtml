@@ -15,6 +15,9 @@
 
 @Html.Hidden("isEdit")
 
+@Html.HiddenFor(u => u.txJuros)
+@Html.HiddenFor(u => u.multa)
+@Html.HiddenFor(u => u.desconto)
 <div class="@classForm">
     @Html.Label("", Label, new { @class = "required" })
     <div class="input-group">
