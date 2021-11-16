@@ -86,7 +86,15 @@
                     </td>
                     <td>
                         @Html.ActionLink(" ", "Details", new { id = item.codigo }, new { @class = "btn btn-success btn-sm fa fa-eye", @title = "Visualizar registro" })
-                        @Html.ActionLink(" ", "Edit", new { id = item.codigo }, new { @class = "btn btn-warning btn-sm fa fa-edit", @title = "Editar registro" })
+                        @if (item.situacao != "F")
+                        {
+                            @Html.ActionLink(" ", "Edit", new { id = item.codigo }, new { @class = "btn btn-warning btn-sm fa fa-edit", @title = "Editar registro" })
+                        }
+                        else
+                        {
+                            <a class='btn btn-secondary btn-sm' style="height:26px; width:33px" title="Ação indisponível" data-trigger='hover'><i class='fa fa-info'></i></a>
+                        }
+
                         @*@Html.ActionLink(" ", "Finalizar", new { id = item.codigo }, new { @class = "btn btn-dark btn-sm fa fa-check", @title = "Finalizar registro" })*@
                     </td>
                 </tr>
