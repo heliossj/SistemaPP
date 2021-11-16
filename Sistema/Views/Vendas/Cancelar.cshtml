@@ -26,7 +26,14 @@
             @Html.RenderFlashMessage()
             @Html.CustomValidationSummary(true, true, Sistema.Util.AlertMessage.ERROR_MESSAGE, new { @class = "alert alert-danger", role = "alert" })
             <fieldset disabled>
-                @Html.Partial("Form", Model)
+                @if (Model.modelo == "65")
+                {
+                    @Html.Partial("Form", Model)
+                }
+                else
+                {
+                    @Html.Partial("FormServico", Model)
+                }
             </fieldset>
         </div>
         <div style="text-align:center">
@@ -36,5 +43,12 @@
     </div>
 }
 @section scripts{
-    @Scripts.Render("~/Scripts/Vendas/Details.js")
+    @if (Model.modelo == "65")
+    {
+        @Scripts.Render("~/Scripts/Vendas/Details.js");
+    }
+    @if (Model.modelo == "56")
+    {
+        @Scripts.Render("~/Scripts/Vendas/DetailsServico.js");
+    }
 }

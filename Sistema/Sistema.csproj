@@ -176,6 +176,7 @@
     <Compile Include="Models\ContasPagar.cs" />
     <Compile Include="Models\ContasContabeis.cs" />
     <Compile Include="Models\Shared.cs" />
+    <Compile Include="Models\VendasOS.cs" />
     <Compile Include="Models\Vendas.cs" />
     <Compile Include="Models\Compras.cs" />
     <Compile Include="Models\Pessoas.cs" />
@@ -258,6 +259,8 @@
     <Content Include="Scripts\Produtos\Details.js" />
     <Content Include="Scripts\Produtos\Create.js" />
     <Content Include="Scripts\ContasContabeis\Index.js" />
+    <Content Include="Scripts\Vendas\DetailsServico.js" />
+    <Content Include="Scripts\Vendas\VendasOS.js" />
     <Content Include="Scripts\Vendas\Create.js" />
     <Content Include="Scripts\Vendas\Details.js" />
     <Content Include="Scripts\Vendas\Index.js" />
@@ -545,6 +548,9 @@
     <Content Include="Views\ContasReceber\Form.cshtml" />
     <Content Include="Views\ContasReceber\Index.cshtml" />
     <Content Include="Views\ContasReceber\Receber.cshtml" />
+    <Content Include="Views\Vendas\VendaOS.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\CondicaoPagamentoDois\Select.cshtml" />
+    <Content Include="Views\Vendas\FormServico.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

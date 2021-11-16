@@ -119,7 +119,6 @@ namespace Sistema.Models
             {
                 return new[]
                 {
-                    new SelectListItem { Value = "A", Text = "ABERTA" },
                     new SelectListItem { Value = "T", Text = "AUTORIZADA"},
                     new SelectListItem { Value = "C", Text = "CANCELADA" },
                     new SelectListItem { Value = "F", Text = "FINALIZADA" },

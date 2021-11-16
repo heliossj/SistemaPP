@@ -140,10 +140,14 @@ namespace Sistema.DAO
             {
                 var sql = "UPDATE tbordemservicos set situacao = '" + this.FormatString(OS.situacao) + "', " +
                     "observacao = '" + this.FormatString(OS.observacao) + "', " +
-                    "dtultalteracao = " +this.FormatDate(DateTime.Now);
+                    "dtultalteracao = " + this.FormatDate(DateTime.Now) + ", " +
+                    "codcondpagamento = " + OS.CondicaoPagamento.id +
 
+                    " WHERE codordemservico = " + OS.codigo;
+                    ;
                 string sqlServico = "INSERT INTO tbservicosos ( codordemservico, codservico, unidade, qtservico, vlservico, codexecutante) VALUES ({0}, {1}, '{2}', {3}, {4}, {5})";
                 string sqlProduto = "INSERT INTO tbprodutosos ( codordemservico, codproduto, unidade, qtproduto, vlproduto) VALUES ({0}, {1}, '{2}', {3}, {4})";
+                //aqui não vai existir venda
                 string sqlParcela = "INSERT INTO tbcontasreceber (codfornecedor, codforma, nrparcela, vlparcela, dtvencimento, situacao, codcompra) VALUES ({0}, {1}, {2}, {3}, {4}, '{5}', {6} )";
                 using (con)
                 {
@@ -155,6 +159,8 @@ namespace Sistema.DAO
                     try
                     {
                         command.CommandText = sql;
+                        command.ExecuteNonQuery();
+
                         var removeServicos = "DELETE FROM tbservicosos WHERE codordemservico = " + OS.codigo;
                         command.CommandText = removeServicos;
                         command.ExecuteNonQuery();
@@ -255,7 +261,10 @@ namespace Sistema.DAO
                     model.CondicaoPagamento = new Select.CondicaoPagamento.Select
                     {
                         id = Convert.ToInt32(reader["CondicaoPagamento_ID"]),
-                        text = Convert.ToString(reader["CondicaoPagamento_Nome"])
+                        text = Convert.ToString(reader["CondicaoPagamento_Nome"]),
+                        desconto = Convert.ToDecimal(reader["CondicaoPagamento_Desconto"]),
+                        multa = Convert.ToDecimal(reader["CondicaoPagamento_Multa"]),
+                        txJuros = Convert.ToDecimal(reader["CondicaoPagamento_Juros"])
                     };
                 };
 
@@ -356,7 +365,10 @@ namespace Sistema.DAO
                 tbordemservicos.codfuncionario AS Funcionario_ID,
                 tbfuncionarios.nomefuncionario AS Funcionario_Nome,
                 tbordemservicos.codcondpagamento AS CondicaoPagamento_ID,
-                tbcondpagamentos.nomecondicao AS CondicaoPagamento_Nome
+                tbcondpagamentos.nomecondicao AS CondicaoPagamento_Nome,
+                tbcondpagamentos.desconto AS CondicaoPagamento_Desconto,
+                tbcondpagamentos.multa AS CondicaoPagamento_Multa,
+                tbcondpagamentos.txjuros AS CondicaoPagamento_Juros
                 FROM tbordemservicos
             INNER JOIN tbclientes ON tbordemservicos.codcliente = tbclientes.codcliente
             INNER JOIN tbfuncionarios ON tbordemservicos.codfuncionario = tbfuncionarios.codfuncionario

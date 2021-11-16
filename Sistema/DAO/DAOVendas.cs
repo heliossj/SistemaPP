@@ -28,10 +28,11 @@ namespace Sistema.DAO
                     {
                         codigo = Convert.ToInt32(reader["Venda_ID"]),
                         situacao = Util.FormatFlag.Situacao(Convert.ToString(reader["Venda_Situacao"])),
+                        modelo = Convert.ToString(reader["Venda_Modelo"]),
                         dtVenda = Convert.ToDateTime(reader["Venda_Data"]),
                         Funcionario = new Select.Funcionarios.Select
                         {
-                            id  = Convert.ToInt32(reader["Vendedor_ID"]),
+                            id = Convert.ToInt32(reader["Vendedor_ID"]),
                             text = Convert.ToString(reader["Vendedor_Nome"])
                         },
                         Cliente = new Select.Clientes.Select
@@ -129,6 +130,74 @@ namespace Sistema.DAO
             }
         }
 
+        public bool InsertServico(Models.VendasOS venda)
+        {
+            try
+            {
+                var sql = string.Format("INSERT INTO tbvendas ( situacao, dtvenda, codvendedor, codcliente, codcondicao, codordemservico, modelo) VALUES ( '{0}', {1}, {2}, {3}, {4}, {5}, '{6}' ); SELECT SCOPE_IDENTITY()",
+                    "N",
+                    this.FormatDateTime(DateTime.Now),
+                    venda.Funcionario.id,
+                    venda.Cliente.id,
+                    venda.CondicaoPagamento.id,
+                    venda.codOrdemServico != null ? venda.codOrdemServico.ToString() : "null",
+                    "56"
+                    );
+                string sqlServico = "INSERT INTO tbservicosvenda ( codvenda, codservico, codexecutante, qtservico, vlservico, unidade ) VALUES ( {0}, {1}, {2}, {3}, {4}, '{5}')";
+                string sqlParcela = "INSERT INTO tbcontasreceber ( codvenda, codforma, nrparcela, vlparcela, dtvencimento, situacao, codcliente, juros, multa, desconto ) VALUES ({0}, {1}, {2}, {3}, {4}, '{5}', {6}, {7}, {8}, {9} )";
+                using (con)
+                {
+                    OpenConnection();
+
+                    SqlTransaction sqlTrans = con.BeginTransaction();
+                    SqlCommand command = con.CreateCommand();
+                    command.Transaction = sqlTrans;
+                    try
+                    {
+                        command.CommandText = sql;
+                        var codVenda = Convert.ToInt32(command.ExecuteScalar());
+
+                        foreach (var item in venda.ServicosOS)
+                        {
+                            var servico = string.Format(sqlServico, codVenda, item.codServico, item.codExecutante, this.FormatDecimal(item.qtServico), this.FormatDecimal(item.vlServico), item.unidade);
+                            command.CommandText = servico;
+                            command.ExecuteNonQuery();
+                        }
+                        foreach (var item in venda.ParcelasVendaServicos)
+                        {
+                            var parcela = string.Format(sqlParcela, codVenda, item.idFormaPagamento, item.nrParcela, this.FormatDecimal(item.vlParcela), this.FormatDate(item.dtVencimento), "P", venda.Cliente.id, this.FormatDecimal(venda.CondicaoPagamento.txJuros), this.FormatDecimal(venda.CondicaoPagamento.multa), this.FormatDecimal(venda.CondicaoPagamento.desconto));
+                            command.CommandText = parcela;
+                            command.ExecuteNonQuery();
+                        }
+
+                        var updateOS = "UPDATE tbordemservicos set situacao = 'F' WHERE codordemservico = " + venda.codigo;
+                        command.CommandText = updateOS;
+                        command.ExecuteNonQuery();
+
+                        sqlTrans.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        sqlTrans.Rollback();
+                        throw new Exception(ex.Message);
+                    }
+                    finally
+                    {
+                        con.Close();
+                    }
+                }
+                return true;
+            }
+            catch (Exception error)
+            {
+                throw new Exception(error.Message);
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
+
         public void CancelarVenda(int? codVenda)
         {
             throw new Exception("Não implementado");
@@ -142,11 +211,18 @@ namespace Sistema.DAO
                 OpenConnection();
                 var sql = this.Search(codVenda, null, modelo);
                 var sqlProdutos = this.SearchProdutos(codVenda);
+                var sqlServicos = this.SearchServicos(codVenda);
                 var sqlParcelas = this.SearchParcelas(codVenda);
                 var listProdutos = new List<Vendas.ProdutosVM>();
+                var listServicos = new List<Vendas.ServicosVM>();
                 var listParcelas = new List<Shared.ParcelasVM>();
 
-                SqlQuery = new SqlCommand(sql + sqlProdutos + sqlParcelas, con);
+                if (modelo == "65")
+                    SqlQuery = new SqlCommand(sql + sqlProdutos + sqlParcelas, con);
+                if (modelo == "56")
+                    SqlQuery = new SqlCommand(sql + sqlServicos + sqlParcelas, con);
+
+                //SqlQuery = new SqlCommand(sql + sqlProdutos + sqlServicos + sqlParcelas, con);
                 reader = SqlQuery.ExecuteReader();
                 while (reader.Read())
                 {
@@ -168,28 +244,53 @@ namespace Sistema.DAO
                         id = Convert.ToInt32(reader["Vendedor_ID"]),
                         text = Convert.ToString(reader["Vendedor_Nome"])
                     };
+                    model.modelo = Convert.ToString(reader["Venda_Modelo"]);
                 };
-                if (reader.NextResult())
+                if (model.modelo == "65")
                 {
-                    while (reader.Read())
+                    if (reader.NextResult())
                     {
-                        var produto = new Vendas.ProdutosVM
+                        while (reader.Read())
                         {
-                            codProduto = Convert.ToInt32(reader["Produto_ID"]),
-                            nomeProduto = Convert.ToString(reader["Produto_Nome"]),
-                            unidade = Convert.ToString(reader["Produto_Unidade"]),
-                            qtProduto = Convert.ToDecimal(reader["Produto_Quantidade"]),
-                            vlVenda = Convert.ToDecimal(reader["Produto_Valor"]),
-                            txDesconto = Convert.ToDecimal(reader["Produto_TaxaDesconto"])                       
-                        };
-                        if (produto.txDesconto != null && produto.txDesconto != 0)
-                        {
-                            decimal txDesc;
-                            txDesc = (produto.vlVenda * produto.txDesconto.GetValueOrDefault()) / 100;
-                            produto.vlVenda = produto.vlVenda - txDesc;
+                            var produto = new Vendas.ProdutosVM
+                            {
+                                codProduto = Convert.ToInt32(reader["Produto_ID"]),
+                                nomeProduto = Convert.ToString(reader["Produto_Nome"]),
+                                unidade = Convert.ToString(reader["Produto_Unidade"]),
+                                qtProduto = Convert.ToDecimal(reader["Produto_Quantidade"]),
+                                vlVenda = Convert.ToDecimal(reader["Produto_Valor"]),
+                                txDesconto = Convert.ToDecimal(reader["Produto_TaxaDesconto"])
+                            };
+                            if (produto.txDesconto != null && produto.txDesconto != 0)
+                            {
+                                decimal txDesc;
+                                txDesc = (produto.vlVenda * produto.txDesconto.GetValueOrDefault()) / 100;
+                                produto.vlVenda = produto.vlVenda - txDesc;
+                            }
+                            produto.vlTotal = produto.vlVenda * produto.qtProduto;
+                            listProdutos.Add(produto);
                         }
-                        produto.vlTotal = produto.vlVenda * produto.qtProduto;
-                        listProdutos.Add(produto);
+                    }
+                }
+                else
+                {
+                    if (reader.NextResult())
+                    {
+                        while (reader.Read())
+                        {
+                            var servico = new Vendas.ServicosVM
+                            {
+                                codExecutante = Convert.ToInt16(reader["Executente_ID"]),
+                                nomeExecutante = Convert.ToString(reader["Executante_Nome"]),
+                                codServico = Convert.ToInt32(reader["Servico_ID"]),
+                                nomeServico = Convert.ToString(reader["Servico_Nome"]),
+                                qtServico = Convert.ToDecimal(reader["Servico_Quantidade"]),
+                                unidade = Convert.ToString(reader["Servico_Unidade"]),
+                                vlServico = Convert.ToDecimal(reader["Servico_Valor"])
+                            };
+                            servico.total = servico.qtServico * servico.vlServico;
+                            listServicos.Add(servico);
+                        }
                     }
                 }
                 if (reader.NextResult())
@@ -209,6 +310,7 @@ namespace Sistema.DAO
                     }
                 }
                 model.ProdutosVenda = listProdutos;
+                model.ServicosVenda = listServicos;
                 model.ParcelasVenda = listParcelas;
                 return model;
             }
@@ -280,6 +382,28 @@ namespace Sistema.DAO
                     FROM tbprodutosvenda
                     INNER JOIN tbprodutos ON tbprodutosvenda.codproduto = tbprodutos.codproduto
                     WHERE tbprodutosvenda.codvenda = " + id + ";"
+            ;
+            return sql;
+        }
+
+        private string SearchServicos(int? id)
+        {
+            var sql = string.Empty;
+
+            sql = @"
+                    SELECT
+	                    tbservicosvenda.codvenda AS Venda_ID,
+	                    tbservicosvenda.codservico AS Servico_ID,
+	                    tbservicos.nomeservico AS Servico_Nome,
+	                    tbservicosvenda.codexecutante AS Executente_ID,
+	                    tbfuncionarios.nomefuncionario AS Executante_Nome,
+	                    tbservicosvenda.qtservico AS Servico_Quantidade,
+	                    tbservicosvenda.vlservico AS Servico_Valor,
+	                    tbservicosvenda.unidade AS Servico_Unidade
+                    FROM tbservicosvenda
+                    INNER JOIN tbservicos ON tbservicosvenda.codservico = tbservicos.codservico
+                    INNER JOIN tbfuncionarios ON tbservicosvenda.codexecutante = tbfuncionarios.codfuncionario 
+                    WHERE tbservicosvenda.codvenda = " + id + ";";
             ;
             return sql;
         }

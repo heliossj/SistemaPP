@@ -130,7 +130,12 @@ namespace Sistema.Controllers
                 try
                 {
                     var daoOS = new DAOOrdemServico();
-                    //daoOS.Insert(model);
+                    if (model.situacao != "F")
+                        daoOS.Update(model);
+                    else
+                    {
+                        return RedirectToAction("VendaOS", "Vendas", new { id = id });
+                    }
                     this.AddFlashMessage(Util.AlertMessage.EDIT_SUCESS);
                     return RedirectToAction("Index");
                 }

@@ -1,0 +1,88 @@
+﻿@model Sistema.Models.Vendas
+@using Sistema.Util
+@{
+    bool readOnly = Convert.ToBoolean(ViewBag.ReadOnly);
+    string action = Convert.ToString(ViewBag.Action);
+}
+
+@Html.HiddenFor(u => Model.codOrdemServico)
+@if (action != "create")
+{
+    <div class="form-row">
+        <div class="@Util.Input2">
+            @Html.Label("Nº", new { @class = "no-required" })
+            @Html.TextBoxFor(model => model.codigo, new { @class = "form-control number", maxlength = "3", Disabled = true })
+            @Html.ValidationMessageFor(model => model.codigo, null, new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="@Util.Input3">
+            @Html.LabelFor(model => model.dtVenda, new { @class = "required" })
+            <div class="input-group-append">
+                @Html.TextBoxFor(model => model.dtVenda, new { @class = "form-control datepicker date_time", disabled = true })
+                <span class="fa fa-calendar input-group-text" style="font-size:23px"></span>
+            </div>
+        </div>
+        <div class="@Util.Input3">
+            @Html.LabelFor(model => model.situacao, new { @class = "no-required" })
+            @Html.DropDownListFor(model => model.situacao, Sistema.Models.Vendas.Situacao, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.situacao, null, new { @class = "text-danger" })
+        </div>
+    </div>
+}
+<div class="form-row">
+    @Html.EditorFor(model => model.Funcionario, "Funcionarios/Select", new { Required = true, Disabled = false, Label = "Vendedor" })
+</div>
+
+<div class="form-row">
+    @Html.EditorFor(model => model.Cliente, "Clientes/Select", new { Required = true, Disabled = false })
+</div>
+
+<div class="bs-callout bs-callout-primary">
+
+    @Html.HiddenFor(model => model.jsServicos)
+    <table id="tblServicos" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th width="30%">Executante</th>
+                <th width="25%">Servico</th>
+                <th width="10%">Quant.</th>
+                <th width="15%">Vl. do serviço</th>
+                <th width="10%">Total</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <td id="fts" colspan="5" style="text-align:right"></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+<div id="divFinaliza">
+    <div class="form-row">
+        <div class="@Util.Input2">
+            @Html.Label("Valor total", new { @class = "no-required" })
+            @Html.TextBoxFor(model => model.vlTotal, new { @class = "form-control", Disabled = true, placeholder = "0,00", style = "text-align: right" })
+        </div>
+    </div>
+
+    <div class="form-row">
+        @Html.EditorFor(model => model.CondicaoPagamento, "CondicaoPagamento/Select", new { Required = true, Disabled = false, @classForm = Util.Input10, flParcela = "S" })
+    </div>
+
+    <div id="divParcelas">
+        @Html.HiddenFor(model => model.jsParcelas)
+        <table id="tblParcelas" class="table table-striped table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                    <th width="10%">Nº parcela</th>
+                    <th width="15%">Valor Parcela</th>
+                    <th width="10%">Vencimento</th>
+                    <th width="55%">Forma de pagamento</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
