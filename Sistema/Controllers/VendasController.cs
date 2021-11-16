@@ -75,6 +75,32 @@ namespace Sistema.Controllers
             return this.GetView(id, modelo);
         }
 
+        [HttpPost]
+        public ActionResult Cancelar(int id, string modelo, Sistema.Models.Vendas model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var DAOVendas = new DAOVendas();
+                    DAOVendas.CancelarVenda(id);
+                    this.AddFlashMessage(Util.AlertMessage.INSERT_SUCESS);
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                    
+                    return this.GetView(id, modelo);
+                }
+            }
+            else
+            {
+
+                return View(model);
+            }
+        }
+
         public ActionResult VendaOS(int id)
         {
             var daoOS = new DAOOrdemServico();
