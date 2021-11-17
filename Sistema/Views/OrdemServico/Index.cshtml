@@ -86,7 +86,7 @@
                     </td>
                     <td>
                         @Html.ActionLink(" ", "Details", new { id = item.codigo }, new { @class = "btn btn-success btn-sm fa fa-eye", @title = "Visualizar registro" })
-                        @if (item.situacao != "F")
+                        @if (item.situacao != "F" && item.situacao != "C")
                         {
                             @Html.ActionLink(" ", "Edit", new { id = item.codigo }, new { @class = "btn btn-warning btn-sm fa fa-edit", @title = "Editar registro" })
                         }
