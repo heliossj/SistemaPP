@@ -56,10 +56,6 @@ namespace Sistema.Controllers
             {
                 ModelState.AddModelError("cfop", "Informe o CFOP");
             }
-            if (model.vlCusto == null || model.vlCusto <= 0)
-            {
-                ModelState.AddModelError("vlCusto", "Informe o valor de custo");
-            }
             if (model.vlVenda == null || model.vlVenda <= 0)
             {
                 ModelState.AddModelError("vlVenda", "Informe o valor de venda");
@@ -116,10 +112,6 @@ namespace Sistema.Controllers
             if (string.IsNullOrWhiteSpace(model.cfop))
             {
                 ModelState.AddModelError("cfop", "Informe o CFOP");
-            }
-            if (model.vlCusto == null || model.vlCusto <= 0)
-            {
-                ModelState.AddModelError("vlCusto", "Informe o valor de custo");
             }
             if (model.vlVenda == null || model.vlVenda <= 0)
             {

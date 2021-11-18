@@ -51,7 +51,8 @@ namespace Sistema.DAO
                         dtNascimento = Convert.ToDateTime(reader["Funcionario_DataNascimento"]),
                         vlSalario = Convert.ToDecimal(reader["Funcionario_Salario"]),
                         dtAdmissao = Convert.ToDateTime(reader["Funcionario_DataAdmissao"]),
-                        dtDemissao = Convert.ToDateTime(reader["Funcionario_DataDemissao"]) != null ? Convert.ToDateTime(reader["Funcionario_DataDemissao"]) : (DateTime?)null,
+                        //dtDemissao = Convert.ToDateTime(reader["Funcionario_DataDemissao"]) != null ? Convert.ToDateTime(reader["Funcionario_DataDemissao"]) : (DateTime?)null,
+                        dtDemissao = !string.IsNullOrEmpty(reader["Funcionario_DataDemissao"].ToString()) ? Convert.ToDateTime(reader["Funcionario_DataDemissao"]) : (DateTime?)null,
                     };
                     list.Add(Funcionarios);
                 }
@@ -73,7 +74,7 @@ namespace Sistema.DAO
             try
             {
                 var sql = string.Format("INSERT INTO tbfuncionarios ( situacao, nomefuncionario, sexo, logradouro, numero, complemento, bairro, telfixo, telcelular, email, codcidade, cep, cpf, rg, dtnascimento, dtadmissao, vlsalario, dtdemissao, dtcadastro, dtultalteracao, apelido )" +
-                    "VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', {10}, '{11}', '{12}', '{13}', '{14}', '{15}', {16}, '{17}', '{18}', '{19}', '{20}' )",
+                    "VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', {10}, '{11}', '{12}', '{13}', '{14}', '{15}', {16}, {17}, '{18}', '{19}', '{20}' )",
                     this.FormatString(funcionario.situacao),
                     this.FormatString(funcionario.nomePessoa),
                     this.FormatString(funcionario.sexo),
@@ -91,7 +92,7 @@ namespace Sistema.DAO
                     funcionario.dtNascimento.Value.ToString("yyyy-MM-dd"),
                     funcionario.dtAdmissao.Value.ToString("yyyy-MM-dd"),
                     funcionario.vlSalario.ToString().Replace(",", "."),
-                    funcionario.dtDemissao != null ? funcionario.dtDemissao.Value.ToString("yyyy-MM-dd") : null ,
+                    "null",
                     DateTime.Now.ToString("yyyy-MM-dd"),
                     DateTime.Now.ToString("yyyy-MM-dd"),
                     this.FormatString(funcionario.apelidoPessoa)
@@ -208,7 +209,7 @@ namespace Sistema.DAO
                         model.dtNascimento = Convert.ToDateTime(reader["Funcionario_DataNascimento"]);
                         model.vlSalario = Convert.ToDecimal(reader["Funcionario_Salario"]);
                         model.dtAdmissao = Convert.ToDateTime(reader["Funcionario_DataAdmissao"]);
-                        model.dtDemissao = Convert.ToDateTime(reader["Funcionario_DataDemissao"]) != null ? Convert.ToDateTime(reader["Funcionario_DataDemissao"]) : (DateTime?)null;
+                        model.dtDemissao = !string.IsNullOrEmpty(reader["Funcionario_DataDemissao"].ToString()) ? Convert.ToDateTime(reader["Funcionario_DataDemissao"]) : (DateTime?)null;
                     }
                 }
                 return model;

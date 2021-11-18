@@ -80,7 +80,7 @@ namespace Sistema.DAO
                     produto.Fornecedor.id,
                     produto.ncm,
                     produto.qtEstoque != null ? produto.qtEstoque : 0,
-                    produto.vlCusto.ToString().Replace(",", "."),
+                    0,
                     produto.vlUltCompra != null ? produto.vlUltCompra : 0,
                     produto.vlVenda.ToString().Replace(",", "."),
                     !string.IsNullOrWhiteSpace(produto.observacao) ? this.FormatString(produto.observacao) : "",

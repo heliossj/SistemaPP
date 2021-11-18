@@ -112,7 +112,7 @@ namespace Sistema.DAO
                         cliente.tipo == "F" ? this.FormatString(cliente.apelidoPessoa) : this.FormatString(cliente.nomeFantasia)
                         );
                     OpenConnection();
-                    //SqlQuery = new SqlCommand(sql, con);
+                    SqlQuery = new SqlCommand(sql, con);
                     int i = SqlQuery.ExecuteNonQuery();
 
                     if (i > 1)

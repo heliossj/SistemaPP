@@ -104,7 +104,7 @@ namespace Sistema.DAO
                     );
                 string sqlProduto = "INSERT INTO tbprodutoscompra ( codproduto, unidade, qtproduto, vlcompra, txdesconto, vlvenda, modelo, serie, numero, codfornecedor) VALUES ( {0}, '{1}', {2}, {3}, {4}, {5}, '{6}', '{7}', {8}, {9})";
                 string sqlParcela = "INSERT INTO tbcontaspagar (codfornecedor, codforma, nrparcela, vlparcela, dtvencimento, situacao, modelo, serie, numero, juros, multa, desconto) VALUES ({0}, {1}, {2}, {3}, {4}, '{5}', '{6}', '{7}', {8}, {9}, {10}, {11})";
-                string sqlUpdateProduto = "UPDATE tbprodutos set qtestoque += {0}, vlultcompra += {1} WHERE codproduto = {2}";
+                string sqlUpdateProduto = "UPDATE tbprodutos set qtestoque += {0}, vlultcompra = {1} WHERE codproduto = {2}";
                 using (con)
                 {
                     OpenConnection();

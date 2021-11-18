@@ -65,6 +65,8 @@
         let month = (parseFloat(dayArray[1]) - 1);
         let year = dayArray[2];
         dateEntrega = new Date(year, month, day).toJSON();
+        console.log(dateEntrega);
+        console.log(new Date().toJSON())
         $("#dtEntregaAux").val(dtEnt.val())
     });
 
@@ -432,6 +434,7 @@ Compra = function () {
 
     self.getparcelas = function () {
         let valid = true;
+        let today = new Date();
         if (IsNullOrEmpty(date)) {
             //$("#dtEmissao").blink({msg: "Informe a data de emissão"})
             $.notify({ message: "Informe a data de emissão!", icon: 'fa fa-exclamation' }, { type: 'danger', z_index: 2000 });
@@ -441,6 +444,9 @@ Compra = function () {
             valid = false;
         } else if (dateEntrega < date) {
             $.notify({ message: "A data de entrega não pode ser menor que a data de Emissão!", icon: 'fa fa-exclamation' }, { type: 'danger', z_index: 2000 });
+            valid = false;
+        } else if (dateEntrega > today.toJSON()) {
+            $.notify({ message: "A data de entrega não pode ser maior que o dia de hoje!", icon: 'fa fa-exclamation' }, { type: 'danger', z_index: 2000 });
             valid = false;
         }
         if (!dtParcelas.length && valid ) {

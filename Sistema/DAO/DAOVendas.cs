@@ -96,7 +96,7 @@ namespace Sistema.DAO
 
                             //VERIFICAR SE EXISTE A QUANTIDADE DO ITEM EM ESTOQUE ANTES DE VENDER
 
-                            var prodEstoque = string.Format(sqlProdutoEstoque, this.FormatDecimal(item.vlVenda), item.codProduto);
+                            var prodEstoque = string.Format(sqlProdutoEstoque, this.FormatDecimal(item.qtProduto), item.codProduto);
                             command.CommandText = prodEstoque;
                             command.ExecuteNonQuery();
                         }
