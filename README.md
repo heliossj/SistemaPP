@@ -2,4 +2,6 @@
 
 É um Sistema o qual o usuário pode realizar desde cadastros mais simples (país, estado, cidade)
 até mais complexos (clientes, fornecedores, compra, venda, contas a pagar e contas a receber), validando as informações essenciais.
-Não foi criado uma tela de autenticação. Ficaram algumas pendências, mas atendeu aos requisitos de entrega
+Não foi criado uma tela de autenticação. Ficaram algumas pendências, mas atendeu aos requisitos de entrega.
+
+Foi desenvolvido em arquitetura MVC, sem framework de persistência.
